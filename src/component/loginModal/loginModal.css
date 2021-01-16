@@ -1,3 +1,68 @@
-.loginModal{
-  height: 80vh;
+/* 모달창 */
+.loginModal {
+  height: 400px;
+  padding:3vw;
+  overflow: hidden;
+}
+/* 모달내부 */
+
+.loginModal h4{
+  font-weight:900;
+  color:var(--Acolor);
+  padding-bottom: 30px;
+}
+.auth form{
+  display: flex;
+  flex-direction: column;
+  width:100%;
+  background: transparent;
+  align-items: center;
+  grid-template-columns: 40px 1fr;
+  border: none;
+  margin-bottom: 2px;
+  padding:0;
+}
+.formGroup{
+  color:var(--Acolor);
+  display : flex;
+  align-items: center;
+  width:100%;
+}
+.formLabel{
+  height:30px;
+  width:50px;
+  line-height: 30px;
+  margin:auto;
+}
+.formInput{
+  flex:auto;
+}
+.auth button{
+  background:var(--Acolor);
+  border: none;
+}
+.auth button:hover{
+  background:var(--Bcolor);
+}
+.btnGoogle{
+  background-color: white;
+  padding:0;
+  width: 40px;
+  margin:0;
+  font-size: 40px;
+  color:var(--Acolor);
+}
+.btnGoogle:hover{
+  color:var(--Bcolor);
+}
+.btnGoogle:active{
+  border: none;
+  outline: none;
+}
+.btnRegister{
+  text-align: left;
+}
+.btnRegister:active{
+  border: none;
+  outline: none;
 }

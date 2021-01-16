@@ -13,19 +13,18 @@
   position: relative;
   height: 100vh;
   overflow: hidden;
-  border: 4px solid var(--Acolor);
   background: var(--Bcolor);
 }
-header {
-  display:flex;
+.header {
+  display: flex;
   font-weight: bold;
   font-size: large;
   height: 30px;
   color: var(--Bcolor);
   background: var(--Acolor);
 }
-.menu{ width: 40px;}
-.headerTitle{flex:auto;}
+.btnmenu{ width: 40px;}
+.headerT{flex:1;  }
 .rightMenu{width: 60px;}
 main{
   display: flex ;
@@ -60,4 +59,15 @@ button:hover {
 button:active {
   background: var(--Acolor);
   color: var(--Bcolor);
+}
+.link{
+  text-decoration: none;
+  color : var(--Bcolor);
+  outline: none;
+  transition: all 300ms;
+}
+.link:hover{
+  text-decoration: none;
+  color : var(--Bcolor);
+  opacity: 0.5;
 }
