@@ -78,27 +78,27 @@ class firebaseApp {
     }
   }
   // TODO글 데이터저장 
-  dataSave(data) {
-    firebase.database().ref(`items/${data.uid}/${data.dataId}`).set(data)
+  dataSave(folder,data) {
+    firebase.database().ref(`${folder}/${data.uid}/${data.dataId}`).set(data)
       .then(() => console.log('글 저장성공'))
       .catch((e) => console.log(e))
   }
 
   // TODO데이터 SYNC
-  itemSync(uid, cf) {
-    const ref = firebase.database().ref(`items/${uid}`);
+  itemSync(folder,uid, cf) {
+    const ref = firebase.database().ref(`${folder}/${uid}`);
     ref.on('value', (p) => {
       const data = p.val();
       data ? cf.f1(data) : cf.f2();
     })
   }
   // TODO데이터 삭제
-  itemDel(uid, dataId) {
-    firebase.database().ref(`items/${uid}/${dataId}`).remove();
+  itemDel(folder,uid, dataId) {
+    firebase.database().ref(`${folder}/${uid}/${dataId}`).remove();
   }
   // TODO 데이터 업데이트
-  itemUp(uid, dataId, counter) {
-    firebase.database().ref(`items/${uid}/${dataId}`)
+  itemUp(folder,uid, dataId, counter) {
+    firebase.database().ref(`${folder}/${uid}/${dataId}`)
       .update({ progress: counter })
   }
 

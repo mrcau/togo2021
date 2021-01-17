@@ -10,6 +10,7 @@ function Todo({ fireApp, user, userName,  }) {
   const rocketRef = useRef();
   const [items, setItems] = useState({});
   const [todoCount, setTodoCount] = useState(0);
+  const folder = "todo"
   // 데이터 보여주기 싱크
   useEffect(() => {    
     fireApp.onAuth((e) => {
@@ -17,7 +18,7 @@ function Todo({ fireApp, user, userName,  }) {
       f1: (p)=>{setItems(p)},
       f2: ()=>{setItems({})}
       }
-   e ? fireApp.itemSync(e.uid, cf):console.log('no-User')
+   e ? fireApp.itemSync(folder,e.uid, cf):console.log('no-User')
     })
   }, []);
 
@@ -38,7 +39,7 @@ function Todo({ fireApp, user, userName,  }) {
         today: today,
         progress: 0
       }
-      fireApp.dataSave(data)
+      fireApp.dataSave(folder,data)
     }
     titleRef.current.value = '';
     textRef.current.value = '';
