@@ -10,6 +10,7 @@
   font-weight:900;
   color:var(--Acolor);
   padding-bottom: 30px;
+  transform:rotate(0.03deg);
 }
 .auth form{
   display: flex;
@@ -51,6 +52,7 @@
   margin:0;
   font-size: 40px;
   color:var(--Acolor);
+  
 }
 .btnGoogle:hover{
   color:var(--Bcolor);
@@ -60,9 +62,9 @@
   outline: none;
 }
 .btnRegister{
+  color: var(--Acolor);
   text-align: left;
 }
-.btnRegister:active{
-  border: none;
-  outline: none;
+.btnRegister:hover{
+  color:var(--Bcolor);
 }

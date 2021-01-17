@@ -1,6 +1,7 @@
 *{  
-  --Acolor: #0A174E;
-  --Bcolor :#F5D042;  
+  --Acolor: #061C56;
+  --Bcolor :#B8BFB5;  
+  --Ccolor : #424242;
   margin: 0;
   padding: 0;
   text-align: center;
@@ -23,9 +24,9 @@
   color: var(--Bcolor);
   background: var(--Acolor);
 }
-.btnmenu{ width: 40px;}
+.btnmenu{ width: 80px; padding: 0 40px 0 0;}
 .headerT{flex:1;  }
-.rightMenu{width: 60px;}
+.rightMenu{width: 80px;}
 main{
   display: flex ;
   flex-direction: column;
@@ -43,8 +44,8 @@ footer {
 button {
   font-weight: 700;
   font-size: medium;
-  border: none ;
-  outline: none ;
+  border: none !important;
+  outline: none !important;
   width: 100%;
   height: 100%;
   cursor: pointer;
@@ -71,3 +72,5 @@ button:active {
   color : var(--Bcolor);
   opacity: 0.5;
 }
+
+

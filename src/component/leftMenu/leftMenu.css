@@ -10,7 +10,6 @@
 .imgBg{
   height:120px;
   width:120px;
-  border: solid 1px var(--Bcolor);
   border-radius:50%;
   background-position: center;
   background-size: cover;
@@ -18,4 +17,5 @@
 .btnlink{
   height: 25px;
   border-radius: 5px;
+  margin-bottom: 10px;
 }
