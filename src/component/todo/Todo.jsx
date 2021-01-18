@@ -39,7 +39,7 @@ function Todo({ fireApp, user, userName,  }) {
         today: today,
         progress: 0
       }
-      fireApp.dataSave(folder,data)
+      fireApp.itemSave(folder,data)
     }
     titleRef.current.value = '';
     textRef.current.value = '';

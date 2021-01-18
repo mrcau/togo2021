@@ -54,8 +54,28 @@
   height:25px;
   /* padding: 0 10px; */
 }
+.enterNumber{  
+  flex: auto; display:flex;  
+  justify-content: space-between;
+  padding:0 10px; 
+  background: var(--Bcolor);
+  color:var(--Ccolor);
+}
+.btnRoom{
+  background: var(--Bcolor);
+  color:var(--Ccolor);
+  transition: all 300ms;
+}
+.btnRoom:hover{
+  color:white;
+}
+.btnRoomDel{
+  width:30px;
+  background: var(--Ccolor);
+  margin-left: 70px;
+}
+.enterBtn{  font-size: small; width:40px;}
 .enterWrap{ display: flex; width: 150px;}
-.enterInput{  width: 100px; outline: none;}
-.enterBtn{  font-size: small; width:80px;}
+.nowRoom{padding: 0 10px;}
 .enterTitle{  flex: auto;}
-.enterNumber{  width: 150px;}
+.enterInput{  width: 60px; outline: none; border: none;}
