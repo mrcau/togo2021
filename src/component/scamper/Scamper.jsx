@@ -14,47 +14,44 @@ function Scamper({ fireApp, user, userName }) {
   const roomERef = useRef();
   const [data, setdata] = useState({});
   const [room, setRoom] = useState({});
-  const [roomNum, setRoomNum] = useState('');
+  const [roomName, setroomName] = useState('');
   const [roomUid, setRoomUid] = useState('');
-console.log('room',room);
-console.log('roomNum',roomNum);
   //데이터싱크 
   useEffect(() => {
     fireApp.onAuth((e) => {
       const cf = {
         f1: (p) => { setdata(p) },
         f2: () => { setdata({}) },
-        f3: (p) => {setRoom(p)},
-        f4: () => {setRoom({})}
+        f3: (p) => { setRoom(p) },
+        f4: () => { setRoom({}) }
       }
-      if(e){ 
-        const roomUid = e.uid.substr(0,4);
-        setRoomUid(e.uid.substr(0,4));
-        fireApp.dataSync(folder,roomUid, roomNum,cf);
-        fireApp.roomSync(folder,roomUid, cf);
+      if (e) {
+        const roomUid = e.uid.substr(0, 4);
+        setRoomUid(e.uid.substr(0, 4));
+        fireApp.dataSync(folder, roomName, cf);
+        fireApp.roomSync(folder, roomUid, cf);
       }
-      else{ console.log('no-User')}
+      else { console.log('no-User') }
     })
-  }, [roomNum]);
+  }, [roomName]);
 
 
 
   // 방입장
   const enterRoom = () => {
-    setRoomNum(roomERef.current.value);
+    setroomName(roomERef.current.value);
   }
   // 관리자 방입장
   const adminEnter = (e) => {
-    setRoomNum(e.currentTarget.textContent);
+    setroomName(roomUid + e.currentTarget.textContent);
     roomERef.current.value = e.currentTarget.textContent;
   }
   // 방생성
   const createRoom = () => {
-    const num = Date.now().toString();
-    const roomNum = num.substr(9);
-    setRoomNum(roomNum);
+    const num = Date.now().toString().substr(9);
+    const newRoom = roomUid + num;
+    setroomName(newRoom);
     const data = {
-      // roomUid : roomUid || '',
       scamS: scamperS.current.value || '',
       scamC: scamperC.current.value || '',
       scamA: scamperA.current.value || '',
@@ -63,13 +60,13 @@ console.log('roomNum',roomNum);
       scamE: scamperE.current.value || '',
       scamR: scamperR.current.value || '',
     }
-    fireApp.roomSave(folder,roomUid, roomNum, data)
+    fireApp.roomSave(folder, newRoom, data)
   }
 
   //데이터 저장
   const onSubmit = () => {
     // const dataId = Date.now();
-    if (!roomNum) { return }
+    if (!roomName) { return }
     const data = {
       // roomUid : roomUid || '',
       scamS: scamperS.current.value || '',
@@ -80,13 +77,13 @@ console.log('roomNum',roomNum);
       scamE: scamperE.current.value || '',
       scamR: scamperR.current.value || '',
     }
-    fireApp.dataUp(folder,roomUid, roomNum, data)
+    fireApp.dataUp(folder, roomName, data)
   }
 
-// 아이템 삭제
-// const dataDel = () => {
-//   fireApp.dataDel(folder,roomUid,roomNum)  
-// }
+  // 아이템 삭제
+  // const dataDel = () => {
+  //   fireApp.dataDel(folder,roomName)  
+  // }
 
   return (
     <div className="scamper">
@@ -96,22 +93,22 @@ console.log('roomNum',roomNum);
             <button className="enterBtn" onClick={createRoom}>개설</button>
           </div>
           <div className="enterNumber">{
-            room && 
+            room &&
             Object.keys(room).map((e) =>
-            <button key={e} className="btnRoom" onClick={adminEnter} >{e}</button>)
-            
-            }</div>
+              <button key={e} className="btnRoom" onClick={adminEnter} >{e}</button>)
+
+          }</div>
         </div>
       }
 
       <div className="s-header">
         <div className="enterWrap" >
-        <button className="enterBtn" onClick={enterRoom}>입장</button>
-        <input type="text" className="enterInput" placeholder="방번호" ref={roomERef} />
+          <button className="enterBtn" onClick={enterRoom}>입장</button>
+          <input type="text" className="enterInput" placeholder="방번호" ref={roomERef} />
         </div>
         <div className="enterTitle">SCAMPER</div>
-        <div style={{width:'100px'}}>
-        <button className="btnRoomDel" > <DeleteForeverIcon/> </button>
+        <div style={{ width: '100px' }}>
+          <button className="btnRoomDel" > <DeleteForeverIcon /> </button>
         </div>
       </div>
 

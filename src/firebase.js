@@ -103,13 +103,15 @@ class firebaseApp {
   }
 
   //  룸 생성 저장 
-  roomSave(folder, roomUid, roomNum, data) {
+  roomSave(folder, newRoom, data) {
+    const roomUid = newRoom.substr(0,4);
+    const roomNum = newRoom.substr(4);
     firebase.database().ref(`${folder}/${roomUid}/${roomNum}`).set(data)
       .then(() => console.log('room생성'))
       .catch((e) => console.log(e))
   }
 
-  //  룸 씽크
+  //  관리자 룸 씽크
   async roomSync(folder, roomUid, cf) {
     const ref = firebase.database().ref(`${folder}/${roomUid}`);
     ref.on('value', (p) => {
@@ -118,8 +120,10 @@ class firebaseApp {
     })
   }
   // 데이터 씽크
-  dataSync(folder, roomUid, roomNum, cf) {
-    if (!roomNum) { return }
+  dataSync(folder, roomName, cf) {
+    const roomUid = roomName.substr(0,4);
+    const roomNum = roomName.substr(4);
+    if (!roomName) { return }
     const ref1 = firebase.database().ref(`${folder}/${roomUid}/${roomNum}`);
     ref1.on('value', (p) => {
       const data = p.val();
@@ -135,11 +139,16 @@ class firebaseApp {
   }
 
   // 데이터 삭제
-  dataDel(folder, roomUid, roomNum) {
+  dataDel(folder, roomName) {
+    const roomUid = roomName.substr(0,4);
+    const roomNum = roomName.substr(4);
     firebase.database().ref(`${folder}/${roomUid}/${roomNum}`).remove();
   }
+
   // 데이터 저장
-  dataUp(folder, roomUid, roomNum, data) {
+  dataUp(folder, roomName, data) {
+    const roomUid = roomName.substr(0,4);
+    const roomNum = roomName.substr(4);
     firebase.database().ref(`${folder}/${roomUid}/${roomNum}`)
       .update(data)
   }
