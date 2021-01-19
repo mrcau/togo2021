@@ -15,27 +15,29 @@ function Scamper({ fireApp, user, userName }) {
   const [data, setdata] = useState({});
   const [room, setRoom] = useState({});
   const [roomNum, setRoomNum] = useState('');
-  const uid = user.uid;
-  // const rid = uid.substr(0,4);
-
-  // const id = user.uid.toString();
-  // const rid = id.substr(0,4);
+  const [roomUid, setRoomUid] = useState('');
+console.log('room',room);
+console.log('roomNum',roomNum);
   //데이터싱크 
   useEffect(() => {
     fireApp.onAuth((e) => {
       const cf = {
         f1: (p) => { setdata(p) },
-        f2: () => { setdata({}) }
+        f2: () => { setdata({}) },
+        f3: (p) => {setRoom(p)},
+        f4: () => {setRoom({})}
       }
-      e ? fireApp.dataSync(folder,roomNum,cf) : console.log('no-User')
+      if(e){ 
+        const roomUid = e.uid.substr(0,4);
+        setRoomUid(e.uid.substr(0,4));
+        fireApp.dataSync(folder,roomUid, roomNum,cf);
+        fireApp.roomSync(folder,roomUid, cf);
+      }
+      else{ console.log('no-User')}
     })
   }, [roomNum]);
 
 
-  //룸번호 가져오기
-  useEffect(() => {
-    fireApp.roomSync(folder, (p) => setRoom(p)).then(()=>console.log(room)) 
-  }, [])
 
   // 방입장
   const enterRoom = () => {
@@ -52,7 +54,7 @@ function Scamper({ fireApp, user, userName }) {
     const roomNum = num.substr(9);
     setRoomNum(roomNum);
     const data = {
-      // rid : rid || '',
+      // roomUid : roomUid || '',
       scamS: scamperS.current.value || '',
       scamC: scamperC.current.value || '',
       scamA: scamperA.current.value || '',
@@ -61,7 +63,7 @@ function Scamper({ fireApp, user, userName }) {
       scamE: scamperE.current.value || '',
       scamR: scamperR.current.value || '',
     }
-    fireApp.dataSave(folder, roomNum, data)
+    fireApp.roomSave(folder,roomUid, roomNum, data)
   }
 
   //데이터 저장
@@ -69,7 +71,7 @@ function Scamper({ fireApp, user, userName }) {
     // const dataId = Date.now();
     if (!roomNum) { return }
     const data = {
-      // rid : rid || '',
+      // roomUid : roomUid || '',
       scamS: scamperS.current.value || '',
       scamC: scamperC.current.value || '',
       scamA: scamperA.current.value || '',
@@ -78,12 +80,12 @@ function Scamper({ fireApp, user, userName }) {
       scamE: scamperE.current.value || '',
       scamR: scamperR.current.value || '',
     }
-    fireApp.dataUp(folder, roomNum, data)
+    fireApp.dataUp(folder,roomUid, roomNum, data)
   }
 
 // 아이템 삭제
 // const dataDel = () => {
-//   fireApp.dataDel(folder,rid,roomNum)  
+//   fireApp.dataDel(folder,roomUid,roomNum)  
 // }
 
   return (

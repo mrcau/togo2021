@@ -78,14 +78,14 @@ class firebaseApp {
     }
   }
   // TODO글  저장 
-  itemSave(folder,data) {
+  itemSave(folder, data) {
     firebase.database().ref(`${folder}/${data.uid}/${data.dataId}`).set(data)
       .then(() => console.log('글 저장성공'))
       .catch((e) => console.log(e))
   }
 
   // TODO 씽크
-  itemSync(folder,uid, cf) {
+  itemSync(folder, uid, cf) {
     const ref = firebase.database().ref(`${folder}/${uid}`);
     ref.on('value', (p) => {
       const data = p.val();
@@ -93,49 +93,57 @@ class firebaseApp {
     })
   }
   // TODO 삭제
-  itemDel(folder,uid, dataId) {
+  itemDel(folder, uid, dataId) {
     firebase.database().ref(`${folder}/${uid}/${dataId}`).remove();
   }
   // TODO 업데이트
-  itemUp(folder,uid, dataId, counter) {
+  itemUp(folder, uid, dataId, counter) {
     firebase.database().ref(`${folder}/${uid}/${dataId}`)
       .update({ progress: counter })
   }
 
-  //  방 생성 저장 
-  dataSave(folder,roomNum,data) {
-    firebase.database().ref(`${folder}/${roomNum}`).set(data)
+  //  룸 생성 저장 
+  roomSave(folder, roomUid, roomNum, data) {
+    firebase.database().ref(`${folder}/${roomUid}/${roomNum}`).set(data)
       .then(() => console.log('room생성'))
       .catch((e) => console.log(e))
   }
 
-  // 데이터 씽크
-  dataSync(folder,roomNum, cf) {
-    if(!roomNum){return}
-    const ref = firebase.database().ref(`${folder}/${roomNum}`);
+  //  룸 씽크
+  async roomSync(folder, roomUid, cf) {
+    const ref = firebase.database().ref(`${folder}/${roomUid}`);
     ref.on('value', (p) => {
       const data = p.val();
-      data ? cf.f1(data) : cf.f2();
+      cf.f3(data);
     })
   }
-  // 데이터 ROOM 번호
- async roomSync(folder, cf) {
-    const ref = firebase.database().ref(`${folder}`);
-    ref.on('value', (p) => {      
+  // 데이터 씽크
+  dataSync(folder, roomUid, roomNum, cf) {
+    if (!roomNum) { return }
+    const ref1 = firebase.database().ref(`${folder}/${roomUid}/${roomNum}`);
+    ref1.on('value', (p) => {
       const data = p.val();
-      cf(data); 
-     })
+      data ? cf.f1(data) : cf.f2();
+    });
+
+    const ref2 = firebase.database().ref(`${folder}/${roomUid}`);
+    ref2.on('value', (p) => {
+      const data = p.val();
+      data ? cf.f3(data) : cf.f4();
+    });
+
   }
+
   // 데이터 삭제
-  dataDel(folder,roomNum) {
-    firebase.database().ref(`${folder}/${roomNum}`).remove();
+  dataDel(folder, roomUid, roomNum) {
+    firebase.database().ref(`${folder}/${roomUid}/${roomNum}`).remove();
   }
   // 데이터 저장
-  dataUp(folder,roomNum, data) {
-    firebase.database().ref(`${folder}/${roomNum}`)
+  dataUp(folder, roomUid, roomNum, data) {
+    firebase.database().ref(`${folder}/${roomUid}/${roomNum}`)
       .update(data)
   }
-  
+
 
 
 }
