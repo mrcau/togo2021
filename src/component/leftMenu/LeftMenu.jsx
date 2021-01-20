@@ -32,6 +32,7 @@ function LeftMenu({ fireApp, user, photo, setPhoto }) {
       {/* <hr style={{width:'90%',border:'dashed 1px gray'}} /> */}
       <button className="btnlink" onClick={() => history.push('/todo')}>Todo</button>
       <button className="btnlink" onClick={() => history.push('/scamper')}>scamper</button>
+      <button className="btnlink" onClick={() => history.push('/atable')}>회원관리</button>
     </div>
   );
 }

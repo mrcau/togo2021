@@ -153,6 +153,21 @@ class firebaseApp {
       .update(data)
   }
 
+  //Auth 테이블 싱크
+async authdataSync(auth, cf) {
+    if (!auth) { return }
+    const ref1 = firebase.database().ref(`${auth}`);
+    ref1.on('value', (p) => {
+      const data = p.val();
+      const authData = Object.values(data);
+      data ? cf.f1(authData) : cf.f2();
+    });
+  }
+// TODO 업데이트
+// levelUp(folder, uid, dataId, counter) {
+//   firebase.database().ref(`${folder}/${uid}/${dataId}`)
+//     .update({ progress: counter })
+// }
 
 
 }

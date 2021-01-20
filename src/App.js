@@ -9,6 +9,8 @@ import Todo from './component/todo/Todo';
 import Togo from './component/togo/Togo';
 import GpsFixedIcon from '@material-ui/icons/GpsFixed';
 import Scamper from './component/scamper/Scamper';
+import Atable from './component/authTable/Atable';
+
 
 function App({ fireApp }) {
   const history = useHistory();
@@ -76,6 +78,10 @@ function App({ fireApp }) {
           <Route path='/scamper'> 
             <Scamper fireApp={fireApp} user={user} userName={userName} />
           </Route>
+          <Route path='/atable'> 
+            <Atable fireApp={fireApp} user={user} userName={userName} />
+          </Route>
+          
         </Switch>
       </main>
       <footer>토고팩토리</footer>
