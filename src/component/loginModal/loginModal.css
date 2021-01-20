@@ -1,6 +1,6 @@
 /* 모달창 */
 .loginModal {
-  height: 400px;
+  /* height: 400px; */
   padding:3vw;
   overflow: hidden;
 }

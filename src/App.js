@@ -9,6 +9,7 @@ import Todo from './component/todo/Todo';
 import Togo from './component/togo/Togo';
 import GpsFixedIcon from '@material-ui/icons/GpsFixed';
 import Scamper from './component/scamper/Scamper';
+import AuthTable from './component/authTable/AuthTable';
 
 function App({ fireApp }) {
   const history = useHistory();
@@ -75,6 +76,9 @@ function App({ fireApp }) {
           </Route>
           <Route path='/scamper'> 
             <Scamper fireApp={fireApp} user={user} userName={userName} />
+          </Route>
+          <Route path='/authTable'> 
+            <AuthTable fireApp={fireApp} user={user} userName={userName} />
           </Route>
         </Switch>
       </main>

@@ -4,6 +4,7 @@ import { Button, Form } from 'react-bootstrap';
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
+import EmojiPeopleIcon from '@material-ui/icons/EmojiPeople';
 
 function LoginModal({ fireApp, setuser }) {
   const emailRef = useRef();
@@ -12,6 +13,8 @@ function LoginModal({ fireApp, setuser }) {
   const nameRegisterRef = useRef();
   const passRegisterRef = useRef();
   const repassRegisterRef = useRef();
+  const followRef = useRef();
+
   const [registerTF, setRegisterTF] = useState(false);
 
   // 이메일로그인
@@ -31,7 +34,9 @@ function LoginModal({ fireApp, setuser }) {
     const info = {
       name: nameRegisterRef.current.value,
       email: emailRegisterRef.current.value,
-      pass: passRegisterRef.current.value
+      pass: passRegisterRef.current.value,
+      follow: followRef.current.value,
+      level : 0,
     }
     const cf =  (e) => setuser(e);
     fireApp.createUser(info, cf)
@@ -61,7 +66,7 @@ function LoginModal({ fireApp, setuser }) {
       }
 
       {/* Register */}
-      <div className="auth" style={{ display: !registerTF && 'none' }}>
+      <div className="auth reigster" style={{ display: !registerTF && 'none' }}>
         <h4>회원가입</h4>
         <Form onSubmit={onSubmit}>
           <Form.Group controlId="formBasicName" className="formGroup" >
@@ -80,6 +85,11 @@ function LoginModal({ fireApp, setuser }) {
             <Form.Label className="formLabel"><LockOpenIcon /></Form.Label>
             <Form.Control className="formInput" type="password" ref={repassRegisterRef} placeholder="패스워드 확인" />
           </Form.Group>
+          <Form.Group controlId="formBasicFollow" className="formGroup" >
+            <Form.Label className="formLabel"><EmojiPeopleIcon /></Form.Label>
+            <Form.Control className="formInput" type="text" ref={followRef} placeholder="조력자ID" />
+          </Form.Group>
+
           <Button variant="primary" type="submit">
             Submit
           </Button>

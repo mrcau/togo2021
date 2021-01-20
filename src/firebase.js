@@ -153,7 +153,18 @@ class firebaseApp {
       .update(data)
   }
 
+  //Auth데이터 싱크
 
+async authdataSync(auth, cf) {
+    if (!auth) { return }
+    const ref1 = firebase.database().ref(`${auth}`);
+    ref1.on('value', (p) => {
+      const data = p.val();
+      const authData = Object.values(data);
+      data ? cf.f1(authData) : cf.f2();
+    });
+
+  }
 
 }
 
