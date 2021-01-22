@@ -14,7 +14,8 @@
   /* padding: 0 10px; */
 }
 .enterWrap{ display: flex; width: 200px;}
-.enterInput{  display: flex; outline: none;}
+.enterInput{  display: flex; outline: none;
+flex:auto; font-size: small;}
 .enterBtn{  width:50px;}
 .enterTitle{  flex: auto;}
 .btnRoomDel{

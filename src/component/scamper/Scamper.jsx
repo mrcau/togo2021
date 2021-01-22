@@ -1,9 +1,12 @@
-import { Drawer, TextField } from '@material-ui/core';
+import { Drawer } from '@material-ui/core';
 import { DeleteForever, MenuSharp } from '@material-ui/icons';
 import React, { useEffect, useRef, useState } from 'react';
-import AutorenewIcon from '@material-ui/icons/Autorenew';
+import AddCommentIcon from '@material-ui/icons/AddComment';
+import YouTubeIcon from '@material-ui/icons/YouTube';
 import './scamper.css';
+import VoiceChatIcon from '@material-ui/icons/VoiceChat';
 import RightMenu from './ReportMenu';
+import { Modal } from 'react-bootstrap';
 
 function Scamper({ fireApp, user, userName }) {
   const folder = "scamper";
@@ -24,7 +27,10 @@ function Scamper({ fireApp, user, userName }) {
   //오른쪽 report 메뉴
   const [state, setState] = useState({ top: false, left: false, right: false });
   const toggleDrawer = (anchor, open) => (event) => setState({ ...state, [anchor]: open });
-  
+  //모달창
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
   //데이터싱크 
   useEffect(() => {
     fireApp.onAuth((e) => {
@@ -122,11 +128,25 @@ function Scamper({ fireApp, user, userName }) {
   }
 
   return (
-    <div className="scamper">
+    <div className="scamper">      
       <Drawer anchor={'right'} open={state['right']} onClose={toggleDrawer('right', false)}>
         <RightMenu fireApp={fireApp} user={user} /> 
       </Drawer> 
+      <Modal show={show} onHide={handleClose} animation={true} size={'xl'}> 
+        <hr/> 유튜브영상<hr/>
+        <button onClick={handleClose}> Close </button>           
+      </Modal>
 
+
+
+      {level>0 &&
+        <div className="adimBar">
+           <button className="enterBtn" onClick={createRoom}><AddCommentIcon/></button> 
+          <input type="text" className="enterInput" placeholder="공지" style={{borderRight:'1px dashed'}} />
+          <input type="text" className="enterInput" placeholder="동영상링크" />
+          <button className="enterBtn" style={{width:'30px'}} onClick={createRoom}><YouTubeIcon/></button> 
+        </div>
+      }
       {level>0 &&
         <div className="adimBar">
           <div> <button className="enterBtn" onClick={createRoom}>개설</button> </div>
@@ -135,20 +155,21 @@ function Scamper({ fireApp, user, userName }) {
           </div>
         </div>
       }
-
       <div className="s-header">
         <div className="enterWrap" >
           <button className="enterBtn" onClick={enterRoom}>입장</button>
           <input type="text" className="enterInput" placeholder="방번호" style={{width:'80px'}} ref={roomERef} />
         </div>
-        <div className="enterTitle">SCAMPER</div>
-       
-        <div style={{ width: '120px',display:'flex' }}>             
+        <div className="enterTitle">SCAMPER</div>       
+        <div style={{ width: '100px',display:'flex',justifyContent:'flex-end' }}>             
           {/* <button className="btnRoomDel" style={{background:'#424242'}} onClick={inputReset} > <AutorenewIcon /> </button> */}
           {level>0 && 
-           <button style={{background:'#424242'}} className="btnRoomDel" onClick={dataDel} ><DeleteForever /></button>  
+           <button style={{background:'#424242'}} className="btnRoomDel" onClick={dataDel} >
+             <DeleteForever /></button>  
           }
-          <button onClick={toggleDrawer('right', true)}> <MenuSharp /></button> 
+          <button style={{width:'30px'}}  onClick={handleShow}>
+          <VoiceChatIcon fontSize='small' /></button>
+          <button style={{width:'30px'}} onClick={toggleDrawer('right', true)}> <MenuSharp /></button> 
         </div>
       </div>
 

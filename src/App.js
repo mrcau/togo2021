@@ -62,7 +62,7 @@ function App({ fireApp }) {
             THINK <GpsFixedIcon style={{ fontSize: '25px' }} /> BOX
           </Link>
         </div>
-        <div className="rightMenu">
+        <div className="rightMenu" style={{width:'60px',fontSize:'small'}}>
           {uid ? <button onClick={logout} >Logout</button>
             : <button onClick={toggleDrawer('top', true)}> Login </button>}
         </div>

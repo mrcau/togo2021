@@ -26,7 +26,6 @@
 }
 .btnmenu{ width: 80px; padding: 0 40px 0 0;}
 .headerT{flex:1;  }
-.rightMenu{width: 80px;}
 main{
   display: flex ;
   flex-direction: column;
