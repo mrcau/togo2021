@@ -52,7 +52,7 @@
   height: 72%;
   transform: rotateY(180deg);
   backface-visibility: hidden;
-  overflow: hidden;
+  /* overflow: hidden; */
   border: none;
 }
 .itemrow .btnG {

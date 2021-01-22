@@ -29,8 +29,8 @@ class firebaseApp {
   //회원가입
   async createUser(info, cf) {
     firebase.auth().createUserWithEmailAndPassword(info.email, info.pass)
-      .then((e) => {
-        firebase.database().ref(`auth/${e.user.uid}`).set(info)
+      .then((e) => { 
+        firebase.database().ref(`auth/${e.user.uid}`).set({...info,'user':e.user.uid})
           .then(() => {
             firebase.auth().currentUser.updateProfile({ displayName: info.name });
           })
@@ -102,13 +102,23 @@ class firebaseApp {
       .update({ progress: counter })
   }
 
+//  룸 개수 가져오기
+roomGet(folder,roomUid) {
+  let roomGetNum = 0;
+  const ref = firebase.database().ref(`${folder}/${roomUid}`);
+  ref.on('value', (p) => {
+    const data = p.val();
+    if(data){ roomGetNum = Object.keys(data).length}
+  })
+  return roomGetNum;
+}
   //  룸 생성 저장 
-  roomSave(folder, newRoom, data) {
+  roomSave(folder,newRoom, data) {
     const roomUid = newRoom.substr(0,4);
     const roomNum = newRoom.substr(4);
     firebase.database().ref(`${folder}/${roomUid}/${roomNum}`).set(data)
       .then(() => console.log('room생성'))
-      .catch((e) => console.log(e))
+      .catch((e) => console.log(e))         
   }
 
   //  관리자 룸 씽크
@@ -119,6 +129,15 @@ class firebaseApp {
       cf.f3(data);
     })
   }
+  //  관리자 룸개수 제한 생성
+  // async roomSync2(folder, roomUid, cf) {
+  //   const ref = firebase.database().ref(`${folder}/${roomUid}`);
+  //   ref.on('value', (p) => {
+  //     const data = p.val();
+  //     console.log(data)
+  //     Object.keys(data).length < 7 &&  cf(data);
+  //   })
+  // }
   // 데이터 씽크
   dataSync(folder, roomName, cf) {
     const roomUid = roomName.substr(0,4);
@@ -163,11 +182,26 @@ async authdataSync(auth, cf) {
       data ? cf.f1(authData) : cf.f2();
     });
   }
-// TODO 업데이트
-// levelUp(folder, uid, dataId, counter) {
-//   firebase.database().ref(`${folder}/${uid}/${dataId}`)
-//     .update({ progress: counter })
-// }
+    //Auth 테이블 싱크 for left menu
+async authSync(auth, uid,cf) {
+  if (!auth) { return }
+  const ref = firebase.database().ref(`${auth}/${uid}`);
+  ref.on('value', (p) => {
+    const data = p.val();
+    cf(data.level)
+  });
+}
+// Auth 테이블  Level 업데이트
+level(folder, uid,num) {
+  firebase.database().ref(`${folder}/${uid}`)
+    .update({ level: num })
+    firebase.auth().currentUser.updateProfile({ p: num });
+}
+// 데이터 삭제
+authDel(folder, uid) {
+  firebase.database().ref(`${folder}/${uid}`).remove();
+}
+
 
 
 }

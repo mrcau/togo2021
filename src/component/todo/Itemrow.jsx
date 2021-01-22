@@ -28,9 +28,11 @@ function  Itemrow ({item,fireApp}) {
       <div className="title">
         {item.title}
       </div>
-      <div className="text">
+      {/* <div className="text" style={{display:'flex', flexFlow:'wrap'}}>
         {item.text}
-      </div>
+      </div> */}
+      <textarea  className="text" cols="30" rows="2" style={{resize: 'none'}} 
+            value= {item.text} />
       <div className="btnG">
         <button className="btn0">{item.progress}</button>
         <button className="btn btn1" onClick={plus}>+</button>

@@ -10,6 +10,10 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Paper from '@material-ui/core/Paper';
+import IconButton from '@material-ui/core/IconButton';
+import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
+import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {   return -1; }
@@ -123,11 +127,10 @@ function Atable({fireApp,user}) {
   })
 }, []);
 
-//레벨업
-// const levelUp =(uid) => {
-//   const cf = { f1:(p)=> {setAuthInfo(p) }, f2:()=> {setAuthInfo({}) } }
-//   fireApp.levelUp(folder,uid,cf);
-// }
+// 레벨업
+const levelUp =(uid) => { fireApp.level(folder,uid,1); }
+const levelDown =(uid) => { fireApp.level(folder,uid,0); }
+const authDel = (uid) => { fireApp.authDel(folder,uid)}
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
@@ -157,9 +160,20 @@ function Atable({fireApp,user}) {
                       <TableCell align="center">{row.email}</TableCell>
                       <TableCell align="center">{row.pass}</TableCell>
                       <TableCell align="center">{row.follow}</TableCell>
-                      <TableCell align="center">{row.level}</TableCell>
+                      {/* <TableCell align="center">{row.level}</TableCell> */}
                       <TableCell align="center">
-                        {/* <button onClick={levelUp(row.uid)}> up</button> */}
+                        <IconButton  size="small" style={{width:'25px'}} onClick={()=>levelUp(row.user)} >
+                          < ArrowUpwardIcon fontSize="inherit"/>
+                        </IconButton>
+                        {row.level}
+                        <IconButton  size="small" style={{width:'25px'}} onClick={()=>levelDown(row.user)} >
+                          <ArrowDownwardIcon fontSize="inherit"/>
+                        </IconButton>
+                      </TableCell>
+                      <TableCell align="center">
+                        <IconButton size="small" style={{width:'25px'}} onClick={()=>authDel(row.user)}>
+                          <DeleteIcon fontSize="inherit" />
+                        </IconButton>
                       </TableCell>
                     </TableRow>
                   );

@@ -25,6 +25,7 @@ function Todo({ fireApp, user, userName,  }) {
   //DB에 글 데이터 저장
   const submit = (e) => {
     e.preventDefault();
+    if(e.currentTarget == null){return;}
     const text = textRef.current.value;
     const title = titleRef.current.value;
     if (userName && title) {
@@ -70,7 +71,7 @@ function Todo({ fireApp, user, userName,  }) {
           <input type="text" ref={titleRef} className="inputTitle" />
           <button className="btnadd" onClick={rocketOn} style={{ outline: "none", border: "none" }} >
             <span className="rocket" ref={rocketRef}  >🚀</span>  추가</button>
-          <textarea className="textarea" ref={textRef} cols="30" rows="2" ></textarea>
+          <textarea className="textarea" ref={textRef} cols="30" rows="2" style={{resize: 'none'}} />
         </form>
       </div>
 

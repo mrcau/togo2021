@@ -50,6 +50,14 @@
   border: none;
 }
 
+.s-item ::-webkit-scrollbar {
+  width: 4px;
+}
+.s-item ::-webkit-scrollbar-thumb {
+  width: thin;
+  background-color: var(--Acolor);
+  border-radius: 2px;  
+}
 
 .adimBar{
   display: flex ;

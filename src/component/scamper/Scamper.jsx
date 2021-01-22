@@ -1,6 +1,9 @@
+import { Drawer, TextField } from '@material-ui/core';
+import { DeleteForever, MenuSharp } from '@material-ui/icons';
 import React, { useEffect, useRef, useState } from 'react';
+import AutorenewIcon from '@material-ui/icons/Autorenew';
 import './scamper.css';
-import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import RightMenu from './ReportMenu';
 
 function Scamper({ fireApp, user, userName }) {
   const folder = "scamper";
@@ -12,10 +15,16 @@ function Scamper({ fireApp, user, userName }) {
   const scamperE = useRef();
   const scamperR = useRef();
   const roomERef = useRef();
+  const formRef = useRef();
   const [data, setdata] = useState({});
   const [room, setRoom] = useState({});
   const [roomName, setroomName] = useState('');
   const [roomUid, setRoomUid] = useState('');
+  const [level, setLevel] = useState(0);
+  //오른쪽 report 메뉴
+  const [state, setState] = useState({ top: false, left: false, right: false });
+  const toggleDrawer = (anchor, open) => (event) => setState({ ...state, [anchor]: open });
+  
   //데이터싱크 
   useEffect(() => {
     fireApp.onAuth((e) => {
@@ -30,6 +39,7 @@ function Scamper({ fireApp, user, userName }) {
         setRoomUid(e.uid.substr(0, 4));
         fireApp.dataSync(folder, roomName, cf);
         fireApp.roomSync(folder, roomUid, cf);
+        fireApp.authSync('auth',e.uid,(p)=>setLevel(p))
       }
       else { console.log('no-User') }
     })
@@ -39,12 +49,14 @@ function Scamper({ fireApp, user, userName }) {
 
   // 방입장
   const enterRoom = () => {
-    setroomName(roomERef.current.value);
+    roomERef.current.value.length === 8 && setroomName(roomERef.current.value);
   }
   // 관리자 방입장
   const adminEnter = (e) => {
-    setroomName(roomUid + e.currentTarget.textContent);
-    roomERef.current.value = e.currentTarget.textContent;
+    const room = e.currentTarget.textContent;
+    const roomname = roomUid +room
+    setroomName(roomUid +room)
+    roomERef.current.value =roomname;     
   }
   // 방생성
   const createRoom = () => {
@@ -52,23 +64,24 @@ function Scamper({ fireApp, user, userName }) {
     const newRoom = roomUid + num;
     setroomName(newRoom);
     const data = {
-      scamS: scamperS.current.value || '',
-      scamC: scamperC.current.value || '',
-      scamA: scamperA.current.value || '',
-      scamM: scamperM.current.value || '',
-      scamP: scamperP.current.value || '',
-      scamE: scamperE.current.value || '',
-      scamR: scamperR.current.value || '',
+      scamS: '',
+      scamC: '',
+      scamA: '',
+      scamM: '',
+      scamP: '',
+      scamE: '',
+      scamR: '',
     }
-    fireApp.roomSave(folder, newRoom, data)
+    const roomget = fireApp.roomGet(folder,roomUid)
+    //방개수 6개로 제한
+    roomget < 6 && fireApp.roomSave(folder, newRoom, data)
   }
 
   //데이터 저장
   const onSubmit = () => {
     // const dataId = Date.now();
-    if (!roomName) { return }
+    if (roomName!==roomERef.current.value||roomERef.current.value==='') { return }
     const data = {
-      // roomUid : roomUid || '',
       scamS: scamperS.current.value || '',
       scamC: scamperC.current.value || '',
       scamA: scamperA.current.value || '',
@@ -80,76 +93,109 @@ function Scamper({ fireApp, user, userName }) {
     fireApp.dataUp(folder, roomName, data)
   }
 
-  // 아이템 삭제
-  // const dataDel = () => {
-  //   fireApp.dataDel(folder,roomName)  
+  // Input 초기화
+  // const inputReset = () => {   
+  //   const data = {
+  //     scamS: scamperS.current.value = '',
+  //     scamC: scamperC.current.value = '',
+  //     scamA: scamperA.current.value = '',
+  //     scamM: scamperM.current.value = '',
+  //     scamP: scamperP.current.value = '',
+  //     scamE: scamperE.current.value = '',
+  //     scamR: scamperR.current.value = '',
+  //   }
+  //   fireApp.dataUp(folder, roomName, data)
   // }
+
+ // 아이템 삭제
+  const dataDel = () => {
+    if (roomName!==roomERef.current.value||roomERef.current.value==='') { return }
+    fireApp.dataDel(folder,roomName);        
+    roomERef.current.value = '';
+    scamperS.current.value = '';
+    scamperC.current.value = '';
+    scamperA.current.value = '';
+    scamperM.current.value = '';
+    scamperP.current.value = '';
+    scamperE.current.value = '';
+    scamperR.current.value = '';
+  }
 
   return (
     <div className="scamper">
-      {userName &&
-        <div className="adimBar">
-          <div>
-            <button className="enterBtn" onClick={createRoom}>개설</button>
-          </div>
-          <div className="enterNumber">{
-            room &&
-            Object.keys(room).map((e) =>
-              <button key={e} className="btnRoom" onClick={adminEnter} >{e}</button>)
+      <Drawer anchor={'right'} open={state['right']} onClose={toggleDrawer('right', false)}>
+        <RightMenu fireApp={fireApp} user={user} /> 
+      </Drawer> 
 
-          }</div>
+      {level>0 &&
+        <div className="adimBar">
+          <div> <button className="enterBtn" onClick={createRoom}>개설</button> </div>
+          <div className="enterNumber">{room && Object.keys(room).map((e) =>
+              <button key={e} className="btnRoom" onClick={adminEnter} >{e}</button>) }
+          </div>
         </div>
       }
 
       <div className="s-header">
         <div className="enterWrap" >
           <button className="enterBtn" onClick={enterRoom}>입장</button>
-          <input type="text" className="enterInput" placeholder="방번호" ref={roomERef} />
+          <input type="text" className="enterInput" placeholder="방번호" style={{width:'80px'}} ref={roomERef} />
         </div>
         <div className="enterTitle">SCAMPER</div>
-        <div style={{ width: '100px' }}>
-          <button className="btnRoomDel" > <DeleteForeverIcon /> </button>
+       
+        <div style={{ width: '120px',display:'flex' }}>             
+          {/* <button className="btnRoomDel" style={{background:'#424242'}} onClick={inputReset} > <AutorenewIcon /> </button> */}
+          {level>0 && 
+           <button style={{background:'#424242'}} className="btnRoomDel" onClick={dataDel} ><DeleteForever /></button>  
+          }
+          <button onClick={toggleDrawer('right', true)}> <MenuSharp /></button> 
         </div>
       </div>
 
-      <div className="s-items">
-
-        <div className="s-item">
+        <form className="s-items" ref={formRef} >
+          <div className="s-item">
           <div className="s-itemTitle">S</div>
-          <input type="text" className="s-intemInput input1" ref={scamperS} onChange={onSubmit} value={data.scamS} />
-        </div>
-
+          <textarea  className="s-intemInput input1" cols="30" rows="2" style={{resize: 'none'}} 
+           ref={scamperS}  onChange={onSubmit} value={data.scamS} />
+          </div>
+        
         <div className="s-item">
           <div className="s-itemTitle">C</div>
-          <input type="text" className="s-intemInput input1" ref={scamperC} onChange={onSubmit} value={data.scamC} />
+          <textarea  className="s-intemInput input1" cols="30" rows="2" style={{resize: 'none'}} 
+           ref={scamperC} onChange={onSubmit} value={data.scamC} />
         </div>
 
         <div className="s-item">
           <div className="s-itemTitle">A</div>
-          <input type="text" className="s-intemInput input1" ref={scamperA} onChange={onSubmit} value={data.scamA} />
+          <textarea  className="s-intemInput input1" cols="30" rows="2" style={{resize: 'none'}} 
+           ref={scamperA} onChange={onSubmit} value={data.scamA} />
         </div>
 
         <div className="s-item">
           <div className="s-itemTitle">M</div>
-          <input type="text" className="s-intemInput input1" ref={scamperM} onChange={onSubmit} value={data.scamM} />
+          <textarea  className="s-intemInput input1" cols="30" rows="2" style={{resize: 'none'}} 
+           ref={scamperM} onChange={onSubmit} value={data.scamM} />
         </div>
 
         <div className="s-item">
           <div className="s-itemTitle">P</div>
-          <input type="text" className="s-intemInput input1" ref={scamperP} onChange={onSubmit} value={data.scamP} />
+          <textarea  className="s-intemInput input1" cols="30" rows="2" style={{resize: 'none'}} 
+           ref={scamperP} onChange={onSubmit} value={data.scamP} />
         </div>
 
         <div className="s-item">
           <div className="s-itemTitle">E</div>
-          <input type="text" className="s-intemInput input1" ref={scamperE} onChange={onSubmit} value={data.scamE} />
-        </div>
-        <div className="s-item">
-          <div className="s-itemTitle">R</div>
-          <input type="text" className="s-intemInput input1" ref={scamperR} onChange={onSubmit} value={data.scamR} />
+          <textarea  className="s-intemInput input1" cols="30" rows="2" style={{resize: 'none'}} 
+           ref={scamperE} onChange={onSubmit} value={data.scamE} />
         </div>
 
+        <div className="s-item">
+          <div className="s-itemTitle">R</div>
+          <textarea  className="s-intemInput input1" cols="30" rows="2" style={{resize: 'none'}} 
+           ref={scamperR} onChange={onSubmit} value={data.scamR} />
+        </div>
+        </form>
       </div>
-    </div>
   );
 }
 
