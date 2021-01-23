@@ -19,11 +19,15 @@ function Scamper({ fireApp, user, userName }) {
   const scamperR = useRef();
   const roomERef = useRef();
   const formRef = useRef();
+  const videoRef = useRef();
+  const noticeRef = useRef();
   const [data, setdata] = useState({});
   const [room, setRoom] = useState({});
   const [roomName, setroomName] = useState('');
   const [roomUid, setRoomUid] = useState('');
   const [level, setLevel] = useState(0);
+  const [video, setVideo] = useState('');
+  const [notice, setNotice] = useState('');
   //오른쪽 report 메뉴
   const [state, setState] = useState({ top: false, left: false, right: false });
   const toggleDrawer = (anchor, open) => (event) => setState({ ...state, [anchor]: open });
@@ -46,6 +50,8 @@ function Scamper({ fireApp, user, userName }) {
         fireApp.dataSync(folder, roomName, cf);
         fireApp.roomSync(folder, roomUid, cf);
         fireApp.authSync('auth',e.uid,(p)=>setLevel(p))
+        fireApp.videoSync(folder,e.uid,'video',(p)=>setVideo(p))
+        fireApp.videoSync(folder,e.uid,'notice',(p)=>setNotice(p))
       }
       else { console.log('no-User') }
     })
@@ -82,8 +88,17 @@ function Scamper({ fireApp, user, userName }) {
     //방개수 6개로 제한
     roomget < 6 && fireApp.roomSave(folder, newRoom, data)
   }
-
-  //데이터 저장
+// 동영상 주소 저장
+  const videoUp = () => {
+    const data = videoRef.current.value;
+    fireApp.videoSave(folder, user.uid,'video', data)
+  }
+// notice 저장
+  const noticeUp = () => {
+    const data = noticeRef.current.value;
+    fireApp.videoSave(folder, user.uid,'notice', data)
+  }
+  //scamper 글 데이터 저장
   const onSubmit = () => {
     // const dataId = Date.now();
     if (roomName!==roomERef.current.value||roomERef.current.value==='') { return }
@@ -126,25 +141,31 @@ function Scamper({ fireApp, user, userName }) {
     scamperE.current.value = '';
     scamperR.current.value = '';
   }
-
+const abc ="https://www.daum.net/"
   return (
-    <div className="scamper">      
+    <div className="scamper" >      
       <Drawer anchor={'right'} open={state['right']} onClose={toggleDrawer('right', false)}>
         <RightMenu fireApp={fireApp} user={user} /> 
       </Drawer> 
-      <Modal show={show} onHide={handleClose} animation={true} size={'xl'}> 
-        <hr/> 유튜브영상<hr/>
-        <button onClick={handleClose}> Close </button>           
+      <Modal show={show} onHide={handleClose} animation={true} size={'xl'} > 
+      <h3 style={{background:'var(--Acolor)',color:'var(--Bcolor)'}}>제목</h3>
+      {/* <object type="text/html" width="100%"  height="500px" data="//www.youtube.com/embed/qFmXLGheyqs" allowFullScreen/> */}
+     {/* {video} style={{ src: `url("${photo}")` }} */}
+     {/* `<video src="${video}" controls></video>` */}
+      {/* <iframe width="100%" height="500" src= {`"${video}"`}  frameborder="0" /> */}
+      <iframe width="100%" height="315" src ="https://youtu.be/ZUTwJICj1ng" frameBorder="0"></iframe>
+      {abc} {`"${abc}"`}
+      {/* <object type="text/html" width="560" height="315" data={`"${abc}"`}> </object> */}
+
+      <button onClick={handleClose} style={{fontSize:'x-large'}}> Close </button>           
       </Modal>
-
-
 
       {level>0 &&
         <div className="adimBar">
-           <button className="enterBtn" onClick={createRoom}><AddCommentIcon/></button> 
-          <input type="text" className="enterInput" placeholder="공지" style={{borderRight:'1px dashed'}} />
-          <input type="text" className="enterInput" placeholder="동영상링크" />
-          <button className="enterBtn" style={{width:'30px'}} onClick={createRoom}><YouTubeIcon/></button> 
+           <button className="enterBtn" onClick={noticeUp}><AddCommentIcon/></button> 
+          <input type="text" className="enterInput" placeholder="공지" ref={noticeRef} style={{borderRight:'1px dashed'}} />
+          <input type="text" className="enterInput" placeholder="동영상링크" ref = {videoRef} />
+          <button className="enterBtn" style={{width:'30px'}} onClick={videoUp}><YouTubeIcon/></button> 
         </div>
       }
       {level>0 &&
@@ -160,7 +181,7 @@ function Scamper({ fireApp, user, userName }) {
           <button className="enterBtn" onClick={enterRoom}>입장</button>
           <input type="text" className="enterInput" placeholder="방번호" style={{width:'80px'}} ref={roomERef} />
         </div>
-        <div className="enterTitle">SCAMPER</div>       
+        <div className="enterTitle">{notice}</div>       
         <div style={{ width: '100px',display:'flex',justifyContent:'flex-end' }}>             
           {/* <button className="btnRoomDel" style={{background:'#424242'}} onClick={inputReset} > <AutorenewIcon /> </button> */}
           {level>0 && 

@@ -24,7 +24,7 @@ flex:auto; font-size: small;}
   margin-left: 70px;
 }
 
-.s-items{  
+.s-items{ 
   flex:  auto;
   display: grid;
   gap: 5px;

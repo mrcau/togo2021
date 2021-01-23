@@ -201,8 +201,19 @@ level(folder, uid,num) {
 authDel(folder, uid) {
   firebase.database().ref(`${folder}/${uid}`).remove();
 }
-
-
+// 비디오 메시지 저장
+videoSave(folder,uid,spot,data){
+  firebase.database().ref(`${folder}/${uid}/${spot}`).set(data);
+}
+// 비디오 메시지 싱크
+async videoSync(folder,uid,spot,cf) {
+  if (!uid) { return }
+  const ref = firebase.database().ref(`${folder}/${uid}/${spot}`);
+  ref.on('value', (p) => { 
+    const data = p.val();
+    cf(data);
+  });
+}
 
 }
 
