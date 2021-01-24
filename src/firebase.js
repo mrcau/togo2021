@@ -112,6 +112,16 @@ roomGet(folder,roomUid) {
   })
   return roomGetNum;
 }
+//  룸 이름 가져오기
+roomUser(folder) {
+  let data = '';
+  const ref = firebase.database().ref(`${folder}`);
+  ref.on('value', (p) => {
+    data = p.val();
+    if(!data){return}
+  })
+  return Object.keys(data);
+}
   //  룸 생성 저장 
   roomSave(folder,newRoom, data) {
     const roomUid = newRoom.substr(0,4);
@@ -202,13 +212,17 @@ authDel(folder, uid) {
   firebase.database().ref(`${folder}/${uid}`).remove();
 }
 // 비디오 메시지 저장
-videoSave(folder,uid,spot,data){
-  firebase.database().ref(`${folder}/${uid}/${spot}`).set(data);
+videoSave(folder,roomName,spot,data){
+  const roomUid = roomName.substr(0,4);
+  if (!roomUid) { return }
+  firebase.database().ref(`${folder}/${roomUid}/${spot}`).set(data);
 }
 // 비디오 메시지 싱크
-async videoSync(folder,uid,spot,cf) {
-  if (!uid) { return }
-  const ref = firebase.database().ref(`${folder}/${uid}/${spot}`);
+async videoSync(folder,roomName,spot,cf) {
+  const roomUid = roomName.substr(0,4);
+
+  if (!roomUid) { return }
+  const ref = firebase.database().ref(`${folder}/${roomUid}/${spot}`);
   ref.on('value', (p) => { 
     const data = p.val();
     cf(data);

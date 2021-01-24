@@ -3,6 +3,7 @@ import { DeleteForever, MenuSharp } from '@material-ui/icons';
 import React, { useEffect, useRef, useState } from 'react';
 import AddCommentIcon from '@material-ui/icons/AddComment';
 import YouTubeIcon from '@material-ui/icons/YouTube';
+import VideocamIcon from '@material-ui/icons/Videocam';
 import './scamper.css';
 import VoiceChatIcon from '@material-ui/icons/VoiceChat';
 import RightMenu from './ReportMenu';
@@ -50,8 +51,8 @@ function Scamper({ fireApp, user, userName }) {
         fireApp.dataSync(folder, roomName, cf);
         fireApp.roomSync(folder, roomUid, cf);
         fireApp.authSync('auth',e.uid,(p)=>setLevel(p))
-        fireApp.videoSync(folder,e.uid,'video',(p)=>setVideo(p))
-        fireApp.videoSync(folder,e.uid,'notice',(p)=>setNotice(p))
+        fireApp.videoSync(folder,roomName,'See',(p)=>setVideo(p))
+        fireApp.videoSync(folder,roomName,'Talk',(p)=>setNotice(p))
       }
       else { console.log('no-User') }
     })
@@ -59,10 +60,7 @@ function Scamper({ fireApp, user, userName }) {
 
 
 
-  // 방입장
-  const enterRoom = () => {
-    roomERef.current.value.length === 8 && setroomName(roomERef.current.value);
-  }
+
   // 관리자 방입장
   const adminEnter = (e) => {
     const room = e.currentTarget.textContent;
@@ -91,12 +89,12 @@ function Scamper({ fireApp, user, userName }) {
 // 동영상 주소 저장
   const videoUp = () => {
     const data = videoRef.current.value;
-    fireApp.videoSave(folder, user.uid,'video', data)
+    fireApp.videoSave(folder, user.uid,'See', data)
   }
 // notice 저장
   const noticeUp = () => {
     const data = noticeRef.current.value;
-    fireApp.videoSave(folder, user.uid,'notice', data)
+    fireApp.videoSave(folder, user.uid,'Talk', data)
   }
   //scamper 글 데이터 저장
   const onSubmit = () => {
@@ -111,8 +109,18 @@ function Scamper({ fireApp, user, userName }) {
       scamE: scamperE.current.value || '',
       scamR: scamperR.current.value || '',
     }
-    fireApp.dataUp(folder, roomName, data)
+    //방개수 6개 이하일때만 데이터 저장
+    const roomget = fireApp.roomGet(folder,roomUid)
+    roomget < 6 &&  fireApp.dataUp(folder, roomName, data)
   }
+    // roomName.substr(0,4); 방입장
+    const enterRoom = () => {
+    const roomUid =  roomERef.current.value.substr(0,4)
+    const roomSaveKey = fireApp.roomUser(folder)||'';
+    if(Object.keys(user).length<1 || roomSaveKey.indexOf(roomUid)<0){return}
+    console.log('hi',roomName)
+    roomERef.current.value.length === 8 && setroomName(roomERef.current.value);
+    }
 
   // Input 초기화
   // const inputReset = () => {   
@@ -141,26 +149,23 @@ function Scamper({ fireApp, user, userName }) {
     scamperE.current.value = '';
     scamperR.current.value = '';
   }
-const abc ="https://www.daum.net/"
   return (
     <div className="scamper" >      
       <Drawer anchor={'right'} open={state['right']} onClose={toggleDrawer('right', false)}>
         <RightMenu fireApp={fireApp} user={user} /> 
       </Drawer> 
       <Modal show={show} onHide={handleClose} animation={true} size={'xl'} > 
-      <h3 style={{background:'var(--Acolor)',color:'var(--Bcolor)'}}>제목</h3>
-      {/* <object type="text/html" width="100%"  height="500px" data="//www.youtube.com/embed/qFmXLGheyqs" allowFullScreen/> */}
-     {/* {video} style={{ src: `url("${photo}")` }} */}
-     {/* `<video src="${video}" controls></video>` */}
-      {/* <iframe width="100%" height="500" src= {`"${video}"`}  frameborder="0" /> */}
-      <iframe width="100%" height="315" src ="https://youtu.be/ZUTwJICj1ng" frameBorder="0"></iframe>
-      {abc} {`"${abc}"`}
-      {/* <object type="text/html" width="560" height="315" data={`"${abc}"`}> </object> */}
-
-      <button onClick={handleClose} style={{fontSize:'x-large'}}> Close </button>           
+      <h5 style={{background:'var(--Acolor)',color:'var(--Bcolor)'}}>
+        <VideocamIcon/>
+      </h5>
+      {video ? 
+      <iframe width="100%" height="400" src ={video} title="video" frameBorder="0" />
+      : '연결에 실패했습니다.'  }
+      
+      <button onClick={handleClose} style={{fontSize:'large'}}> Close </button>           
       </Modal>
 
-      {level>0 &&
+      {level>0 && 
         <div className="adimBar">
            <button className="enterBtn" onClick={noticeUp}><AddCommentIcon/></button> 
           <input type="text" className="enterInput" placeholder="공지" ref={noticeRef} style={{borderRight:'1px dashed'}} />
