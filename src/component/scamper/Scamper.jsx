@@ -36,6 +36,8 @@ function Scamper({ fireApp, user, userName }) {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  //입장중
+  const [door, setDoor] = useState('입장')
   //데이터싱크 
   useEffect(() => {
     fireApp.onAuth((e) => {
@@ -52,53 +54,38 @@ function Scamper({ fireApp, user, userName }) {
         fireApp.roomSync(folder, roomUid, cf);
         fireApp.authSync('auth',e.uid,(p)=>setLevel(p))
         fireApp.videoSync(folder,roomName,'See',(p)=>setVideo(p))
-        fireApp.videoSync(folder,roomName,'Talk',(p)=>setNotice(p))
+        fireApp.videoSync(folder,roomName,'Tok',(p)=>setNotice(p))
       }
       else { console.log('no-User') }
     })
   }, [roomName]);
 
 
-
-
-  // 관리자 방입장
-  const adminEnter = (e) => {
-    const room = e.currentTarget.textContent;
-    const roomname = roomUid +room
-    setroomName(roomUid +room)
-    roomERef.current.value =roomname;     
-  }
   // 방생성
   const createRoom = () => {
     const num = Date.now().toString().substr(9);
     const newRoom = roomUid + num;
     setroomName(newRoom);
-    const data = {
-      scamS: '',
-      scamC: '',
-      scamA: '',
-      scamM: '',
-      scamP: '',
-      scamE: '',
-      scamR: '',
-    }
+    const data = {scamS:'',scamC:'',scamA:'',scamM:'',scamP:'',scamE:'',scamR:''}
     const roomget = fireApp.roomGet(folder,roomUid)
-    //방개수 6개로 제한
     roomget < 6 && fireApp.roomSave(folder, newRoom, data)
   }
 // 동영상 주소 저장
-  const videoUp = () => {
+  const videoUp = (e) => {
+    e.preventDefault();
+
     const data = videoRef.current.value;
     fireApp.videoSave(folder, user.uid,'See', data)
   }
 // notice 저장
-  const noticeUp = () => {
+  const noticeUp = (e) => {
+    e.preventDefault();
     const data = noticeRef.current.value;
-    fireApp.videoSave(folder, user.uid,'Talk', data)
+    fireApp.videoSave(folder, user.uid,'Tok', data)
+    noticeRef.current.value='';
   }
   //scamper 글 데이터 저장
   const onSubmit = () => {
-    // const dataId = Date.now();
     if (roomName!==roomERef.current.value||roomERef.current.value==='') { return }
     const data = {
       scamS: scamperS.current.value || '',
@@ -110,17 +97,30 @@ function Scamper({ fireApp, user, userName }) {
       scamR: scamperR.current.value || '',
     }
     //방개수 6개 이하일때만 데이터 저장
+    const roomUid =  roomERef.current.value.substr(0,4)
     const roomget = fireApp.roomGet(folder,roomUid)
-    roomget < 6 &&  fireApp.dataUp(folder, roomName, data)
+    console.log(folder,roomUid,roomget)
+    roomget < 8 &&  fireApp.dataUp(folder, roomName, data)
   }
-    // roomName.substr(0,4); 방입장
+
+  // roomName.substr(0,4); 방입장
     const enterRoom = () => {
     const roomUid =  roomERef.current.value.substr(0,4)
-    const roomSaveKey = fireApp.roomUser(folder)||'';
-    if(Object.keys(user).length<1 || roomSaveKey.indexOf(roomUid)<0){return}
-    console.log('hi',roomName)
-    roomERef.current.value.length === 8 && setroomName(roomERef.current.value);
+    const cf=()=>{
+      if(roomERef.current.value.length === 8){
+       setroomName(roomERef.current.value);
+       setDoor('입장중');
+      }}
+    fireApp.roomUser(folder,roomUid,cf)
     }
+
+  // 관리자 방입장
+  const adminEnter = (e) => {
+    const room = e.currentTarget.textContent;
+    const roomname = roomUid +room
+    setroomName(roomUid +room)
+    roomERef.current.value =roomname;     
+  }
 
   // Input 초기화
   // const inputReset = () => {   
@@ -166,27 +166,27 @@ function Scamper({ fireApp, user, userName }) {
       </Modal>
 
       {level>0 && 
-        <div className="adimBar">
+        <form className="adimBar">
            <button className="enterBtn" onClick={noticeUp}><AddCommentIcon/></button> 
-          <input type="text" className="enterInput" placeholder="공지" ref={noticeRef} style={{borderRight:'1px dashed'}} />
+          <input type="text" className="enterInput" placeholder="공지사항" ref={noticeRef} style={{borderRight:'1px dashed'}} />
           <input type="text" className="enterInput" placeholder="동영상링크" ref = {videoRef} />
           <button className="enterBtn" style={{width:'30px'}} onClick={videoUp}><YouTubeIcon/></button> 
-        </div>
+        </form>
       }
       {level>0 &&
         <div className="adimBar">
-          <div> <button className="enterBtn" onClick={createRoom}>개설</button> </div>
-          <div className="enterNumber">{room && Object.keys(room).map((e) =>
+          <div> <button className="enterBtn" onClick={createRoom} style={{fontSize:'12px'}}>개설</button> </div>
+          <div className="enterNumber" style={{fontSize:'small'}}>{room && Object.keys(room).map((e) =>
               <button key={e} className="btnRoom" onClick={adminEnter} >{e}</button>) }
           </div>
         </div>
       }
       <div className="s-header">
         <div className="enterWrap" >
-          <button className="enterBtn" onClick={enterRoom}>입장</button>
-          <input type="text" className="enterInput" placeholder="방번호" style={{width:'80px'}} ref={roomERef} />
+          <button className="enterBtn" onClick={enterRoom} style={{fontSize:'12px'}} >{door}</button>
+          <input type="text" className="enterInput roomnum" placeholder="방번호" style={{width:'75px'}} ref={roomERef} />
         </div>
-        <div className="enterTitle">{notice}</div>       
+        <div className="enterTitle" style={{fontSize:'small',width:'100%',lineHeight:'25px',overflowX:'auto'}}>{notice}</div>       
         <div style={{ width: '100px',display:'flex',justifyContent:'flex-end' }}>             
           {/* <button className="btnRoomDel" style={{background:'#424242'}} onClick={inputReset} > <AutorenewIcon /> </button> */}
           {level>0 && 
