@@ -1,4 +1,4 @@
-import { Drawer } from '@material-ui/core';
+import { Avatar, Chip, Drawer, Tooltip } from '@material-ui/core';
 import MenuSharpIcon from '@material-ui/icons/MenuSharp';
 import React, { useEffect, useState } from 'react';
 import { Link, Route, Switch, useHistory } from 'react-router-dom';
@@ -59,13 +59,16 @@ function App({ fireApp }) {
         </div>
         <div className="headerT">
           <Link className="link" to='/'>
-            THINK <GpsFixedIcon style={{ fontSize: '25px' }} /> BOX
+            SSAM <GpsFixedIcon style={{ fontSize: '25px' }} /> TOOL
           </Link>
-        </div>
-        <div className="rightMenu" style={{width:'60px',fontSize:'small'}}>
-          {uid ? <button onClick={logout} >Logout</button>
+        </div> 
+        <div className="rightMenu" >
+          {uid ? <Tooltip arrow title="로그아웃">
+          <Chip size="small" avatar={<Avatar src={photo} />} label={uid.substr(0,6)} as="button"  onClick={logout}/>
+          </Tooltip> 
             : <button onClick={toggleDrawer('top', true)}> Login </button>}
         </div>
+        
       </header>
       <main>
         <Switch>

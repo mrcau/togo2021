@@ -186,15 +186,13 @@ function Scamper({ fireApp, user, userName }) {
           <button className="enterBtn" onClick={enterRoom} style={{fontSize:'12px'}} >{door}</button>
           <input type="text" className="enterInput roomnum" placeholder="방번호" style={{width:'75px'}} ref={roomERef} />
         </div>
+        {level>0 && <button className="btnRoomDel" style={{margin:'0'}} onClick={dataDel}><DeleteForever /></button>  }
+
         <div className="enterTitle" style={{fontSize:'small',width:'100%',lineHeight:'25px',overflowX:'auto'}}>{notice}</div>       
         <div style={{ width: '100px',display:'flex',justifyContent:'flex-end' }}>             
           {/* <button className="btnRoomDel" style={{background:'#424242'}} onClick={inputReset} > <AutorenewIcon /> </button> */}
-          {level>0 && 
-           <button style={{background:'#424242'}} className="btnRoomDel" onClick={dataDel} >
-             <DeleteForever /></button>  
-          }
           <button style={{width:'30px'}}  onClick={handleShow}>
-          <VoiceChatIcon fontSize='small' /></button>
+             <VoiceChatIcon fontSize='small' /></button>
           <button style={{width:'30px'}} onClick={toggleDrawer('right', true)}> <MenuSharp /></button> 
         </div>
       </div>

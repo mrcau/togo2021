@@ -21,11 +21,15 @@
   font-weight: bold;
   font-size: large;
   height: 30px;
+  line-height: 10px;
   color: var(--Bcolor);
   background: var(--Acolor);
+  padding: 3px 0;
 }
 .btnmenu{ width: 80px; padding: 0 40px 0 0;}
 .headerT{flex:1;  }
+.rightMenu{ width:90px;font-size:small;}
+.droplogOut{width:20px !important;}
 main{
   display: flex ;
   flex-direction: column;

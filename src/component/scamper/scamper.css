@@ -21,7 +21,6 @@ flex:auto; font-size: small;}
 .btnRoomDel{
   width:30px;
   background: var(--Ccolor);
-  margin-left: 70px;
 }
 
 .s-items{ 
