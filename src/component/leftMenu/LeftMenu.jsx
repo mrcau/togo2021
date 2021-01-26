@@ -4,6 +4,7 @@ import { PhotoCamera } from '@material-ui/icons';
 import React, { memo, useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import mime from 'mime-types';
+import { Accordion, Card } from 'react-bootstrap';
 
 function LeftMenu({ fireApp, user, photo, setPhoto }) {
 const [level, setLevel] = useState(0);
@@ -42,7 +43,28 @@ useEffect(() => {
       {level>2 &&
       <button className="btnlink" onClick={() => history.push('/atable')}>회원관리</button>
       }
-      </div>
+    
+        <Accordion style={{width:'100%'}}>
+          <Card>
+            <Accordion.Toggle as={Card.Header} eventKey="0"> Click me! </Accordion.Toggle>
+            <Accordion.Collapse eventKey="0">
+              <Card.Body onClick={()=>{alert('hi')}} >Hello!</Card.Body>
+            </Accordion.Collapse>
+            <Accordion.Collapse eventKey="0">
+              <Card.Body onClick={()=>{alert('hi')}} >Hello!2</Card.Body>
+            </Accordion.Collapse>
+          </Card>
+          <Card>
+            <Accordion.Toggle as={Card.Header} eventKey="1">
+              Click me!
+            </Accordion.Toggle>
+            <Accordion.Collapse eventKey="1">
+              <Card.Body>Hello! I'm another body</Card.Body>
+            </Accordion.Collapse>
+          </Card>
+        </Accordion>
+
+    </div>
   );
 }
 
