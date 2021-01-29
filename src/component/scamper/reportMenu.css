@@ -3,19 +3,16 @@
   display: flex;
   align-items: center;
   flex-direction: column; 
-  width: 70vw; 
+  width: 60vw; 
   padding: 15px; 
   height: 100%;
 }
-.reportMenu .imgBg{
-  height:120px;
-  width:120px;
-  border-radius:50%;
-  background-position: center;
-  background-size: cover;
+.scamperReport{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 }
-.reportMenu .btnlink{
+/* .reportMenu .btnlink{
   height: 25px;
   border-radius: 5px;
   margin-bottom: 10px;
-}
+} */
