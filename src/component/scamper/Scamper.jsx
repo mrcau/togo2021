@@ -6,11 +6,13 @@ import YouTubeIcon from '@material-ui/icons/YouTube';
 import VideocamIcon from '@material-ui/icons/Videocam';
 import './scamper.css';
 import VoiceChatIcon from '@material-ui/icons/VoiceChat';
-import RightMenu from './ReportMenu';
+import ScamperReport from './ScamperReport';
 import { Modal } from 'react-bootstrap';
 
 function Scamper({ fireApp, user, userName }) {
   const folder = "scamper";
+  const roomSubstr = 6;
+
   const scamperS = useRef();
   const scamperC = useRef();
   const scamperA = useRef();
@@ -29,6 +31,7 @@ function Scamper({ fireApp, user, userName }) {
   const [level, setLevel] = useState(0);
   const [video, setVideo] = useState('');
   const [notice, setNotice] = useState('');
+
   //오른쪽 report 메뉴
   const [state, setState] = useState({ top: false, left: false, right: false });
   const toggleDrawer = (anchor, open) => (event) => setState({ ...state, [anchor]: open });
@@ -48,8 +51,8 @@ function Scamper({ fireApp, user, userName }) {
         f4: () => { setRoom({}) }
       }
       if (e) {
-        const roomUid = e.uid.substr(0, 4);
-        setRoomUid(e.uid.substr(0, 4));
+        const roomUid = e.uid.substr(0, roomSubstr);
+        setRoomUid(e.uid.substr(0, roomSubstr));
         fireApp.dataSync(folder, roomName, cf);
         fireApp.roomSync(folder, roomUid, cf);
         fireApp.authSync('auth',e.uid,(p)=>setLevel(p))
@@ -68,7 +71,7 @@ function Scamper({ fireApp, user, userName }) {
     setroomName(newRoom);
     const data = {scamS:'',scamC:'',scamA:'',scamM:'',scamP:'',scamE:'',scamR:''}
     const roomget = fireApp.roomGet(folder,roomUid)
-    roomget < 6 && fireApp.roomSave(folder, newRoom, data)
+    roomget < 8 && fireApp.roomSave(folder, newRoom, data)
   }
 // 동영상 주소 저장
   const videoUp = (e) => {
@@ -97,17 +100,17 @@ function Scamper({ fireApp, user, userName }) {
       scamR: scamperR.current.value || '',
     }
     //방개수 6개 이하일때만 데이터 저장
-    const roomUid =  roomERef.current.value.substr(0,4)
+    const roomUid =  roomERef.current.value.substr(0,roomSubstr)
     const roomget = fireApp.roomGet(folder,roomUid)
     console.log(folder,roomUid,roomget)
-    roomget < 8 &&  fireApp.dataUp(folder, roomName, data)
+    roomget < 10 &&  fireApp.dataUp(folder, roomName, data)
   }
 
-  // roomName.substr(0,4); 방입장
+  // roomName.substr(0,6) 방입장
     const enterRoom = () => {
-    const roomUid =  roomERef.current.value.substr(0,4)
+    const roomUid =  roomERef.current.value.substr(0,roomSubstr)
     const cf=()=>{
-      if(roomERef.current.value.length === 8){
+      if(roomERef.current.value.length === 10){
        setroomName(roomERef.current.value);
        setDoor('입장중');
       }}
@@ -152,7 +155,7 @@ function Scamper({ fireApp, user, userName }) {
   return (
     <div className="scamper" >      
       <Drawer anchor={'right'} open={state['right']} onClose={toggleDrawer('right', false)}>
-        <RightMenu fireApp={fireApp} user={user} /> 
+        <ScamperReport fireApp={fireApp} user={user} /> 
       </Drawer> 
       <Modal show={show} onHide={handleClose} animation={true} size={'xl'} > 
       <h5 style={{background:'var(--Acolor)',color:'var(--Bcolor)'}}>
@@ -184,11 +187,11 @@ function Scamper({ fireApp, user, userName }) {
       <div className="s-header">
         <div className="enterWrap" >
           <button className="enterBtn" onClick={enterRoom} style={{fontSize:'12px'}} >{door}</button>
-          <input type="text" className="enterInput roomnum" placeholder="방번호" style={{width:'75px'}} ref={roomERef} />
+          <input type="text" className="enterInput roomnum" placeholder="방번호" style={{width:'85px'}} ref={roomERef} />
         </div>
         {level>0 && <button className="btnRoomDel" style={{margin:'0'}} onClick={dataDel}><DeleteForever /></button>  }
-
-        <div className="enterTitle" style={{fontSize:'small',width:'100%',lineHeight:'25px',overflowX:'auto'}}>{notice}</div>       
+          {/* 공지사항 */}
+        <div className="enterTitle" style={{animation:'noticeFly'}}>{notice}</div>       
         <div style={{ width: '100px',display:'flex',justifyContent:'flex-end' }}>             
           {/* <button className="btnRoomDel" style={{background:'#424242'}} onClick={inputReset} > <AutorenewIcon /> </button> */}
           <button style={{width:'30px'}}  onClick={handleShow}>

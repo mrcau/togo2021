@@ -17,7 +17,6 @@
 .enterInput{  display: flex; outline: none;
 flex:auto; font-size: small;}
 .enterBtn{  width:50px;}
-.enterTitle{  flex: auto;}
 .btnRoomDel{
   width:30px;
   background: var(--Ccolor);
@@ -90,5 +89,12 @@ flex:auto; font-size: small;}
 .enterBtn{  font-size: small; width:40px;}
 .enterWrap{ display: flex; width: 150px;}
 .nowRoom{padding: 0 10px;}
-.enterTitle{  flex: auto;}
+.enterTitle{  flex: auto; font-size: small; 
+  width: 100%; overflow-x: auto; transition: all 300ms;
+  animation: noticeFly 1000ms;}
 .enterInput{  width: 60px; outline: none; border: none;}
+
+@keyframes noticeFly{
+ from{ transform : scale(1)}
+  to{ transform: scale(5); }
+}

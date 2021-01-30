@@ -1,0 +1,37 @@
+
+.reportMenu{
+  
+  width: 60vw; 
+  padding: 10px; 
+  height: 100%;
+}
+.scamperReport ::-webkit-scrollbar {
+  width: 4px;
+}
+.scamperReport ::-webkit-scrollbar-thumb {
+  width: thin;
+  background-color: var(--Acolor);
+  border-radius: 2px;  
+}
+.scamperReport{
+  display: flex;
+  flex-flow: wrap;
+  border: 1px var(--Acolor) solid;
+}
+.scamperinput {
+  width:50%;
+  outline: none;
+  text-align: left;
+  padding: 5px;
+  resize: none;
+  line-height: 15px;
+  border:none;
+}
+.reportInput1{
+  width:100%;
+  border-bottom: 1px solid var(--Acolor);
+}
+.scamperinput.reportButton{
+  width:100%;
+  text-align: center;
+}

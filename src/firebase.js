@@ -24,8 +24,9 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 // firebase.analytics();
 
-class firebaseApp {
+const roomSubstr = 6;
 
+class firebaseApp {
   //회원가입
   async createUser(info, cf) {
     firebase.auth().createUserWithEmailAndPassword(info.email, info.pass)
@@ -127,9 +128,9 @@ async roomUser(folder,roomUid,cf) {
 
   //  룸 생성 저장 
   roomSave(folder,newRoom, data) {
-    const roomUid = newRoom.substr(0,4);
-    const roomNum = newRoom.substr(4);
-    firebase.database().ref(`${folder}/${roomUid}/${roomNum}`).set(data)
+    const roomUid = newRoom.substr(0,roomSubstr);
+    const Uid = newRoom.substr(roomSubstr);
+    firebase.database().ref(`${folder}/${roomUid}/${Uid}`).set(data)
       .then(() => console.log('room생성'))
       .catch((e) => console.log(e))         
   }
@@ -153,8 +154,8 @@ async roomUser(folder,roomUid,cf) {
   // }
   // 데이터 씽크
   dataSync(folder, roomName, cf) {
-    const roomUid = roomName.substr(0,4);
-    const roomNum = roomName.substr(4);
+    const roomUid = roomName.substr(0,roomSubstr);
+    const roomNum = roomName.substr(roomSubstr);
     if (!roomName) { return }
     const ref1 = firebase.database().ref(`${folder}/${roomUid}/${roomNum}`);
     ref1.on('value', (p) => {
@@ -172,15 +173,15 @@ async roomUser(folder,roomUid,cf) {
 
   // 데이터 삭제
   dataDel(folder, roomName) {
-    const roomUid = roomName.substr(0,4);
-    const roomNum = roomName.substr(4);
+    const roomUid = roomName.substr(0,roomSubstr);
+    const roomNum = roomName.substr(roomSubstr);
     firebase.database().ref(`${folder}/${roomUid}/${roomNum}`).remove();
   }
 
   // 데이터 저장
   dataUp(folder, roomName, data) {
-    const roomUid = roomName.substr(0,4);
-    const roomNum = roomName.substr(4);
+    const roomUid = roomName.substr(0,roomSubstr);
+    const roomNum = roomName.substr(roomSubstr);
     firebase.database().ref(`${folder}/${roomUid}/${roomNum}`)
       .update(data)
   }
@@ -216,13 +217,13 @@ authDel(folder, uid) {
 }
 // 비디오 메시지 저장
 videoSave(folder,roomName,spot,data){
-  const roomUid = roomName.substr(0,4);
+  const roomUid = roomName.substr(0,roomSubstr);
   if (!roomUid) { return }
   firebase.database().ref(`${folder}/${roomUid}/${spot}`).set(data);
 }
 // 비디오 메시지 싱크
 async videoSync(folder,roomName,spot,cf) {
-  const roomUid = roomName.substr(0,4);
+  const roomUid = roomName.substr(0,roomSubstr);
 
   if (!roomUid) { return }
   const ref = firebase.database().ref(`${folder}/${roomUid}/${spot}`);
