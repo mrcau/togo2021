@@ -3,41 +3,38 @@ import React, { memo, useEffect, useRef, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { DataGrid } from '@material-ui/data-grid';
 
-function ScamperReport({ fireApp, user}) {
+function ScamperReport({ fireApp, user, folder,roomName}) {
 const [level, setLevel] = useState(0);
 const history = useHistory();
-const folder = "scamperReport";
+const [data, setData] = useState({})
+const [Selection, setSelection] = useState([]);
+//데이터싱크 
+useEffect(() => {
+  fireApp.onAuth((e) => {
+    const cf = { f1:(p)=> {setData(p) }, f2:()=> {setData({}) } }
+    if (e) {fireApp.reportSync(folder,roomName,cf); }
+    else { console.log('no-User') }
+  })
+}, []);
+console.log(Selection);
 const columns = [
-  { field: 'id', headerName: 'ID', width: 70 },
-  { field: 'firstName', headerName: 'First name', width: 100 },
-  { field: 'lastName', headerName: 'Last name', width: 100 },
-  { field: 'age', headerName: 'Age', type: 'number', width: 90 },
+  { field: 'id', headerName: 'ID', width: '13vw' },
+  { field: 'title', headerName: '제목', width: '40vw' },
+  { field: 'date', headerName: '날짜', width: '20vw' }
 ];
 
-const rows = [
-  { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },
-  { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
-  { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
-  { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16 },
-  { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-  { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
-  { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
-  { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-  { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
-  { id: 10, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-  { id: 11, lastName: 'Melisandre', firstName: null, age: 150 },
-  { id: 12, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
-  { id: 13, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-  { id: 14, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
-];
+// level>0 && <button className="btnRoomDel" style={{margin:'0'}} onClick={dataDel}><DeleteForever /></button>  
+
+const rows = Object.values(data)
+.map((e,i) => {return( { id: i, date: e.cDate, title: e.aTitle}) })
 
   return (
     <div className="reportMenu"  >
-   ff
-   <DataGrid size="small" 
-   rows={rows} columns={columns} pageSize={10} 
-   autoHeight  rowHeight="26" disableColumnMenu />
-
+     SCAMPER
+     <DataGrid scrollbarSize={10} rows={rows} columns={columns} pageSize={10} 
+     autoHeight  rowHeight={25} headerHeight={25}  disableColumnMenu  
+     onSelectionChange={(newSelection) => {setSelection(newSelection.rowIds);}}
+     onRowClick={()=>{console.log('hi')}} />
     </div>
   );
 }

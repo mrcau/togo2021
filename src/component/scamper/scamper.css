@@ -27,7 +27,7 @@ flex:auto; font-size: small;}
   display: grid;
   gap: 5px;
   /* grid-template-columns: 1fr 1fr; */
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   /* grid-template-rows: repeat(auto-fill, 70px); */
   padding: 10px;
   overflow-y:auto ;
@@ -41,12 +41,19 @@ flex:auto; font-size: small;}
   background: var(--Acolor);
   color: var(--Bcolor);
   height: 25px;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 10px;
+  line-height: 25px;
 }
 .s-intemInput{
   width: 100%;
   flex: auto;
   outline: none;
   border: none;
+  resize: none;
+  padding : 0 5px;
+  line-height: 14px;
 }
 
 .s-item ::-webkit-scrollbar {
@@ -56,6 +63,59 @@ flex:auto; font-size: small;}
   width: thin;
   background-color: var(--Acolor);
   border-radius: 2px;  
+}
+.s-item ::-webkit-scrollbar {
+  width: 4px;
+}
+.s-item ::-webkit-scrollbar-thumb {
+  width: thin;
+  background-color: var(--Acolor);
+  border-radius: 2px;  
+}
+.inputBox ::-webkit-scrollbar {
+  width: 4px;
+}
+.inputBox ::-webkit-scrollbar-thumb {
+  width: thin;
+  background-color: var(--Acolor);
+  border-radius: 2px;  
+}
+.inputBox{
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  width: 100%;
+  line-height: 20px;
+}
+.scamperInput{
+  resize: none;
+  outline: none;
+  border-radius: 0;
+  border: none;
+  text-align: left;
+  padding : 0 5px;
+}
+.scamperInput.input3{
+  flex: auto;
+}
+.scamperInput.input2{
+  border-top: 1px dashed;
+  border-bottom: 1px dashed;
+}
+.scamperInput.btn{
+  padding: 0;
+  background: var(--Ccolor);
+  color: var(--Bcolor);
+  border-radius: 0;
+  text-align: center;
+}
+.scamperInput.btn:hover{
+  background: var(--Bcolor);
+  color: var(--Acolor);
+}
+.scamperInput.btn:active{
+  color: var(--Bcolor);
+  background: var(--Acolor);
 }
 
 .adimBar{

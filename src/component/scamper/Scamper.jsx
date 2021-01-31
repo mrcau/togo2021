@@ -1,5 +1,5 @@
-import { Drawer } from '@material-ui/core';
-import { DeleteForever, MenuSharp } from '@material-ui/icons';
+import { Box, Drawer } from '@material-ui/core';
+import { CalendarViewDay, DeleteForever, Favorite, FavoriteOutlined, MenuSharp } from '@material-ui/icons';
 import React, { useEffect, useRef, useState } from 'react';
 import AddCommentIcon from '@material-ui/icons/AddComment';
 import YouTubeIcon from '@material-ui/icons/YouTube';
@@ -7,12 +7,16 @@ import VideocamIcon from '@material-ui/icons/Videocam';
 import './scamper.css';
 import VoiceChatIcon from '@material-ui/icons/VoiceChat';
 import ScamperReport from './ScamperReport';
+import Rating from '@material-ui/lab/Rating';
 import { Modal } from 'react-bootstrap';
 
 function Scamper({ fireApp, user, userName }) {
   const folder = "scamper";
   const roomSubstr = 6;
 
+  const aTitle = useRef();
+  const bName = useRef();
+  const dContent = useRef();
   const scamperS = useRef();
   const scamperC = useRef();
   const scamperA = useRef();
@@ -69,7 +73,8 @@ function Scamper({ fireApp, user, userName }) {
     const num = Date.now().toString().substr(9);
     const newRoom = roomUid + num;
     setroomName(newRoom);
-    const data = {scamS:'',scamC:'',scamA:'',scamM:'',scamP:'',scamE:'',scamR:''}
+    const data = {scamS:'',scamC:'',scamA:'',scamM:'',scamP:'',scamE:'',scamR:'',
+                  aTitle:'',bName: '',dContent: '' }
     const roomget = fireApp.roomGet(folder,roomUid)
     roomget < 8 && fireApp.roomSave(folder, newRoom, data)
   }
@@ -87,10 +92,13 @@ function Scamper({ fireApp, user, userName }) {
     fireApp.videoSave(folder, user.uid,'Tok', data)
     noticeRef.current.value='';
   }
-  //scamper 글 데이터 저장
+  //scamper 글 데이터 저장, 방개수 6개 이하일때만 데이터 저장
   const onSubmit = () => {
     if (roomName!==roomERef.current.value||roomERef.current.value==='') { return }
     const data = {
+      aTitle: aTitle.current.value || '',
+      bName: bName.current.value || '',
+      dContent: dContent.current.value || '',
       scamS: scamperS.current.value || '',
       scamC: scamperC.current.value || '',
       scamA: scamperA.current.value || '',
@@ -99,12 +107,36 @@ function Scamper({ fireApp, user, userName }) {
       scamE: scamperE.current.value || '',
       scamR: scamperR.current.value || '',
     }
-    //방개수 6개 이하일때만 데이터 저장
+    
     const roomUid =  roomERef.current.value.substr(0,roomSubstr)
     const roomget = fireApp.roomGet(folder,roomUid)
-    console.log(folder,roomUid,roomget)
     roomget < 10 &&  fireApp.dataUp(folder, roomName, data)
   }
+
+   // 보고서 제출
+   const btnInput = (e) => {
+    e.preventDefault();
+    const today = new Date().toLocaleDateString().substr(5);
+    // const id = Date.now();
+    if (roomName!==roomERef.current.value||roomERef.current.value==='') { return }
+    const data = {
+      cDate : today,
+      aTitle: aTitle.current.value || '',
+      bName: bName.current.value || '',
+      dContent: dContent.current.value || '',
+      scamS: scamperS.current.value || '',
+      scamC: scamperC.current.value || '',
+      scamA: scamperA.current.value || '',
+      scamM: scamperM.current.value || '',
+      scamP: scamperP.current.value || '',
+      scamE: scamperE.current.value || '',
+      scamR: scamperR.current.value || '',
+    }
+    const roomUid =  roomERef.current.value.substr(0,roomSubstr);
+    const roomId = roomUid+'REPORT';
+    fireApp.reportSave(folder, roomId, roomName, data);
+  }
+  
 
   // roomName.substr(0,6) 방입장
     const enterRoom = () => {
@@ -143,6 +175,9 @@ function Scamper({ fireApp, user, userName }) {
   const dataDel = () => {
     if (roomName!==roomERef.current.value||roomERef.current.value==='') { return }
     fireApp.dataDel(folder,roomName);        
+    aTitle.current.value = '';
+    bName.current.value = '';
+    dContent.current.value = '';
     roomERef.current.value = '';
     scamperS.current.value = '';
     scamperC.current.value = '';
@@ -152,20 +187,23 @@ function Scamper({ fireApp, user, userName }) {
     scamperE.current.value = '';
     scamperR.current.value = '';
   }
+  // 좋아요
+  const [value, setValue] = React.useState(2);
   return (
     <div className="scamper" >      
       <Drawer anchor={'right'} open={state['right']} onClose={toggleDrawer('right', false)}>
-        <ScamperReport fireApp={fireApp} user={user} /> 
+        <ScamperReport fireApp={fireApp} user={user} folder={folder} roomName={roomName} /> 
       </Drawer> 
+
       <Modal show={show} onHide={handleClose} animation={true} size={'xl'} > 
-      <h5 style={{background:'var(--Acolor)',color:'var(--Bcolor)'}}>
-        <VideocamIcon/>
-      </h5>
-      {video ? 
-      <iframe width="100%" height="400" src ={video} title="video" frameBorder="0" />
-      : '연결에 실패했습니다.'  }
-      
-      <button onClick={handleClose} style={{fontSize:'large'}}> Close </button>           
+        <h5 style={{background:'var(--Acolor)',color:'var(--Bcolor)'}}>
+          <VideocamIcon/>
+        </h5>
+        {video 
+        ? <iframe width="100%" height="400" src ={video} title="video" frameBorder="0" />
+        : '연결에 실패했습니다.'  
+        }
+        <button onClick={handleClose} style={{fontSize:'large'}}> Close </button>           
       </Modal>
 
       {level>0 && 
@@ -201,47 +239,69 @@ function Scamper({ fireApp, user, userName }) {
       </div>
 
         <form className="s-items" ref={formRef} >
+          
           <div className="s-item">
-          <div className="s-itemTitle">S</div>
-          <textarea  className="s-intemInput input1" cols="30" rows="2" style={{resize: 'none'}} 
-           ref={scamperS}  onChange={onSubmit} value={data.scamS} />
+            <div className="s-itemTitle" sty> S 
+            <Box component="fieldset" mb={3} borderColor="transparent">
+              <Rating 
+                name="customized-color" value={value}   
+                icon={<Favorite fontSize="inherit" /> } 
+                onChange={(event, newValue) => {setValue(newValue); }} 
+              />
+            </Box>
+            </div>
+            <textarea  className="s-intemInput input1" cols="30" rows="2"  
+            ref={scamperS}  onChange={onSubmit} value={data.scamS} />
           </div>
         
-        <div className="s-item">
-          <div className="s-itemTitle">C</div>
-          <textarea  className="s-intemInput input1" cols="30" rows="2" style={{resize: 'none'}} 
-           ref={scamperC} onChange={onSubmit} value={data.scamC} />
-        </div>
+          <div className="s-item">
+            <div className="s-itemTitle">C</div>
+            <textarea  className="s-intemInput input1" cols="30" rows="2"  
+            ref={scamperC} onChange={onSubmit} value={data.scamC} />
+          </div>
 
-        <div className="s-item">
-          <div className="s-itemTitle">A</div>
-          <textarea  className="s-intemInput input1" cols="30" rows="2" style={{resize: 'none'}} 
-           ref={scamperA} onChange={onSubmit} value={data.scamA} />
-        </div>
+          <div className="s-item">
+            <div className="s-itemTitle">A</div>
+            <textarea  className="s-intemInput input1" cols="30" rows="2"  
+            ref={scamperA} onChange={onSubmit} value={data.scamA} />
+          </div>
 
-        <div className="s-item">
-          <div className="s-itemTitle">M</div>
-          <textarea  className="s-intemInput input1" cols="30" rows="2" style={{resize: 'none'}} 
-           ref={scamperM} onChange={onSubmit} value={data.scamM} />
-        </div>
+          <div className="s-item">
+            <div className="s-itemTitle">M</div>
+            <textarea  className="s-intemInput input1" cols="30" rows="2"  
+            ref={scamperM} onChange={onSubmit} value={data.scamM} />
+          </div>
 
-        <div className="s-item">
-          <div className="s-itemTitle">P</div>
-          <textarea  className="s-intemInput input1" cols="30" rows="2" style={{resize: 'none'}} 
-           ref={scamperP} onChange={onSubmit} value={data.scamP} />
-        </div>
+          <div className="s-item">
+            <div className="s-itemTitle">P</div>
+            <textarea  className="s-intemInput input1" cols="30" rows="2"  
+            ref={scamperP} onChange={onSubmit} value={data.scamP} />
+          </div>
 
-        <div className="s-item">
-          <div className="s-itemTitle">E</div>
-          <textarea  className="s-intemInput input1" cols="30" rows="2" style={{resize: 'none'}} 
-           ref={scamperE} onChange={onSubmit} value={data.scamE} />
-        </div>
+          <div className="s-item">
+            <div className="s-itemTitle">E</div>
+            <textarea  className="s-intemInput input1" cols="30" rows="2"  
+            ref={scamperE} onChange={onSubmit} value={data.scamE} />
+          </div>
 
-        <div className="s-item">
-          <div className="s-itemTitle">R</div>
-          <textarea  className="s-intemInput input1" cols="30" rows="2" style={{resize: 'none'}} 
-           ref={scamperR} onChange={onSubmit} value={data.scamR} />
-        </div>
+          <div className="s-item">
+            <div className="s-itemTitle">R</div>
+            <textarea  className="s-intemInput input1" cols="30" rows="2" style={{resize: 'none'}} 
+            ref={scamperR} onChange={onSubmit} value={data.scamR} />
+          </div>
+          
+          <div className="inputBox" >
+            <div className="s-itemTitle" style={{width:"100%"}}>보고서</div>
+            <div></div>
+            <textarea cols="30" rows="1" className="scamperInput input1" ref={aTitle} 
+            onChange={onSubmit} value={data.aTitle} placeholder="제목" />
+            <textarea cols="30" rows="1" className="scamperInput input2" ref={bName} 
+            onChange={onSubmit} value={data.bName} placeholder="작성자" />
+            <textarea cols="30" rows="2" className="scamperInput input3" ref={dContent} 
+            onChange={onSubmit} value={data.dContent} placeholder="내용" />
+            <input type="button" className="scamperInput btn" onClick={btnInput} value="제출"/>
+          </div>
+
         </form>
       </div>
   );

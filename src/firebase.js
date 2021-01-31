@@ -186,6 +186,24 @@ async roomUser(folder,roomUid,cf) {
       .update(data)
   }
 
+  // 보고서 저장
+  reportSave(folder, roomId, roomName, data) {
+    firebase.database().ref(`${folder}/${roomId}/${roomName}`)
+      .set(data)
+  }
+
+  //보고서 테이블 싱크
+async reportSync(folder,roomName, cf) {
+    if (!roomName) { return }
+    const roomId = roomName.substr(0,6)+'REPORT'
+    const ref1 = firebase.database().ref(`${folder}/${roomId}`);
+    ref1.on('value', (p) => {
+      const data = p.val();
+      const Data = Object.values(data);
+      console.log(roomId,Data)
+      data ? cf.f1(Data) : cf.f2();
+    });
+  }
   //Auth 테이블 싱크
 async authdataSync(auth, cf) {
     if (!auth) { return }
