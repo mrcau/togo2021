@@ -1,5 +1,5 @@
-import { Badge, Box, Drawer, IconButton } from '@material-ui/core';
-import { CalendarViewDay, DeleteForever, Favorite, FavoriteOutlined, MenuSharp, ThumbUp } from '@material-ui/icons';
+import { Badge,  Drawer, IconButton } from '@material-ui/core';
+import {  DeleteForever,   MenuSharp, ThumbUp } from '@material-ui/icons';
 import React, { useEffect, useRef, useState } from 'react';
 import AddCommentIcon from '@material-ui/icons/AddComment';
 import YouTubeIcon from '@material-ui/icons/YouTube';
@@ -7,19 +7,19 @@ import VideocamIcon from '@material-ui/icons/Videocam';
 import './scamper.css';
 import VoiceChatIcon from '@material-ui/icons/VoiceChat';
 import ScamperReport from './ScamperReport';
-import Rating from '@material-ui/lab/Rating';
 import { Modal } from 'react-bootstrap';
+ 
 function Scamper({ fireApp, user, userName }) {
   const folder = "scamper";
   const roomSubstr = 6;
-  const [good1, setGood1] = useState(0);
-  const [good2, setGood2] = useState(0);
-  const [good3, setGood3] = useState(0);
-  const [good4, setGood4] = useState(0);
-  const [good5, setGood5] = useState(0);
-  const [good6, setGood6] = useState(0);
-  const [good7, setGood7] = useState(0);
-  const [good8, setGood8] = useState(0);
+  const [Switch0, setSwitch0] = useState(true);
+  const [Switch1, setSwitch1] = useState(true);
+  const [Switch2, setSwitch2] = useState(true);
+  const [Switch3, setSwitch3] = useState(true);
+  const [Switch4, setSwitch4] = useState(true);
+  const [Switch5, setSwitch5] = useState(true);
+  const [Switch6, setSwitch6] = useState(true);
+  const [Switch7, setSwitch7] = useState(true);
 
   const aTitle = useRef();
   const bName = useRef();
@@ -44,13 +44,21 @@ function Scamper({ fireApp, user, userName }) {
   const [notice, setNotice] = useState('');
   //오른쪽 report 메뉴
   const [state, setState] = useState({ top: false, left: false, right: false });
+  
   const toggleDrawer = (anchor, open) => (event) => setState({ ...state, [anchor]: open });
   //모달창
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  //모달창2
+  const [show2, setShow2] = useState(false);
+  const handleClose2 = () => setShow2(false);
+  const handleShow2 = () => setShow2(true);
   //입장중
   const [door, setDoor] = useState('입장')
+
+  let report = false;
+
   //데이터싱크 
   useEffect(() => {
     fireApp.onAuth((e) => {
@@ -73,6 +81,8 @@ function Scamper({ fireApp, user, userName }) {
     })
   }, [roomName]);
   
+  let good =[data.good0,data.good1,data.good2,data.good3,data.good4,
+            data.good5,data.good6,data.good7]
 
   // 방생성
   const createRoom = () => {
@@ -80,7 +90,7 @@ function Scamper({ fireApp, user, userName }) {
     const newRoom = roomUid + num;
     setroomName(newRoom);
     const data = {scamS:'',scamC:'',scamA:'',scamM:'',scamP:'',scamE:'',scamR:'',aTitle:'',bName: '',dContent: '', 
-                  good1:0, good2:0, good3:0, good4:0, good5:0, good6:0, good7:0, good8:0,}
+                  good0:0, good1:0, good2:0, good3:0, good4:0, good5:0, good6:0, good7:0,}
     const roomget = fireApp.roomGet(folder,roomUid)
     roomget < 8 && fireApp.roomSave(folder, newRoom, data)
   }
@@ -112,14 +122,6 @@ function Scamper({ fireApp, user, userName }) {
       scamP: scamperP.current.value || '',
       scamE: scamperE.current.value || '',
       scamR: scamperR.current.value || '',
-      good1: good1 || 0,
-      good2: good2 || 0,
-      good3: good3 || 0,
-      good4: good4 || 0,
-      good5: good5 || 0,
-      good6: good6 || 0,
-      good7: good7 || 0,
-      good8: good8 || 0,
     }
     
     const roomUid =  roomERef.current.value.substr(0,roomSubstr)
@@ -145,14 +147,7 @@ function Scamper({ fireApp, user, userName }) {
       scamP: scamperP.current.value || '',
       scamE: scamperE.current.value || '',
       scamR: scamperR.current.value || '',
-      good1: good1 || 0,
-      good2: good2 || 0,
-      good3: good3 || 0,
-      good4: good4 || 0,
-      good5: good5 || 0,
-      good6: good6 || 0,
-      good7: good7 || 0,
-      good8: good8 || 0,
+      good7:0
     }
     const roomUid =  roomERef.current.value.substr(0,roomSubstr);
     const roomId = roomUid+'REPORT';
@@ -163,12 +158,22 @@ function Scamper({ fireApp, user, userName }) {
   // roomName.substr(0,6) 방입장
     const enterRoom = () => {
     const roomUid =  roomERef.current.value.substr(0,roomSubstr)
-    const cf=()=>{
+    const currentRoom = roomERef.current.value;
+    const roomGet=()=>{
       if(roomERef.current.value.length === 10){
-       setroomName(roomERef.current.value);
+       setroomName(currentRoom);
        setDoor('입장중');
       }}
-    fireApp.roomUser(folder,roomUid,cf)
+      const cf = {
+        f1: (p) => { setdata(p) },
+        f2: () => { setdata({}) },
+        f3: (p) => { setRoom(p) },
+        f4: () => { setRoom({}) },
+      }
+
+    fireApp.roomUser(folder,roomUid,roomGet);
+    fireApp.dataSync(folder, currentRoom, cf);
+
     }
 
   // 관리자 방입장
@@ -210,37 +215,45 @@ function Scamper({ fireApp, user, userName }) {
     scamperR.current.value = '';
   }
   // 좋아요
-  const [Switch1, setSwitch1] = useState(true);
-  const [Switch2, setSwitch2] = useState(true);
-  const [Switch3, setSwitch3] = useState(true);
-  const [Switch4, setSwitch4] = useState(true);
-  const [Switch5, setSwitch5] = useState(true);
-  const [Switch6, setSwitch6] = useState(true);
-  const [Switch7, setSwitch7] = useState(true);
-  const [Switch8, setSwitch8] = useState(true);
   
-  const goodPlus = (good,setgood,Switch,setSwitch) => {
-  let goodNum = good;
+  const goodPlus = (i,goodNum,Switch,setSwitch) => {
+    if(roomName){
+    Switch ? data[goodNum]++ : data[goodNum]--;
     setSwitch(!Switch);
-    Switch?setgood(goodNum+1):setgood(goodNum-1);
-    console.log(Switch,good,Object.keys(data));
-    onSubmit();
+    fireApp.goodUp(folder, roomName,goodNum,data[goodNum]);
+    }
   }
+
   return (
     <div className="scamper" >      
       <Drawer anchor={'right'} open={state['right']} onClose={toggleDrawer('right', false)}>
-        <ScamperReport fireApp={fireApp} user={user} folder={folder} roomName={roomName} /> 
+        <ScamperReport fireApp={fireApp} user={user} folder={folder} roomName={roomName} toggleDrawer={toggleDrawer} /> 
       </Drawer> 
 
-      <Modal show={show} onHide={handleClose} animation={true} size={'xl'} > 
+    {/* 동영상 모달 */}
+      <Modal show={show} onHide={handleClose} animation={true} size={'xl'} className="modal"> 
         <h5 style={{background:'var(--Acolor)',color:'var(--Bcolor)'}}>
           <VideocamIcon/>
         </h5>
+        <div className="modalMain">
         {video 
         ? <iframe width="100%" height="400" src ={video} title="video" frameBorder="0" />
-        : '연결에 실패했습니다.'  
+        : '연결된 자료가 없습니다.'  
         }
+        </div>
         <button onClick={handleClose} style={{fontSize:'large'}}> Close </button>           
+      </Modal>
+
+    {/* 게시판 모달 */}
+      <Modal show={show2} onHide={handleClose2} animation={true} size={'xl'} className="modal"> 
+        <h5 style={{background:'var(--Acolor)',color:'var(--Bcolor)'}}>
+         게시판
+        </h5>
+        <div className="modalMain">
+         <ScamperReport fireApp={fireApp} user={user} folder={folder} 
+         roomName={roomName} toggleDrawer={toggleDrawer} /> 
+        </div>
+        <button onClick={handleClose2} style={{fontSize:'large'}}> Close </button>           
       </Modal>
 
       {level>0 && 
@@ -265,36 +278,44 @@ function Scamper({ fireApp, user, userName }) {
           <input type="text" className="enterInput roomnum" placeholder="방번호" style={{width:'85px'}} ref={roomERef} />
         </div>
         {level>0 && <button className="btnRoomDel" style={{margin:'0'}} onClick={dataDel}><DeleteForever /></button>  }
+
           {/* 공지사항 */}
-        <div className="enterTitle" style={{animation:'noticeFly'}}>{notice}</div>       
+        <div className="enterTitle" style={{animation:'noticeFly'}}>{notice}</div>    
+
+
         <div style={{ width: '100px',display:'flex',justifyContent:'flex-end' }}>             
-          {/* <button className="btnRoomDel" style={{background:'#424242'}} onClick={inputReset} > <AutorenewIcon /> </button> */}
           <button style={{width:'30px'}}  onClick={handleShow}>
-             <VoiceChatIcon fontSize='small' /></button>
-          <button style={{width:'30px'}} onClick={toggleDrawer('right', true)}> <MenuSharp /></button> 
+             <VoiceChatIcon fontSize='small' />
+          </button>
+          <button style={{width:'30px'}} onClick={handleShow2}> 
+            <MenuSharp />
+          </button> 
         </div>
       </div>
 
         <form className="s-items" ref={formRef} >
           
+          
           <div className="s-item">
-            <div className="s-itemTitle" sty> S 
+            <div className="s-itemTitle" sty>S 
+            {!report &&
             <IconButton style={{width:'25px', height:'25px'}} >
-              <Badge badgeContent={data.good1} color="secondary" style={{paddingRight:'10px'}}>
-                <ThumbUp style={{color:'var(--Bcolor)'}} onClick={()=>goodPlus(good1,setGood1,Switch1,setSwitch1)} />
-              </Badge>
-            </IconButton> 
+              <Badge badgeContent={good[0]} color="secondary" style={{paddingRight:'10px'}}>
+                <ThumbUp style={{color:'var(--Bcolor)'}} onClick={()=>goodPlus(0,'good0',Switch0,setSwitch0)} />
+              </Badge>            
+            </IconButton> }
             </div>
             <textarea  className="s-intemInput input1" cols="30" rows="2"  
             ref={scamperS}  onChange={onSubmit} value={data.scamS} />
           </div>
           <div className="s-item">
             <div className="s-itemTitle">C
+            {!report &&
             <IconButton style={{width:'25px', height:'25px'}} >
-              <Badge badgeContent={data.good2} color="secondary" style={{paddingRight:'10px'}}>
-                <ThumbUp style={{color:'var(--Bcolor)'}} onClick={()=>goodPlus(good2,setGood2,Switch2,setSwitch2)} />
+              <Badge badgeContent={good[1]} color="secondary" style={{paddingRight:'10px'}}>
+                <ThumbUp style={{color:'var(--Bcolor)'}} onClick={()=>goodPlus(1,'good1',Switch1,setSwitch1)} />
               </Badge>
-            </IconButton> 
+            </IconButton>} 
             </div>
             <textarea  className="s-intemInput input1" cols="30" rows="2"  
             ref={scamperC} onChange={onSubmit} value={data.scamC} />
@@ -302,11 +323,12 @@ function Scamper({ fireApp, user, userName }) {
         
           <div className="s-item">
             <div className="s-itemTitle">A
+            {!report &&
             <IconButton style={{width:'25px', height:'25px'}} >
-              <Badge badgeContent={data.good3} color="secondary" style={{paddingRight:'10px'}}>
-                <ThumbUp style={{color:'var(--Bcolor)'}} onClick={()=>goodPlus(good3,setGood3,Switch3,setSwitch3)} />
+              <Badge badgeContent={good[2]} color="secondary" style={{paddingRight:'10px'}}>
+                <ThumbUp style={{color:'var(--Bcolor)'}} onClick={()=>goodPlus(2,'good2',Switch2,setSwitch2)} />
               </Badge>
-            </IconButton> 
+            </IconButton>} 
             </div>
             <textarea  className="s-intemInput input1" cols="30" rows="2"  
             ref={scamperA} onChange={onSubmit} value={data.scamA} />
@@ -314,11 +336,12 @@ function Scamper({ fireApp, user, userName }) {
 
           <div className="s-item">
             <div className="s-itemTitle">M
+            {!report &&
             <IconButton style={{width:'25px', height:'25px'}} >
-              <Badge badgeContent={data.good4} color="secondary" style={{paddingRight:'10px'}}>
-                <ThumbUp style={{color:'var(--Bcolor)'}} onClick={()=>goodPlus(good4,setGood4,Switch4,setSwitch4)} />
+              <Badge badgeContent={good[3]} color="secondary" style={{paddingRight:'10px'}}>
+                <ThumbUp style={{color:'var(--Bcolor)'}} onClick={()=>goodPlus(3,'good3',Switch3,setSwitch3)} />
               </Badge>
-            </IconButton> 
+            </IconButton>} 
             </div>
             <textarea  className="s-intemInput input1" cols="30" rows="2"  
             ref={scamperM} onChange={onSubmit} value={data.scamM} />
@@ -326,11 +349,12 @@ function Scamper({ fireApp, user, userName }) {
 
           <div className="s-item">
             <div className="s-itemTitle">P
+            {!report &&
             <IconButton style={{width:'25px', height:'25px'}} >
-              <Badge badgeContent={data.good5} color="secondary" style={{paddingRight:'10px'}}>
-                <ThumbUp style={{color:'var(--Bcolor)'}} onClick={()=>goodPlus(good5,setGood5,Switch5,setSwitch5)} />
+              <Badge badgeContent={good[4]} color="secondary" style={{paddingRight:'10px'}}>
+                <ThumbUp style={{color:'var(--Bcolor)'}} onClick={()=>goodPlus(4,'good4',Switch4,setSwitch4)} />
               </Badge>
-            </IconButton> 
+            </IconButton>} 
             </div>
             <textarea  className="s-intemInput input1" cols="30" rows="2"  
             ref={scamperP} onChange={onSubmit} value={data.scamP} />
@@ -338,11 +362,12 @@ function Scamper({ fireApp, user, userName }) {
 
           <div className="s-item">
             <div className="s-itemTitle">E
+            {!report &&
             <IconButton style={{width:'25px', height:'25px'}} >
-              <Badge badgeContent={data.good6} color="secondary" style={{paddingRight:'10px'}}>
-                <ThumbUp style={{color:'var(--Bcolor)'}} onClick={()=>goodPlus(good6,setGood6,Switch6,setSwitch6)} />
+              <Badge badgeContent={good[5]} color="secondary" style={{paddingRight:'10px'}}>
+                <ThumbUp style={{color:'var(--Bcolor)'}} onClick={()=>goodPlus(5,'good5',Switch5,setSwitch5)} />
               </Badge>
-            </IconButton> 
+            </IconButton>} 
             </div>
             <textarea  className="s-intemInput input1" cols="30" rows="2"  
             ref={scamperE} onChange={onSubmit} value={data.scamE} />
@@ -350,11 +375,12 @@ function Scamper({ fireApp, user, userName }) {
 
           <div className="s-item">
             <div className="s-itemTitle">R
+            {!report &&
             <IconButton style={{width:'25px', height:'25px'}} >
-              <Badge badgeContent={data.good7} color="secondary" style={{paddingRight:'10px'}}>
-                <ThumbUp style={{color:'var(--Bcolor)'}} onClick={()=>goodPlus(good7,setGood7,Switch7,setSwitch7)} />
+              <Badge badgeContent={good[6]} color="secondary" style={{paddingRight:'10px'}}>
+                <ThumbUp style={{color:'var(--Bcolor)'}} onClick={()=>goodPlus(6,'good6',Switch6,setSwitch6)} />
               </Badge>
-            </IconButton> 
+            </IconButton>} 
             </div>
             <textarea  className="s-intemInput input1" cols="30" rows="2" style={{resize: 'none'}} 
             ref={scamperR} onChange={onSubmit} value={data.scamR} />
@@ -362,11 +388,13 @@ function Scamper({ fireApp, user, userName }) {
           
           <div className="inputBox" >
             <div className="s-itemTitle" style={{width:"100%"}}>보고서
+            {report &&
             <IconButton style={{width:'25px', height:'25px'}} >
-              <Badge badgeContent={data.good8} color="secondary" style={{paddingRight:'10px'}}>
-                <ThumbUp style={{color:'var(--Bcolor)'}} onClick={()=>goodPlus(good8,setGood8,Switch8,setSwitch8)} />
+              <Badge badgeContent={good[7]} color="secondary" style={{paddingRight:'10px'}}>
+                <ThumbUp style={{color:'var(--Bcolor)'}} onClick={()=>goodPlus(7,'good7',Switch7,setSwitch7)} />
               </Badge>
             </IconButton> 
+            }
             </div>
             <div></div>
             <textarea cols="30" rows="1" className="scamperInput input1" ref={aTitle} 

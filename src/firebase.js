@@ -113,19 +113,6 @@ roomGet(folder,roomUid) {
   })
   return roomGetNum;
 }
-//  룸 이름 가져오기
-async roomUser(folder,roomUid,cf) {
-  const ref = firebase.database().ref(`${folder}`);
-  ref.on('value', (p) => {
-  const data = p.val();
-    if(!data){console.log('서버데이터 없음')}
-    const dataKey = Object.keys(data);
-    if(dataKey.indexOf(roomUid)<0){ return }
-     cf();
-  })
-  
-}
-
   //  룸 생성 저장 
   roomSave(folder,newRoom, data) {
     const roomUid = newRoom.substr(0,roomSubstr);
@@ -152,6 +139,19 @@ async roomUser(folder,roomUid,cf) {
   //     Object.keys(data).length < 7 &&  cf(data);
   //   })
   // }
+
+  
+//  룸 이름 가져오기
+async roomUser(folder,roomUid,cf) {
+  const ref = firebase.database().ref(`${folder}`);
+  ref.on('value', (p) => {
+  const data = p.val();
+    if(!data){console.log('서버데이터 없음')}
+    const dataKey = Object.keys(data);
+    if(dataKey.indexOf(roomUid)<0){ return }
+     cf();
+  })
+ }
   // 데이터 씽크
   dataSync(folder, roomName, cf) {
     const roomUid = roomName.substr(0,roomSubstr);
@@ -220,8 +220,10 @@ async authSync(auth, uid,cf) {
   const ref = firebase.database().ref(`${auth}/${uid}`);
   ref.on('value', (p) => {
     const data = p.val();
-    cf(data.level)
-  });
+    if(!data){return}
+    // data.level && cf(data.level)
+    // cf(data.level)||console.log('no.level')
+   });
 }
 // Auth 테이블  Level 업데이트
 level(folder, uid,num) {
@@ -251,6 +253,20 @@ async videoSync(folder,roomName,spot,cf) {
   });
 }
 
+// Good 업데이트
+goodUp(folder, roomName, goodNum,good) {
+  const roomUid = roomName.substr(0,roomSubstr);
+  const roomNum = roomName.substr(roomSubstr);
+  firebase.database().ref(`${folder}/${roomUid}/${roomNum}`)
+    .update({[goodNum]: good })
+}
+
 }
 
 export default firebaseApp
+
+ // TODO 업데이트
+//  itemUp(folder, uid, dataId, counter) {
+//   firebase.database().ref(`${folder}/${uid}/${dataId}`)
+//     .update({ progress: counter })
+// }

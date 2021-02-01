@@ -1,7 +1,7 @@
 
 .reportMenu{
   width: 75vw; 
-  padding: 10px; 
+  padding:  10px 10px 10px 25px; 
   height: 100%;
 }
 .MuiDataGrid-colCellTitle{
@@ -9,4 +9,11 @@
 }
 .MuiDataGrid-row{
   border-bottom: solid lightgray 1px;
+  text-align: center;
 }
+.row{
+  cursor: pointer;
+  }
+  .MuiDataGrid-root{
+    margin: auto;
+  }
