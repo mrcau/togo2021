@@ -6,6 +6,7 @@
   padding: 0;
   text-align: center;
   box-sizing: border-box;
+  font-size: 14px;
 }
 
 .App {
@@ -14,7 +15,8 @@
   position: relative;
   height: 100vh;
   overflow: hidden;
-  background: var(--Bcolor);
+  background-image: linear-gradient(to right, #8e9eab 0%, #eef2f3  51%, #8e9eab  100%);
+  /* background: var(--Bcolor); */
 }
 .header {
   display: flex;
@@ -75,5 +77,4 @@ button:active {
   color : var(--Bcolor);
   opacity: 0.5;
 }
-
 
