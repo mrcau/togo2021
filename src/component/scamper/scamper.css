@@ -154,12 +154,17 @@ flex:auto; font-size: small;}
   width: 100%; overflow-x: auto; transition: all 300ms;
   animation: noticeFly 1000ms;}
 .enterInput{  width: 60px; outline: none; border: none;}
-
-.modalMain{
-  height: 70vh;
-  
+/* .noticeTitle{ width: 40px; background: var(--Acolor);} */
+.modalMain{  height: 70vh; }
+.noticeHeader{
+  background: var(--Acolor); line-height: 25px;
+  transition: all 300ms; 
 }
+.noticeFly{
+  animation: noticeFly 1000ms ;
+}
+
 @keyframes noticeFly{
- from{ transform : scale(1)}
-  to{ transform: scale(5); }
+ from{ transform : scale(3); background:white}
+  to{ transform: scale(1); }
 }

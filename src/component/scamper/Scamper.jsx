@@ -35,6 +35,8 @@ function Scamper({ fireApp, user, userName }) {
   const formRef = useRef();
   const videoRef = useRef();
   const noticeRef = useRef();
+  const titleRef = useRef();
+
   const [data, setdata] = useState({});
   const [room, setRoom] = useState({});
   const [roomName, setroomName] = useState('');
@@ -101,12 +103,18 @@ function Scamper({ fireApp, user, userName }) {
     const data = videoRef.current.value;
     fireApp.videoSave(folder, user.uid,'See', data)
   }
-// notice 저장
+// notice 저장 - 공지 보내기
   const noticeUp = (e) => {
     e.preventDefault();
     const data = noticeRef.current.value;
     fireApp.videoSave(folder, user.uid,'Tok', data)
     noticeRef.current.value='';
+    
+    titleRef.current.classList.add("noticeFly");
+    setTimeout(() => {
+      titleRef.current.classList.remove("noticeFly");
+      clearTimeout(noticeUp);
+    }, 1000);
   }
   //scamper 글 데이터 저장, 방개수 6개 이하일때만 데이터 저장
   const onSubmit = () => {
@@ -251,7 +259,7 @@ function Scamper({ fireApp, user, userName }) {
         </h5>
         <div className="modalMain">
          <ScamperReport fireApp={fireApp} user={user} folder={folder} 
-         roomName={roomName} toggleDrawer={toggleDrawer} /> 
+         roomName={roomName} handleClose2={handleClose2} /> 
         </div>
         <button onClick={handleClose2} style={{fontSize:'large'}}> Close </button>           
       </Modal>
@@ -279,9 +287,8 @@ function Scamper({ fireApp, user, userName }) {
         </div>
         {level>0 && <button className="btnRoomDel" style={{margin:'0'}} onClick={dataDel}><DeleteForever /></button>  }
 
-          {/* 공지사항 */}
-        <div className="enterTitle" style={{animation:'noticeFly'}}>{notice}</div>    
-
+          {/* scamper/Tiriz */}
+        <div className="enterTitle" style={{animation:'noticeFly'}}>scamper-Tiriz</div>    
 
         <div style={{ width: '100px',display:'flex',justifyContent:'flex-end' }}>             
           <button style={{width:'30px'}}  onClick={handleShow}>
@@ -290,8 +297,13 @@ function Scamper({ fireApp, user, userName }) {
           <button style={{width:'30px'}} onClick={handleShow2}> 
             <MenuSharp />
           </button> 
-        </div>
+        </div>        
       </div>
+      <div className="s-header noticeHeader" ref={titleRef}>
+        {/* <div className="noticeTitle" > 공지 </div> */}
+        <div className="enterTitle" >{notice}</div>                  
+      </div>
+      
 
         <form className="s-items" ref={formRef} >
           

@@ -220,8 +220,10 @@ async authSync(auth, uid,cf) {
   const ref = firebase.database().ref(`${auth}/${uid}`);
   ref.on('value', (p) => {
     const data = p.val();
-    if(!data){return}
-    // data.level && cf(data.level)
+    if(data===null){return } 
+    else{  
+      cf(data.level)
+    }
     // cf(data.level)||console.log('no.level')
    });
 }
