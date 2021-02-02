@@ -155,7 +155,23 @@ flex:auto; font-size: small;}
   animation: noticeFly 1000ms;}
 .enterInput{  width: 60px; outline: none; border: none;}
 /* .noticeTitle{ width: 40px; background: var(--Acolor);} */
-.modalMain{  height: 70vh; }
+
+
+
+.videoModal{
+  position: absolute !important;
+  left:40%;
+  transform: translateX(-50%) !important;
+}
+
+.modal-content{
+  width:1000px !important;
+}
+.modal{width:100vw !important; margin:0; padding: 0;
+position:absolute !important; left: 10px !important;}
+.modalMain{  height: 80vh;  }
+.totalmodal{width:800px !important;}
+
 .noticeHeader{
   background: var(--Acolor); line-height: 25px;
   transition: all 300ms; 

@@ -125,7 +125,7 @@ function Atable({fireApp,user}) {
     if (e) {fireApp.authdataSync(folder,cf); }
     else { console.log('no-User') }
   })
-}, []);
+}, [fireApp]);
 
 // 레벨업
 const levelUp =(uid) => { fireApp.level(folder,uid,1); }

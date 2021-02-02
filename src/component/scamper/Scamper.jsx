@@ -1,6 +1,6 @@
-import { Badge,  Drawer, IconButton } from '@material-ui/core';
+import { Badge, IconButton, Switch } from '@material-ui/core';
 import {  DeleteForever,   MenuSharp, ThumbUp } from '@material-ui/icons';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { memo, useEffect, useRef, useState } from 'react';
 import AddCommentIcon from '@material-ui/icons/AddComment';
 import YouTubeIcon from '@material-ui/icons/YouTube';
 import VideocamIcon from '@material-ui/icons/Videocam';
@@ -8,18 +8,12 @@ import './scamper.css';
 import VoiceChatIcon from '@material-ui/icons/VoiceChat';
 import ScamperReport from './ScamperReport';
 import { Modal } from 'react-bootstrap';
- 
+import Swal from 'sweetalert2';
+
 function Scamper({ fireApp, user, userName }) {
   const folder = "scamper";
   const roomSubstr = 6;
-  const [Switch0, setSwitch0] = useState(true);
-  const [Switch1, setSwitch1] = useState(true);
-  const [Switch2, setSwitch2] = useState(true);
-  const [Switch3, setSwitch3] = useState(true);
-  const [Switch4, setSwitch4] = useState(true);
-  const [Switch5, setSwitch5] = useState(true);
-  const [Switch6, setSwitch6] = useState(true);
-  const [Switch7, setSwitch7] = useState(true);
+  const Swal = require('sweetalert2');
 
   const aTitle = useRef();
   const bName = useRef();
@@ -45,9 +39,11 @@ function Scamper({ fireApp, user, userName }) {
   const [video, setVideo] = useState('');
   const [notice, setNotice] = useState('');
   //오른쪽 report 메뉴
-  const [state, setState] = useState({ top: false, left: false, right: false });
+  // const [state, setState] = useState({ top: false, left: false, right: false });
+  // const [Selection, setSelection] = useState('');
+    // const toggleDrawer = (anchor, open) => (event) => setState({ ...state, [anchor]: open });
   
-  const toggleDrawer = (anchor, open) => (event) => setState({ ...state, [anchor]: open });
+ 
   //모달창
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -56,10 +52,19 @@ function Scamper({ fireApp, user, userName }) {
   const [show2, setShow2] = useState(false);
   const handleClose2 = () => setShow2(false);
   const handleShow2 = () => setShow2(true);
+  //모달창3
+  const fire = () => {
+    Swal.fire({
+      title: 'Error!',
+      text: 'Do you want to continue',
+      icon: 'error',
+      confirmButtonText: 'Cool'
+    })
+  }
+
   //입장중
   const [door, setDoor] = useState('입장')
-
-  let report = false;
+  const [report, setReport] = useState(false);
 
   //데이터싱크 
   useEffect(() => {
@@ -76,12 +81,24 @@ function Scamper({ fireApp, user, userName }) {
         fireApp.dataSync(folder, roomName, cf);
         fireApp.roomSync(folder, roomUid, cf);
         fireApp.authSync('auth',e.uid,(p)=>setLevel(p))
-        fireApp.videoSync(folder,roomName,'See',(p)=>setVideo(p))
-        fireApp.videoSync(folder,roomName,'Tok',(p)=>setNotice(p))
       }
       else { console.log('no-User') }
     })
-  }, [roomName]);
+  }, [roomName,fireApp]);
+  
+  //비로그인자 데이터 싱크 - 애니메이션
+  useEffect(() => {
+    if(roomName&&!report){ 
+      fireApp.videoSync(folder,roomName,'See',(p)=>{setVideo(p); })
+      fireApp.videoSync(folder,roomName,'Tok',(p)=>{
+        setNotice(p); 
+        titleRef.current.classList.add("noticeFly");
+        setTimeout(() => {
+          titleRef.current.classList.remove("noticeFly")},1000)
+      })
+     }
+    
+  },[roomName,fireApp])
   
   let good =[data.good0,data.good1,data.good2,data.good3,data.good4,
             data.good5,data.good6,data.good7]
@@ -110,15 +127,15 @@ function Scamper({ fireApp, user, userName }) {
     fireApp.videoSave(folder, user.uid,'Tok', data)
     noticeRef.current.value='';
     
-    titleRef.current.classList.add("noticeFly");
-    setTimeout(() => {
-      titleRef.current.classList.remove("noticeFly");
-      clearTimeout(noticeUp);
-    }, 1000);
+    // titleRef.current.classList.add("noticeFly");
+    // setTimeout(() => {
+    //   titleRef.current.classList.remove("noticeFly");
+    //   clearTimeout(noticeUp);
+    // }, 1000);
   }
   //scamper 글 데이터 저장, 방개수 6개 이하일때만 데이터 저장
   const onSubmit = () => {
-    if (roomName!==roomERef.current.value||roomERef.current.value==='') { return }
+    if (roomName!==roomERef.current.value||roomERef.current.value===''||report) { return }
     const data = {
       aTitle: aTitle.current.value || '',
       bName: bName.current.value || '',
@@ -144,10 +161,11 @@ function Scamper({ fireApp, user, userName }) {
     // const id = Date.now();
     if (roomName!==roomERef.current.value||roomERef.current.value==='') { return }
     const data = {
-      cDate : today,
       aTitle: aTitle.current.value || '',
       bName: bName.current.value || '',
+      cDate : today,
       dContent: dContent.current.value || '',
+      roomName: roomERef.current.value || '',
       scamS: scamperS.current.value || '',
       scamC: scamperC.current.value || '',
       scamA: scamperA.current.value || '',
@@ -161,7 +179,8 @@ function Scamper({ fireApp, user, userName }) {
     const roomId = roomUid+'REPORT';
     fireApp.reportSave(folder, roomId, roomName, data);
   }
-  
+  // input roomName 초기화
+  const roomNameReset=() => {roomERef.current.value=''; }
 
   // roomName.substr(0,6) 방입장
     const enterRoom = () => {
@@ -171,6 +190,7 @@ function Scamper({ fireApp, user, userName }) {
       if(roomERef.current.value.length === 10){
        setroomName(currentRoom);
        setDoor('입장중');
+       setReport(false);
       }}
       const cf = {
         f1: (p) => { setdata(p) },
@@ -181,7 +201,6 @@ function Scamper({ fireApp, user, userName }) {
 
     fireApp.roomUser(folder,roomUid,roomGet);
     fireApp.dataSync(folder, currentRoom, cf);
-
     }
 
   // 관리자 방입장
@@ -192,6 +211,11 @@ function Scamper({ fireApp, user, userName }) {
     roomERef.current.value =roomname;     
   }
 
+  //스위치
+  const [state, setState] = useState({ checkedA:true,  checkedB:true });
+  const handleChange = (event) => {
+    setState({ ...state, [event.target.name]: event.target.checked });
+  };
   // Input 초기화
   // const inputReset = () => {   
   //   const data = {
@@ -223,7 +247,15 @@ function Scamper({ fireApp, user, userName }) {
     scamperR.current.value = '';
   }
   // 좋아요
-  
+  const [Switch0, setSwitch0] = useState(true);
+  const [Switch1, setSwitch1] = useState(true);
+  const [Switch2, setSwitch2] = useState(true);
+  const [Switch3, setSwitch3] = useState(true);
+  const [Switch4, setSwitch4] = useState(true);
+  const [Switch5, setSwitch5] = useState(true);
+  const [Switch6, setSwitch6] = useState(true);
+  const [Switch7, setSwitch7] = useState(true);
+
   const goodPlus = (i,goodNum,Switch,setSwitch) => {
     if(roomName){
     Switch ? data[goodNum]++ : data[goodNum]--;
@@ -231,15 +263,26 @@ function Scamper({ fireApp, user, userName }) {
     fireApp.goodUp(folder, roomName,goodNum,data[goodNum]);
     }
   }
+  const goodPlus2 = (i,goodNum,Switch,setSwitch) => {
+    if(roomName){
+    Switch ? data[goodNum]++ : data[goodNum]--;
+    setSwitch(!Switch); setReport(true);
+    fireApp.goodUp(folder, roomName,goodNum,data[goodNum]);
+
+    }
+
+  }
+
+  console.log('report',report)
 
   return (
     <div className="scamper" >      
-      <Drawer anchor={'right'} open={state['right']} onClose={toggleDrawer('right', false)}>
+      {/* <Drawer anchor={'right'} open={state['right']} onClose={toggleDrawer('right', false)}>
         <ScamperReport fireApp={fireApp} user={user} folder={folder} roomName={roomName} toggleDrawer={toggleDrawer} /> 
-      </Drawer> 
+      </Drawer>  */}
 
     {/* 동영상 모달 */}
-      <Modal show={show} onHide={handleClose} animation={true} size={'xl'} className="modal"> 
+      <Modal show={show} onHide={handleClose} animation={true} size={'xl'}  dialogClassName="videoModal"> 
         <h5 style={{background:'var(--Acolor)',color:'var(--Bcolor)'}}>
           <VideocamIcon/>
         </h5>
@@ -248,22 +291,26 @@ function Scamper({ fireApp, user, userName }) {
         ? <iframe width="100%" height="400" src ={video} title="video" frameBorder="0" />
         : '연결된 자료가 없습니다.'  
         }
+        
         </div>
         <button onClick={handleClose} style={{fontSize:'large'}}> Close </button>           
       </Modal>
 
     {/* 게시판 모달 */}
-      <Modal show={show2} onHide={handleClose2} animation={true} size={'xl'} className="modal"> 
+    
+      <Modal show={show2} onHide={handleClose2} animation={true} bsPrefix={'modal'} size={'100px'} dialogClassName="modal" centered={true}>
+        <div className="totalmodal">
         <h5 style={{background:'var(--Acolor)',color:'var(--Bcolor)'}}>
          게시판
         </h5>
         <div className="modalMain">
-         <ScamperReport fireApp={fireApp} user={user} folder={folder} 
-         roomName={roomName} handleClose2={handleClose2} /> 
+         <ScamperReport fireApp={fireApp} user={user} folder={folder} setroomName={setroomName} roomNameReset={roomNameReset}
+         roomName={roomName} handleClose2={handleClose2} setReport={setReport} setSwitch7={setSwitch7} setDoor={setDoor} /> 
         </div>
-        <button onClick={handleClose2} style={{fontSize:'large'}}> Close </button>           
+        <button onClick={handleClose2} style={{fontSize:'large'}}> Close </button>      
+        </div>     
       </Modal>
-
+      
       {level>0 && 
         <form className="adimBar">
            <button className="enterBtn" onClick={noticeUp}><AddCommentIcon/></button> 
@@ -287,21 +334,27 @@ function Scamper({ fireApp, user, userName }) {
         </div>
         {level>0 && <button className="btnRoomDel" style={{margin:'0'}} onClick={dataDel}><DeleteForever /></button>  }
 
-          {/* scamper/Tiriz */}
-        <div className="enterTitle" style={{animation:'noticeFly'}}>scamper-Tiriz</div>    
+          {/* scamper/Triz */}
+        <div className="enterTitle" >
+          <span style={{fontSize:'14px',fontWeight:'900'}}>SCAMPER </span>
+          <Switch checked={state.checkedA} onChange={handleChange} size="small" name="checkedA" 
+          color="default" />  
+          <span style={{fontSize:'14px',fontWeight:'900'}}> TRIZ</span>
+        </div>    
 
         <div style={{ width: '100px',display:'flex',justifyContent:'flex-end' }}>             
           <button style={{width:'30px'}}  onClick={handleShow}>
              <VoiceChatIcon fontSize='small' />
           </button>
-          <button style={{width:'30px'}} onClick={handleShow2}> 
+          <button style={{width:'30px'}} onClick={fire}> 
             <MenuSharp />
           </button> 
         </div>        
       </div>
-      <div className="s-header noticeHeader" ref={titleRef}>
+
         {/* <div className="noticeTitle" > 공지 </div> */}
-        <div className="enterTitle" >{notice}</div>                  
+      <div className="s-header noticeHeader" ref={titleRef}>
+        <div className="enterTitle" >{notice}</div>  
       </div>
       
 
@@ -403,7 +456,7 @@ function Scamper({ fireApp, user, userName }) {
             {report &&
             <IconButton style={{width:'25px', height:'25px'}} >
               <Badge badgeContent={good[7]} color="secondary" style={{paddingRight:'10px'}}>
-                <ThumbUp style={{color:'var(--Bcolor)'}} onClick={()=>goodPlus(7,'good7',Switch7,setSwitch7)} />
+                <ThumbUp style={{color:'var(--Bcolor)'}} onClick={()=>goodPlus2(7,'good7',Switch7,setSwitch7)} />
               </Badge>
             </IconButton> 
             }
@@ -423,4 +476,5 @@ function Scamper({ fireApp, user, userName }) {
   );
 }
 
-export default Scamper;
+
+export default memo(Scamper);

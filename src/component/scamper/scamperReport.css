@@ -10,6 +10,7 @@
 .MuiDataGrid-row{
   border-bottom: solid lightgray 1px;
   text-align: center;
+  width: 90vw !important;
 }
 .row{
   cursor: pointer;
