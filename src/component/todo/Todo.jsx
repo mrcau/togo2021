@@ -20,7 +20,7 @@ function Todo({ fireApp, user, userName,  }) {
       }
    e ? fireApp.itemSync(folder,e.uid, cf):console.log('no-User')
     })
-  }, []);
+  }, [fireApp]);
 
   //DB에 글 데이터 저장
   const submit = (e) => {

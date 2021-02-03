@@ -1,10 +1,10 @@
 import './leftMenu.css';
-import { Avatar, Button, IconButton, Menu, MenuItem } from '@material-ui/core';
-import { BatteryCharging20, BatteryCharging50, BatteryCharging80, BatteryChargingFull, PhotoCamera, SearchOutlined, WbIncandescent, WbIncandescentOutlined } from '@material-ui/icons';
+import { Avatar,  IconButton } from '@material-ui/core';
+import { BatteryCharging20, BatteryCharging50, BatteryCharging80, BatteryChargingFull, PhotoCamera, WbIncandescentOutlined } from '@material-ui/icons';
 import React, { memo, useEffect, useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import {  useHistory } from 'react-router-dom';
 import mime from 'mime-types';
-import { Accordion, Card, Dropdown, DropdownButton } from 'react-bootstrap';
+import { Accordion, Card, Dropdown } from 'react-bootstrap';
 
 function LeftMenu({ fireApp, user, photo, setPhoto }) {
 const [level, setLevel] = useState(0);

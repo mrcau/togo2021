@@ -1,13 +1,12 @@
 import './scamperReport.css';
-import React, { memo, useEffect, useRef, useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import React, { memo, useEffect, useState } from 'react';
 import { DataGrid } from '@material-ui/data-grid';
 
-function ScamperReport({ fireApp, user, folder,roomName,handleClose2}) {
+function ScamperReport({ fireApp, user, folder,roomName,setroomName,
+  handleClose2,setReport,setSwitch7,roomNameReset, setDoor}) {
 // const [level, setLevel] = useState(0);
-const history = useHistory();
 const [data, setData] = useState({})
-const [Selection, setSelection] = useState('');
+// const [Selection, setSelection] = useState('');
 
 //데이터싱크 
 useEffect(() => {
@@ -15,8 +14,7 @@ useEffect(() => {
     if (roomName) {fireApp.reportSync(folder,roomName,cf); }
     else { console.log('no-User') }
  
-}, []);
-console.log('select',Selection)
+}, [folder,roomName,fireApp]);
 
 // console.log(Selection);
 const columns = [
@@ -26,24 +24,27 @@ const columns = [
 ];
 const selectRow = () => {
   handleClose2();
-  console.log('hihi',Selection)
+  setReport(true);
+  setSwitch7(true);
+  // roomNameReset();
+  // setDoor('입장')
+  // console.log('hihi',Selection)
 }
 // level>0 && <button className="btnRoomDel" style={{margin:'0'}} onClick={dataDel}><DeleteForever /></button>  
 
 const rows = Object.values(data)
-.map((e,i) => {return( { id: i, date: e.cDate, title: e.aTitle}) })
+.map((e,i) => {return( { id: i, date: e.cDate, title: e.aTitle, roomName:e.roomName}) })
 
   return (
     <div className="reportMenu"  >
      SCAMPER
      <DataGrid scrollbarSize={10} className="row"  rows={rows} columns={columns} pageSize={10} 
      autoHeight  rowHeight={25} headerHeight={25}  disableColumnMenu 
-     onSelectionChange={(newSelection) => {setSelection(newSelection.rowIds);}}
-     onRowSelected={(p)=>setSelection(p.data.id)}
+     onRowSelected={(p)=>setroomName(p.data.roomName)}
      onRowClick={selectRow} />
     </div>
   );
 }
-
+// onSelectionChange={(newSelection) => {setSelection(newSelection.rowIds);}}
 export default memo(ScamperReport);
 

@@ -41,7 +41,7 @@ function App({ fireApp }) {
       }
       e ? cf.f1(e) : cf.f2();
     })
-  }, []);
+  }, [fireApp]);
 
   //본문
   return (

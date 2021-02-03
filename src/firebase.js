@@ -110,7 +110,8 @@ roomGet(folder,roomUid) {
   ref.on('value', (p) => {
     const data = p.val();
     if(data){ roomGetNum = Object.keys(data).length}
-  })
+  }).then(() => console.log('방개수',roomGetNum))
+  .catch((e) => console.log(e))  
   return roomGetNum;
 }
   //  룸 생성 저장 
@@ -200,7 +201,7 @@ async reportSync(folder,roomName, cf) {
     ref1.on('value', (p) => {
       const data = p.val();
       const Data = Object.values(data);
-      console.log(roomId,Data)
+      // console.log(roomId,Data)
       data ? cf.f1(Data) : cf.f2();
     });
   }
