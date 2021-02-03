@@ -2,11 +2,11 @@ import './leftMenu.css';
 import { Avatar,  IconButton } from '@material-ui/core';
 import { BatteryCharging20, BatteryCharging50, BatteryCharging80, BatteryChargingFull, PhotoCamera, WbIncandescentOutlined } from '@material-ui/icons';
 import React, { memo, useEffect, useState } from 'react';
-import {  useHistory } from 'react-router-dom';
+import {  Link, useHistory } from 'react-router-dom';
 import mime from 'mime-types';
 import { Accordion, Card, Dropdown } from 'react-bootstrap';
 
-function LeftMenu({ fireApp, user, photo, setPhoto }) {
+function LeftMenu({ fireApp, user, photo, setPhoto, logout }) {
 const [level, setLevel] = useState(0);
 
 useEffect(() => {
@@ -22,12 +22,7 @@ useEffect(() => {
     fireApp.imgUpload(user.uid, file, metaData, (e) => setPhoto(e));
   }
   const history = useHistory();
-
-  // //메뉴 열기/닫기
-  // const [anchorEl, setAnchorEl] = useState(null);
-  // const handleClick = (event) => {setAnchorEl(event.currentTarget)};
-  // const handleClose = () => {setAnchorEl(null)};
-
+console.log(user.uid)
   return (
     <div className="leftMenu">
 
@@ -39,24 +34,17 @@ useEffect(() => {
       <label htmlFor="photoFile"> 
         <IconButton size="small" component="span"> <PhotoCamera /> </IconButton>
       </label>
-      
-      <Dropdown>
-        <Dropdown.Toggle  id="dropdown-basic" > 프로필 </Dropdown.Toggle>
-        <Dropdown.Menu className="dropItem">
-        <Dropdown.ItemText className="dropItem">{user.email}</Dropdown.ItemText>
-          <Dropdown.Item  as="button"  onClick={() => history.push('/todo')} > - My Page</Dropdown.Item>
-          <Dropdown.Item  as="button"  onClick={() => history.push('/todo')} > - MEMO</Dropdown.Item>
-          {level>2 &&
-          <Dropdown.Item  as="button"  onClick={() => history.push('/atable')} > - 회원관리</Dropdown.Item>
-          }
-        </Dropdown.Menu>
-      </Dropdown>
-
+      {user.uid&&<div style={{width:'100%'}}>
+        <button className="btnLogout" onClick={logout} > 로그아웃 </button>
+        <div className="accordion Bmenu"> <Link className="a" to="/"><BatteryCharging20/> My Page</Link> </div>
+        <div className="accordion Bmenu"> <Link className="a" to="/todo"><BatteryCharging20/> My Todo</Link></div>
+        <div className="accordion Bmenu"> <Link className="a" to="/mytool"><BatteryCharging20/> My Tool</Link></div>
+        <div className="accordion Bmenu"> <Link className="a" to="/atable"><BatteryCharging20/> My users</Link></div>
+      </div>}
       <hr style={{width:'90%',border:'dashed 1px gray'}} />
     
-      
+      <div className="btntitle" disabled > 디자인씽킹</div>
 
-      <h6 style={{fontSize:'17px',fontWeight:'bold'}}> <WbIncandescentOutlined/>  디자인씽킹</h6>
         <Accordion  style={{width:'100%'}}>
           <Card className={"card"}>
             <Accordion.Toggle as={Card.Header} className="accordion" eventKey="0">

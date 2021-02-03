@@ -4,7 +4,7 @@
   align-items: center;
   flex-direction: column; 
   width: 180px; 
-  /* padding: 5px;  */
+  padding: 10px 0; 
   height: 100%;
 }
 .imgBg{
@@ -21,10 +21,10 @@
 }
 .accordion{
   height:40px;
+  width: 100%;
   padding:10px !important;
   cursor: pointer;
   text-align: left;
-
   color:var(--Acolor);
 }
 .Amenu {
@@ -37,16 +37,24 @@
   font-weight: 900;
   background: var(--Acolor);
 }
+.Bmenu {
+  padding-left: 20px !important;
+  text-align: left;
+  color:var(--Ccolor);
+  font-size: 14px;
+}
 .myMenu{
   height:25px !important;
   padding: 30 !important;
 }
-#dropdown-basic{
-  padding:0 50px !important;
+.btnLogout{
+  padding:0 10px !important;
   height:25px;
-  width:100% !important;
-  background: var(--Acolor);
+  width:90% !important;
+  border-radius: 3px;
 }
+
+
 .dropItem{
   padding:0 !important;
 }

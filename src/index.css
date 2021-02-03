@@ -7,7 +7,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
   overflow: hidden;
 }
-
+.a{ text-decoration: none; color:var(--Ccolor);}
+.a:hover{ text-decoration: none; }
+.a:visited{ text-decoration: none; }
+.a:hover{ text-decoration: none; color:var(--Dcolor); font-weight: 900; }
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;

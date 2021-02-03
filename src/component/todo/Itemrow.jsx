@@ -4,7 +4,6 @@ import ProgressBar from 'react-bootstrap/ProgressBar'
 
 function  Itemrow ({item,fireApp}) {
   const folder = "todo";
-
   let counter = item.progress;
   const itemDel=() => {
     fireApp.itemDel(folder,item.uid,item.dataId)

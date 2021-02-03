@@ -1,16 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
-import Itemrow from './Itemrow';
-import './todo.css';
+import './mytool.css';
+import Toolrow from './Toolrow';
 
-function Todo({ fireApp, user, userName,  }) {
+function Mytool({ fireApp, user, userName,  }) {
 
   const today = new Date().toLocaleDateString();
   const textRef = useRef();
+  const textRef2 = useRef();
   const titleRef = useRef();
   const rocketRef = useRef();
   const [items, setItems] = useState({});
-  const [todoCount, setTodoCount] = useState(0);
-  const folder = "todo"
+  const folder = "mytool"
   // 데이터 보여주기 싱크
   useEffect(() => {    
     fireApp.onAuth((e) => {
@@ -27,6 +27,7 @@ function Todo({ fireApp, user, userName,  }) {
     e.preventDefault();
     if(e.currentTarget == null){return;}
     const text = textRef.current.value;
+    const text2 = textRef2.current.value;
     const title = titleRef.current.value;
     if (userName && title) {
     console.log(title)
@@ -37,6 +38,7 @@ function Todo({ fireApp, user, userName,  }) {
         name: userName,
         title: title,
         text: text,
+        text2: text2,
         today: today,
         progress: 0
       }
@@ -44,6 +46,7 @@ function Todo({ fireApp, user, userName,  }) {
     }
     titleRef.current.value = '';
     textRef.current.value = '';
+    textRef2.current.value = '';
   }
 
   //로켓발사
@@ -56,22 +59,23 @@ function Todo({ fireApp, user, userName,  }) {
   }
 
   return (
-    <div className="todo">
-      <div className='todo-header'> {userName} 오늘-할일 {todoCount}개</div>
-      <div className="todo-items">
+    <div className="mytool">
+      <div className='mytool-header'>  My Tools</div>
+      <div className="mytool-items">
         {
           Object.keys(items).map((e) => {
-            return <Itemrow key={e} item={items[e]} fireApp={fireApp} />
+            return <Toolrow key={e} item={items[e]} fireApp={fireApp} />
           })
-          // <Itemrow  key={uid} item={items} items={items}/> 
         }
       </div>
-      <div className="todo-input">
-        <form onSubmit={submit} className="todo-form">
-          <input type="text" ref={titleRef} className="inputTitle" />
+      <div className="mytool-input">
+        <form onSubmit={submit} className="mytool-form">
+          <input type="text" ref={titleRef} className="inputTitle" placeholder="제목"/>
           <button className="btnadd" onClick={rocketOn} style={{ outline: "none", border: "none" }} >
             <span className="rocket" ref={rocketRef}  >🚀</span>  추가</button>
-          <textarea className="textarea" ref={textRef} cols="30" rows="3" style={{resize: 'none'}} />
+          <textarea className="textarea" ref={textRef} cols="30" rows="2" placeholder="설명을 적어주세요." />
+          <textarea className="textarea" ref={textRef2} cols="30" rows="4" 
+          style={{borderTop: 'dashed 1px'}} placeholder="소스코드를 입력해주세요." />
         </form>
       </div>
 
@@ -80,4 +84,4 @@ function Todo({ fireApp, user, userName,  }) {
   );
 }
 
-export default Todo;
+export default Mytool;

@@ -2,6 +2,7 @@
   --Acolor: #061C56;
   --Bcolor :#B8BFB5;  
   --Ccolor : #424242;
+  --Dcolor : #d90357;
   margin: 0;
   padding: 0;
   text-align: center;
@@ -78,3 +79,13 @@ button:active {
   opacity: 0.5;
 }
 
+.btntitle {
+  font-weight: 700;
+  font-size:small;
+  width: 90%;
+  height: 25px;
+  border-radius: 3px;
+  color: var(--Bcolor);
+  background: var(--Acolor);
+  line-height: 25px;
+}

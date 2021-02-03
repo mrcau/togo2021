@@ -10,6 +10,8 @@ import Togo from './component/togo/Togo';
 import GpsFixedIcon from '@material-ui/icons/GpsFixed';
 import Scamper from './component/scamper/Scamper';
 import Atable from './component/authTable/Atable';
+import Mytool from './component/mytool/Mytool';
+import Mytoolbox from './component/mytool/Mytoolbox';
 
 
 function App({ fireApp }) {
@@ -45,14 +47,15 @@ function App({ fireApp }) {
 
   //본문
   return (
-    <div className="App">
+    <div className="App"> 
       <Drawer anchor={'left'} open={state['left']} onClose={toggleDrawer('left', false)}>
-        <LeftMenu fireApp={fireApp} user={user} photo={photo} setPhoto={setPhoto} />
+        <LeftMenu fireApp={fireApp} user={user} photo={photo} setPhoto={setPhoto} logout={logout} />
       </Drawer>
-      <Drawer anchor={'top'} open={state['top']} onClose={toggleDrawer('top', false)}>
-        <LoginModal fireApp={fireApp} setuser={setuser} />
-      </Drawer>
-      <header className="header">
+      <Drawer anchor={'top'} open={state['top']} onClose={toggleDrawer('top', false)}  >
+      {uid ? <Mytoolbox fireApp={fireApp} user={user} userName={userName} />
+           : <LoginModal fireApp={fireApp} setuser={setuser} />  }
+      </Drawer> 
+      <header className="header" >
         <div className="btnmenu">
           <button onClick={toggleDrawer('left', true)}>
             <MenuSharpIcon /></button>
@@ -63,8 +66,8 @@ function App({ fireApp }) {
           </Link>
         </div> 
         <div className="rightMenu" >
-          {uid ? <Tooltip arrow title="로그아웃">
-          <Chip size="small" avatar={<Avatar src={photo} />} label={uid.substr(0,6)} as="button"  onClick={logout}/>
+          {uid ? <Tooltip arrow title="My toolBox">
+          <Chip size="small" avatar={<Avatar src={photo} />} label={uid.substr(0,6)} as="button"  onClick={toggleDrawer('top', true)}/>
           </Tooltip> 
             : <button onClick={toggleDrawer('top', true)}> Login </button>}
         </div>
@@ -83,6 +86,9 @@ function App({ fireApp }) {
           </Route>
           <Route path='/atable'> 
             <Atable fireApp={fireApp} user={user} userName={userName} />
+          </Route>
+          <Route path='/mytool'> 
+            <Mytool fireApp={fireApp} user={user} userName={userName} />
           </Route>
           
         </Switch>
