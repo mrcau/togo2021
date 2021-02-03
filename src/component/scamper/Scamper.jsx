@@ -43,30 +43,7 @@ function Scamper({ fireApp, user, userName }) {
   // const [Selection, setSelection] = useState('');
     // const toggleDrawer = (anchor, open) => (event) => setState({ ...state, [anchor]: open });
   
- 
-  //모달창
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-  //모달창2
-  const [show2, setShow2] = useState(false);
-  const handleClose2 = () => setShow2(false);
-  const handleShow2 = () => setShow2(true);
-  //모달창3
-  const fire = () => {
-    Swal.fire({
-      title: 'Error!',
-      text: 'Do you want to continue',
-      icon: 'error',
-      confirmButtonText: 'Cool'
-    })
-  }
-
-  //입장중
-  const [door, setDoor] = useState('입장')
-  const [report, setReport] = useState(false);
-
-  //데이터싱크 
+   //데이터싱크 
   useEffect(() => {
     fireApp.onAuth((e) => {
       const cf = {
@@ -92,14 +69,44 @@ function Scamper({ fireApp, user, userName }) {
       fireApp.videoSync(folder,roomName,'See',(p)=>{setVideo(p); })
       fireApp.videoSync(folder,roomName,'Tok',(p)=>{
         setNotice(p); 
+        if(noticeRef.current.value){
         titleRef.current.classList.add("noticeFly");
-        setTimeout(() => {
-          titleRef.current.classList.remove("noticeFly")},1000)
+        setTimeout(()=>{titleRef.current.classList.remove("noticeFly")},1000)
+        }
       })
      }
-    
-  },[roomName,fireApp])
-  
+  },[roomName,fireApp]);
+
+
+    //모달창
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  //모달창2
+  const [show2, setShow2] = useState(false);
+  const handleClose2 = () => setShow2(false);
+  const handleShow2 = () => setShow2(true);
+  //모달창3
+  const fire = () => {Swal.fire({html:video, width:'90%'})}
+  // 자료입력 모달
+  const fireInsert = async(e)=>{
+    e.preventDefault();
+    const { value: text } = await Swal.fire({
+      input: 'textarea',
+      inputLabel: '참고자료',
+      inputPlaceholder: '이곳에 자료를 입력해주세요.',
+      inputAttributes: {'aria-label': 'Type your message here'},
+      showCancelButton: true
+    })
+    if (text) {
+      Swal.fire(text)
+    fireApp.videoSave(folder, user.uid,'See', text);
+    }
+  }
+  //입장중
+  const [door, setDoor] = useState('입장')
+  const [report, setReport] = useState(false);
+
   let good =[data.good0,data.good1,data.good2,data.good3,data.good4,
             data.good5,data.good6,data.good7]
 
@@ -116,7 +123,6 @@ function Scamper({ fireApp, user, userName }) {
 // 동영상 주소 저장
   const videoUp = (e) => {
     e.preventDefault();
-
     const data = videoRef.current.value;
     fireApp.videoSave(folder, user.uid,'See', data)
   }
@@ -273,7 +279,6 @@ function Scamper({ fireApp, user, userName }) {
 
   }
 
-  console.log('report',report)
 
   return (
     <div className="scamper" >      
@@ -313,10 +318,10 @@ function Scamper({ fireApp, user, userName }) {
       
       {level>0 && 
         <form className="adimBar">
-           <button className="enterBtn" onClick={noticeUp}><AddCommentIcon/></button> 
-          <input type="text" className="enterInput" placeholder="공지사항" ref={noticeRef} style={{borderRight:'1px dashed'}} />
-          <input type="text" className="enterInput" placeholder="동영상링크" ref = {videoRef} />
-          <button className="enterBtn" style={{width:'30px'}} onClick={videoUp}><YouTubeIcon/></button> 
+          <button className="enterBtn"  onClick={noticeUp}><AddCommentIcon/></button> 
+          <input type="text" className="enterInput" placeholder="공지사항" ref={noticeRef} />
+          <button className="enterBtn"  style={{width:'30px'}} onClick={fireInsert}><YouTubeIcon/></button> 
+          {/* <input type="text" className="enterInput" placeholder="동영상링크" ref = {videoRef} /> */}
         </form>
       }
       {level>0 &&
@@ -343,10 +348,10 @@ function Scamper({ fireApp, user, userName }) {
         </div>    
 
         <div style={{ width: '100px',display:'flex',justifyContent:'flex-end' }}>             
-          <button style={{width:'30px'}}  onClick={handleShow}>
+          <button style={{width:'30px'}}  onClick={fire}>
              <VoiceChatIcon fontSize='small' />
           </button>
-          <button style={{width:'30px'}} onClick={fire}> 
+          <button style={{width:'30px'}} onClick={fireInsert}> 
             <MenuSharp />
           </button> 
         </div>        
