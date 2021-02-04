@@ -29,10 +29,10 @@ function  Toolrow ({item,fireApp}) {
   return (
     <div className="toolrow">
       <div className="theader">
-        <Badge badgeContent={item.progress} color="secondary" style={{paddingRight:'10px'}}>
-            <ThumbUp style={{color:'var(--Bcolor)'}} />
-        </Badge>
         <div className="headerToday">{item.title}</div>
+        <Badge badgeContent={item.progress} color="secondary" style={{right:'10px'}}  
+          anchorOrigin={{vertical: 'bottom', horizontal: 'left', }}/>
+        <ThumbUp style={{color:'var(--Bcolor)'}} size="small" />        
       </div>
       {/* <div className="title"> {item.text}</div>      */}
       <textarea  className="title" cols="30" rows="2" style={{resize: 'none'}} 
