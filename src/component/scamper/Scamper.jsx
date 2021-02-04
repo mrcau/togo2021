@@ -1,16 +1,13 @@
 import { Badge, IconButton, Switch } from '@material-ui/core';
 import {  DeleteForever,   MenuSharp, ThumbUp } from '@material-ui/icons';
-import React, { memo, useEffect, useMemo, useRef, useState } from 'react';
+import React, { memo, useEffect,  useRef, useState } from 'react';
 import AddCommentIcon from '@material-ui/icons/AddComment';
 import YouTubeIcon from '@material-ui/icons/YouTube';
-import VideocamIcon from '@material-ui/icons/Videocam';
 import './scamper.css';
 import VoiceChatIcon from '@material-ui/icons/VoiceChat';
 import ScamperReport from './ScamperReport';
-import { Modal } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 import placeholder from './placeholder';
-
 
 function Scamper({ fireApp, user, userName }) {
   const folder = "scamper";
@@ -29,9 +26,10 @@ function Scamper({ fireApp, user, userName }) {
   const scamperR = useRef();
   const roomERef = useRef();
   const formRef = useRef();
-  const videoRef = useRef();
   const noticeRef = useRef();
   const titleRef = useRef();
+  const drawerRef = useRef();
+  const backRef = useRef();
 
   const [data, setdata] = useState({});
   const [room, setRoom] = useState({});
@@ -40,12 +38,12 @@ function Scamper({ fireApp, user, userName }) {
   const [level, setLevel] = useState(0);
   const [video, setVideo] = useState('');
   const [notice, setNotice] = useState('');
-  const [state, setState] = useState({ triz:false,  checkedB:true });
-  const placeData = state.triz?placeholder[1]:placeholder[0];
-  //오른쪽 report 메뉴
-  // const [state, setState] = useState({ top: false, left: false, right: false });
-  // const [Selection, setSelection] = useState('');
-    // const toggleDrawer = (anchor, open) => (event) => setState({ ...state, [anchor]: open });
+  const [state, setState] = useState({ triz:false,  Switch7:true });
+  const placeData = state.triz ? placeholder[1] : placeholder[0];
+ 
+  //입장중
+  const [door, setDoor] = useState('입장')
+  const [report, setReport] = useState(false);
   
    //데이터싱크 
   useEffect(() => {
@@ -79,17 +77,50 @@ function Scamper({ fireApp, user, userName }) {
         }
       })
      }
-  },[roomName,fireApp]);
+  },[roomName,fireApp,report]);
 
+    // 좋아요
+    const [Switch0, setSwitch0] = useState(true);
+    const [Switch1, setSwitch1] = useState(true);
+    const [Switch2, setSwitch2] = useState(true);
+    const [Switch3, setSwitch3] = useState(true);
+    const [Switch4, setSwitch4] = useState(true);
+    const [Switch5, setSwitch5] = useState(true);
+    const [Switch6, setSwitch6] = useState(true);
+    // const [Switch7, setSwitch7] = useState(true);
+    
+    const goodPlus = (i,goodNum,Switch,setSwitch) => {
+      if(roomName){
+      Switch ? data[goodNum]++ : data[goodNum]--;
+      setSwitch(!Switch);
+      fireApp.goodUp(folder, roomName,goodNum,data[goodNum]);
+      }
+    }
+    const goodPlus2 = (i,goodNum,Switch7) => {
+      if(roomName){
+        Switch7 ? data[goodNum]++ : data[goodNum]--;
+      setState({ ...state, Switch7:!state.Switch7 })
+      // setReport(true);
+      fireApp.goodUp(folder, roomName,goodNum,data[goodNum]);
+      }
+    }
+    //오른쪽 모달 핸들링
+    const moveModal = () => {
+      drawerRef.current.classList.add("moveDrawer");
+      backRef.current.classList.add("backNone");    
+      console.log('back')
+    }
+    const moveModal2 = () => {
+      drawerRef.current.classList.remove("moveDrawer");
+      backRef.current.classList.remove("backNone");    
+      console.log('back')
+    }
+      //스위치 핸들링
+    const handleChange = (event) => {
+      setState({ ...state, [event.target.name]: event.target.checked });
+    };
   
-    //모달창
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-  //모달창2
-  const [show2, setShow2] = useState(false);
-  const handleClose2 = () => setShow2(false);
-  const handleShow2 = () => setShow2(true);
+  
   //모달창3
   const fire = () => {Swal.fire({html:video, width:'90%'})}
   // 자료입력 모달
@@ -107,9 +138,7 @@ function Scamper({ fireApp, user, userName }) {
     fireApp.videoSave(folder, user.uid,'See', text);
     }
   }
-  //입장중
-  const [door, setDoor] = useState('입장')
-  const [report, setReport] = useState(false);
+
 
   let good =[data.good0,data.good1,data.good2,data.good3,data.good4,
             data.good5,data.good6,data.good7]
@@ -124,12 +153,7 @@ function Scamper({ fireApp, user, userName }) {
     const roomget = fireApp.roomGet(folder,roomUid)
     roomget < 8 && fireApp.roomSave(folder, newRoom, data)
   }
-// 동영상 주소 저장
-  const videoUp = (e) => {
-    e.preventDefault();
-    const data = videoRef.current.value;
-    fireApp.videoSave(folder, user.uid,'See', data)
-  }
+
 // notice 저장 - 공지 보내기
   const noticeUp = (e) => {
     e.preventDefault();
@@ -220,11 +244,7 @@ function Scamper({ fireApp, user, userName }) {
     roomERef.current.value =roomname;     
   }
 
-  //스위치
-  const handleChange = (event) => {
-    setState({ ...state, [event.target.name]: event.target.checked });
-  };
-console.log(state)
+
   // Input 초기화
   // const inputReset = () => {   
   //   const data = {
@@ -255,76 +275,23 @@ console.log(state)
     scamperE.current.value = '';
     scamperR.current.value = '';
   } 
-  // 좋아요
-  const [Switch0, setSwitch0] = useState(true);
-  const [Switch1, setSwitch1] = useState(true);
-  const [Switch2, setSwitch2] = useState(true);
-  const [Switch3, setSwitch3] = useState(true);
-  const [Switch4, setSwitch4] = useState(true);
-  const [Switch5, setSwitch5] = useState(true);
-  const [Switch6, setSwitch6] = useState(true);
-  const [Switch7, setSwitch7] = useState(true);
-  
-  const goodPlus = (i,goodNum,Switch,setSwitch) => {
-    if(roomName){
-    Switch ? data[goodNum]++ : data[goodNum]--;
-    setSwitch(!Switch);
-    fireApp.goodUp(folder, roomName,goodNum,data[goodNum]);
-    }
-  }
-  const goodPlus2 = (i,goodNum,Switch,setSwitch) => {
-    if(roomName){
-    Switch ? data[goodNum]++ : data[goodNum]--;
-    setSwitch(!Switch); setReport(true);
-    fireApp.goodUp(folder, roomName,goodNum,data[goodNum]);
 
-    }
-
-  }
-
-
+//titleRef.current.classList.add("noticeFly");
   return (
-    <div className="scamper" >      
-      {/* <Drawer anchor={'right'} open={state['right']} onClose={toggleDrawer('right', false)}>
-        <ScamperReport fireApp={fireApp} user={user} folder={folder} roomName={roomName} toggleDrawer={toggleDrawer} /> 
-      </Drawer>  */}
+    <div className="scamper" >     
 
-    {/* 동영상 모달 */}
-      <Modal show={show} onHide={handleClose} animation={true} size={'xl'}  dialogClassName="videoModal"> 
-        <h5 style={{background:'var(--Acolor)',color:'var(--Bcolor)'}}>
-          <VideocamIcon/>
-        </h5>
-        <div className="modalMain">
-        {video 
-        ? <iframe width="100%" height="400" src ={video} title="video" frameBorder="0" />
-        : '연결된 자료가 없습니다.'  
-        }
-        
-        </div>
-        <button onClick={handleClose} style={{fontSize:'large'}}> Close </button>           
-      </Modal>
-
-    {/* 게시판 모달 */}
-    
-      <Modal show={show2} onHide={handleClose2} animation={true} bsPrefix={'modal'} size={'100px'} dialogClassName="modal" centered={true}>
-        <div className="totalmodal">
-        <h5 style={{background:'var(--Acolor)',color:'var(--Bcolor)'}}>
-         게시판
-        </h5>
-        <div className="modalMain">
-         <ScamperReport fireApp={fireApp} user={user} folder={folder} setroomName={setroomName} roomNameReset={roomNameReset}
-         roomName={roomName} handleClose2={handleClose2} setReport={setReport} setSwitch7={setSwitch7} setDoor={setDoor} /> 
-        </div>
-        <button onClick={handleClose2} style={{fontSize:'large'}}> Close </button>      
-        </div>     
-      </Modal>
-      
+    <div className="drawer" ref={drawerRef}>
+     <ScamperReport fireApp={fireApp} user={user} folder={folder} setroomName={setroomName} roomNameReset={roomNameReset}
+      roomName={roomName} setReport={setReport} drawerRef={drawerRef} state={state.Switch7} 
+      moveModal={moveModal} setState={setState}  /> 
+    </div>
+    <div className="drawerback" ref={backRef} onClick={moveModal}></div>
+       
       {level>0 && 
         <form className="adimBar">
           <button className="enterBtn"  onClick={noticeUp}><AddCommentIcon/></button> 
           <input type="text" className="enterInput" placeholder="공지사항" ref={noticeRef} />
           <button className="enterBtn"  style={{width:'30px'}} onClick={fireInsert}><YouTubeIcon/></button> 
-          {/* <input type="text" className="enterInput" placeholder="동영상링크" ref = {videoRef} /> */}
         </form>
       }
       {level>0 &&
@@ -342,10 +309,10 @@ console.log(state)
         </div>
         {level>0 && <button className="btnRoomDel" style={{margin:'0'}} onClick={dataDel}><DeleteForever /></button>  }
 
-          {/* scamper/Triz */}
+          {/* 스위치호출 */}
         <div className="enterTitle" >
           <span style={{fontSize:'14px',fontWeight:'900'}}>SCAMPER </span>
-          <Switch checked={state.triz} onChange={handleChange} size="small" name="triz" 
+          <Switch checked={state.triz} name="triz" onChange={handleChange} size="small" 
           color="default" />  
           <span style={{fontSize:'14px',fontWeight:'900'}}> TRIZ</span>
         </div>    
@@ -354,7 +321,7 @@ console.log(state)
           <button style={{width:'30px'}}  onClick={fire}>
              <VoiceChatIcon fontSize='small' />
           </button>
-          <button style={{width:'30px'}} onClick={fireInsert}> 
+          <button style={{width:'30px'}} onClick={moveModal2}> 
             <MenuSharp />
           </button> 
         </div>        
@@ -464,7 +431,7 @@ console.log(state)
             {report &&
             <IconButton style={{width:'25px', height:'25px'}} >
               <Badge badgeContent={good[7]} color="secondary" style={{paddingRight:'10px'}}>
-                <ThumbUp style={{color:'var(--Bcolor)'}} onClick={()=>goodPlus2(7,'good7',Switch7,setSwitch7)} />
+                <ThumbUp style={{color:'var(--Bcolor)'}} onClick={()=>{goodPlus2(7,'good7',state.Switch7)}} />
               </Badge>
             </IconButton> 
             }

@@ -3,7 +3,7 @@ import React, { memo, useEffect, useState } from 'react';
 import { DataGrid } from '@material-ui/data-grid';
 
 function ScamperReport({ fireApp, user, folder,roomName,setroomName,
-  handleClose2,setReport,setSwitch7,roomNameReset, setDoor}) {
+  handleClose2,setReport,state,setState,roomNameReset, setDoor,moveModal}) {
 // const [level, setLevel] = useState(0);
 const [data, setData] = useState({})
 // const [Selection, setSelection] = useState('');
@@ -23,9 +23,12 @@ const columns = [
   { field: 'date', headerName: '날짜', width: '20vw' }
 ];
 const selectRow = () => {
-  handleClose2();
+  // handleClose2();
   setReport(true);
-  setSwitch7(true);
+  setState({ ...state, Switch7:true});
+  // drawerRef.current.classList.add("moveDrawer");
+  moveModal();
+    console.log(roomName)
   // roomNameReset();
   // setDoor('입장')
   // console.log('hihi',Selection)
