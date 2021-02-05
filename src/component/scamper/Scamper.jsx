@@ -20,7 +20,6 @@ function Scamper({ fireApp, user, userName }) {
   const input4 = useRef();
   const input5 = useRef();
   const input6 = useRef();
-  const input7 = useRef();
   const scamperS = useRef();
   const scamperC = useRef();
   const scamperA = useRef();
@@ -153,9 +152,10 @@ function Scamper({ fireApp, user, userName }) {
     const newRoom = roomUid + num;
     setroomName(newRoom);
     const data = {scamS:'',scamC:'',scamA:'',scamM:'',scamP:'',scamE:'',scamR:'',aTitle:'',bName: '',input3: '', 
-    input4: '',input5: '',input6: '',input7: '',  good0:0, good1:0, good2:0, good3:0, good4:0, good5:0, good6:0, good7:0,}
+    input4: '',input5: '',input6: '',  good0:0, good1:0, good2:0, good3:0, good4:0, good5:0, good6:0, good7:0,}
     const roomget = fireApp.roomGet(folder,roomUid)
-    roomget < 8 && fireApp.roomSave(folder, newRoom, data)
+    roomget < 8 && 
+    fireApp.roomSave(folder, newRoom, data)
   }
 
 // notice 저장 - 공지 보내기
@@ -176,7 +176,6 @@ function Scamper({ fireApp, user, userName }) {
       input4: input4.current.value || '',
       input5: input5.current.value || '',
       input6: input6.current.value || '',
-      input7: input7.current.value || '',
       scamS: scamperS.current.value || '',
       scamC: scamperC.current.value || '',
       scamA: scamperA.current.value || '',
@@ -186,6 +185,7 @@ function Scamper({ fireApp, user, userName }) {
       scamR: scamperR.current.value || '',
     }    
     const roomUid =  roomERef.current.value.substr(0,roomSubstr)
+    // console.log(folder,roomName,data,roomUid)
     // const roomget = fireApp.roomGet(folder,roomUid)
     // roomget < 10 &&  fireApp.dataUp(folder, roomName, data)
     fireApp.dataUp(folder, roomName, data)
@@ -204,7 +204,6 @@ function Scamper({ fireApp, user, userName }) {
       input4: input4.current.value || '',
       input5: input5.current.value || '',
       input6: input6.current.value || '',
-      input7: input7.current.value || '',
       scamS: scamperS.current.value || '',
       scamC: scamperC.current.value || '',
       scamA: scamperA.current.value || '',
@@ -277,7 +276,6 @@ function Scamper({ fireApp, user, userName }) {
     input4.current.value = '';
     input5.current.value = '';
     input6.current.value = '';
-    input7.current.value = '';
     roomERef.current.value = '';
     scamperS.current.value = '';
     scamperC.current.value = '';
@@ -455,17 +453,14 @@ function Scamper({ fireApp, user, userName }) {
             <textarea cols="30" rows="1" className="scamperInput input2" ref={bName} 
             onChange={onSubmit} value={data.bName} placeholder="작성자" />
 
-            <textarea cols="30" rows="3" className="scamperInput input3" ref={input3} 
+            <textarea cols="30" rows="1" className="scamperInput input3" ref={input3} 
             onChange={onSubmit} value={data.input3} placeholder={placeData.goodidea} />            
             <textarea cols="30" rows="1" className="scamperInput input4" ref={input4} 
             onChange={onSubmit} value={data.input4} placeholder={placeData.bestidea} />
-            <textarea cols="30" rows="2" className="scamperInput input5 " ref={input5} 
+            <textarea cols="30" rows="1" className="scamperInput input5 " ref={input5} 
             onChange={onSubmit} value={data.input5} placeholder={placeData.plusidea} />
-            <textarea cols="30" rows="2" className="scamperInput input6" ref={input6} 
-            onChange={onSubmit} value={data.input6} placeholder={placeData.minusidea} />
-            <textarea cols="30" rows="2" className="scamperInput input7" ref={input7} 
-            onChange={onSubmit} value={data.input7} placeholder={placeData.funidea} />
-            
+            <textarea cols="30" rows="1" className="scamperInput input6" ref={input6} 
+            onChange={onSubmit} value={data.input6} placeholder={placeData.minusidea} />            
             <input type="button" className="scamperInput btn" onClick={btnInput} value="제출"/>
           </div>
 

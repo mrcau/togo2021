@@ -1,4 +1,5 @@
-export default[
+/* eslint-disable import/no-anonymous-default-export */
+export default [
   {title1:"대체하기(Substitute)",
   text1:"- 대체하거나 변경하면? \n(예:쇠젓가락을 나무젓가락으로)",
   title2:"결합하기(Combine)",
@@ -13,12 +14,11 @@ export default[
   text6:"- 부분을 삭제하거나 단순화 하면?\n (예:오픈카)",
   title7:"뒤집기(Reverse)",
   text7:"- 순서나 위치등을 뒤집으면?\n (예:누드김밥)",
-  goodidea:"좋은 아이디어 3가지\n1.\n2.\n3.",
-  bestidea:"가장 좋은 아이디어 1가지",
-  plusidea:"위 아이디어의 긍정적인 부분은?",
-  minusidea:"위 아이디어의 부벙적인 부분은?",
-  funidea:"위 아이디어의 재미있는 부분은?"
-},
+  goodidea:"- 좋은 아이디어 3가지:",
+  bestidea:"- 가장 좋은 아이디어 1가지:",
+  plusidea:"- 위 아이디어의 긍정적인 부분은?",
+  minusidea:"- 위 아이디어의 부정적인 부분은?",
+}, 
 {title1:"분할하기",
   text1:"- 쪼개어 사용하면?\n (예:조립식가구,할부결제)",
   title2:"추출하기",
@@ -33,10 +33,9 @@ export default[
   text6:"- 연속 아닌 주기적으로 작용하면?\n (예:신호등,인체감지조명)",
   title7:"차원바꾸기",
   text7:"- 배치를 2,3차원으로 바꾸면?\n (예:사다리차,스텐드진열)",
-  goodidea:"좋은 아이디어 3가지\n1.\n2.\n3.",
-  bestidea:"가장 좋은 아이디어 1가지",
-  plusidea:"위 아이디어의 긍정적인 부분은?",
-  minusidea:"위 아이디어의 부벙적인 부분은?",
-  funidea:"위 아이디어의 재미있는 부분은?"
-},
+  goodidea:"- 좋은 아이디어 3가지:",
+  bestidea:"- 가장 좋은 아이디어 1가지:",
+  plusidea:"- 위 아이디어의 긍정적인 부분은?",
+  minusidea:"- 위 아이디어의 부정적인 부분은?",
+}
 ]

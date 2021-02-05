@@ -13,8 +13,7 @@ useEffect(() => {
     const cf = { f1:(p)=> {setData(p) }, f2:()=> {setData({}) } }
     if (roomName) {fireApp.reportSync(folder,roomName,cf); }
     else { console.log('no-User') }
- 
-}, [folder,roomName,fireApp]);
+ }, [folder,roomName,fireApp]);
 
 // console.log(Selection);
 const columns = [
@@ -23,15 +22,12 @@ const columns = [
   { field: 'date', headerName: '날짜', width: '20vw' }
 ];
 const selectRow = () => {
-  // handleClose2();
   setReport(true);
   setState({ ...state, Switch7:true});
-  // drawerRef.current.classList.add("moveDrawer");
   moveModal2();
     console.log(roomName)
   roomNameReset();
   // setDoor('입장')
-  // console.log('hihi',Selection)
 }
 // level>0 && <button className="btnRoomDel" style={{margin:'0'}} onClick={dataDel}><DeleteForever /></button>  
 
@@ -48,6 +44,5 @@ const rows = Object.values(data)
     </div>
   );
 }
-// onSelectionChange={(newSelection) => {setSelection(newSelection.rowIds);}}
 export default memo(ScamperReport);
 

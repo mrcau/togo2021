@@ -121,7 +121,10 @@ flex:auto; font-size: small;}
   border: none;
   text-align: left;
   padding : 0 5px;
+  font-size: small;
+  line-height: 15px;
 }
+
 .scamperInput.input3, .input5, .input6, .input7{
   flex: auto;
 }
@@ -181,8 +184,6 @@ flex:auto; font-size: small;}
   animation: noticeFly 1000ms;}
 .enterInput{  width: 60px; outline: none; border: none;}
 /* .noticeTitle{ width: 40px; background: var(--Acolor);} */
-
-
 
 .videoModal{
   position: absolute !important;

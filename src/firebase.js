@@ -105,16 +105,15 @@ class firebaseApp {
 
 //  룸 개수 가져오기
 roomGet(folder,roomUid) {
-  let roomGetNum = 0;
+  let roomGetNum = 0; 
   const ref = firebase.database().ref(`${folder}/${roomUid}`);
-  ref.on('value', (p) => {
-    const data = p.val();
-    if(data){ roomGetNum = Object.keys(data).length}
-  }).then(() => console.log('방개수',roomGetNum))
-  .catch((e) => console.log(e))  
-  return roomGetNum;
+  ref.on('value',(p)=>{const data = p.val();
+    if(data){ roomGetNum = Object.keys(data).length;}
+  })  
+  return roomGetNum
 }
-  //  룸 생성 저장 
+
+//  룸 생성 저장 
   roomSave(folder,newRoom, data) {
     const roomUid = newRoom.substr(0,roomSubstr);
     const Uid = newRoom.substr(roomSubstr);
@@ -169,7 +168,6 @@ async roomUser(folder,roomUid,cf) {
       const data = p.val();
       data ? cf.f3(data) : cf.f4();
     });
-
   }
 
   // 데이터 삭제
