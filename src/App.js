@@ -1,18 +1,16 @@
-import { Avatar, Chip, Drawer, Tooltip } from '@material-ui/core';
+import { Avatar, Chip, IconButton, Tooltip } from '@material-ui/core';
 import MenuSharpIcon from '@material-ui/icons/MenuSharp';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link, Route, Switch, useHistory } from 'react-router-dom';
 import './App.css';
 import LeftMenu from './component/leftMenu/LeftMenu';
 import LoginModal from './component/loginModal/LoginModal';
 import Todo from './component/todo/Todo';
 import Togo from './component/togo/Togo';
-import GpsFixedIcon from '@material-ui/icons/GpsFixed';
 import Scamper from './component/scamper/Scamper';
 import Atable from './component/authTable/Atable';
 import Mytool from './component/mytool/Mytool';
 import Mytoolbox from './component/mytool/Mytoolbox';
-
 
 function App({ fireApp }) {
   const history = useHistory();
@@ -20,25 +18,48 @@ function App({ fireApp }) {
   const [uid, setUid] = useState('');
   const [photo, setPhoto] = useState('');
   const [userName, setUserName] = useState('');
-  //Drawer
-  const [state, setState] = useState({ top: false, left: false, right: false });
-  const toggleDrawer = (anchor, open) => (event) => setState({ ...state, [anchor]: open });
-  const toggleDrawer2 = (anchor, open) => setState({ ...state, [anchor]: open });
+  const drawerRef = useRef();
+  const backRef = useRef();
+  const drawerTopRef = useRef();
+  const backTopRef = useRef();
+  
+ //왼쪽 모달 핸들링
+ const moveModal = () => {
+  drawerRef.current.classList.add("moveDrawerLeft");
+  backRef.current.classList.remove("backNoneLeft");    
+ }
+ const moveModal2 = () => {
+  drawerRef.current.classList.remove("moveDrawerLeft");
+  backRef.current.classList.add("backNoneLeft");    
+ }
+ //위쪽 모달 핸들링
+ const moveModal3 = () => {
+  drawerTopRef.current.classList.add("moveDraweTop");
+  backTopRef.current.classList.remove("backNonTop");    
+ }
+ const moveModal4 = () => {
+  drawerTopRef.current.classList.remove("moveDraweTop");
+  backTopRef.current.classList.add("backNonTop");    
+ }
+//  const moveModal0 = (drawref,backref,drawclass,backclass) =>{
+//   drawref.current.classList.add(drawclass);
+//   backref.current.classList.remove(backclass); 
+//  }
 
   //로그아웃
   const logout =  async() =>{
    await fireApp.logout();
    setuser({}); setUid(''); setPhoto('');setUserName('');
-   history.push('/')
+   history.push('/');
+   moveModal2();
   } 
-
 
   // 로그인 싱크
   useEffect(() => {
-     fireApp.onAuth((e) => {
+     fireApp.onAuth(
+    (e) => {
       const cf = {
-        f1: (e) => { setuser(e); setUid(e.uid); setPhoto(e.photoURL); setUserName(e.displayName);
-          toggleDrawer2('top', false) },
+        f1: (e) => { setuser(e); setUid(e.uid); setPhoto(e.photoURL); setUserName(e.displayName);moveModal4(); },
         f2: () => { setuser({}); setUid(''); setPhoto('')}
       }
       e ? cf.f1(e) : cf.f2();
@@ -48,30 +69,36 @@ function App({ fireApp }) {
   //본문
   return (
     <div className="App"> 
-      <Drawer anchor={'left'} open={state['left']} onClose={toggleDrawer('left', false)}>
-        <LeftMenu fireApp={fireApp} user={user} photo={photo} setPhoto={setPhoto} logout={logout} />
-      </Drawer>
-      <Drawer anchor={'top'} open={state['top']} onClose={toggleDrawer('top', false)}  >
-      {uid ? <Mytoolbox fireApp={fireApp} user={user} userName={userName} />
-           : <LoginModal fireApp={fireApp} setuser={setuser} />  }
-      </Drawer> 
+      <div className="drawerLeft" ref={drawerRef}>
+        <LeftMenu fireApp={fireApp} user={user} photo={photo} setPhoto={setPhoto} logout={logout} moveModal2={moveModal2} />
+      </div>
+      <div className="drawerbackLeft backNoneLeft" ref={backRef} onClick={moveModal2}></div>
+      {/* 위쪽메뉴 */}
+      <div className="drawerTop " ref={drawerTopRef}>
+        {uid ? <Mytoolbox fireApp={fireApp} user={user} userName={userName} />
+           : <LoginModal fireApp={fireApp} setuser={setuser} moveModal4={moveModal4}/>  }
+      </div>
+      <div className="drawerbackTop backNonTop" ref={backTopRef} onClick={moveModal4}></div>
+
       <header className="header" >
-        <div className="btnmenu">
-          <button onClick={toggleDrawer('left', true)}>
-            <MenuSharpIcon /></button>
-        </div>
+        {/* 좌측메유 */}
+        {/* <div className="btnmenu"> <button onClick={moveModal}><MenuSharpIcon/></button> </div> */}
+        <IconButton size="small" component="span" onClick={moveModal} style={{paddingLeft:"10px"}}> 
+          <MenuSharpIcon style={{color:"var(--Bcolor)"}}   /> 
+        </IconButton>
+        {/* /타이틀 */}
         <div className="headerT">
-          <Link className="link" to='/'>
-            SSAM <GpsFixedIcon style={{ fontSize: '25px' }} /> TOOL
-          </Link>
+          <Link className="link" to='/'> SamTool </Link>
         </div> 
-        <div className="rightMenu" >
-          {uid ? <Tooltip arrow title="My toolBox">
-          <Chip size="small" avatar={<Avatar src={photo} />} label={uid.substr(0,6)} as="button"  onClick={toggleDrawer('top', true)}/>
+        {/* 탑메뉴 */}
+        <div className="rightMenu" style={{textAlign:"right",paddingRight:"10px",lineHeight:"20px"}}>
+          {uid ? <Tooltip arrow title="My ToolBox">
+          <Chip size="small" avatar={<Avatar src={photo}/>} label={uid.substr(0,6)} as="button"  onClick={moveModal3}/>
           </Tooltip> 
-            : <button onClick={toggleDrawer('top', true)}> Login </button>}
-        </div>
-        
+            : <IconButton size="small" component="span" onClick={moveModal3} 
+            style={{color:"var(--Bcolor)"}}> Login </IconButton>
+          }
+          </div>        
       </header>
       <main>
         <Switch>

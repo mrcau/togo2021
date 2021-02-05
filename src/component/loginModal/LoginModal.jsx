@@ -6,7 +6,7 @@ import LockOpenIcon from '@material-ui/icons/LockOpen';
 import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
 import EmojiPeopleIcon from '@material-ui/icons/EmojiPeople';
 
-function LoginModal({ fireApp, setuser }) {
+function LoginModal({ fireApp, setuser,moveModal4 }) {
   const emailRef = useRef();
   const passRef = useRef();
   const emailRegisterRef = useRef();

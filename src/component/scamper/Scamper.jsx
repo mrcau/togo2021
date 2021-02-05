@@ -16,7 +16,11 @@ function Scamper({ fireApp, user, userName }) {
   
   const aTitle = useRef();
   const bName = useRef();
-  const dContent = useRef();
+  const input3 = useRef();
+  const input4 = useRef();
+  const input5 = useRef();
+  const input6 = useRef();
+  const input7 = useRef();
   const scamperS = useRef();
   const scamperC = useRef();
   const scamperA = useRef();
@@ -107,12 +111,12 @@ function Scamper({ fireApp, user, userName }) {
     //오른쪽 모달 핸들링
     const moveModal = () => {
       drawerRef.current.classList.add("moveDrawer");
-      backRef.current.classList.add("backNone");    
+      backRef.current.classList.remove("backNone");    
       console.log('back')
     }
     const moveModal2 = () => {
       drawerRef.current.classList.remove("moveDrawer");
-      backRef.current.classList.remove("backNone");    
+      backRef.current.classList.add("backNone");    
       console.log('back')
     }
       //스위치 핸들링
@@ -148,8 +152,8 @@ function Scamper({ fireApp, user, userName }) {
     const num = Date.now().toString().substr(9);
     const newRoom = roomUid + num;
     setroomName(newRoom);
-    const data = {scamS:'',scamC:'',scamA:'',scamM:'',scamP:'',scamE:'',scamR:'',aTitle:'',bName: '',dContent: '', 
-                  good0:0, good1:0, good2:0, good3:0, good4:0, good5:0, good6:0, good7:0,}
+    const data = {scamS:'',scamC:'',scamA:'',scamM:'',scamP:'',scamE:'',scamR:'',aTitle:'',bName: '',input3: '', 
+    input4: '',input5: '',input6: '',input7: '',  good0:0, good1:0, good2:0, good3:0, good4:0, good5:0, good6:0, good7:0,}
     const roomget = fireApp.roomGet(folder,roomUid)
     roomget < 8 && fireApp.roomSave(folder, newRoom, data)
   }
@@ -161,11 +165,6 @@ function Scamper({ fireApp, user, userName }) {
     fireApp.videoSave(folder, user.uid,'Tok', data)
     noticeRef.current.value='';
     
-    // titleRef.current.classList.add("noticeFly");
-    // setTimeout(() => {
-    //   titleRef.current.classList.remove("noticeFly");
-    //   clearTimeout(noticeUp);
-    // }, 1000);
   }
   //scamper 글 데이터 저장, 방개수 6개 이하일때만 데이터 저장
   const onSubmit = () => {
@@ -173,7 +172,11 @@ function Scamper({ fireApp, user, userName }) {
     const data = {
       aTitle: aTitle.current.value || '',
       bName: bName.current.value || '',
-      dContent: dContent.current.value || '',
+      input3: input3.current.value || '',
+      input4: input4.current.value || '',
+      input5: input5.current.value || '',
+      input6: input6.current.value || '',
+      input7: input7.current.value || '',
       scamS: scamperS.current.value || '',
       scamC: scamperC.current.value || '',
       scamA: scamperA.current.value || '',
@@ -197,8 +200,11 @@ function Scamper({ fireApp, user, userName }) {
       aTitle: aTitle.current.value || '',
       bName: bName.current.value || '',
       cDate : today,
-      dContent: dContent.current.value || '',
-      roomName: roomERef.current.value || '',
+      input3: input3.current.value || '',
+      input4: input4.current.value || '',
+      input5: input5.current.value || '',
+      input6: input6.current.value || '',
+      input7: input7.current.value || '',
       scamS: scamperS.current.value || '',
       scamC: scamperC.current.value || '',
       scamA: scamperA.current.value || '',
@@ -220,11 +226,13 @@ function Scamper({ fireApp, user, userName }) {
     const roomUid =  roomERef.current.value.substr(0,roomSubstr)
     const currentRoom = roomERef.current.value;
     const roomGet=()=>{
+      if(roomERef.current.value.length !== 10 || !roomUid){return}
       if(roomERef.current.value.length === 10){
        setroomName(currentRoom);
        setDoor('입장중');
        setReport(false);
-      }}
+      }else{return}
+    }
       const cf = {
         f1: (p) => { setdata(p) },
         f2: () => { setdata({}) },
@@ -265,7 +273,11 @@ function Scamper({ fireApp, user, userName }) {
     fireApp.dataDel(folder,roomName);        
     aTitle.current.value = '';
     bName.current.value = '';
-    dContent.current.value = '';
+    input3.current.value = '';
+    input4.current.value = '';
+    input5.current.value = '';
+    input6.current.value = '';
+    input7.current.value = '';
     roomERef.current.value = '';
     scamperS.current.value = '';
     scamperC.current.value = '';
@@ -283,9 +295,9 @@ function Scamper({ fireApp, user, userName }) {
     <div className="drawer" ref={drawerRef}>
      <ScamperReport fireApp={fireApp} user={user} folder={folder} setroomName={setroomName} roomNameReset={roomNameReset}
       roomName={roomName} setReport={setReport} drawerRef={drawerRef} state={state.Switch7} 
-      moveModal={moveModal} setState={setState}  /> 
+      moveModal2={moveModal2} setState={setState}  /> 
     </div>
-    <div className="drawerback" ref={backRef} onClick={moveModal}></div>
+    <div className="drawerback backNone" ref={backRef} onClick={moveModal2}></div>
        
       {level>0 && 
         <form className="adimBar">
@@ -321,7 +333,8 @@ function Scamper({ fireApp, user, userName }) {
           <button style={{width:'30px'}}  onClick={fire}>
              <VoiceChatIcon fontSize='small' />
           </button>
-          <button style={{width:'30px'}} onClick={moveModal2}> 
+
+          <button style={{width:'30px'}} onClick={moveModal}> 
             <MenuSharp />
           </button> 
         </div>        
@@ -427,7 +440,7 @@ function Scamper({ fireApp, user, userName }) {
           </div>
           
           <div className="inputBox" >
-            <div className="s-itemTitle" style={{width:"100%"}}>보고서
+            <div className="s-itemTitle" style={{width:"100%"}}>최종아이디어
             {report &&
             <IconButton style={{width:'25px', height:'25px'}} >
               <Badge badgeContent={good[7]} color="secondary" style={{paddingRight:'10px'}}>
@@ -441,8 +454,18 @@ function Scamper({ fireApp, user, userName }) {
             onChange={onSubmit} value={data.aTitle} placeholder="제목" />
             <textarea cols="30" rows="1" className="scamperInput input2" ref={bName} 
             onChange={onSubmit} value={data.bName} placeholder="작성자" />
-            <textarea cols="30" rows="2" className="scamperInput input3" ref={dContent} 
-            onChange={onSubmit} value={data.dContent} placeholder="내용" />
+
+            <textarea cols="30" rows="3" className="scamperInput input3" ref={input3} 
+            onChange={onSubmit} value={data.input3} placeholder={placeData.goodidea} />            
+            <textarea cols="30" rows="1" className="scamperInput input4" ref={input4} 
+            onChange={onSubmit} value={data.input4} placeholder={placeData.bestidea} />
+            <textarea cols="30" rows="2" className="scamperInput input5 " ref={input5} 
+            onChange={onSubmit} value={data.input5} placeholder={placeData.plusidea} />
+            <textarea cols="30" rows="2" className="scamperInput input6" ref={input6} 
+            onChange={onSubmit} value={data.input6} placeholder={placeData.minusidea} />
+            <textarea cols="30" rows="2" className="scamperInput input7" ref={input7} 
+            onChange={onSubmit} value={data.input7} placeholder={placeData.funidea} />
+            
             <input type="button" className="scamperInput btn" onClick={btnInput} value="제출"/>
           </div>
 

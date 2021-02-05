@@ -20,7 +20,7 @@ function Mytoolbox({ fireApp, user, userName,  }) {
 
   return (
     <div className="mytool" style={{background:"var(--Bcolor)"}} >
-      <div className='mytool-header'>  My Tools</div>
+      <div className='mytool-header' style={{height:"30px",background:"var(--Acolor)",fontSize:"large"}}>My ToolBox</div>
       <div className="mytool-items" style={{height:"50vh"}}>
         {
           Object.keys(items).map((e) => {

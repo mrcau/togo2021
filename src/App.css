@@ -19,6 +19,63 @@
   background: linear-gradient(to right, #8e9eab 0%, #eef2f3  51%, #8e9eab  100%);
   /* background: var(--Bcolor); */
 }
+
+/* 왼쪽서랍열고닫기 */
+.drawerLeft{
+  width:180px;
+  background:white;
+  position: fixed;
+  padding: 0;
+  left: -180px;
+  height: 100vh;
+  transition: all 300ms;
+  z-index: 2;
+
+}
+.moveDrawerLeft{
+  /* right:-60vw; */
+  transform: translateX(180px);
+}
+.drawerbackLeft{
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 1;
+}
+.backNoneLeft{
+  display: none;
+}
+/* 여기까지 서랍 */
+
+/* 위쪽서랍열고닫기 */
+.drawerTop{
+  width: 100vw;
+  height: 50vh;
+  top:-50vh;
+  background:white;
+  position: fixed;
+  padding: 0;
+  transition: all 300ms;
+  z-index: 2;
+}
+.moveDraweTop{
+  /* right:-60vw; */
+  transform: translateY(50vh);
+}
+.drawerbackTop{
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 1;
+}
+.backNonTop{
+  display: none;
+}
+/* 여기까지 서랍 */
+
+
 .header {
   display: flex;
   font-weight: bold;
@@ -30,7 +87,7 @@
   padding: 3px 0;
 }
 .btnmenu{ width: 80px; padding: 0 40px 0 0;}
-.headerT{flex:1;  }
+.headerT{flex:1;  line-height: 25px;}
 .rightMenu{ width:90px;font-size:small;}
 .droplogOut{width:20px !important;}
 main{
@@ -68,6 +125,7 @@ button:active {
   color: var(--Bcolor);
 }
 .link{
+  font-size: x-large;
   text-decoration: none;
   color : var(--Bcolor);
   outline: none;
