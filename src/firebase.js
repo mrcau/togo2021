@@ -156,6 +156,7 @@ async roomUser(folder,roomUid,cf) {
   dataSync(folder, roomName, cf) {
     const roomUid = roomName.substr(0,roomSubstr);
     const roomNum = roomName.substr(roomSubstr);
+
     if (!roomName) { return }
     const ref1 = firebase.database().ref(`${folder}/${roomUid}/${roomNum}`);
     ref1.on('value', (p) => {
@@ -169,7 +170,14 @@ async roomUser(folder,roomUid,cf) {
       data ? cf.f3(data) : cf.f4();
     });
   }
+  //비로그인 데이터싱크
 
+  dataSyncB(folder, roomName, cf) {
+    const roomUid = roomName.substr(0,roomSubstr);
+    const roomReport = roomUid+'REPORT';
+    const ref3 = firebase.database().ref(`${folder}/${roomReport}/${roomName}`);
+    ref3.on('value',(p) => {const data = p.val(); data ? cf.f1(data) : cf.f2(); })
+  }
   // 데이터 삭제
   dataDel(folder, roomName) {
     const roomUid = roomName.substr(0,roomSubstr);
@@ -197,7 +205,7 @@ async reportSync(folder,roomName, cf) {
     const roomId = roomName.substr(0,6)+'REPORT'
     const ref1 = firebase.database().ref(`${folder}/${roomId}`);
     ref1.on('value', (p) => {
-      const data = p.val();
+      const data = p.val()||{};
       const Data = Object.values(data);
       // console.log(roomId,Data)
       data ? cf.f1(Data) : cf.f2();
@@ -262,8 +270,16 @@ goodUp(folder, roomName, goodNum,good) {
     .update({[goodNum]: good })
 }
 
+goodUpB(folder, roomName, goodNum,good) {  
+  const roomId = roomName.substr(0,6)+'REPORT'
+  firebase.database().ref(`${folder}/${roomId}/${roomName}`)
+    .update({[goodNum]: good })
 }
 
+
+
+
+}
 export default firebaseApp
 
  // TODO 업데이트

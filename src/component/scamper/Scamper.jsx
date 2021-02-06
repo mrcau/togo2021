@@ -63,24 +63,41 @@ function Scamper({ fireApp, user, userName }) {
         fireApp.dataSync(folder, roomName, cf);
         fireApp.roomSync(folder, roomUid, cf);
         fireApp.authSync('auth',e.uid,(p)=>setLevel(p))
+        console.log('유저있음');
       }
-      else { console.log('no-User') }
+      else {
+        console.log('유저없음');
+        if(!report||!roomName){return}
+        const cf = {
+          f1: (p) => { setdata(p) },
+          f2: () => { setdata({}) },
+          f3: (p) => { setRoom(p) },
+          f4: () => { setRoom({}) },
+        }
+       if(report && roomName){
+        fireApp.dataSyncB(folder, roomName, cf);
+       }
+       }
     })
+    console.log('스캠퍼값1',roomName,'리포트',report,data,data['good6'])
   }, [roomName,fireApp]);
   
-  //비로그인자 데이터 싱크 - 애니메이션
-  useEffect(() => {
+  //수업자료와 공지사항 싱크
+  useEffect(() => {    
     if(roomName&&!report){ 
       fireApp.videoSync(folder,roomName,'See',(p)=>{setVideo(p); })
       fireApp.videoSync(folder,roomName,'Tok',(p)=>{
         setNotice(p); 
-        if(noticeRef.current.value){
         titleRef.current.classList.add("noticeFly");
         setTimeout(()=>{titleRef.current.classList.remove("noticeFly")},1000)
-        }
       })
-     }
+    }
   },[roomName,fireApp,report]);
+  
+  //비로그인자 데이터 싱크 - 애니메이션
+  console.log('스캠퍼값2',roomName,'리포트',report,data,data['good6'])
+
+
 
     // 좋아요
     const [Switch0, setSwitch0] = useState(true);
@@ -90,21 +107,20 @@ function Scamper({ fireApp, user, userName }) {
     const [Switch4, setSwitch4] = useState(true);
     const [Switch5, setSwitch5] = useState(true);
     const [Switch6, setSwitch6] = useState(true);
-    // const [Switch7, setSwitch7] = useState(true);
+    const [Switch7, setSwitch7] = useState(true);
     
-    const goodPlus = (i,goodNum,Switch,setSwitch) => {
+    const goodPlus = (goodNum,Switch,setSwitch) => {
       if(roomName){
       Switch ? data[goodNum]++ : data[goodNum]--;
       setSwitch(!Switch);
       fireApp.goodUp(folder, roomName,goodNum,data[goodNum]);
       }
     }
-    const goodPlus2 = (i,goodNum,Switch7) => {
+    const goodPlus2 = (goodNum,Switch,setSwitch) => {
       if(roomName){
-        Switch7 ? data[goodNum]++ : data[goodNum]--;
-      setState({ ...state, Switch7:!state.Switch7 })
-      // setReport(true);
-      fireApp.goodUp(folder, roomName,goodNum,data[goodNum]);
+        Switch ? data[goodNum]++ : data[goodNum]--;
+        setSwitch(!Switch);
+      fireApp.goodUpB(folder, roomName,goodNum,data[goodNum]);
       }
     }
     //오른쪽 모달 핸들링
@@ -211,12 +227,14 @@ function Scamper({ fireApp, user, userName }) {
       scamP: scamperP.current.value || '',
       scamE: scamperE.current.value || '',
       scamR: scamperR.current.value || '',
-      good7:0
+      good7:0,
+      roomName:roomName
     }
     const roomUid =  roomERef.current.value.substr(0,roomSubstr);
     const roomId = roomUid+'REPORT';
     fireApp.reportSave(folder, roomId, roomName, data);
   }
+
   // input roomName 초기화
   const roomNameReset=() => {roomERef.current.value=''; }
 
@@ -293,7 +311,7 @@ function Scamper({ fireApp, user, userName }) {
     <div className="drawer" ref={drawerRef}>
      <ScamperReport fireApp={fireApp} user={user} folder={folder} setroomName={setroomName} roomNameReset={roomNameReset}
       roomName={roomName} setReport={setReport} drawerRef={drawerRef} state={state.Switch7} 
-      moveModal2={moveModal2} setState={setState}  /> 
+      moveModal2={moveModal2} setState={setState} report={report} /> 
     </div>
     <div className="drawerback backNone" ref={backRef} onClick={moveModal2}></div>
        
@@ -352,7 +370,7 @@ function Scamper({ fireApp, user, userName }) {
             {!report &&
             <IconButton style={{width:'25px', height:'25px'}} >
               <Badge badgeContent={good[0]} color="secondary" style={{paddingRight:'10px'}}>
-                <ThumbUp style={{color:'var(--Bcolor)'}} onClick={()=>goodPlus(0,'good0',Switch0,setSwitch0)} />
+                <ThumbUp style={{color:'var(--Bcolor)'}} onClick={()=>goodPlus('good0',Switch0,setSwitch0)} />
               </Badge>            
             </IconButton> }
             </div>
@@ -364,7 +382,7 @@ function Scamper({ fireApp, user, userName }) {
             {!report &&
             <IconButton style={{width:'25px', height:'25px'}} >
               <Badge badgeContent={good[1]} color="secondary" style={{paddingRight:'10px'}}>
-                <ThumbUp style={{color:'var(--Bcolor)'}} onClick={()=>goodPlus(1,'good1',Switch1,setSwitch1)} />
+                <ThumbUp style={{color:'var(--Bcolor)'}} onClick={()=>goodPlus('good1',Switch1,setSwitch1)} />
               </Badge>
             </IconButton>} 
             </div>
@@ -377,7 +395,7 @@ function Scamper({ fireApp, user, userName }) {
             {!report &&
             <IconButton style={{width:'25px', height:'25px'}} >
               <Badge badgeContent={good[2]} color="secondary" style={{paddingRight:'10px'}}>
-                <ThumbUp style={{color:'var(--Bcolor)'}} onClick={()=>goodPlus(2,'good2',Switch2,setSwitch2)} />
+                <ThumbUp style={{color:'var(--Bcolor)'}} onClick={()=>goodPlus('good2',Switch2,setSwitch2)} />
               </Badge>
             </IconButton>} 
             </div>
@@ -390,7 +408,7 @@ function Scamper({ fireApp, user, userName }) {
             {!report &&
             <IconButton style={{width:'25px', height:'25px'}} >
               <Badge badgeContent={good[3]} color="secondary" style={{paddingRight:'10px'}}>
-                <ThumbUp style={{color:'var(--Bcolor)'}} onClick={()=>goodPlus(3,'good3',Switch3,setSwitch3)} />
+                <ThumbUp style={{color:'var(--Bcolor)'}} onClick={()=>goodPlus('good3',Switch3,setSwitch3)} />
               </Badge>
             </IconButton>} 
             </div>
@@ -403,7 +421,7 @@ function Scamper({ fireApp, user, userName }) {
             {!report &&
             <IconButton style={{width:'25px', height:'25px'}} >
               <Badge badgeContent={good[4]} color="secondary" style={{paddingRight:'10px'}}>
-                <ThumbUp style={{color:'var(--Bcolor)'}} onClick={()=>goodPlus(4,'good4',Switch4,setSwitch4)} />
+                <ThumbUp style={{color:'var(--Bcolor)'}} onClick={()=>goodPlus('good4',Switch4,setSwitch4)} />
               </Badge>
             </IconButton>} 
             </div>
@@ -416,7 +434,7 @@ function Scamper({ fireApp, user, userName }) {
             {!report &&
             <IconButton style={{width:'25px', height:'25px'}} >
               <Badge badgeContent={good[5]} color="secondary" style={{paddingRight:'10px'}}>
-                <ThumbUp style={{color:'var(--Bcolor)'}} onClick={()=>goodPlus(5,'good5',Switch5,setSwitch5)} />
+                <ThumbUp style={{color:'var(--Bcolor)'}} onClick={()=>goodPlus('good5',Switch5,setSwitch5)} />
               </Badge>
             </IconButton>} 
             </div>
@@ -429,7 +447,7 @@ function Scamper({ fireApp, user, userName }) {
             {!report &&
             <IconButton style={{width:'25px', height:'25px'}} >
               <Badge badgeContent={good[6]} color="secondary" style={{paddingRight:'10px'}}>
-                <ThumbUp style={{color:'var(--Bcolor)'}} onClick={()=>goodPlus(6,'good6',Switch6,setSwitch6)} />
+                <ThumbUp style={{color:'var(--Bcolor)'}} onClick={()=>goodPlus('good6',Switch6,setSwitch6)} />
               </Badge>
             </IconButton>} 
             </div>
@@ -442,7 +460,7 @@ function Scamper({ fireApp, user, userName }) {
             {report &&
             <IconButton style={{width:'25px', height:'25px'}} >
               <Badge badgeContent={good[7]} color="secondary" style={{paddingRight:'10px'}}>
-                <ThumbUp style={{color:'var(--Bcolor)'}} onClick={()=>{goodPlus2(7,'good7',state.Switch7)}} />
+                <ThumbUp style={{color:'var(--Bcolor)'}} onClick={()=>{goodPlus2('good7',Switch7,setSwitch7)}} />
               </Badge>
             </IconButton> 
             }

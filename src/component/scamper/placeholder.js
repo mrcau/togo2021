@@ -8,7 +8,7 @@ export default [
   text3:"- 응용해서 적용할 수 있는 부분은?\n (예:장미가시 응용-철조망 개발)",
   title4:"수정하기(Modify)",
   text4:"- 크기,모양,색,효과 등을 바꾸면? \n(예:포스트잇)",
-  title5:"다른용도에 놓기(Put another use)",
+  title5:"다른용도 사용(Put another use)",
   text5:"- 다른 용도로 사용하면?\n (예:옥수수 연료)",
   title6:"제거하기(Eliminate)",
   text6:"- 부분을 삭제하거나 단순화 하면?\n (예:오픈카)",
