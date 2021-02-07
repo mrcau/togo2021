@@ -36,10 +36,10 @@ useEffect(() => {
       </label>
       {user.uid&&<div style={{width:'100%'}}>
         <button className="btnLogout" onClick={logout} > 로그아웃 </button>
-        <div className="accordion Bmenu"> <Link className="a" to="/"><div className="icon">icon</div> My Page</Link> </div>
-        <div className="accordion Bmenu"> <Link className="a" to="/todo"><BatteryCharging20/> My Todo</Link></div>
-        <div className="accordion Bmenu"> <Link className="a" to="/mytool"><BatteryCharging20/> My Tool</Link></div>
-        <div className="accordion Bmenu"> <Link className="a" to="/atable"><BatteryCharging20/> My users</Link></div>
+        <div className="accordion Bmenu"> <Link className="a" to="/mypage"><div className="icon"> My Page</div></Link> </div>
+        <div className="accordion Bmenu"> <Link className="a" to="/todo"><div className="icon">  My Todo</div></Link></div>
+        <div className="accordion Bmenu"> <Link className="a" to="/mytool"><div className="icon">  My Tool</div></Link></div>
+        <div className="accordion Bmenu"> <Link className="a" to="/atable"><div className="icon">  My users</div></Link></div>
       </div>}
       <hr style={{width:'90%',border:'dashed 1px gray'}} />
     

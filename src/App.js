@@ -11,6 +11,7 @@ import Scamper from './component/scamper/Scamper';
 import Atable from './component/authTable/Atable';
 import Mytool from './component/mytool/Mytool';
 import Mytoolbox from './component/mytool/Mytoolbox';
+import Mypage from './component/mypage/Mypage';
 
 function App({ fireApp }) {
   const history = useHistory();
@@ -116,6 +117,9 @@ function App({ fireApp }) {
           </Route>
           <Route path='/mytool'> 
             <Mytool fireApp={fireApp} user={user} userName={userName} />
+          </Route>
+          <Route path='/mypage'> 
+            <Mypage fireApp={fireApp} user={user} userName={userName} />
           </Route>
           
         </Switch>

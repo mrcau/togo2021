@@ -1,0 +1,142 @@
+.mypage {
+  background: var(--Ecolor);
+  height: 100%;
+}
+
+.mypage form {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.mypage h1 {
+  font-weight: 100;
+  color: white;
+  text-align: center;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgb(79, 98, 148);
+}
+
+.mypage .form {
+  background: #0e101c;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.mypage p {
+  color: #bf1650;
+}
+
+.mypage p::before {
+  display: inline;
+  content: "⚠ ";
+}
+
+.mypage input {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  border-radius: 4px;
+  border: 1px solid white;
+  padding: 10px 5px;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.mypage label {
+  line-height: 2;
+  text-align: left;
+  display: block;
+  margin-bottom: 13px;
+  margin-top: 20px;
+  color: white;
+  font-size: 14px;
+  font-weight: 200;
+}
+
+.mypage button[type="submit"],
+.mypage input[type="submit"] {
+  background: var(--Acolor);
+  color: white;
+  text-transform: uppercase;
+  border: none;
+  margin-top: 40px;
+  padding: 10px;
+  font-size: 16px;
+  font-weight: 100;
+  letter-spacing: 10px;
+}
+
+.mypage button[type="submit"]:hover,
+.mypage input[type="submit"]:hover {
+  background: var(--Ccolor);
+}
+
+.mypage button[type="submit"]:active,
+.mypage input[type="button"]:active,
+.mypage input[type="submit"]:active {
+  border: 1px solid transparent;
+  opacity: 0.8;
+}
+
+.mypage input:disabled {
+  opacity: 0.4;
+}
+
+.mypage input[type="button"]:hover {
+  transition: 0.3s all;
+}
+
+.mypage button[type="submit"],
+.mypage input[type="button"],
+.mypage input[type="submit"] {
+  -webkit-appearance: none;
+}
+
+.mypage .App {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.mypage button[type="button"] {
+  display: block;
+  appearance: none;
+  background: #333;
+  color: white;
+  border: none;
+  text-transform: uppercase;
+  padding: 10px 20px;
+  border-radius: 4px;
+}
+
+.mypage hr {
+  margin-top: 30px;
+}
+
+.mypage button {
+  display: block;
+  appearance: none;
+  margin-top: 40px;
+  border: 1px solid #333;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  padding: 10px 20px;
+  border-radius: 4px;
+}
+
+.mypage .mypageTop{
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+  /* line-height: 40px; */
+  margin-top: 10px;
+  font-size: 5vw;
+  font-weight: 900;
+  color: var(--Acolor);
+}
+.mypage .logo{
+  width:10vw;
+  height:10vw;
+  max-width: 80px;
+  max-height: 80px;
+  background: url("./programmer.png") center/cover no-repeat;
+}

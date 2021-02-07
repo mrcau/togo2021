@@ -55,13 +55,34 @@
   border-radius: 3px;
 }
 
-
 .dropItem{
   padding:0 !important;
 }
+.a{
+  display: flex;
+}
 
 .icon{
+  width: 100px;
+  height: 21px;
   position: relative;
-  padding:1px;
-  background: url('./samtool-battery-logo.png') center / cover  ;
+  background: url('./batteryIcon.png') no-repeat ;
+  background-size:  13px 43px;
+  margin-left: 3px;
+  background-position: left bottom;
+}
+.icon::after{
+  content: '';
+  width: 30px;
+  height:21px;
+  position: absolute;
+  z-index: 10;
+  top: 0; left: 0;
+  background: url('./batteryIcon.png') no-repeat ;
+  background-size:  12px 42px;
+  background-position: left 21px;
+  transition: all 400ms;
+}
+.icon:hover::after{
+  background-position: left 0;
 }
