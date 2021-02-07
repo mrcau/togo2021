@@ -66,7 +66,6 @@ function App({ fireApp }) {
       e ? cf.f1(e) : cf.f2();
     })
   }, [fireApp]);
-
   //본문
   return (
     <div className="App"> 
@@ -110,16 +109,16 @@ function App({ fireApp }) {
             <Todo fireApp={fireApp} user={user} userName={userName} />
           </Route>
           <Route path='/scamper'> 
-            <Scamper fireApp={fireApp} user={user} userName={userName}  />
+            <Scamper fireApp={fireApp} user={user} />
           </Route>
           <Route path='/atable'> 
             <Atable fireApp={fireApp} user={user} userName={userName} />
           </Route>
           <Route path='/mytool'> 
-            <Mytool fireApp={fireApp} user={user} userName={userName} />
+            <Mytool fireApp={fireApp} user={user}/>
           </Route>
           <Route path='/mypage'> 
-            <Mypage fireApp={fireApp} user={user} userName={userName} />
+            <Mypage fireApp={fireApp} user={user} />
           </Route>
           
         </Switch>

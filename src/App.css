@@ -99,11 +99,12 @@ main{
 }
 footer {
   height: 25px;
-  line-height: 25px;
+  line-height: 15px;
   font-size: small;
   font-weight: 900;
   color: var(--Bcolor);
   background: var(--Acolor);
+  padding: 5px;
 }
 button {
   font-weight: 700;
