@@ -83,8 +83,8 @@ function App({ fireApp }) {
       <header className="header" >
         {/* 좌측메유 */}
         {/* <div className="btnmenu"> <button onClick={moveModal}><MenuSharpIcon/></button> </div> */}
-        <IconButton size="small" component="span" onClick={moveModal} style={{paddingLeft:"10px"}}> 
-          <MenuSharpIcon style={{color:"var(--Bcolor)"}}   /> 
+        <IconButton size="small" component="span" onClick={moveModal} style={{paddingLeft:"10px",width:"90px"}} > 
+          <MenuSharpIcon style={{color:"var(--Bcolor)",marginRight:"auto"}}   /> 
         </IconButton>
         {/* /타이틀 */}
         <div className="headerT">
@@ -120,7 +120,7 @@ function App({ fireApp }) {
           
         </Switch>
       </main>
-      <footer>토고팩토리</footer>
+      <footer>by SamFactory</footer>
     </div>
   );
 }

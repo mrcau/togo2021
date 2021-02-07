@@ -130,17 +130,7 @@ roomGet(folder,roomUid) {
       cf.f3(data);
     })
   }
-  //  관리자 룸개수 제한 생성
-  // async roomSync2(folder, roomUid, cf) {
-  //   const ref = firebase.database().ref(`${folder}/${roomUid}`);
-  //   ref.on('value', (p) => {
-  //     const data = p.val();
-  //     console.log(data)
-  //     Object.keys(data).length < 7 &&  cf(data);
-  //   })
-  // }
 
-  
 //  룸 이름 가져오기
 async roomUser(folder,roomUid,cf) {
   const ref = firebase.database().ref(`${folder}`);
@@ -207,7 +197,6 @@ async reportSync(folder,roomName, cf) {
     ref1.on('value', (p) => {
       const data = p.val()||{};
       const Data = Object.values(data);
-      // console.log(roomId,Data)
       data ? cf.f1(Data) : cf.f2();
     });
   }
@@ -231,7 +220,6 @@ async authSync(auth, uid,cf) {
     else{  
       cf(data.level)
     }
-    // cf(data.level)||console.log('no.level')
    });
 }
 // Auth 테이블  Level 업데이트

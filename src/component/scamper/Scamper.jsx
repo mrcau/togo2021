@@ -57,18 +57,16 @@ function Scamper({ fireApp, user, userName }) {
         f3: (p) => { setRoom(p) },
         f4: () => { setRoom({}) },
       }
-      if (e) {
+      if (e && report===false) {
         const roomUid = e.uid.substr(0, roomSubstr);
         setRoomUid(e.uid.substr(0, roomSubstr));
         fireApp.dataSync(folder, roomName, cf);
         fireApp.roomSync(folder, roomUid, cf);
         fireApp.authSync('auth',e.uid,(p)=>setLevel(p))
-        console.log('유저있음');
       }
       else {
-        console.log('유저없음');
-        if(!report||!roomName){return}
-        const cf = {
+        if(report===false||!roomName){return}
+       const cf = {
           f1: (p) => { setdata(p) },
           f2: () => { setdata({}) },
           f3: (p) => { setRoom(p) },
@@ -77,10 +75,9 @@ function Scamper({ fireApp, user, userName }) {
        if(report && roomName){
         fireApp.dataSyncB(folder, roomName, cf);
        }
-       }
+      }
     })
-    console.log('스캠퍼값1',roomName,'리포트',report,data,data['good6'])
-  }, [roomName,fireApp]);
+  }, [roomName,fireApp,report]);
   
   //수업자료와 공지사항 싱크
   useEffect(() => {    
@@ -94,11 +91,6 @@ function Scamper({ fireApp, user, userName }) {
     }
   },[roomName,fireApp,report]);
   
-  //비로그인자 데이터 싱크 - 애니메이션
-  console.log('스캠퍼값2',roomName,'리포트',report,data,data['good6'])
-
-
-
     // 좋아요
     const [Switch0, setSwitch0] = useState(true);
     const [Switch1, setSwitch1] = useState(true);
@@ -110,12 +102,15 @@ function Scamper({ fireApp, user, userName }) {
     const [Switch7, setSwitch7] = useState(true);
     
     const goodPlus = (goodNum,Switch,setSwitch) => {
-      if(roomName){
+      console.log(goodNum,Switch,roomName,report)
+        if(data[goodNum]===undefined){data[goodNum]=0}
+        if(roomName){
       Switch ? data[goodNum]++ : data[goodNum]--;
       setSwitch(!Switch);
       fireApp.goodUp(folder, roomName,goodNum,data[goodNum]);
       }
     }
+    
     const goodPlus2 = (goodNum,Switch,setSwitch) => {
       if(roomName){
         Switch ? data[goodNum]++ : data[goodNum]--;
@@ -127,12 +122,10 @@ function Scamper({ fireApp, user, userName }) {
     const moveModal = () => {
       drawerRef.current.classList.add("moveDrawer");
       backRef.current.classList.remove("backNone");    
-      console.log('back')
     }
     const moveModal2 = () => {
       drawerRef.current.classList.remove("moveDrawer");
       backRef.current.classList.add("backNone");    
-      console.log('back')
     }
       //스위치 핸들링
     const handleChange = (event) => {
@@ -157,7 +150,6 @@ function Scamper({ fireApp, user, userName }) {
     fireApp.videoSave(folder, user.uid,'See', text);
     }
   }
-
 
   let good =[data.good0,data.good1,data.good2,data.good3,data.good4,
             data.good5,data.good6,data.good7]
@@ -188,6 +180,7 @@ function Scamper({ fireApp, user, userName }) {
     const data = {
       aTitle: aTitle.current.value || '',
       bName: bName.current.value || '',
+
       input3: input3.current.value || '',
       input4: input4.current.value || '',
       input5: input5.current.value || '',
@@ -201,9 +194,6 @@ function Scamper({ fireApp, user, userName }) {
       scamR: scamperR.current.value || '',
     }    
     const roomUid =  roomERef.current.value.substr(0,roomSubstr)
-    // console.log(folder,roomName,data,roomUid)
-    // const roomget = fireApp.roomGet(folder,roomUid)
-    // roomget < 10 &&  fireApp.dataUp(folder, roomName, data)
     fireApp.dataUp(folder, roomName, data)
   }
    // 보고서 제출
@@ -264,9 +254,14 @@ function Scamper({ fireApp, user, userName }) {
   // 관리자 방입장
   const adminEnter = (e) => {
     const room = e.currentTarget.textContent;
-    const roomname = roomUid +room
-    setroomName(roomUid +room)
+    const roomname = roomUid +room;
+    setroomName(roomUid +room);
     roomERef.current.value =roomname;     
+    setReport(false); 
+    setSwitch0(true); setSwitch1(true); 
+    setSwitch2(true); setSwitch3(true); 
+    setSwitch4(true); setSwitch5(true); 
+    setSwitch6(true);
   }
 
 
@@ -310,15 +305,15 @@ function Scamper({ fireApp, user, userName }) {
 
     <div className="drawer" ref={drawerRef}>
      <ScamperReport fireApp={fireApp} user={user} folder={folder} setroomName={setroomName} roomNameReset={roomNameReset}
-      roomName={roomName} setReport={setReport} drawerRef={drawerRef} state={state.Switch7} 
-      moveModal2={moveModal2} setState={setState} report={report} /> 
+      roomName={roomName} setReport={setReport} drawerRef={drawerRef} 
+      moveModal2={moveModal2} setSwitch7={setSwitch7} report={report} /> 
     </div>
     <div className="drawerback backNone" ref={backRef} onClick={moveModal2}></div>
        
       {level>0 && 
         <form className="adimBar">
           <button className="enterBtn"  onClick={noticeUp}><AddCommentIcon/></button> 
-          <input type="text" className="enterInput" placeholder="공지사항" ref={noticeRef} />
+          <input type="text" className="enterInput" placeholder="전달사항" ref={noticeRef} />
           <button className="enterBtn"  style={{width:'30px'}} onClick={fireInsert}><YouTubeIcon/></button> 
         </form>
       }

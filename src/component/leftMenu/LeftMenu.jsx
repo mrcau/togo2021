@@ -1,10 +1,11 @@
 import './leftMenu.css';
 import { Avatar,  IconButton } from '@material-ui/core';
-import { BatteryCharging20, BatteryCharging50, BatteryCharging80, BatteryChargingFull, PhotoCamera, WbIncandescentOutlined } from '@material-ui/icons';
+import { BatteryCharging20, BatteryCharging50, BatteryCharging80, BatteryChargingFull, PhotoCamera } from '@material-ui/icons';
 import React, { memo, useEffect, useState } from 'react';
 import {  Link, useHistory } from 'react-router-dom';
 import mime from 'mime-types';
-import { Accordion, Card, Dropdown } from 'react-bootstrap';
+import { Accordion, Card } from 'react-bootstrap';
+
 
 function LeftMenu({ fireApp, user, photo, setPhoto, logout }) {
 const [level, setLevel] = useState(0);
@@ -22,7 +23,6 @@ useEffect(() => {
     fireApp.imgUpload(user.uid, file, metaData, (e) => setPhoto(e));
   }
   const history = useHistory();
-console.log(user.uid)
   return (
     <div className="leftMenu">
 
@@ -36,7 +36,7 @@ console.log(user.uid)
       </label>
       {user.uid&&<div style={{width:'100%'}}>
         <button className="btnLogout" onClick={logout} > 로그아웃 </button>
-        <div className="accordion Bmenu"> <Link className="a" to="/"><BatteryCharging20/> My Page</Link> </div>
+        <div className="accordion Bmenu"> <Link className="a" to="/"><div className="icon">icon</div> My Page</Link> </div>
         <div className="accordion Bmenu"> <Link className="a" to="/todo"><BatteryCharging20/> My Todo</Link></div>
         <div className="accordion Bmenu"> <Link className="a" to="/mytool"><BatteryCharging20/> My Tool</Link></div>
         <div className="accordion Bmenu"> <Link className="a" to="/atable"><BatteryCharging20/> My users</Link></div>
