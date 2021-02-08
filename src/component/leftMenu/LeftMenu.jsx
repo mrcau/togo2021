@@ -10,12 +10,12 @@ import { Accordion, Card } from 'react-bootstrap';
 function LeftMenu({ fireApp, user, photo, setPhoto, logout }) {
 const [level, setLevel] = useState(0);
 
-useEffect(() => {
-  fireApp.onAuth((e) => {
-    if (e) {fireApp.authSync('auth',e.uid,(p)=>setLevel(p))}
-    else { console.log('no-User') }
-  })
-}) 
+// useEffect(() => {
+//   fireApp.onAuth((e) => {
+//     if (e) {fireApp.authSync('auth',e.uid,(p)=>setLevel(p))}
+//     else { console.log('no-User') }
+//   })
+// },[]) 
 
   const upLoad = (e) => {
     const file = e.target.files[0];

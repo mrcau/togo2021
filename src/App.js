@@ -53,6 +53,7 @@ function App({ fireApp }) {
    setuser({}); setUid(''); setPhoto('');setUserName('');
    history.push('/');
    moveModal2();
+
   } 
 
   // 로그인 싱크

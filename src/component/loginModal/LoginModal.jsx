@@ -4,7 +4,7 @@ import { Button, Form } from 'react-bootstrap';
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
-import EmojiPeopleIcon from '@material-ui/icons/EmojiPeople';
+import Swal from 'sweetalert2';
 
 function LoginModal({ fireApp, setuser,moveModal4 }) {
   const emailRef = useRef();
@@ -13,7 +13,7 @@ function LoginModal({ fireApp, setuser,moveModal4 }) {
   const nameRegisterRef = useRef();
   const passRegisterRef = useRef();
   const repassRegisterRef = useRef();
-  const followRef = useRef();
+  const Swal = require('sweetalert2');
 
   const [registerTF, setRegisterTF] = useState(false);
 
@@ -31,16 +31,28 @@ function LoginModal({ fireApp, setuser,moveModal4 }) {
   // 회원가입
   const onSubmit = async (e) => {
     e.preventDefault();
-    const info = {
-      name: nameRegisterRef.current.value,
-      email: emailRegisterRef.current.value,
-      pass: passRegisterRef.current.value,
-      follow: followRef.current.value,
-      level : 0,
-    }
+    const name = nameRegisterRef.current.value;
+    const email = emailRegisterRef.current.value;
+    const pass = passRegisterRef.current.value;
+    const pass2 = repassRegisterRef.current.value;
+    const level = 0;
+    const info = { name, email,pass,level }
     const cf =  (e) => setuser(e);
-    fireApp.createUser(info, cf)
+
+    if(!name||!email||!pass||!pass2){Swal.fire({title:"빈칸을 모두 채워주세요",icon:'warning'})}
+    else if(pass!==pass2){Swal.fire({title:'비밀번호가 맞지 않습니다',icon:'error'})}
+    else{
+      Swal.fire({title: '정보를 저장하겠습니까?',html: "이름: "+name+", 이메일: "+ email +", 비밀번호: " + pass,
+       showCancelButton: true, confirmButtonText: `확인`,}).then((result) => {
+        if(result.isConfirmed){
+          Swal.fire({title:nameRegisterRef.current.value+'님 회원가입 완료!'})
+          fireApp.createUser(info, cf);
+         }
+       })
+    }
+
   }
+
   return (
     <div className="loginModal">
       {/* LoginModal */}
@@ -85,11 +97,6 @@ function LoginModal({ fireApp, setuser,moveModal4 }) {
             <Form.Label className="formLabel"><LockOpenIcon /></Form.Label>
             <Form.Control className="formInput" type="password" ref={repassRegisterRef} placeholder="패스워드 확인" />
           </Form.Group>
-          <Form.Group controlId="formBasicFollow" className="formGroup" >
-            <Form.Label className="formLabel"><EmojiPeopleIcon /></Form.Label>
-            <Form.Control className="formInput" type="text" ref={followRef} placeholder="조력자ID" />
-          </Form.Group>
-
           <Button variant="primary" type="submit">
             Submit
           </Button>

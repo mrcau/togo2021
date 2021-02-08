@@ -218,7 +218,7 @@ async authSync(auth, uid,cf) {
     const data = p.val();
     if(data===null){return } 
     else{  
-      cf(data.level)
+      cf(data)
     }
    });
 }
@@ -233,7 +233,7 @@ profileUp(folder, uid,data) {
   firebase.database().ref(`${folder}/${uid}`).update(data);
   firebase.auth().currentUser.updateProfile(data);
 }
-// 데이터 삭제
+// 데이터 삭제 auth/${e.user.uid}
 authDel(folder, uid) {
   firebase.database().ref(`${folder}/${uid}`).remove();
 }
