@@ -228,6 +228,11 @@ level(folder, uid,num) {
     .update({ level: num })
     firebase.auth().currentUser.updateProfile({ p: num });
 }
+// 프로필 업데이트
+profileUp(folder, uid,data) {
+  firebase.database().ref(`${folder}/${uid}`).update(data);
+  firebase.auth().currentUser.updateProfile(data);
+}
 // 데이터 삭제
 authDel(folder, uid) {
   firebase.database().ref(`${folder}/${uid}`).remove();

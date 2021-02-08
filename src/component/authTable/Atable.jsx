@@ -104,6 +104,7 @@ function Atable({fireApp,user}) {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [authInfo, setAuthInfo] = useState({})
   const folder = "auth";
+  console.log('user',user)
   
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';

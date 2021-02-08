@@ -17,7 +17,7 @@ const useStyles = makeStyles({
 function AuthTable({ fireApp, user }) {
   const classes = useStyles();
   const [authInfo, setAuthInfo] = useState({})
-  
+  console.log('user',user)
   //데이터싱크 
   useEffect(() => {
     fireApp.onAuth((e) => {
