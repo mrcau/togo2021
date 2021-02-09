@@ -4,8 +4,7 @@
   
 }
 .jumbo{
-  background:url("https://cdn.wallpapersafari.com/37/74/BdD492.jpg") bottom/cover no-repeat;
-  height: 30vh;
+  background: white;
   display: flex;
   flex-flow: column;
 }
@@ -14,7 +13,7 @@
   flex-wrap: wrap;
   justify-content: space-around;
   align-items: center;
-  padding: 10px 0 10px 10px;
+  padding: 5px;
 }
 
 .togoMain ::-webkit-scrollbar {

@@ -12,6 +12,7 @@ import Atable from './component/authTable/Atable';
 import Mytool from './component/mytool/Mytool';
 import Mytoolbox from './component/mytool/Mytoolbox';
 import Mypage from './component/mypage/Mypage';
+import Price from './component/price/Price';
 
 function App({ fireApp }) {
   const history = useHistory();
@@ -127,6 +128,9 @@ function App({ fireApp }) {
           </Route>
           <Route path='/mypage'> 
             <Mypage fireApp={fireApp} user={user} userInfo={userInfo} />
+          </Route>
+          <Route path='/price'> 
+            <Price fireApp={fireApp} user={user} userInfo={userInfo} />
           </Route>
           
         </Switch>

@@ -111,6 +111,7 @@ console.log('userInfo',level);
           </Card>
         </Accordion>
         
+        <button className="btnLogout" onClick={() => history.push('/price')} style={{position:"absolute",bottom:"20px",background:"var(--Dcolor)"}} > 업그레이드 </button>
         
 
     </div>
