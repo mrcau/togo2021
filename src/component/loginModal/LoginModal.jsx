@@ -6,7 +6,7 @@ import LockOpenIcon from '@material-ui/icons/LockOpen';
 import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
 import Swal from 'sweetalert2';
 
-function LoginModal({ fireApp, setuser,moveModal4 }) {
+function LoginModal({ fireApp, setuser,moveModal4,registerTF, setRegisterTF }) {
   const emailRef = useRef();
   const passRef = useRef();
   const emailRegisterRef = useRef();
@@ -14,8 +14,6 @@ function LoginModal({ fireApp, setuser,moveModal4 }) {
   const passRegisterRef = useRef();
   const repassRegisterRef = useRef();
   const Swal = require('sweetalert2');
-
-  const [registerTF, setRegisterTF] = useState(false);
 
   // 이메일로그인
   const emailLogin = (e) => {
@@ -42,7 +40,7 @@ function LoginModal({ fireApp, setuser,moveModal4 }) {
     if(!name||!email||!pass||!pass2){Swal.fire({title:"빈칸을 모두 채워주세요",icon:'warning'})}
     else if(pass!==pass2){Swal.fire({title:'비밀번호가 맞지 않습니다',icon:'error'})}
     else{
-      Swal.fire({title: '정보를 저장하겠습니까?',html: "이름: "+name+", 이메일: "+ email +", 비밀번호: " + pass,
+      Swal.fire({title: '저장하겠습니까?',html: "이름: "+name+", 이메일: "+ email +", 비밀번호: " + pass,
        showCancelButton: true, confirmButtonText: `확인`,}).then((result) => {
         if(result.isConfirmed){
           Swal.fire({title:nameRegisterRef.current.value+'님 회원가입 완료!'})

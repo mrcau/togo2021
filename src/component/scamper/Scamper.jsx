@@ -9,10 +9,11 @@ import ScamperReport from './ScamperReport';
 import Swal from 'sweetalert2';
 import placeholder from './placeholder';
 
-function Scamper({ fireApp, user, userName }) {
+function Scamper({ fireApp, user, userInfo }) {
   const folder = "scamper";
   const roomSubstr = 6;
   const Swal = require('sweetalert2');
+  const level = userInfo.level || 0;
   
   const aTitle = useRef();
   const bName = useRef();
@@ -38,7 +39,6 @@ function Scamper({ fireApp, user, userName }) {
   const [room, setRoom] = useState({});
   const [roomName, setroomName] = useState('');
   const [roomUid, setRoomUid] = useState('');
-  const [level, setLevel] = useState(0);
   const [video, setVideo] = useState('');
   const [notice, setNotice] = useState('');
   const [state, setState] = useState({ triz:false,  Switch7:true });
@@ -62,7 +62,7 @@ function Scamper({ fireApp, user, userName }) {
         setRoomUid(e.uid.substr(0, roomSubstr));
         fireApp.dataSync(folder, roomName, cf);
         fireApp.roomSync(folder, roomUid, cf);
-        fireApp.authSync('auth',e.uid,(p)=>setLevel(p))
+        // fireApp.authSync('auth',e.uid,(p)=>setLevel(p))
       }
       else {
         if(report===false||!roomName){return}
@@ -180,7 +180,6 @@ function Scamper({ fireApp, user, userName }) {
     const data = {
       aTitle: aTitle.current.value || '',
       bName: bName.current.value || '',
-
       input3: input3.current.value || '',
       input4: input4.current.value || '',
       input5: input5.current.value || '',
@@ -222,7 +221,11 @@ function Scamper({ fireApp, user, userName }) {
     }
     const roomUid =  roomERef.current.value.substr(0,roomSubstr);
     const roomId = roomUid+'REPORT';
-    fireApp.reportSave(folder, roomId, roomName, data);
+    if(!data.aTitle||!data.bName||!data.input3||!data.input4||!data.input5||!data.input6){
+      Swal.fire({title:'빈칸을 모두 채워주세요.',icon:'warning'})}else{
+        Swal.fire({title:'제출완료',icon:'success'});
+        fireApp.reportSave(folder, roomId, roomName, data);
+      }
   }
 
   // input roomName 초기화
@@ -230,8 +233,9 @@ function Scamper({ fireApp, user, userName }) {
 
   // roomName.substr(0,6) 방입장
     const enterRoom = () => {
-    const roomUid =  roomERef.current.value.substr(0,roomSubstr)
-    const currentRoom = roomERef.current.value;
+      if(!roomERef.current.value){return}
+    const roomUid =  roomERef.current.value.substr(0,roomSubstr)||"";
+    const currentRoom = roomERef.current.value||"";
     const roomGet=()=>{
       if(roomERef.current.value.length !== 10 || !roomUid){return}
       if(roomERef.current.value.length === 10){

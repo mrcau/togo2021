@@ -7,25 +7,17 @@ import mime from 'mime-types';
 import { Accordion, Card } from 'react-bootstrap';
 
 
-function LeftMenu({ fireApp, user, photo, setPhoto, logout }) {
-const [level, setLevel] = useState(0);
-
-// useEffect(() => {
-//   fireApp.onAuth((e) => {
-//     if (e) {fireApp.authSync('auth',e.uid,(p)=>setLevel(p))}
-//     else { console.log('no-User') }
-//   })
-// },[]) 
-
-  const upLoad = (e) => {
+function LeftMenu({ fireApp, user, photo, setPhoto,userInfo, logout,moveModal2 }) {
+const upLoad = (e) => {
     const file = e.target.files[0];
     const metaData = { contentType: mime.lookup(file.name) }
     fireApp.imgUpload(user.uid, file, metaData, (e) => setPhoto(e));
   }
-  const history = useHistory();
+const level = userInfo.level || 0;
+const history = useHistory();
+console.log('userInfo',level);
   return (
     <div className="leftMenu">
-
       {photo ? <div className="imgBg" style={{ backgroundImage: `url("${photo}")` }} />
         : <Avatar style={{ width: '120px', height: '120px' }} />}
       {Object.keys(user).length>0 &&
@@ -36,10 +28,14 @@ const [level, setLevel] = useState(0);
       </label>
       {user.uid&&<div style={{width:'100%'}}>
         <button className="btnLogout" onClick={logout} > 로그아웃 </button>
-        <div className="accordion Bmenu"> <Link className="a" to="/mypage"><div className="icon"> My Page</div></Link> </div>
-        <div className="accordion Bmenu"> <Link className="a" to="/todo"><div className="icon">  My Todo</div></Link></div>
-        <div className="accordion Bmenu"> <Link className="a" to="/mytool"><div className="icon">  My Tool</div></Link></div>
-        <div className="accordion Bmenu"> <Link className="a" to="/atable"><div className="icon">  My users</div></Link></div>
+        <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/mypage"><div className="icon"> My Page</div></Link> </div>
+        <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/todo"><div className="icon">  My Todo</div></Link></div>
+        {level>0 &&
+        <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/mytool"><div className="icon">  My Tool</div></Link></div>
+        }
+        {level>5 &&
+        <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/atable"><div className="icon">  My users</div></Link></div>
+        }
       </div>}
       <hr style={{width:'90%',border:'dashed 1px gray'}} />
     

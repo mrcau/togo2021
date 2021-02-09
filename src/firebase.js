@@ -159,6 +159,7 @@ async roomUser(folder,roomUid,cf) {
       const data = p.val();
       data ? cf.f3(data) : cf.f4();
     });
+    
   }
   //비로그인 데이터싱크
 
@@ -211,7 +212,7 @@ async authdataSync(auth, cf) {
     });
   }
     //Auth 테이블 싱크 for left menu
-async authSync(auth, uid,cf) {
+authSync(auth, uid,cf) {
   if (!auth) { return }
   const ref = firebase.database().ref(`${auth}/${uid}`);
   ref.on('value', (p) => {

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import './mytool.css';
 import Toolrow from './Toolrow';
 
-function Mytool({ fireApp, user, userName,  }) {
+function Mytool({ fireApp, user, userInfo  }) {
 
   const today = new Date().toLocaleDateString();
   const textRef = useRef();
@@ -29,13 +29,14 @@ function Mytool({ fireApp, user, userName,  }) {
     const text = textRef.current.value;
     const text2 = textRef2.current.value;
     const title = titleRef.current.value;
-    if (userName && title) {
-    console.log(title)
+    console.log(title,user,userInfo)
+    if (userInfo && title) {
+    console.log(title,text,text2)
       const dataId = Date.now();
       const data = {
         uid: user.uid,
         dataId: dataId,
-        name: userName,
+        name: userInfo.name,
         title: title,
         text: text,
         text2: text2,

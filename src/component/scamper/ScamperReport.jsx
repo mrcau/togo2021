@@ -15,10 +15,8 @@ useEffect(() => {
  }, [folder,roomName,fireApp]);
 
 const columns = [
-  { field: 'id', headerName: '번호', width: '10vw' },
-  { field: 'title', headerName: '제목', width: '45vw' },
-  { field: 'good', headerName: '추천', width: '15vw' },
-  { field: 'date', headerName: '날짜', width: '20vw' },
+  { field: 'id', headerName: '번호', width: '65px' },
+  { field: 'title', headerName: '제목', width: '58vw' },
 ];
 //글 선택하면 실행함수
 const selectRow = () => {

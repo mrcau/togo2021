@@ -1,8 +1,10 @@
 /* 모달창 */
 .loginModal {
   /* height: 400px; */
-  padding:3vw;
+  max-width: 800px;
+  padding:20px;
   overflow: hidden;
+  margin: auto;
 }
 /* 모달내부 */
 
