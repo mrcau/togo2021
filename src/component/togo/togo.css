@@ -15,6 +15,26 @@
   align-items: center;
   padding: 5px;
 }
+.togoTop{
+  display: flex;
+  height: 250px;
+  flex-wrap: wrap;
+  /* padding-left: 20px; */
+}
+.jumbo{
+  background: none;
+  flex: 1;
+  min-width: 300px;
+}
+.jumbo p{
+  font-size: large;
+}
+.togoback{
+  background: url('./mainBack.png') center/contain no-repeat;
+min-width: 300px;
+  flex: 1;
+  height: 100%;
+}
 
 .togoMain ::-webkit-scrollbar {
   width: 4px;
@@ -32,7 +52,7 @@
 
 .mainCard{
   width: 18rem;
-  margin: 1vw;
+  margin: 0.5vw;
 }
 
 .togo Button {
