@@ -16,7 +16,8 @@
   flex-direction: column;
   position: relative;
   height: 100vh;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
   background: linear-gradient(to right, #8e9eab 0%, #eef2f3  51%, #8e9eab  100%);
   /* background: var(--Bcolor); */
 }

@@ -92,14 +92,7 @@ flex:auto; font-size: small;}
   background-color: var(--Acolor);
   border-radius: 2px;  
 }
-.s-item ::-webkit-scrollbar {
-  width: 4px;
-}
-.s-item ::-webkit-scrollbar-thumb {
-  width: thin;
-  background-color: var(--Acolor);
-  border-radius: 2px;  
-}
+
 .inputBox ::-webkit-scrollbar {
   width: 4px;
 }

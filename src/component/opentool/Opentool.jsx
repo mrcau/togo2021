@@ -3,7 +3,7 @@ import './mytool.css';
 import Toolrow from './Toolrow';
 import Swal from 'sweetalert2';
 
-function Mytool({ fireApp, user, userInfo  }) {
+function Opentool({ fireApp, user, userInfo  }) {
 
   const today = new Date().toLocaleDateString();
   const textRef = useRef();
@@ -11,7 +11,7 @@ function Mytool({ fireApp, user, userInfo  }) {
   const titleRef = useRef();
   const rocketRef = useRef();
   const [items, setItems] = useState({});
-  const folder = "mytool"
+  const folder = "Opentool";
   const Swal = require('sweetalert2');
   // 데이터 보여주기 싱크
   useEffect(() => {    
@@ -20,7 +20,7 @@ function Mytool({ fireApp, user, userInfo  }) {
       f1: (p)=>{setItems(p)},
       f2: ()=>{setItems({})}
       }
-   e ? fireApp.itemSync(folder,e.uid, cf):console.log('no-User')
+   e ? fireApp.opentoolSync(folder,cf):console.log('no-User')
     })
   }, [fireApp]);
 
@@ -46,7 +46,7 @@ function Mytool({ fireApp, user, userInfo  }) {
         today: today,
         progress: 0
       }
-      fireApp.itemSave(folder,data);      
+      fireApp.opentoolSave(folder,data);      
       titleRef.current.value = '';
       textRef.current.value = '';
       textRef2.current.value = '';
@@ -64,7 +64,7 @@ function Mytool({ fireApp, user, userInfo  }) {
 
   return (
     <div className="mytool">
-      <div className='mytool-header'>  My ToolBox</div>
+      <div className='mytool-header'>  Open ToolBox</div>
       <div className="mytool-items">
         {
           Object.keys(items).map((e) => {
@@ -72,6 +72,7 @@ function Mytool({ fireApp, user, userInfo  }) {
           })
         }
       </div>
+      {userInfo.level>1 &&
       <div className="mytool-input">
         <form onSubmit={submit} className="mytool-form">
           <input type="text" ref={titleRef} className="inputTitle" placeholder="제목"/>
@@ -82,10 +83,10 @@ function Mytool({ fireApp, user, userInfo  }) {
           style={{borderTop: 'dashed 1px'}} placeholder="소스코드를 입력해주세요." />
         </form>
       </div>
-
+      }
 
     </div>
   );
 }
 
-export default Mytool;
+export default Opentool;

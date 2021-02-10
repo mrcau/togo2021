@@ -5,6 +5,7 @@ import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
 import Swal from 'sweetalert2';
+import google from './goolge.png';
 
 function LoginModal({ fireApp, setuser,moveModal4,registerTF, setRegisterTF }) {
   const emailRef = useRef();
@@ -69,7 +70,7 @@ function LoginModal({ fireApp, setuser,moveModal4,registerTF, setRegisterTF }) {
             <Button variant="primary" type="submit"> 로그인</Button>
           </Form>
           <button className="btnGoogle" style={{ background: "white" }} onClick={googleLogin} >
-            <i className="fab fa-google-plus" /></button>
+            <img src={google} alt="googe" width="50px" /> </button>
           <button className="btnRegister" style={{ background: "white" }} onClick={() => setRegisterTF(true)} >
             아이디가 없다면...</button>
         </div>

@@ -2,13 +2,18 @@ import React from 'react';
 import { Jumbotron,Button, Card } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 import './togo.css';
-// import img1 from './programmer';
+import problem from './problem.png';
+import anlysis from './analysis.png';
+import idea from './idea.png';
+import solution from './solution.png';
+
+import Opentoolbox from '../opentool/Opentoolbox';
 
 
-function Togo(props) {
+function Togo({ fireApp, user, userInfo,  }) {
 const history = useHistory();
   return (
-    <div className="togo">      
+    <div className="togo" style={{paddingBottom:"20px"}}>      
       <div className="jumbo" style={{width:"50%"}}>
         <Jumbotron>
           <h1>디자인씽킹!, 기업가정신!</h1>
@@ -18,54 +23,64 @@ const history = useHistory();
           <p><Button variant="primary">Learn more</Button></p>
         </Jumbotron> 
       </div>    
-      <div className="togoMain">    
-      
-      <Card  style={{ width: '18rem' }}>
-        <Card.Img variant="top" src="/src/component/mypage/programmer.png" />
-        <Card.Body>
-          <Card.Title style={{fontWeight:"900"}}>문제찾기</Card.Title>
-          <Card.Text>
-          다양한 관점의 관찰과 공감을 통해 문제 상황을 인식하고 해결의 <br/> 실마리를 찾을 수 있습니다. 
-          </Card.Text>
-          <Button variant="primary">바로가기</Button>
-        </Card.Body>
-      </Card>
-      
-      <Card  style={{ width: '18rem' }}>
-        <Card.Img variant="top" src="/src/component/mypage/programmer.png" />
-        <Card.Body>
-          <Card.Title style={{fontWeight:"900"}}>데이터분석</Card.Title>
-          <Card.Text>
-          데이터 수집/분석은 문제해결을<br/> 위한 최적의 판단을 내리는 과학적 근거가 됩니다.
-          </Card.Text>
-          <Button variant="primary">바로가기</Button>
-        </Card.Body>
-      </Card>
-
-      <Card  style={{ width: '18rem' }}>
-        <Card.Img variant="top" src="/src/component/mypage/programmer.png" />
-        <Card.Body>
-          <Card.Title style={{fontWeight:"900"}}>아이디어발상</Card.Title>
-          <Card.Text>
-          유연한 사고를 이끌어 내는 창의적 발상법을 통해 다양한 아이디어를 생각할 수 있습니다.
-          </Card.Text>
-          <Button variant="primary">바로가기</Button>
-        </Card.Body>
-      </Card>
-
-      <Card  style={{ width: '18rem' }}>
-        <Card.Img variant="top" src="/src/component/mypage/programmer.png" />
-        <Card.Body>
-          <Card.Title style={{fontWeight:"900"}}>문제해결</Card.Title>
-          <Card.Text>
-            Some quick example text to build on the card title and make up the bulk of
-            the card's content.
-          </Card.Text>
-          <Button variant="primary">바로가기</Button>
-        </Card.Body>
-      </Card>
-
+      <div className="togoMain">          
+        <div className="cardWrap">
+        <Card className="mainCard" style={{paddingTop:"10px"}} >
+          <Card.Img variant="top" src={problem} style={{width:"8rem",height:"7rem",margin:"auto"}}/>
+          <Card.Body>
+            <Card.Title style={{fontWeight:"900"}}>문제찾기</Card.Title>
+            <Card.Text>
+            다양한 관점의 관찰과 공감을 통해 문제 상황을 인식하고 해결의 <br/> 실마리를 찾을 수 있습니다. 
+            </Card.Text>
+            <Button variant="primary">바로가기</Button>
+          </Card.Body>
+        </Card>      
+        <Card className="mainCard" style={{marginLeft:"2vw",paddingTop:"10px"}}>
+          <Card.Img variant="top"  src={anlysis} style={{width:"8rem",height:"7rem",margin:"auto"}} />
+          <Card.Body>
+            <Card.Title style={{fontWeight:"900"}}>데이터분석</Card.Title>
+            <Card.Text>
+            데이터 수집/분석은 문제해결을<br/> 위한 최적의 판단을 내리는 과학적 근거가 됩니다.
+            </Card.Text>
+            <Button  variant="primary">바로가기</Button>
+          </Card.Body>
+        </Card>
+        </div>
+        <div className="cardWrap" >
+        <Card  className="mainCard" style={{paddingTop:"10px"}}>
+          <Card.Img variant="top" src={idea} style={{width:"8rem",height:"7rem",margin:"auto"}} />
+          <Card.Body>
+            <Card.Title style={{fontWeight:"900"}}>아이디어</Card.Title>
+            <Card.Text>
+            유연한 사고를 이끌어 내는 창의적 발상법을 통해 다양한 아이디어를 생각할 수 있습니다.
+            </Card.Text>
+            <Button variant="primary" onClick={() =>history.push('/scamper')} >바로가기</Button>
+          </Card.Body>
+        </Card>
+        <Card  className="mainCard" style={{marginLeft:"2vw",paddingTop:"10px"}}>
+          <Card.Img variant="top" src={solution} style={{width:"8rem",height:"7rem",margin:"auto"}} />
+          <Card.Body>
+            <Card.Title style={{fontWeight:"900"}}>문제해결</Card.Title>
+            <Card.Text>
+              Some quick example text to build on the card title and make up the bulk of
+              the card's content.
+            </Card.Text>
+            <Button variant="primary">바로가기</Button>
+          </Card.Body>
+        </Card>
+        </div>
       </div>
+      {userInfo.level>0 &&
+      <div className="cardWrap" style={{width:"90vw",margin:"auto"}} >
+        <div className="mainOpenTool" style={{width:"48%",marginRight:"20px"}} >
+          <Opentoolbox fireApp={fireApp} user={user} userInfo={userInfo}/>
+        </div>
+        <div className="mainOpenTool" style={{width:"48%",margin:"auto"}} >
+          <Opentoolbox fireApp={fireApp} user={user} userInfo={userInfo}/>
+        </div>
+      </div>
+      }
+
     </div>  );}export default Togo;
 
 

@@ -78,13 +78,37 @@ class firebaseApp {
       console.log(error)
     }
   }
+  // OpenTool  저장 
+  opentoolSave(folder, data) {
+    firebase.database().ref(`${folder}/${data.dataId}`).set(data)
+      .then(() => console.log('글 저장성공'))
+      .catch((e) => console.log(e))
+  }
+
+  // OpenTool 씽크
+  opentoolSync(folder, cf) {
+    const ref = firebase.database().ref(`${folder}`);
+    ref.on('value', (p) => {
+      const data = p.val();
+      data ? cf.f1(data) : cf.f2();
+    })
+  }
+   // OpenTool 업데이트
+   opentoolUp(folder, dataId, counter) {
+    firebase.database().ref(`${folder}/${dataId}`)
+      .update({ progress: counter })
+  }
+  // OpenTool 삭제
+  opentoolDel(folder,dataId) {
+    firebase.database().ref(`${folder}/${dataId}`).remove();
+  }
+
   // TODO글  저장 
   itemSave(folder, data) {
     firebase.database().ref(`${folder}/${data.uid}/${data.dataId}`).set(data)
       .then(() => console.log('글 저장성공'))
       .catch((e) => console.log(e))
   }
-
   // TODO 씽크
   itemSync(folder, uid, cf) {
     const ref = firebase.database().ref(`${folder}/${uid}`);
@@ -92,7 +116,7 @@ class firebaseApp {
       const data = p.val();
       data ? cf.f1(data) : cf.f2();
     })
-  }
+  }  
   // TODO 삭제
   itemDel(folder, uid, dataId) {
     firebase.database().ref(`${folder}/${uid}/${dataId}`).remove();

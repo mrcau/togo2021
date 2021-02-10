@@ -24,6 +24,21 @@
   background-color: var(--Acolor);
   border-radius: 2px;  
 }
+.cardWrap{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.mainCard{
+  width: 18rem;
+  margin: 1vw;
+}
+
+.togo Button {
+  height: 30px;
+}
+
 .btnMenu{
   width :15vw;
   height:15vw;

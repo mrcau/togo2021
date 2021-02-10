@@ -13,6 +13,7 @@ import Mytool from './component/mytool/Mytool';
 import Mytoolbox from './component/mytool/Mytoolbox';
 import Mypage from './component/mypage/Mypage';
 import Price from './component/price/Price';
+import Opentool from './component/opentool/Opentool';
 
 function App({ fireApp }) {
   const history = useHistory();
@@ -112,7 +113,7 @@ function App({ fireApp }) {
       <main>
         <Switch>
           <Route exact path='/'>
-            <Togo />
+            <Togo fireApp={fireApp} user={user} userInfo={userInfo}/>
           </Route>
           <Route path='/todo'>
             <Todo fireApp={fireApp} user={user} userName={userName} />
@@ -132,7 +133,9 @@ function App({ fireApp }) {
           <Route path='/price'> 
             <Price fireApp={fireApp} user={user} userInfo={userInfo} />
           </Route>
-          
+          <Route path='/opentool'> 
+            <Opentool fireApp={fireApp} user={user} userInfo={userInfo} />
+          </Route>
         </Switch>
       </main>
       <footer>by SamFactory</footer>
