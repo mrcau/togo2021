@@ -26,7 +26,7 @@ function Mypage({fireApp,user,userInfo}) {
       Swal.fire({ title: '정보를 저장하겠습니까?',  html: "이름: " + nameRef.current.value + 
       ", "+ jobRef.current.value, showCancelButton: true, confirmButtonText: `확인`,})
       .then((result) => { if(result.isConfirmed){ Swal.fire('Saved!');
-      fireApp.profileUp(folder,uid,{name:inputName, job:inputjob, level});
+      fireApp.profileUp(folder,uid,{name:inputName, job:inputjob, level,user:user.uid,email:user.email});
       }});
     };
   }

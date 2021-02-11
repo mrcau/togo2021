@@ -126,6 +126,11 @@ flex:auto; font-size: small;}
   border-top: 1px dashed;
   border-bottom: 1px dashed;
 }
+.scamperInput.input3, .input5, .input6{
+  resize:vertical;
+
+}
+
 .scamperInput.btn{
   padding: 0;
   background: var(--Ccolor);

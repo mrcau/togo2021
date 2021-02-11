@@ -29,8 +29,8 @@ const history = useHistory();
         <div className="togoback" />
       </div>
       <div className="togoMain">          
-        <Card className="mainCard" style={{paddingTop:"10px"}} >
-          <Card.Img variant="top" src={problem} style={{width:"8rem",height:"7rem",margin:"auto"}}/>
+        <Card className="mainCard" >
+          <Card.Img variant="top" src={problem} className="cardImg" />
           <Card.Body>
             <Card.Title style={{fontWeight:"900"}}>문제찾기</Card.Title>
             <Card.Text>
@@ -40,8 +40,8 @@ const history = useHistory();
 
           </Card.Body>
         </Card>      
-        <Card className="mainCard" style={{paddingTop:"10px"}}>
-          <Card.Img variant="top"  src={anlysis} style={{width:"8rem",height:"7rem",margin:"auto"}} />
+        <Card className="mainCard" >
+          <Card.Img variant="top"  src={anlysis} className="cardImg"  />
           <Card.Body>
             <Card.Title style={{fontWeight:"900"}}>데이터분석</Card.Title>
             <Card.Text>
@@ -52,8 +52,8 @@ const history = useHistory();
           </Card.Body>
         </Card>
         
-        <Card  className="mainCard" style={{paddingTop:"10px"}}>
-          <Card.Img variant="top" src={idea} style={{width:"8rem",height:"7rem",margin:"auto"}} />
+        <Card  className="mainCard" >
+          <Card.Img variant="top" src={idea}  className="cardImg"  />
           <Card.Body>
             <Card.Title style={{fontWeight:"900"}}>아이디어</Card.Title>
             <Card.Text>
@@ -62,8 +62,8 @@ const history = useHistory();
             <button className="btn1" onClick={() =>history.push('/scamper')} >바로가기</button>
           </Card.Body>
         </Card>
-        <Card  className="mainCard" style={{paddingTop:"10px"}}>
-          <Card.Img variant="top" src={solution} style={{width:"8rem",height:"7rem",margin:"auto"}} />
+        <Card  className="mainCard" >
+          <Card.Img variant="top" src={solution}  className="cardImg" />
           <Card.Body>
             <Card.Title style={{fontWeight:"900"}}>문제해결</Card.Title>
             <Card.Text>
@@ -73,8 +73,8 @@ const history = useHistory();
 
           </Card.Body>
         </Card>
-        <Card  className="mainCard" style={{paddingTop:"10px"}}>
-          <Card.Img variant="top" src={rocket} style={{width:"7rem",height:"7rem",margin:"auto"}} />
+        <Card  className="mainCard" >
+          <Card.Img variant="top" src={rocket}  className="cardImg" />
           <Card.Body>
             <Card.Title style={{fontWeight:"900"}}>스타트업</Card.Title>
             <Card.Text>
@@ -84,8 +84,8 @@ const history = useHistory();
 
           </Card.Body>
         </Card>
-        <Card  className="mainCard" style={{paddingTop:"10px"}}>
-          <Card.Img variant="top" src={tool} style={{width:"8rem",height:"7rem",margin:"auto"}} />
+        <Card  className="mainCard" >
+          <Card.Img variant="top" src={tool}  className="cardImg"  />
           <Card.Body>
             <Card.Title style={{fontWeight:"900"}}>도구의 인간</Card.Title>
             <Card.Text>

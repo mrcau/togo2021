@@ -71,7 +71,6 @@
 }
 .a{
   display: flex;
-  font-weight: 900;
 }
 
 .icon{
@@ -79,7 +78,6 @@
   height: 21px;
   text-align: left;
   padding-left: 20px;
-  font-weight: 900;
   position: relative;
   background: url('./batteryIcon.png') no-repeat ;
   background-size:  13px 43px;

@@ -120,6 +120,7 @@ function Scamper({ fireApp, user, userInfo }) {
     }
     //오른쪽 모달 핸들링
     const moveModal = () => {
+      console.log(roomName)
       drawerRef.current.classList.add("moveDrawer");
       backRef.current.classList.remove("backNone");    
     }
@@ -200,7 +201,7 @@ function Scamper({ fireApp, user, userInfo }) {
     e.preventDefault();
     const today = new Date().toLocaleDateString().substr(5);
     // const id = Date.now();
-    if (roomName!==roomERef.current.value||roomERef.current.value==='') { return }
+    if (Object.keys(user).length<1) { return }
     const data = {
       aTitle: aTitle.current.value || '',
       bName: bName.current.value || '',
@@ -219,6 +220,18 @@ function Scamper({ fireApp, user, userInfo }) {
       good7:0,
       roomName:roomName
     }
+    // if (roomName!==roomERef.current.value||roomERef.current.value==='') { return }
+    if(!roomName){
+      const roomId = user.uid;
+      const roomUid =  Date.now();
+    // const id = Date.now();
+      console.log(roomId,roomUid)
+      if(!data.aTitle||!data.bName||!data.input3||!data.input4||!data.input5||!data.input6){
+        Swal.fire({title:'빈칸을 모두 채워주세요.',icon:'warning'})}else{
+          Swal.fire({title:'제출완료',icon:'success'});
+          fireApp.reportSave(folder, roomId, roomUid, data);
+        }        
+    }else{
     const roomUid =  roomERef.current.value.substr(0,roomSubstr);
     const roomId = roomUid+'REPORT';
     if(!data.aTitle||!data.bName||!data.input3||!data.input4||!data.input5||!data.input6){
@@ -226,6 +239,7 @@ function Scamper({ fireApp, user, userInfo }) {
         Swal.fire({title:'제출완료',icon:'success'});
         fireApp.reportSave(folder, roomId, roomName, data);
       }
+    }
   }
 
   // input roomName 초기화
@@ -233,7 +247,11 @@ function Scamper({ fireApp, user, userInfo }) {
 
   // roomName.substr(0,6) 방입장
     const enterRoom = () => {
-      if(!roomERef.current.value){return}
+    if(!roomERef.current.value){
+      const data = {scamS:'',scamC:'',scamA:'',scamM:'',scamP:'',scamE:'',scamR:'', aTitle:'',bName: '',input3: '',input4:'',input5:'',input6:'', roomName:''}
+      setroomName(""); roomNameReset(); setDoor('입장'); setdata(data); setReport(false);
+      return}
+
     const roomUid =  roomERef.current.value.substr(0,roomSubstr)||"";
     const currentRoom = roomERef.current.value||"";
     const roomGet=()=>{
