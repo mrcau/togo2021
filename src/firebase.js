@@ -146,52 +146,61 @@ roomGet(folder,roomUid) {
       .catch((e) => console.log(e))         
   }
 
-  //  관리자 룸 씽크
-  async roomSync(folder, roomUid, cf) {
-    const ref = firebase.database().ref(`${folder}/${roomUid}`);
+  //   룸 씽크 관리자
+  async roomSync(folder, uid, cf) {
+    // const roomUid = uid.substr(0, roomSubstr);
+    // if(!uid){return}
+    console.log('룸싱크',uid,'없나?')
+    const ref = firebase.database().ref(`${folder}/${uid}`);
     ref.on('value', (p) => {
       const data = p.val();
       cf.f3(data);
     })
+    if(!uid){ref.off();}
+    
+    return ()=>ref.off();
   }
 
 //  룸 이름 가져오기
-async roomUser(folder,roomUid,cf) {
+roomUser(folder,roomUid,cf) {
+  console.log('roomuser콜백함수 실행')
   const ref = firebase.database().ref(`${folder}`);
   ref.on('value', (p) => {
   const data = p.val();
     if(!data){console.log('서버데이터 없음')}
     const dataKey = Object.keys(data);
+    console.log('dataKey',dataKey.indexOf(roomUid))
     if(dataKey.indexOf(roomUid)<0){ return }
      cf();
   })
  }
   // 데이터 씽크
   dataSync(folder, roomName, cf) {
-    const roomUid = roomName.substr(0,roomSubstr);
+  console.log('dataSync 실행')
+  const roomUid = roomName.substr(0,roomSubstr);
     const roomNum = roomName.substr(roomSubstr);
-
     if (!roomName) { return }
     const ref1 = firebase.database().ref(`${folder}/${roomUid}/${roomNum}`);
     ref1.on('value', (p) => {
       const data = p.val();
       data ? cf.f1(data) : cf.f2();
     });
-
     const ref2 = firebase.database().ref(`${folder}/${roomUid}`);
     ref2.on('value', (p) => {
       const data = p.val();
       data ? cf.f3(data) : cf.f4();
-    });
-    
+    });   
+    // if(cf){ref1.off(); ref2.off();}
+    return () => {ref1.off(); ref2.off()}
   }
+  
   //비로그인 데이터싱크
-
   dataSyncB(folder, roomName, cf) {
     const roomUid = roomName.substr(0,roomSubstr);
     const roomReport = roomUid+'REPORT';
     const ref3 = firebase.database().ref(`${folder}/${roomReport}/${roomName}`);
     ref3.on('value',(p) => {const data = p.val(); data ? cf.f1(data) : cf.f2(); })
+    return ref3.off();
   }
   // 데이터 삭제
   dataDel(folder, roomName) {
@@ -199,9 +208,14 @@ async roomUser(folder,roomUid,cf) {
     const roomNum = roomName.substr(roomSubstr);
     firebase.database().ref(`${folder}/${roomUid}/${roomNum}`).remove();
   }
+    // 리포트데이터 삭제
+    reportDel(folder, uid, dataId) {
+      firebase.database().ref(`${folder}/${uid}/${dataId}`).remove();
+    }
 
   // 데이터 저장
   dataUp(folder, roomName, data) {
+    console.log('파이어베이스 dataUp 실행')
     const roomUid = roomName.substr(0,roomSubstr);
     const roomNum = roomName.substr(roomSubstr);
     firebase.database().ref(`${folder}/${roomUid}/${roomNum}`)
@@ -215,9 +229,9 @@ async roomUser(folder,roomUid,cf) {
   }
 
   //보고서 테이블 싱크
-async reportSync(folder,roomName, cf) {
-    if (!roomName) { return }
-    const roomId = roomName.substr(0,6)+'REPORT'
+async reportSync(folder,roomId, cf) {
+    if (!roomId) { return }
+    // const roomId = roomName.substr(0,6)+'REPORT'
     const ref1 = firebase.database().ref(`${folder}/${roomId}`);
     ref1.on('value', (p) => {
       const data = p.val()||{};
@@ -271,13 +285,13 @@ videoSave(folder,roomName,spot,data){
 // 비디오 메시지 싱크
 async videoSync(folder,roomName,spot,cf) {
   const roomUid = roomName.substr(0,roomSubstr);
-
   if (!roomUid) { return }
   const ref = firebase.database().ref(`${folder}/${roomUid}/${spot}`);
   ref.on('value', (p) => { 
     const data = p.val();
     cf(data);
   });
+  return ()=>ref.off();
 }
 
 // Good 업데이트
