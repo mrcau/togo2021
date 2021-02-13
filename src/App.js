@@ -14,8 +14,13 @@ import Mytoolbox from './component/mytool/Mytoolbox';
 import Mypage from './component/mypage/Mypage';
 import Price from './component/price/Price';
 import Opentool from './component/opentool/Opentool';
+import Problem from './component/problem/Problem';
+import Datastudy from './component/datastudy/Datastudy';
+import Solving from './component/solving/Solving';
+import Startup from './component/startup/Startup';
+import Brainstorm from './component/brainstorm/Brainstorm';
 
-function App({ fireApp }) {
+function App({ fireApp,fireLogin, fireTodo, fireIdea, fireOpentool}) {
   const history = useHistory();
   const [user, setuser] = useState({});
   const [uid, setUid] = useState('');
@@ -85,7 +90,7 @@ function App({ fireApp }) {
       <div className="drawerbackLeft backNoneLeft" ref={backRef} onClick={moveModal2}></div>
       {/* 위쪽메뉴 */}
       <div className="drawerTop " ref={drawerTopRef}>
-        {uid ? <Mytoolbox fireApp={fireApp} user={user} userName={userName} />
+        {uid ? <Mytoolbox fireTodo={fireTodo} user={user} userName={userName} />
            : <LoginModal fireApp={fireApp} setuser={setuser} moveModal4={moveModal4}  registerTF={registerTF} setRegisterTF={setRegisterTF} /> }
       </div>
       <div className="drawerbackTop backNonTop" ref={backTopRef} onClick={moveModal4}></div>
@@ -115,27 +120,47 @@ function App({ fireApp }) {
           <Route exact path='/'>
             <Togo fireApp={fireApp} user={user} userInfo={userInfo}/>
           </Route>
-          <Route path='/todo'>
-            <Todo fireApp={fireApp} user={user} userName={userName} />
+          <Route path='/mypage'> 
+            <Mypage fireApp={fireApp} user={user} userInfo={userInfo} />
           </Route>
+          <Route path='/todo'>
+            <Todo fireTodo={fireTodo} user={user} userName={userName} />
+          </Route>
+          <Route path='/mytool'> 
+            <Mytool fireTodo={fireTodo} user={user} userInfo={userInfo}/>
+          </Route>
+
           <Route path='/scamper'> 
             <Scamper fireApp={fireApp} user={user} userInfo={userInfo} />
           </Route>
           <Route path='/atable'> 
             <Atable fireApp={fireApp} user={user} userName={userName} />
           </Route>
-          <Route path='/mytool'> 
-            <Mytool fireApp={fireApp} user={user} userInfo={userInfo}/>
-          </Route>
-          <Route path='/mypage'> 
-            <Mypage fireApp={fireApp} user={user} userInfo={userInfo} />
-          </Route>
+         
+          
           <Route path='/price'> 
             <Price fireApp={fireApp} user={user} userInfo={userInfo} />
           </Route>
           <Route path='/opentool'> 
             <Opentool fireApp={fireApp} user={user} userInfo={userInfo} />
           </Route>
+          <Route path='/problem'>           
+            <Problem fireApp={fireApp} user={user} userInfo={userInfo} />
+          </Route>
+          <Route path='/datastudy'>           
+            <Datastudy fireApp={fireApp} user={user} userInfo={userInfo} />
+          </Route>
+          <Route path='/solving'>           
+            <Solving fireApp={fireApp} user={user} userInfo={userInfo} />
+          </Route>
+          <Route path='/startup'> 
+            <Startup fireApp={fireApp} user={user} userInfo={userInfo} />
+          </Route>
+          <Route path='/brainstorm'> 
+            <Brainstorm fireApp={fireApp} user={user} userInfo={userInfo} />
+          </Route>
+          
+          
         </Switch>
       </main>
       <footer>by SamFactory</footer>

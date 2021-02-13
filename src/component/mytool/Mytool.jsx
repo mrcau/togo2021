@@ -3,7 +3,7 @@ import './mytool.css';
 import Toolrow from './Toolrow';
 import Swal from 'sweetalert2';
 
-function Mytool({ fireApp, user, userInfo  }) {
+function Mytool({ fireTodo, user, userInfo  }) {
 
   const today = new Date().toLocaleDateString();
   const textRef = useRef();
@@ -15,15 +15,14 @@ function Mytool({ fireApp, user, userInfo  }) {
   const Swal = require('sweetalert2');
   // 데이터 보여주기 싱크
   useEffect(() => {    
-    fireApp.onAuth((e) => {
+    // fireTodo.onAuth((e) => {
     const cf = {
       f1: (p)=>{setItems(p)},
       f2: ()=>{setItems({})}
       }
-   e ? fireApp.itemSync(folder,e.uid, cf):console.log('no-User')
-    })
-  }, [fireApp]);
-
+   user ? fireTodo.itemSync(folder,user.uid, cf):console.log('no-User')
+    // })
+  }, [fireTodo,user]);
   //DB에 글 데이터 저장
   const submit = (e) => {
     e.preventDefault();
@@ -46,7 +45,7 @@ function Mytool({ fireApp, user, userInfo  }) {
         today: today,
         progress: 0
       }
-      fireApp.itemSave(folder,data);      
+      fireTodo.itemSave(folder,data);      
       titleRef.current.value = '';
       textRef.current.value = '';
       textRef2.current.value = '';
@@ -68,7 +67,7 @@ function Mytool({ fireApp, user, userInfo  }) {
       <div className="mytool-items">
         {
           Object.keys(items).map((e) => {
-            return <Toolrow key={e} item={items[e]} fireApp={fireApp} />
+            return <Toolrow key={e} item={items[e]} fireTodo={fireTodo} />
           })
         }
       </div>

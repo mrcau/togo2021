@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import Itemrow from './Itemrow';
 import './todo.css';
 
-function Todo({ fireApp, user, userName,  }) {
+function Todo({ fireTodo, user, userName,  }) {
 
   const today = new Date().toLocaleDateString();
   const textRef = useRef();
@@ -11,16 +11,17 @@ function Todo({ fireApp, user, userName,  }) {
   const [items, setItems] = useState({});
   const [todoCount, setTodoCount] = useState(0);
   const folder = "todo"
+  console.log(user)
   // 데이터 보여주기 싱크
   useEffect(() => {    
-    fireApp.onAuth((e) => {
+    // fireTodo.onAuth((e) => {
     const cf = {
       f1: (p)=>{setItems(p)},
       f2: ()=>{setItems({})}
       }
-   e ? fireApp.itemSync(folder,e.uid, cf):console.log('no-User')
-    })
-  }, [fireApp]);
+   user ? fireTodo.itemSync(folder,user.uid, cf):console.log('no-User')
+    // })
+  }, [fireTodo,user]);
 
   //DB에 글 데이터 저장
   const submit = (e) => {
@@ -40,7 +41,7 @@ function Todo({ fireApp, user, userName,  }) {
         today: today,
         progress: 0
       }
-      fireApp.itemSave(folder,data)
+      fireTodo.itemSave(folder,data)
     }
     titleRef.current.value = '';
     textRef.current.value = '';
@@ -61,7 +62,7 @@ function Todo({ fireApp, user, userName,  }) {
       <div className="todo-items">
         {
           Object.keys(items).map((e) => {
-            return <Itemrow key={e} item={items[e]} fireApp={fireApp} />
+            return <Itemrow key={e} item={items[e]} fireTodo={fireTodo} />
           })
           // <Itemrow  key={uid} item={items} items={items}/> 
         }

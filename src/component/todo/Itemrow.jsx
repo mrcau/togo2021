@@ -2,19 +2,19 @@ import './itemrow.css';
 import React, { memo } from 'react';
 import ProgressBar from 'react-bootstrap/ProgressBar'
 
-function  Itemrow ({item,fireApp}) {
+function  Itemrow ({item,fireTodo}) {
   const folder = "todo";
   let counter = item.progress;
   const itemDel=() => {
-    fireApp.itemDel(folder,item.uid,item.dataId)
+    fireTodo.itemDel(folder,item.uid,item.dataId)
   }
   const plus = () => {
     counter<10&&counter++;
-    fireApp.itemUp(folder,item.uid,item.dataId,counter)
+    fireTodo.itemUp(folder,item.uid,item.dataId,counter)
   }
   const minus = () => {
     counter>0&&counter--;
-    fireApp.itemUp(folder,item.uid,item.dataId,counter)
+    fireTodo.itemUp(folder,item.uid,item.dataId,counter)
   }
   const now = item.progress*10;
   return (

@@ -1,42 +1,22 @@
 import firebase from 'firebase/app';
+import fireInit from './fire';
 import "firebase/auth";
 import "firebase/database";
 import "firebase/storage";
-const firebaseConfig = {
-  // apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-  // authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
-  // databaseURL: process.env.REACT_APP_FIREBASE_DB_URL,
-  // projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
-  // storageBucket: process.env.REACT_APP_FIREBASE_STORAGE,
-  // messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGE,
-  // appId: process.env.REACT_APP_FIREBASE_APPID,
-  // measurementId: process.env.REACT_APP_FIREBASE_MEASURE,
-
-  apiKey: "AIzaSyCBPpFDf-hl-jFikjFq-WV439n74JBnWeA",
-  authDomain: "togo-9d17b.firebaseapp.com",
-  databaseURL: "https://togo-9d17b-default-rtdb.firebaseio.com",
-  projectId: "togo-9d17b",
-  storageBucket: "togo-9d17b.appspot.com",
-  messagingSenderId: "95500958643",
-  appId: "1:95500958643:web:0b4d456c52baebb147a9c6",
-  measurementId: "G-H72GT2QL69"
-};
-firebase.initializeApp(firebaseConfig);
-// firebase.analytics();
 
 const roomSubstr = 6;
 
 class firebaseApp {
   //회원가입
   async createUser(info, cf) {
-    firebase.auth().createUserWithEmailAndPassword(info.email, info.pass)
+    fireInit.auth().createUserWithEmailAndPassword(info.email, info.pass)
       .then((e) => { 
-        firebase.database().ref(`auth/${e.user.uid}`).set({...info,'user':e.user.uid})
+        fireInit.database().ref(`auth/${e.user.uid}`).set({...info,'user':e.user.uid})
           .then(() => {
-            firebase.auth().currentUser.updateProfile({ displayName: info.name });
+            fireInit.auth().currentUser.updateProfile({ displayName: info.name });
           })
           .then(() => {
-            const newUser = firebase.auth().currentUser;
+            const newUser = fireInit.auth().currentUser;
             cf(newUser)
           })
           .catch((error) => alert(error));
@@ -46,7 +26,7 @@ class firebaseApp {
 
   // 이메일로그인
   async emailLogin(Email, Pass) {
-    firebase.auth().signInWithEmailAndPassword(Email, Pass)
+    fireInit.auth().signInWithEmailAndPassword(Email, Pass)
       .then(() => console.log('Login Success'))
       .catch((error) => { alert(error) })
   }
@@ -60,18 +40,18 @@ class firebaseApp {
   }
   //로그아웃
   async logout() {
-    firebase.auth().signOut();
+    fireInit.auth().signOut();
   }
   //회원정보 SYNC
   async onAuth(cf) {
-    firebase.auth().onAuthStateChanged(e => cf(e));
+    fireInit.auth().onAuthStateChanged(e => cf(e));
   }
   // 프로필사진 자료저장
   async imgUpload(uid, file, metaData, cf) {
     try {
-      const e = await firebase.storage().ref(`img/${uid}`).put(file, metaData)
+      const e = await fireInit.storage().ref(`img/${uid}`).put(file, metaData)
       const downloadUrl = await e.ref.getDownloadURL();
-      firebase.auth().currentUser.updateProfile({ photoURL: downloadUrl });
+      fireInit.auth().currentUser.updateProfile({ photoURL: downloadUrl });
       cf(downloadUrl);
     }
     catch (error) {
@@ -80,14 +60,14 @@ class firebaseApp {
   }
   // OpenTool  저장 
   opentoolSave(folder, data) {
-    firebase.database().ref(`${folder}/${data.dataId}`).set(data)
+    fireInit.database().ref(`${folder}/${data.dataId}`).set(data)
       .then(() => console.log('글 저장성공'))
       .catch((e) => console.log(e))
   }
 
   // OpenTool 씽크
   opentoolSync(folder, cf) {
-    const ref = firebase.database().ref(`${folder}`);
+    const ref = fireInit.database().ref(`${folder}`);
     ref.on('value', (p) => {
       const data = p.val();
       data ? cf.f1(data) : cf.f2();
@@ -95,23 +75,23 @@ class firebaseApp {
   }
    // OpenTool 업데이트
    opentoolUp(folder, dataId, counter) {
-    firebase.database().ref(`${folder}/${dataId}`)
+    fireInit.database().ref(`${folder}/${dataId}`)
       .update({ progress: counter })
   }
   // OpenTool 삭제
   opentoolDel(folder,dataId) {
-    firebase.database().ref(`${folder}/${dataId}`).remove();
+    fireInit.database().ref(`${folder}/${dataId}`).remove();
   }
 
   // TODO글  저장 
   itemSave(folder, data) {
-    firebase.database().ref(`${folder}/${data.uid}/${data.dataId}`).set(data)
+    fireInit.database().ref(`${folder}/${data.uid}/${data.dataId}`).set(data)
       .then(() => console.log('글 저장성공'))
       .catch((e) => console.log(e))
   }
   // TODO 씽크
   itemSync(folder, uid, cf) {
-    const ref = firebase.database().ref(`${folder}/${uid}`);
+    const ref = fireInit.database().ref(`${folder}/${uid}`);
     ref.on('value', (p) => {
       const data = p.val();
       data ? cf.f1(data) : cf.f2();
@@ -119,18 +99,18 @@ class firebaseApp {
   }  
   // TODO 삭제
   itemDel(folder, uid, dataId) {
-    firebase.database().ref(`${folder}/${uid}/${dataId}`).remove();
+    fireInit.database().ref(`${folder}/${uid}/${dataId}`).remove();
   }
   // TODO 업데이트
   itemUp(folder, uid, dataId, counter) {
-    firebase.database().ref(`${folder}/${uid}/${dataId}`)
+    fireInit.database().ref(`${folder}/${uid}/${dataId}`)
       .update({ progress: counter })
   }
 
 //  룸 개수 가져오기
 roomGet(folder,roomUid) {
   let roomGetNum = 0; 
-  const ref = firebase.database().ref(`${folder}/${roomUid}`);
+  const ref = fireInit.database().ref(`${folder}/${roomUid}`);
   ref.on('value',(p)=>{const data = p.val();
     if(data){ roomGetNum = Object.keys(data).length;}
   })  
@@ -141,7 +121,7 @@ roomGet(folder,roomUid) {
   roomSave(folder,newRoom, data) {
     const roomUid = newRoom.substr(0,roomSubstr);
     const Uid = newRoom.substr(roomSubstr);
-    firebase.database().ref(`${folder}/${roomUid}/${Uid}`).set(data)
+    fireInit.database().ref(`${folder}/${roomUid}/${Uid}`).set(data)
       .then(() => console.log('room생성'))
       .catch((e) => console.log(e))         
   }
@@ -150,7 +130,7 @@ roomGet(folder,roomUid) {
   async roomSync(folder, uid, cf) {
     // const roomUid = uid.substr(0, roomSubstr);
     // if(!uid){return}
-    const ref = firebase.database().ref(`${folder}/${uid}`);
+    const ref = fireInit.database().ref(`${folder}/${uid}`);
     ref.on('value', (p) => {
       const data = p.val();
       cf.f3(data);
@@ -162,7 +142,7 @@ roomGet(folder,roomUid) {
 
 //  룸 이름 가져오기
 roomUser(folder,roomUid,cf) {
-  const ref = firebase.database().ref(`${folder}`);
+  const ref = fireInit.database().ref(`${folder}`);
   ref.on('value', (p) => {
   const data = p.val();
     if(!data){console.log('서버데이터 없음')}
@@ -178,7 +158,7 @@ roomUser(folder,roomUid,cf) {
   dataUp(folder, roomName, data) {
     const roomUid = roomName.substr(0,roomSubstr);
     const roomNum = roomName.substr(roomSubstr);
-    firebase.database().ref(`${folder}/${roomUid}/${roomNum}`)
+    fireInit.database().ref(`${folder}/${roomUid}/${roomNum}`)
       .update(data)
   }
 
@@ -187,12 +167,12 @@ roomUser(folder,roomUid,cf) {
   const roomUid = roomName.substr(0,roomSubstr);
     const roomNum = roomName.substr(roomSubstr);
     if (!roomName) { return }
-    const ref1 = firebase.database().ref(`${folder}/${roomUid}/${roomNum}`);
+    const ref1 = fireInit.database().ref(`${folder}/${roomUid}/${roomNum}`);
     ref1.on('value', (p) => {
       const data = p.val();
       data ? cf.f1(data) : cf.f2();
     });
-    const ref2 = firebase.database().ref(`${folder}/${roomUid}`);
+    const ref2 = fireInit.database().ref(`${folder}/${roomUid}`);
     ref2.on('value', (p) => {
       const data = p.val();
       data ? cf.f3(data) : cf.f4();
@@ -206,7 +186,7 @@ roomUser(folder,roomUid,cf) {
   dataSyncB(folder, roomName, cf) {
     const roomUid = roomName.substr(0,roomSubstr);
     const roomReport = roomUid+'REPORT';
-    const ref3 = firebase.database().ref(`${folder}/${roomReport}/${roomName}`);
+    const ref3 = fireInit.database().ref(`${folder}/${roomReport}/${roomName}`);
     ref3.on('value',(p) => {const data = p.val(); data ? cf.f1(data) : cf.f2(); })
     return ref3.off();
   }
@@ -214,18 +194,18 @@ roomUser(folder,roomUid,cf) {
   dataDel(folder, roomName) {
     const roomUid = roomName.substr(0,roomSubstr);
     const roomNum = roomName.substr(roomSubstr);
-    firebase.database().ref(`${folder}/${roomUid}/${roomNum}`).remove();
+    fireInit.database().ref(`${folder}/${roomUid}/${roomNum}`).remove();
   }
     // 리포트데이터 삭제
     reportDel(folder, uid, dataId) {
-      firebase.database().ref(`${folder}/${uid}/${dataId}`).remove();
+      fireInit.database().ref(`${folder}/${uid}/${dataId}`).remove();
     }
 
  
 
   // 보고서 저장
   reportSave(folder, roomId, roomName, data) {
-    firebase.database().ref(`${folder}/${roomId}/${roomName}`)
+    fireInit.database().ref(`${folder}/${roomId}/${roomName}`)
       .set(data)
   }
 
@@ -233,7 +213,7 @@ roomUser(folder,roomUid,cf) {
 async reportSync(folder,roomId, cf) {
     if (!roomId) { return }
     // const roomId = roomName.substr(0,6)+'REPORT'
-    const ref1 = firebase.database().ref(`${folder}/${roomId}`);
+    const ref1 = fireInit.database().ref(`${folder}/${roomId}`);
     ref1.on('value', (p) => {
       const data = p.val()||{};
       const Data = Object.values(data);
@@ -243,7 +223,7 @@ async reportSync(folder,roomId, cf) {
   //Auth 테이블 싱크
 async authdataSync(auth, cf) {
     if (!auth) { return }
-    const ref1 = firebase.database().ref(`${auth}`);
+    const ref1 = fireInit.database().ref(`${auth}`);
     ref1.on('value', (p) => {
       const data = p.val();
       const authData = Object.values(data);
@@ -253,7 +233,7 @@ async authdataSync(auth, cf) {
     //Auth 테이블 싱크 for left menu
 authSync(auth, uid,cf) {
   if (!auth) { return }
-  const ref = firebase.database().ref(`${auth}/${uid}`);
+  const ref = fireInit.database().ref(`${auth}/${uid}`);
   ref.on('value', (p) => {
     const data = p.val();
     if(data===null){return } 
@@ -264,30 +244,30 @@ authSync(auth, uid,cf) {
 }
 // Auth 테이블  Level 업데이트
 level(folder, uid,num) {
-  firebase.database().ref(`${folder}/${uid}`)
+  fireInit.database().ref(`${folder}/${uid}`)
     .update({ level: num })
-    firebase.auth().currentUser.updateProfile({ p: num });
+    fireInit.auth().currentUser.updateProfile({ p: num });
 }
 // 프로필 업데이트
 profileUp(folder, uid,data) {
-  firebase.database().ref(`${folder}/${uid}`).update(data);
-  firebase.auth().currentUser.updateProfile(data);
+  fireInit.database().ref(`${folder}/${uid}`).update(data);
+  fireInit.auth().currentUser.updateProfile(data);
 }
 // 데이터 삭제 auth/${e.user.uid}
 authDel(folder, uid) {
-  firebase.database().ref(`${folder}/${uid}`).remove();
+  fireInit.database().ref(`${folder}/${uid}`).remove();
 }
 // 비디오 메시지 저장
 videoSave(folder,roomName,spot,data){
   const roomUid = roomName.substr(0,roomSubstr);
   if (!roomUid) { return }
-  firebase.database().ref(`${folder}/${roomUid}/${spot}`).set(data);
+  fireInit.database().ref(`${folder}/${roomUid}/${spot}`).set(data);
 }
 // 비디오 메시지 싱크
 async videoSync(folder,roomName,spot,cf) {
   const roomUid = roomName.substr(0,roomSubstr);
   if (!roomUid) { return }
-  const ref = firebase.database().ref(`${folder}/${roomUid}/${spot}`);
+  const ref = fireInit.database().ref(`${folder}/${roomUid}/${spot}`);
   ref.on('value', (p) => { 
     const data = p.val();
     cf(data);
@@ -299,13 +279,13 @@ async videoSync(folder,roomName,spot,cf) {
 goodUp(folder, roomName, goodNum,good) {
   const roomUid = roomName.substr(0,roomSubstr);
   const roomNum = roomName.substr(roomSubstr);
-  firebase.database().ref(`${folder}/${roomUid}/${roomNum}`)
+  fireInit.database().ref(`${folder}/${roomUid}/${roomNum}`)
     .update({[goodNum]: good })
 }
 
 goodUpB(folder, roomName, goodNum,good) {  
   const roomId = roomName.substr(0,6)+'REPORT'
-  firebase.database().ref(`${folder}/${roomId}/${roomName}`)
+  fireInit.database().ref(`${folder}/${roomId}/${roomName}`)
     .update({[goodNum]: good })
 }
 
@@ -316,6 +296,6 @@ export default firebaseApp
 
  // TODO 업데이트
 //  itemUp(folder, uid, dataId, counter) {
-//   firebase.database().ref(`${folder}/${uid}/${dataId}`)
+//   fireInit.database().ref(`${folder}/${uid}/${dataId}`)
 //     .update({ progress: counter })
 // }

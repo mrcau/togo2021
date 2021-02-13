@@ -72,7 +72,7 @@ function Opentool({ fireApp, user, userInfo  }) {
           })
         }
       </div>
-      {userInfo.level>1 &&
+      {userInfo.level>0 &&
       <div className="mytool-input">
         <form onSubmit={submit} className="mytool-form">
           <input type="text" ref={titleRef} className="inputTitle" placeholder="제목"/>
