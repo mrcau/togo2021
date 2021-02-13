@@ -150,7 +150,6 @@ roomGet(folder,roomUid) {
   async roomSync(folder, uid, cf) {
     // const roomUid = uid.substr(0, roomSubstr);
     // if(!uid){return}
-    console.log('룸싱크',uid,'없나?')
     const ref = firebase.database().ref(`${folder}/${uid}`);
     ref.on('value', (p) => {
       const data = p.val();
@@ -163,20 +162,28 @@ roomGet(folder,roomUid) {
 
 //  룸 이름 가져오기
 roomUser(folder,roomUid,cf) {
-  console.log('roomuser콜백함수 실행')
   const ref = firebase.database().ref(`${folder}`);
   ref.on('value', (p) => {
   const data = p.val();
     if(!data){console.log('서버데이터 없음')}
     const dataKey = Object.keys(data);
-    console.log('dataKey',dataKey.indexOf(roomUid))
+    // console.log('dataKey',dataKey.indexOf(roomUid))
     if(dataKey.indexOf(roomUid)<0){ return }
      cf();
   })
+
+  return ref.off('value', (p) => {cf();});
  }
+  // 데이터 저장
+  dataUp(folder, roomName, data) {
+    const roomUid = roomName.substr(0,roomSubstr);
+    const roomNum = roomName.substr(roomSubstr);
+    firebase.database().ref(`${folder}/${roomUid}/${roomNum}`)
+      .update(data)
+  }
+
   // 데이터 씽크
   dataSync(folder, roomName, cf) {
-  console.log('dataSync 실행')
   const roomUid = roomName.substr(0,roomSubstr);
     const roomNum = roomName.substr(roomSubstr);
     if (!roomName) { return }
@@ -191,6 +198,7 @@ roomUser(folder,roomUid,cf) {
       data ? cf.f3(data) : cf.f4();
     });   
     // if(cf){ref1.off(); ref2.off();}
+    
     return () => {ref1.off(); ref2.off()}
   }
   
@@ -213,14 +221,7 @@ roomUser(folder,roomUid,cf) {
       firebase.database().ref(`${folder}/${uid}/${dataId}`).remove();
     }
 
-  // 데이터 저장
-  dataUp(folder, roomName, data) {
-    console.log('파이어베이스 dataUp 실행')
-    const roomUid = roomName.substr(0,roomSubstr);
-    const roomNum = roomName.substr(roomSubstr);
-    firebase.database().ref(`${folder}/${roomUid}/${roomNum}`)
-      .update(data)
-  }
+ 
 
   // 보고서 저장
   reportSave(folder, roomId, roomName, data) {
@@ -308,10 +309,9 @@ goodUpB(folder, roomName, goodNum,good) {
     .update({[goodNum]: good })
 }
 
-
-
-
 }
+
+
 export default firebaseApp
 
  // TODO 업데이트

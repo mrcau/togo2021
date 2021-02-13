@@ -52,7 +52,7 @@ function Scamper({ fireApp, user, userInfo }) {
   //입장중
   const [door, setDoor] = useState('입장')
   const [report, setReport] = useState(false);
-  const [userUID, setUserUID] = useState('')
+  const [userUID, setUserUID] = useState('');
   
    //데이터싱크 
   useEffect(() => {
@@ -64,38 +64,41 @@ function Scamper({ fireApp, user, userInfo }) {
         f4: () => { setRoom({}) },
       }
       if (e && report===false) {
+        console.log('회원+리포트false');
         // const roomUid = e.uid.substr(0, roomSubstr);
         setRoomUid(e.uid.substr(0, roomSubstr));
         setUserUID(e.uid);
        const stopDataSync = fireApp.dataSync(folder, roomName, cf);
-       console.log('roomUid?',roomUid)
        const stoproomSync = fireApp.roomSync(folder, roomUid, cf);
         // fireApp.authSync('auth',e.uid,(p)=>setLevel(p))
         return ()=>{stopDataSync();stoproomSync();}
+      }else if(e && !roomName){
+        const stopdataSyncB =  fireApp.dataSyncB(folder, roomName, cf);
+        return ()=>{stopdataSyncB();}
       }
       else {
-        if(report===false||!roomName){return}
+        console.log('회원이 아니면');
+        // report===false||
+        if(!e&&!roomName){
+        console.log('룸네임이 없으면 퇴장');
+        return}
+
        const cf = {
           f1: (p) => { setdata(p) },
           f2: () => { setdata({}) },
           f3: (p) => { setRoom(p) },
           f4: () => { setRoom({}) },
         }
+
        if(report && roomName){
-         console.log('비로그인 데이터싱크')
+         console.log('비회원이지만 리포트가 true 이고 룸네임이 있으면')
+         
         const stopdataSyncB =  fireApp.dataSyncB(folder, roomName, cf);
         return ()=>{stopdataSyncB();}
        }
       }
     })
   }, [roomName,fireApp,report,roomUid]);
-  console.log('roomName',roomName
-  ,'data::',data,
-  'report::',report,
-  'room::',room,
-  'roomUid::',roomUid,
-  'folder::',folder,
-  'user::',userUID)
   
   //수업자료와 공지사항 싱크
   useEffect(() => {    
@@ -122,7 +125,7 @@ function Scamper({ fireApp, user, userInfo }) {
     const [Switch7, setSwitch7] = useState(true);
     
     const goodPlus = (goodNum,Switch,setSwitch) => {
-      console.log(goodNum,Switch,roomName,report)
+      console.log('goodNum,Switch,roomName,report',goodNum,Switch,roomName,report)
         if(data[goodNum]===undefined){data[goodNum]=0}
         if(roomName){
       Switch ? data[goodNum]++ : data[goodNum]--;
@@ -132,7 +135,10 @@ function Scamper({ fireApp, user, userInfo }) {
     }
     
     const goodPlus2 = (goodNum,Switch,setSwitch) => {
-      if(roomName){
+      console.log('굿플러스2 goodNum,Switch,roomName,report',goodNum,Switch,roomName,report);
+      setReport(true);
+      if(data[goodNum]===undefined){data[goodNum]=0}
+        if(roomName){
         Switch ? data[goodNum]++ : data[goodNum]--;
         setSwitch(!Switch);
       fireApp.goodUpB(folder, roomName,goodNum,data[goodNum]);
@@ -188,21 +194,22 @@ function Scamper({ fireApp, user, userInfo }) {
     roomget < 8 && 
     fireApp.roomSave(folder, newRoom, data)
   }
-
     // input roomName 초기화
-    const roomNameReset=() => {
+    const roomNameReset=() => {console.log('roomNameReset')
       roomERef.current.value=''; 
       const data = {scamS:'',scamC:'',scamA:'',scamM:'',scamP:'',scamE:'',scamR:'', aTitle:'',bName: '',input3: '',input4:'',input5:'',input6:'', roomName:''}
       setdata(data);setroomName("");setDoor('입장'); setRoomUid('');
       setReport(false); setEntering(false); setSee(true); setRoom({});
       setNotice('');setVideo('');history.push('/scamper');
-      window.location.reload(false);
+      window.location.reload(false); 
     }  
-    const roomRowReset=() => {
+    const roomRowReset=() => {console.log('roomRowReset')
       roomERef.current.value=''; 
       const data = {scamS:'',scamC:'',scamA:'',scamM:'',scamP:'',scamE:'',scamR:'', aTitle:'',bName: '',input3: '',input4:'',input5:'',input6:'', roomName:''}
-      setdata(data);setDoor('입장'); setRoomUid('');
-       setRoom({});
+      setdata(data);
+      setDoor('입장'); 
+      // setRoomUid('');
+      // setRoom({});
       setNotice('');setVideo('');
     }  
            
@@ -213,26 +220,24 @@ function Scamper({ fireApp, user, userInfo }) {
     if(entering){roomNameReset(); }
     if(roomvalue.length !== 10||!enterRoomId||entering){return;}
     if(roomvalue.length === 10&&!entering){
-          console.log('방입장 완료')
-          const cf1=()=>{
-            console.log('EnterRoom의  cf1함수실행1')
+        const cf1=()=>{
             setroomName(roomvalue);
             setRoomUid(enterRoomId);
             setDoor('퇴장');
             setReport(false);
             setEntering(true);
             setSee(false);
-            console.log('EnterRoom의  cf1함수실행2')
-          }
-          fireApp.roomUser(folder,enterRoomId,cf1);
-
-          const cf2 = {
+          }          
+       fireApp.roomUser(folder,enterRoomId,cf1);
+        
+        const cf2 = {
             f1: (p) => { setdata(p) },
             f2: () => { setdata({}) },
             f3: (p) => { setRoom(p) },
             f4: () => { setRoom({}) },
           }
-          fireApp.dataSync(folder,roomvalue, cf2);
+        fireApp.dataSync(folder,roomvalue, cf2);
+
         }
     }
 
@@ -554,13 +559,13 @@ function Scamper({ fireApp, user, userInfo }) {
           
           <div className="inputBox" >
             <div className="s-itemTitle" style={{width:"100%"}}>최종아이디어
-            {report &&
+            {/* {report &&
             <IconButton style={{width:'25px', height:'25px'}} >
               <Badge badgeContent={good[7]} color="secondary" style={{paddingRight:'10px'}}>
                 <ThumbUp style={{color:'var(--Bcolor)'}} onClick={()=>{goodPlus2('good7',Switch7,setSwitch7)}} />
               </Badge>
             </IconButton> 
-            }
+            } */}
             </div>
             <div></div>
             <textarea cols="30" rows="1" className="scamperInput input1" ref={aTitle} 
