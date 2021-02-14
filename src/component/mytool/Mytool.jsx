@@ -4,7 +4,6 @@ import Toolrow from './Toolrow';
 import Swal from 'sweetalert2';
 
 function Mytool({ fireTodo, user, userInfo  }) {
-
   const today = new Date().toLocaleDateString();
   const textRef = useRef();
   const textRef2 = useRef();

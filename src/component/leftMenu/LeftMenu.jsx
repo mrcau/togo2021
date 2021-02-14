@@ -47,7 +47,7 @@ const history = useHistory();
       <hr style={{width:'90%',border:'dashed 1px gray'}} />
     
       <div style={{width:'100%',padding:"0"}}>
-        <button className="btnLogout" onClick={() => {history.push('/brainstorm');moveModal2()}} > 디자인씽킹 </button>
+        <button className="btnLogout" onClick={() => {history.push('/idea');moveModal2()}} > 디자인씽킹 </button>
         <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/problem"><BatteryCharging20/>문제찾기</Link> </div>
         <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/datastudy"><BatteryCharging50/>데이터분석</Link></div>
         <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/scamper"><BatteryCharging80/>아이디어</Link> </div>

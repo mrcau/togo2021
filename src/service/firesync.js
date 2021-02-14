@@ -21,7 +21,19 @@ class firesync {
     if(!uid){ref.off();}    
     return ()=>ref.off();
   }
+//  룸 이름 가져오기
+roomUser(folder,roomUid,cf) {
+  const ref = fireInit.database().ref(`${folder}`);
+  ref.on('value', (p) => {
+  const data = p.val();
+    if(!data){console.log('서버데이터 없음')}
+    const dataKey = Object.keys(data);
+    if(dataKey.indexOf(roomUid)<0){ return }
+     cf();
+  })
 
+  return ref.off('value', (p) => {cf();});
+ }
   // 데이터 씽크
   dataSync(folder, roomName, cf) {
   const roomUid = roomName.substr(0,roomSubstr);
@@ -69,6 +81,14 @@ async videoSync(folder,roomName,spot,cf) {
   });
   return ()=>ref.off();
 }
+ // Item 씽크
+ itemSync(folder, uid, cf) {
+  const ref = fireInit.database().ref(`${folder}/${uid}`);
+  ref.on('value', (p) => {
+    const data = p.val();
+    data ? cf.f1(data) : cf.f2();
+  })
+}  
 
 }
 

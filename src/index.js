@@ -19,7 +19,7 @@ const fireTodo = new firetodo();
 const fireIdea = new fireidea();
 const fireOpentool = new fireopentool();
 const fireProblem = new fireproblem();
-const fireSync = new fireproblem();
+const fireSync = new firesync();
 
 ReactDOM.render(
   <React.StrictMode>

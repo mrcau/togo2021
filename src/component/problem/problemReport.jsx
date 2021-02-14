@@ -2,7 +2,7 @@ import './problemReport.css';
 import React, { memo, useEffect, useState } from 'react';
 import { DataGrid } from '@material-ui/data-grid';
 
-function ProblemReport({ fireProblem, user,userUID, folder,roomName,setroomName,
+function ProblemReport({ fireProblem, fireSync,user,userUID, folder,roomName,setroomName,
   report,setReport,setSwitch7,roomRowReset, moveModal2,userInfo, setdata,setEntering,setDoor}) {
 // const [level, setLevel] = useState(0);
 //글목록 담는변수 data2
@@ -13,12 +13,12 @@ useEffect(() => {
     const cf = { f1:(p)=> {setData2(p) }, f2:()=> {setData2({}) } }
     if (user&&roomName){
     const roomId = roomName.substr(0,6)+'REPORT'
-      fireProblem.reportSync(folder,roomId,cf);
+    fireSync.reportSync(folder,roomId,cf);
      }
-    else if(user&&!roomName) { fireProblem.reportSync(folder,user.uid,cf); }
+    else if(user&&!roomName) { fireSync.reportSync(folder,user.uid,cf); }
     else { console.log('no-User') }
     //  return ()=>{setData2({})}
- }, [folder,roomName,fireProblem,user,userInfo]);
+ }, [folder,roomName,fireProblem,user,userInfo,fireSync]);
 
 const columns = [
   { field: 'id', headerName: '번호', width: '65px' },

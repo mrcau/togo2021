@@ -18,7 +18,7 @@ import Problem from './component/problem/Problem';
 import Datastudy from './component/datastudy/Datastudy';
 import Solving from './component/solving/Solving';
 import Startup from './component/startup/Startup';
-import Brainstorm from './component/idea/Idea';
+import Idea from './component/idea/Idea';
 
 function App({ fireApp,fireLogin,fireSync, fireTodo, fireIdea, fireOpentool,fireProblem}) {
   const history = useHistory();
@@ -145,6 +145,9 @@ function App({ fireApp,fireLogin,fireSync, fireTodo, fireIdea, fireOpentool,fire
           <Route path='/problem'>           
             <Problem fireSync={fireSync} fireProblem={fireProblem} user={user} userInfo={userInfo} />
           </Route>
+          <Route path='/idea'> 
+            <Idea fireSync={fireSync} fireIdea={fireIdea} user={user} userInfo={userInfo} />
+          </Route>
           <Route path='/datastudy'>           
             <Datastudy fireApp={fireApp} user={user} userInfo={userInfo} />
           </Route>
@@ -153,9 +156,6 @@ function App({ fireApp,fireLogin,fireSync, fireTodo, fireIdea, fireOpentool,fire
           </Route>
           <Route path='/startup'> 
             <Startup fireApp={fireApp} user={user} userInfo={userInfo} />
-          </Route>
-          <Route path='/brainstorm'> 
-            <Brainstorm fireApp={fireApp} user={user} userInfo={userInfo} />
           </Route>
           
           

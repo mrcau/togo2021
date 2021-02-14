@@ -393,7 +393,7 @@ function Problem({ fireProblem, fireSync, user, userInfo }) {
 
     <div className="drawer" ref={drawerRef}>
     {rightModal && 
-     <ProblemReport fireProblem={fireProblem} user={user} userUID={userUID} folder={folder} setroomName={setroomName} roomRowReset={roomRowReset}
+     <ProblemReport fireSync={fireSync} fireProblem={fireProblem} user={user} userUID={userUID} folder={folder} setroomName={setroomName} roomRowReset={roomRowReset}
       roomName={roomName} setReport={setReport} drawerRef={drawerRef} userInfo={userInfo} 
       moveModal2={moveModal2} report={report} setdata={setdata} setDoor={setDoor} setEntering={setEntering}  /> 
     }

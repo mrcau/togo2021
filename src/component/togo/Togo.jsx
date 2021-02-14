@@ -23,7 +23,7 @@ const history = useHistory();
              자신만의 도구를 만들고 더욱 편리하게 그룹별 공동작업을 시작할 수 있습니다.
           </p>
           <p>
-            <button className="btn1" onClick={() =>history.push('/brainstorm')} style={{width:"150px"}}>디자인씽킹</button>
+            <button className="btn1" onClick={() =>history.push('/idea')} style={{width:"150px"}}>디자인씽킹</button>
             </p>
         </Jumbotron> 
         <div className="togoback" />
