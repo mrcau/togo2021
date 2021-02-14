@@ -18,9 +18,9 @@ import Problem from './component/problem/Problem';
 import Datastudy from './component/datastudy/Datastudy';
 import Solving from './component/solving/Solving';
 import Startup from './component/startup/Startup';
-import Brainstorm from './component/brainstorm/Brainstorm';
+import Brainstorm from './component/idea/Idea';
 
-function App({ fireApp,fireLogin, fireTodo, fireIdea, fireOpentool}) {
+function App({ fireApp,fireLogin,fireSync, fireTodo, fireIdea, fireOpentool,fireProblem}) {
   const history = useHistory();
   const [user, setuser] = useState({});
   const [uid, setUid] = useState('');
@@ -135,9 +135,7 @@ function App({ fireApp,fireLogin, fireTodo, fireIdea, fireOpentool}) {
           </Route>
           <Route path='/atable'> 
             <Atable fireApp={fireApp} user={user} userName={userName} />
-          </Route>
-         
-          
+          </Route>  
           <Route path='/price'> 
             <Price fireApp={fireApp} user={user} userInfo={userInfo} />
           </Route>
@@ -145,7 +143,7 @@ function App({ fireApp,fireLogin, fireTodo, fireIdea, fireOpentool}) {
             <Opentool fireApp={fireApp} user={user} userInfo={userInfo} />
           </Route>
           <Route path='/problem'>           
-            <Problem fireApp={fireApp} user={user} userInfo={userInfo} />
+            <Problem fireSync={fireSync} fireProblem={fireProblem} user={user} userInfo={userInfo} />
           </Route>
           <Route path='/datastudy'>           
             <Datastudy fireApp={fireApp} user={user} userInfo={userInfo} />

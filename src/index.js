@@ -9,6 +9,8 @@ import firelogin from './service/firelogin';
 import firetodo from './service/firetodo';
 import fireidea from './service/fireidea';
 import fireopentool from './service/fireopentool';
+import fireproblem from './service/fireproblem';
+import firesync from './service/firesync';
 
 
 const fireApp = new firebaseApp();
@@ -16,12 +18,14 @@ const fireLogin = new firelogin();
 const fireTodo = new firetodo();
 const fireIdea = new fireidea();
 const fireOpentool = new fireopentool();
+const fireProblem = new fireproblem();
+const fireSync = new fireproblem();
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-    <App fireApp={fireApp} fireLogin={fireLogin} fireTodo={fireTodo} 
-    fireIdea={fireIdea} fireOpentool={fireOpentool} />
+    <App fireApp={fireApp} fireLogin={fireLogin} fireTodo={fireTodo} fireSync={fireSync}
+    fireIdea={fireIdea} fireOpentool={fireOpentool} fireProblem={fireProblem} />
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
