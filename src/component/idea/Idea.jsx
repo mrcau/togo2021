@@ -49,6 +49,7 @@ function Idea({ fireIdea, fireSync, user, userInfo }) {
   const textRef2 = useRef();
   const titleRef2 = useRef();
   const rocketRef = useRef();
+  const [color, setColor] = useState('primary');
   
    //데이터싱크 
   useEffect(() => {
@@ -329,11 +330,11 @@ function Idea({ fireIdea, fireSync, user, userInfo }) {
 const submit = (e) => {
   e.preventDefault();
   if(e.currentTarget == null){return;}
+  const title = titleRef2.current.value;
   const text = textRef.current.value;
   const text2 = textRef2.current.value;
-  const title = titleRef2.current.value;
   console.log(title,user,userInfo)
-  if(!title || !text){ Swal.fire({title:'빈칸을 모두 채워주세요.',icon:'warning'}) }
+  if(!title || !text){ Swal.fire({title:'제목과 내용을 입력해주세요.',icon:'warning'}) }
   if (userInfo && title && text ) {
     rocketOn();
     const dataId = Date.now();
@@ -345,10 +346,11 @@ const submit = (e) => {
       text: text,
       text2: text2,
       today: today,
-      progress: 0
+      progress: 0,
+      color : 'secondary'
     }
     fireIdea.itemSave(folder,data);      
-    titleRef.current.value = '';
+    titleRef2.current.value = '';
     textRef.current.value = '';
     textRef2.current.value = '';
   }
@@ -407,11 +409,12 @@ const submit = (e) => {
         <div className="enterTitle" >{notice}</div>  
       </div>
 
+{/* 여기부터 todo스타일 */}
       <div className="ideas">
         <div className="idea-items">
         {
           Object.keys(items).map((e) => {
-            return <Idearow key={e} item={items[e]} fireIdea={fireIdea} />
+            return <Idearow key={e} item={items[e]} fireIdea={fireIdea} level={level} setColor={setColor} color={color} />
           })
         }
         </div>
@@ -421,14 +424,14 @@ const submit = (e) => {
             <input type="text" ref={titleRef2} className="inputTitle" placeholder="제목"/>
             <button className="btnadd" style={{ outline: "none", border: "none" }} >
               <span className="rocket" ref={rocketRef}  >🚀</span>  추가</button>
-            <textarea className="textarea" ref={textRef} cols="30" rows="2" placeholder="설명을 적어주세요." />
+            <textarea className="textarea" ref={textRef} cols="30" rows="2" placeholder="내용" />
             <textarea className="textarea" ref={textRef2} cols="30" rows="2" 
-            style={{borderTop: 'dashed 1px'}} placeholder="소스코드를 입력해주세요." />
+            style={{borderTop: 'dashed 1px'}} placeholder="소스코드" />
           </form>
         </div>
         
         <form  ref={formRef}  onSubmit={btnInput}  >  
-          <div className="s-item">
+          <div className="s-item"  >
             {/* <div className="s-itemTitle">최종아이디어</div> */}
             <textarea  className="textarea" cols="30" rows="3" placeholder="최종 아이디어" 
             ref={problemP} onChange={onSubmit} value={data.scamP} />
@@ -436,6 +439,9 @@ const submit = (e) => {
           </div>
         </form>
         </div>
+
+
+
       </div>
       
   );

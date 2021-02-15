@@ -58,7 +58,7 @@ function Todo({ fireTodo, user, userName,  }) {
 
   return (
     <div className="todo">
-      <div className='todo-header'> {userName} 오늘-할일 {todoCount}개</div>
+      <div className='todo-header'> 할일 {todoCount}개</div>
       <div className="todo-items">
         {
           Object.keys(items).map((e) => {

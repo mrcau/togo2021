@@ -107,6 +107,11 @@ itemUp(folder, uid, dataId, counter) {
   fireInit.database().ref(`${folder}/${uid}/${dataId}`)
     .update({ progress: counter })
 }
+// TODO 업데이트
+itemColorUp(folder, uid, dataId, color) {
+  fireInit.database().ref(`${folder}/${uid}/${dataId}`)
+    .update({ color: color })
+}
 
 }
 
