@@ -16,15 +16,15 @@ roomGet(folder,roomUid) {
   return roomGetNum
 }
 //  룸 생성 저장 
-  roomSave(folder,newRoom, data) {
+  roomSave(folder,newRoom, dataId,data) {
     const roomUid = newRoom.substr(0,roomSubstr);
     const Uid = newRoom.substr(roomSubstr);
-    fireInit.database().ref(`${folder}/${roomUid}/${Uid}`).set(data)
+    fireInit.database().ref(`${folder}/${roomUid}/${Uid}/${dataId}`).set(data)
       .then(() => console.log('room생성'))
       .catch((e) => console.log(e))         
   }
  
-//  룸 이름 가져오기
+//  룸 이름이 서버에 없으면 퇴장 있으면 입장
 roomUser(folder,roomUid,cf) {
   const ref = fireInit.database().ref(`${folder}`);
   ref.on('value', (p) => {
@@ -52,8 +52,12 @@ roomUser(folder,roomUid,cf) {
     fireInit.database().ref(`${folder}/${roomUid}/${roomNum}`).remove();
   }
     // 리포트데이터 삭제
-    reportDel(folder, uid, dataId) {
+    reportDel(folder, uid, dataId) { console.log(folder,uid, dataId)
       fireInit.database().ref(`${folder}/${uid}/${dataId}`).remove();
+    }
+    // 내방 삭제
+    myIdeaDel(folder, uid) { console.log(folder,uid)
+      fireInit.database().ref(`${folder}/${uid}`).remove();
     }
   // 보고서 저장
   reportSave(folder, roomId, roomName, data) {
@@ -97,22 +101,48 @@ itemSave(folder, data) {
     .then(() => console.log('글 저장성공'))
     .catch((e) => console.log(e))
 }
+// 로그인 TODO글  저장 
+itemSave2(folder,roomName, dataId, data) {
+  const roomUid = roomName.substr(0,roomSubstr);
+  const roomNum = roomName.substr(roomSubstr);
+  fireInit.database().ref(`${folder}/${roomUid}/${roomNum}/${dataId}`).set(data)
+    .then(() => console.log('글 저장성공'))
+    .catch((e) => console.log(e))
+}  
 
-// TODO 삭제
+// 룸네임 없으면 TODO 삭제
 itemDel(folder, uid, dataId) {
   fireInit.database().ref(`${folder}/${uid}/${dataId}`).remove();
 }
-// TODO 업데이트
+//룸네임 있으면  TODO 삭제
+itemDel2(folder,roomName,dataId) {
+  const roomUid = roomName.substr(0,roomSubstr);
+  const roomNum = roomName.substr(roomSubstr);
+  fireInit.database().ref(`${folder}/${roomUid}/${roomNum}/${dataId}`).remove();
+}
+// 룸네임 없으면 좋아요 업데이트
 itemUp(folder, uid, dataId, counter) {
   fireInit.database().ref(`${folder}/${uid}/${dataId}`)
     .update({ progress: counter })
 }
-// TODO 업데이트
+// 룸네임 있으면 좋아요 업데이트 
+
+itemUp2(folder,roomName, dataId, counter) {
+  const roomUid = roomName.substr(0,roomSubstr);
+  const roomNum = roomName.substr(roomSubstr);
+  fireInit.database().ref(`${folder}/${roomUid}/${roomNum}/${dataId}`).update({ progress: counter })
+}
+// 룸네임 없으면 컬러 업데이트
 itemColorUp(folder, uid, dataId, color) {
   fireInit.database().ref(`${folder}/${uid}/${dataId}`)
     .update({ color: color })
 }
-
+// 룸네임 있으면  업데이트
+itemColorUp2(folder, roomName, dataId, color) {
+  const roomUid = roomName.substr(0,roomSubstr);
+  const roomNum = roomName.substr(roomSubstr);
+  fireInit.database().ref(`${folder}/${roomUid}/${roomNum}/${dataId}`).update({ color: color })
+}
 }
 
 

@@ -5,9 +5,8 @@ import AddCommentIcon from '@material-ui/icons/AddComment';
 import YouTubeIcon from '@material-ui/icons/YouTube';
 import './idea.css';
 import VoiceChatIcon from '@material-ui/icons/VoiceChat';
-import IdeaReport from './IdeaReport';
 import Swal from 'sweetalert2';
-import placeholder from './placeholder';
+// import placeholder from './placeholder';
 import { useHistory } from 'react-router-dom';
 import firesync from '../../service/firesync';
 import Idearow from './Idearow';
@@ -19,27 +18,19 @@ function Idea({ fireIdea, fireSync, user, userInfo }) {
   const level = userInfo.level || 0;
     const problemP = useRef();
   const roomERef = useRef();
-  const formRef = useRef();
   const noticeRef = useRef();
   const titleRef = useRef();
-  const drawerRef = useRef();
-  const backRef = useRef();
   const history = useHistory();
   const [data, setdata] = useState({});
   const [room, setRoom] = useState({});
   const [roomName, setroomName] = useState('');
-  // const '' = userInfo ? userInfo.user.substr(0, 6) :'';
   const [roomUid, setRoomUid] = useState('');
   const [video, setVideo] = useState('');
   const [notice, setNotice] = useState('');
-  const [state, setState] = useState({ triz:false,  Switch7:true });
-  const placeData = state.triz ? placeholder[1] : placeholder[0];
-  const [rightModal,setrightModal] = useState(false);
   const [entering, setEntering] = useState(false);
   const [see, setSee] = useState(true)
   //입장중
   const [door, setDoor] = useState('입장')
-  const [report, setReport] = useState(false);
   const [userUID, setUserUID] = useState('');
 
   //itemrow  
@@ -60,41 +51,37 @@ function Idea({ fireIdea, fireSync, user, userInfo }) {
         f3: (p) => { setRoom(p) },
         f4: () => { setRoom({}) },
       }
-      if (e && report===false && roomName) {
-        console.log('회원+리포트false',e,'report::',report,'룸네임:',roomName,user,userInfo,'로그인중');
-        // const roomUid = e.uid.substr(0, roomSubstr);
-        setRoomUid(e.uid.substr(0, roomSubstr));
-        setUserUID(e.uid);
-       const stopDataSync = fireSync.dataSync(folder, roomName, cf);
-       const stoproomSync = fireSync.roomSync(folder, roomUid, cf);
-        // fireSync.authSync('auth',e.uid,(p)=>setLevel(p))
-        return ()=>{stopDataSync();stoproomSync();}
-      }else if(e && !roomName){ console.log('회원이지만 룸네임 없음.')
-       const stopdataSyncB =  fireSync.dataSyncB(folder, roomName, cf);
-       const stopitemSync = fireSync.itemSync(folder,user.uid, cf);        
-       return ()=>{stopdataSyncB();stopitemSync();}
+      if (e && roomName) {
+         console.log('회원+리포트false',e,'룸네임:',roomName,userInfo,'로그인중');
+         setRoomUid(e.uid.substr(0, roomSubstr));
+         setUserUID(e.uid);
+          const stopDataSync = fireSync.dataSync(folder, roomName, cf);
+          const stoproomSync = fireSync.roomSync(folder, roomUid, cf);
+          return ()=>{stopDataSync();stoproomSync();}
+      }
+      else if(e && !roomName){ 
+          console.log('회원이지만 룸네임 없음.')
+          setRoomUid(e.uid.substr(0, roomSubstr));
+          setUserUID(e.uid);
+           const stopitemSync = fireSync.itemSync(folder,user.uid, cf);        
+           const stoproomSync = fireSync.roomSync(folder, roomUid, cf);
+           return ()=>{stopitemSync();stoproomSync();}
       }
       else {
-        console.log('로그인정보 없음','report::',report,roomName,user,userInfo);
-        if(!e&&!roomName){ console.log('룸네임이 없으면 퇴장');  return}
-       const cf = {
-          f1: (p) => { setdata(p) },
-          f2: () => { setdata({}) },
-          f3: (p) => { setRoom(p) },
-          f4: () => { setRoom({}) },
-        }
-       if(report && roomName){
-         console.log('비회원이지만 리포트가 true 이고 룸네임이 있으면','report::',report)         
-        const stopdataSyncB =  fireSync.dataSyncB(folder, roomName, cf);
-        return ()=>{stopdataSyncB();}
-       }
+          console.log('로그인정보 없음',roomName,user,userInfo);
+          if(!e&&!roomName){ console.log('룸네임이 없으면 퇴장');  return}
+          if(roomName){
+            console.log('비회원이지만 리포트가 true 이고 룸네임이 있으면','::',)         
+            const stopDataSync = fireSync.dataSync(folder, roomName, cf);
+            return ()=>{stopDataSync();}
+           }
       }
     })
-  }, [roomName,fireSync,report,roomUid,user,userInfo]);
+  }, [roomName,fireSync,roomUid,user,userInfo]);
   
   //수업자료와 공지사항 싱크
   useEffect(() => {    
-    if(roomName&&!report){ 
+    if(roomName){ 
       const stopvideoSync = fireIdea.videoSync(folder,roomName,'See',(p)=>{setVideo(p); })
       const stopvideoSync2 = fireIdea.videoSync(folder,roomName,'Tok',(p)=>{
         setNotice(p); 
@@ -104,24 +91,8 @@ function Idea({ fireIdea, fireSync, user, userInfo }) {
     })
     }
      
-  },[fireIdea,roomName,report]);
-  
-  console.log(items)
+  },[fireIdea,roomName]);
 
-    //오른쪽 모달 핸들링
-    const moveModal = () => {
-      drawerRef.current.classList.add("moveDrawer");
-      backRef.current.classList.remove("backNone");    
-      setrightModal(true);
-
-    }
-    const moveModal2 = () => {
-      drawerRef.current.classList.remove("moveDrawer");
-      backRef.current.classList.add("backNone"); 
-      setrightModal(true);
-    }
-    
-  
   //모달창3
   const fire = () => {Swal.fire({html:video, width:'90%'})}
   // 자료입력 모달
@@ -144,58 +115,57 @@ function Idea({ fireIdea, fireSync, user, userInfo }) {
   const createRoom = () => {
     const num = Date.now().toString().substr(9);
     const newRoom = roomUid + num;
-    setroomName(newRoom);
-    const data = {scamP:'',userId:user.uid}
+    // setroomName(newRoom);
+    const dataId = Date.now();
+    const data = {
+      dataId: dataId,      
+      name: userInfo.name,
+      title: '룸 ID',
+      color : 'Light',
+      roomName : newRoom
+    }
     const roomget = fireIdea.roomGet(folder,roomUid)
     roomget < 8 && 
-    fireIdea.roomSave(folder, newRoom, data)
+    fireIdea.roomSave(folder, newRoom, dataId, data)
   }
+
     // input roomName 초기화
     const roomNameReset=() => {console.log('roomNameReset')
       roomERef.current.value=''; 
       const data = {scamP:'', roomName:''}
       setdata(data);setroomName("");setDoor('입장'); setRoomUid('');
-      setReport(false); setEntering(false); setSee(true); setRoom({});
-      setNotice('');setVideo('');history.push('/problem');
+      setEntering(false); setSee(true); setRoom({});
+      setNotice('');setVideo('');history.push('/idea');
       window.location.reload(false); 
     }  
-    const roomRowReset=() => {console.log('roomRowReset')
-      roomERef.current.value=''; 
-      const data = {scamP:'', roomName:''}
-      setdata(data);
-      setDoor('입장'); 
-      // setRoomUid('');
-      // setRoom({});
-      setNotice('');setVideo('');
-    }  
-           
+             
   // roomName.substr(0,6) 방입장
-  const enterRoom = () => {
+  const enterRoom = () => { 
     const roomvalue = roomERef.current.value || "";
     const enterRoomId =  roomERef.current.value.substr(0,roomSubstr)||"";
     if(entering){roomNameReset(); }
     if(roomvalue.length !== 10||!enterRoomId||entering){return;}
-    if(roomvalue.length === 10&&!entering){
+    if(roomvalue.length === 10&&!entering){       
+      console.log('hi')
         const cf1=()=>{
             setroomName(roomvalue);
             setRoomUid(enterRoomId);
             setDoor('퇴장');
-            setReport(false);
             setEntering(true);
             setSee(false);
           }          
-       fireIdea.roomUser(folder,enterRoomId,cf1);
+        fireSync.roomUser(folder,enterRoomId,cf1);
         
         const cf2 = {
-            f1: (p) => { setdata(p) },
-            f2: () => { setdata({}) },
+            f1: (p) => { setItems(p) },
+            f2: () => { setItems({}) },
             f3: (p) => { setRoom(p) },
             f4: () => { setRoom({}) },
           }
-        firesync.dataSync(folder,roomvalue, cf2);
-
+        fireSync.dataSync(folder,roomvalue, cf2);
         }
-    }
+        console.log(roomvalue,entering,enterRoomId,roomvalue.length)
+      }
 
   // 관리자 방입장
   const adminEnter = (e) => {
@@ -203,8 +173,7 @@ function Idea({ fireIdea, fireSync, user, userInfo }) {
     const room = e.currentTarget.textContent;
     const roomname = roomUid +room;
     setroomName(roomUid +room);
-    roomERef.current.value =roomname;     
-    setReport(false); 
+    roomERef.current.value =roomname; 
        setEntering(true);
        setDoor('퇴장');
        // enterRoom();
@@ -218,90 +187,27 @@ function Idea({ fireIdea, fireSync, user, userInfo }) {
     noticeRef.current.value='';
     
   }
-  //problem 글 데이터 저장, 방개수 6개 이하일때만 데이터 저장
-  const onSubmit = () => {
-    if (roomName!==roomERef.current.value||roomERef.current.value===''||report) {
-        // setdata({});
-        return }
-    const data = {
-      scamP: problemP.current.value || '',
-    }    
-    // const roomUid =  roomERef.current.value.substr(0,roomSubstr)
-    // fireIdea.dataUp(folder, roomERef.current.value, data);
-    fireIdea.dataUp(folder, roomName, data);
-  }
-
+  
   //데이터 리셋
-  const dataReset = () => {    
-    problemP.current.value = '';
-  }
-    
-
-   // 보고서 제출
-   const btnInput = (e) => {
-    e.preventDefault();
-    const today = new Date().toLocaleDateString().substr(5);
-    const dataId =  Date.now();
-    // const id = Date.now();
-    // if (Object.keys(user).length<1) { return }
-    if (!roomName&&!userUID) { return }
-    const data = {
-      cDate : today|| '', 
-      dataId : dataId|| '',
-      userId : user.uid|| '',
-      scamP: problemP.current.value || '',
-      good7:0,
-      roomName:roomName || ''
-    }
-    // if (roomName!==roomERef.current.value||roomERef.current.value==='') { return }
-    if(!roomName&&userUID){
-      const roomId = user.uid;
-      if(!data.scamP){
-        Swal.fire({title:'빈칸을 모두 채워주세요!',icon:'warning'})}else{
-          Swal.fire({title:'제출완료',icon:'success'});
-          fireIdea.reportSave(folder, roomId, dataId, data);
-        }        
-    }else{
-    const roomUid =  roomERef.current.value.substr(0,roomSubstr);
-    const roomId = roomUid+'REPORT';
-    if(!data.scamP){
-      Swal.fire({title:'빈칸을 모두 채워주세요.',icon:'warning'})}else{
-        Swal.fire({title:'제출완료',icon:'success'});
-        fireIdea.reportSave(folder, roomId, roomName, data);
-      }
-    }
-  }
-
+  // const dataReset = () => {    
+  //   problemP.current.value = '';
+  // }
+   
     // 아이템 삭제
-  const dataDel = () => {
-    console.log(report,data.userId,user.uid)
-    if(report && data.dataId && data.userId === user.uid){ 
+  const dataDel = () => { 
+    let entry = Object.entries(items);
+    const itemUid = entry[0][1].uid;
+    console.log(itemUid);
+    if(itemUid && itemUid === user.uid){ 
       Swal.fire({ 
         title: '내정보를 삭제하겠습니까?',
-        text:"삭제될 게시물 : "+data.aTitle,
         icon:'warning',
         showCancelButton: true})
-      .then((result) => { if(result.isConfirmed){ Swal.fire('삭제되었습니다.');
-      fireIdea.reportDel(folder,user.uid,data.dataId); dataReset();
+      .then((result) => { if(result.isConfirmed){ 
+      fireIdea.myIdeaDel(folder,user.uid); 
       }});
-      }
-    
-    if(roomName && report && data.userId === user.uid){      
-        Swal.fire({ 
-          title: '정보를 삭제하겠습니까?',
-          text:"삭제될 게시물 : "+data.aTitle,
-          icon:'warning',
-          showCancelButton: true})
-        .then((result) => { if(result.isConfirmed){ Swal.fire('삭제되었습니다.');
-        const roomUid =  roomName.substr(0,roomSubstr);
-        const roomId = roomUid+'REPORT';
-        fireIdea.reportDel(folder,roomId,roomName)
-        dataReset();
-        }});
-      }
-
-      if(roomName!==roomERef.current.value||roomERef.current.value==='') { return }
-      
+      }  
+      if(roomName!==roomERef.current.value||roomERef.current.value==='') { return }      
       if(data.userId === user.uid){  
       Swal.fire({ 
         title: '토론방을 삭제하겠습니까?',
@@ -310,21 +216,18 @@ function Idea({ fireIdea, fireSync, user, userInfo }) {
         showCancelButton: true})
       .then((result) => { if(result.isConfirmed){ Swal.fire('삭제되었습니다.');
       fireIdea.dataDel(folder,roomName);   
-      dataReset();
+      
       }});
     }
     
   } 
-//  console.log(report)
-//titleRef.current.classList.add("noticeFly");
-
   //로켓발사
   const rocketOn = () => {
     rocketRef.current.classList.add("rocketOn");
     setTimeout(() => {
       rocketRef.current.classList.remove("rocketOn");
       clearTimeout(rocketOn);
-    }, 1000);
+    }, 500);
   }
 
 const submit = (e) => {
@@ -349,7 +252,8 @@ const submit = (e) => {
       progress: 0,
       color : 'secondary'
     }
-    fireIdea.itemSave(folder,data);      
+    if(roomName){fireIdea.itemSave2(folder, roomName, dataId, data)}
+    else{fireIdea.itemSave(folder,data); }
     titleRef2.current.value = '';
     textRef.current.value = '';
     textRef2.current.value = '';
@@ -358,16 +262,6 @@ const submit = (e) => {
 
   return (
     <div className="idea" >     
-
-    <div className="drawer" ref={drawerRef}>
-    {rightModal && 
-     <IdeaReport fireIdea={fireIdea} user={user} userUID={userUID} folder={folder} setroomName={setroomName} roomRowReset={roomRowReset}
-      roomName={roomName} setReport={setReport} drawerRef={drawerRef} userInfo={userInfo} 
-      moveModal2={moveModal2} report={report} setdata={setdata} setDoor={setDoor} setEntering={setEntering}  /> 
-    }
-    </div>
-    <div className="drawerback backNone" ref={backRef} onClick={moveModal2}></div>
-       
       {level>0 && 
         <form className="adimBar">
           <button className="enterBtn"  onClick={noticeUp}><AddCommentIcon/></button> 
@@ -393,15 +287,11 @@ const submit = (e) => {
         </div>
         {level>0 && <button className="btnRoomDel" style={{margin:'0'}} onClick={dataDel}><DeleteForever /></button>  }
           {/* 스위치호출 */}
-        <div className="enterTitle" >
-        </div>    
+        <div className="enterTitle ideaTitle" > </div>    
         <div className="voicechat" >             
           <button style={{width:'30px'}}  onClick={fire}>
              <VoiceChatIcon fontSize='small' />
           </button>
-          <button style={{width:'30px'}} onClick={moveModal}> 
-            <MenuSharp />
-          </button> 
         </div>        
       </div>
         {/* <div className="noticeTitle" > 공지 </div> */}
@@ -414,11 +304,10 @@ const submit = (e) => {
         <div className="idea-items">
         {
           Object.keys(items).map((e) => {
-            return <Idearow key={e} item={items[e]} fireIdea={fireIdea} level={level} setColor={setColor} color={color} />
+            return <Idearow key={e} item={items[e]} roomName={roomName} fireIdea={fireIdea} level={level} setColor={setColor} color={color} />
           })
         }
         </div>
-
         <div className="idea-input">
           <form onSubmit={submit} className="idea-form">
             <input type="text" ref={titleRef2} className="inputTitle" placeholder="제목"/>
@@ -428,24 +317,9 @@ const submit = (e) => {
             <textarea className="textarea" ref={textRef2} cols="30" rows="2" 
             style={{borderTop: 'dashed 1px'}} placeholder="소스코드" />
           </form>
+        </div>        
         </div>
-        
-        <form  ref={formRef}  onSubmit={btnInput}  >  
-          <div className="s-item"  >
-            {/* <div className="s-itemTitle">최종아이디어</div> */}
-            <textarea  className="textarea" cols="30" rows="3" placeholder="최종 아이디어" 
-            ref={problemP} onChange={onSubmit} value={data.scamP} />
-            <input type="button" className="problemInput btn" onClick={btnInput} value="저장"/>
-          </div>
-        </form>
-        </div>
-
-
-
-      </div>
-      
+      </div>      
   );
 }
-
-
 export default memo(Idea);
