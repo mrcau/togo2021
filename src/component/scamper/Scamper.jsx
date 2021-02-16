@@ -75,15 +75,15 @@ function Scamper({ fireApp, fireSync, user, userInfo }) {
         setUserUID(e.uid);
        const stopDataSync = fireApp.dataSync(folder, roomName, cf);
        const stoproomSync = fireApp.roomSync(folder, roomUid, cf);
-       const stopvideoSync = fireApp.videoSync(folder,roomName,'See',(p)=>{setVideo(p); })
-       const stopvideoSync2 = fireApp.videoSync(folder,roomName,'Tok',cff)
+       const stopvideoSync = fireSync.videoSync(folder,roomName,'See',(p)=>{setVideo(p); })
+       const stopvideoSync2 = fireSync.videoSync(folder,roomName,'Tok',cff)
         return ()=>{stopDataSync();stoproomSync();stopvideoSync();stopvideoSync2();}
         
       }else if(e && !roomName){
         const stopdataSyncB =  fireApp.dataSyncB(folder, roomName, cf);
        const stoproomSync = fireSync.roomSync(folder, roomUid, cf);
-       const stopvideoSync = fireApp.videoSync(folder,roomName,'See',(p)=>{setVideo(p); })
-       const stopvideoSync2 = fireApp.videoSync(folder,roomName,'Tok',cff)
+       const stopvideoSync = fireSync.videoSync(folder,roomName,'See',(p)=>{setVideo(p); })
+       const stopvideoSync2 = fireSync.videoSync(folder,roomName,'Tok',cff)
        return ()=>{stopdataSyncB();stoproomSync();stopvideoSync();stopvideoSync2();}
       }
       else {
@@ -105,8 +105,8 @@ function Scamper({ fireApp, fireSync, user, userInfo }) {
          
        const stoproomSync = fireSync.roomSync(folder, roomUid, cf);
        const stopdataSyncB =  fireApp.dataSyncB(folder, roomName, cf);
-       const stopvideoSync = fireApp.videoSync(folder,roomName,'See',(p)=>{setVideo(p); })
-       const stopvideoSync2 = fireApp.videoSync(folder,roomName,'Tok',cff)
+       const stopvideoSync = fireSync.videoSync(folder,roomName,'See',(p)=>{setVideo(p); })
+       const stopvideoSync2 = fireSync.videoSync(folder,roomName,'Tok',cff)
         return ()=>{stopdataSyncB();stoproomSync();stopvideoSync();stopvideoSync2();}
        }
       }
@@ -228,6 +228,7 @@ function Scamper({ fireApp, fireSync, user, userInfo }) {
       setNotice('');setVideo('');history.push('/scamper');
       // window.location.reload(false); 
     }  
+
     const roomRowReset=() => {console.log('roomRowReset')
       roomERef.current.value=''; 
       const data = {scamS:'',scamC:'',scamA:'',scamM:'',scamP:'',scamE:'',scamR:'', aTitle:'',bName: '',input3: '',input4:'',input5:'',input6:'', roomName:''}
@@ -494,7 +495,7 @@ function Scamper({ fireApp, fireSync, user, userInfo }) {
           
           <div className="s-item">
             <div className="s-itemTitle" sty>{placeData.title1} 
-            {!report &&
+            {!report && roomName &&
             <IconButton style={{width:'25px', height:'25px'}} >
               <Badge badgeContent={good[0]} color="secondary" style={{paddingRight:'10px'}}>
                 <ThumbUp style={{color:'var(--Bcolor)'}} onClick={()=>goodPlus('good0',Switch0,setSwitch0)} />
@@ -506,7 +507,7 @@ function Scamper({ fireApp, fireSync, user, userInfo }) {
           </div>
           <div className="s-item">
             <div className="s-itemTitle">{placeData.title2}
-            {!report &&
+            {!report && roomName &&
             <IconButton style={{width:'25px', height:'25px'}} >
               <Badge badgeContent={good[1]} color="secondary" style={{paddingRight:'10px'}}>
                 <ThumbUp style={{color:'var(--Bcolor)'}} onClick={()=>goodPlus('good1',Switch1,setSwitch1)} />
@@ -519,7 +520,7 @@ function Scamper({ fireApp, fireSync, user, userInfo }) {
         
           <div className="s-item">
             <div className="s-itemTitle">{placeData.title3}
-            {!report &&
+            {!report && roomName &&
             <IconButton style={{width:'25px', height:'25px'}} >
               <Badge badgeContent={good[2]} color="secondary" style={{paddingRight:'10px'}}>
                 <ThumbUp style={{color:'var(--Bcolor)'}} onClick={()=>goodPlus('good2',Switch2,setSwitch2)} />
@@ -532,7 +533,7 @@ function Scamper({ fireApp, fireSync, user, userInfo }) {
 
           <div className="s-item">
             <div className="s-itemTitle">{placeData.title4}
-            {!report &&
+            {!report && roomName &&
             <IconButton style={{width:'25px', height:'25px'}} >
               <Badge badgeContent={good[3]} color="secondary" style={{paddingRight:'10px'}}>
                 <ThumbUp style={{color:'var(--Bcolor)'}} onClick={()=>goodPlus('good3',Switch3,setSwitch3)} />
@@ -545,7 +546,7 @@ function Scamper({ fireApp, fireSync, user, userInfo }) {
 
           <div className="s-item">
             <div className="s-itemTitle">{placeData.title5}
-            {!report &&
+            {!report && roomName &&
             <IconButton style={{width:'25px', height:'25px'}} >
               <Badge badgeContent={good[4]} color="secondary" style={{paddingRight:'10px'}}>
                 <ThumbUp style={{color:'var(--Bcolor)'}} onClick={()=>goodPlus('good4',Switch4,setSwitch4)} />
@@ -558,7 +559,7 @@ function Scamper({ fireApp, fireSync, user, userInfo }) {
 
           <div className="s-item">
             <div className="s-itemTitle">{placeData.title6}
-            {!report &&
+            {!report && roomName &&
             <IconButton style={{width:'25px', height:'25px'}} >
               <Badge badgeContent={good[5]} color="secondary" style={{paddingRight:'10px'}}>
                 <ThumbUp style={{color:'var(--Bcolor)'}} onClick={()=>goodPlus('good5',Switch5,setSwitch5)} />
@@ -571,7 +572,7 @@ function Scamper({ fireApp, fireSync, user, userInfo }) {
 
           <div className="s-item">
             <div className="s-itemTitle">{placeData.title7}
-            {!report &&
+            {!report && roomName &&
             <IconButton style={{width:'25px', height:'25px'}} >
               <Badge badgeContent={good[6]} color="secondary" style={{paddingRight:'10px'}}>
                 <ThumbUp style={{color:'var(--Bcolor)'}} onClick={()=>goodPlus('good6',Switch6,setSwitch6)} />

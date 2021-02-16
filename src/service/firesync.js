@@ -52,7 +52,7 @@ roomUser(folder,roomUid,cf) {
       data ? cf.f3(data) : cf.f4();
     });   
     return () => {ref1.off(); ref2.off()}
-    
+
   }
   // Item 씽크
  itemSync(folder, uid, cf) {
@@ -82,7 +82,7 @@ async reportSync(folder,roomId, cf) {
     });
   }
 // 비디오 메시지 싱크
-async videoSync(folder,roomName,spot,cf) {
+videoSync(folder,roomName,spot,cf) {
   const roomUid = roomName.substr(0,roomSubstr);
   if (!roomUid) { return }
   const ref = fireInit.database().ref(`${folder}/${roomUid}/${spot}`);
@@ -92,8 +92,6 @@ async videoSync(folder,roomName,spot,cf) {
   });
   return ()=>ref.off();
 }
- 
-
 }
 
 

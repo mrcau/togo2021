@@ -98,16 +98,15 @@ function Problem({ fireProblem, fireSync, user, userInfo }) {
   //수업자료와 공지사항 싱크
   useEffect(() => {    
     if(roomName&&!report){ 
-      const stopvideoSync = fireProblem.videoSync(folder,roomName,'See',(p)=>{setVideo(p); })
-      const stopvideoSync2 = fireProblem.videoSync(folder,roomName,'Tok',(p)=>{
+      const stopvideoSync = fireSync.videoSync(folder,roomName,'See',(p)=>{setVideo(p); })
+      const stopvideoSync2 = fireSync.videoSync(folder,roomName,'Tok',(p)=>{
         setNotice(p); 
         titleRef.current.classList.add("noticeFly");
-        setTimeout(()=>{titleRef.current.classList.remove("noticeFly")},1000);
-      return ()=>{stopvideoSync(); stopvideoSync2(); }
-    })
+        setTimeout(()=>{titleRef.current.classList.remove("noticeFly")},1000);})
+        return ()=>{stopvideoSync(); stopvideoSync2(); }
     }
      
-  },[fireProblem,roomName,report]);
+  },[fireSync,roomName,report]);
   
     // 좋아요
     const [Switch0, setSwitch0] = useState(true);
@@ -187,6 +186,9 @@ function Problem({ fireProblem, fireSync, user, userInfo }) {
   }
     // input roomName 초기화
     const roomNameReset=() => {
+      const stopvideoSync = fireSync.videoSync(folder,roomName,'See',(p)=>{setVideo(p); })
+      stopvideoSync(); 
+
       const cf = {
         f1: (p) => { setdata({}) },
         f2: () => { setdata({}) },
@@ -464,7 +466,7 @@ function Problem({ fireProblem, fireSync, user, userInfo }) {
           
           <div className="s-item">
             <div className="s-itemTitle" sty>{placeData.title1} 
-            {!report &&
+            {!report && roomName &&
             <IconButton style={{width:'25px', height:'25px'}} >
               <Badge badgeContent={good[0]} color="secondary" style={{paddingRight:'10px'}}>
                 <ThumbUp style={{color:'var(--Bcolor)'}} onClick={()=>goodPlus('good0',Switch0,setSwitch0)} />
@@ -476,7 +478,7 @@ function Problem({ fireProblem, fireSync, user, userInfo }) {
           </div>
           <div className="s-item">
             <div className="s-itemTitle">{placeData.title2}
-            {!report &&
+            {!report &&roomName &&
             <IconButton style={{width:'25px', height:'25px'}} >
               <Badge badgeContent={good[1]} color="secondary" style={{paddingRight:'10px'}}>
                 <ThumbUp style={{color:'var(--Bcolor)'}} onClick={()=>goodPlus('good1',Switch1,setSwitch1)} />
@@ -489,7 +491,7 @@ function Problem({ fireProblem, fireSync, user, userInfo }) {
         
           <div className="s-item">
             <div className="s-itemTitle">{placeData.title3}
-            {!report &&
+            {!report &&roomName &&
             <IconButton style={{width:'25px', height:'25px'}} >
               <Badge badgeContent={good[2]} color="secondary" style={{paddingRight:'10px'}}>
                 <ThumbUp style={{color:'var(--Bcolor)'}} onClick={()=>goodPlus('good2',Switch2,setSwitch2)} />
@@ -502,7 +504,7 @@ function Problem({ fireProblem, fireSync, user, userInfo }) {
 
           <div className="s-item">
             <div className="s-itemTitle">{placeData.title4}
-            {!report &&
+            {!report &&roomName &&
             <IconButton style={{width:'25px', height:'25px'}} >
               <Badge badgeContent={good[3]} color="secondary" style={{paddingRight:'10px'}}>
                 <ThumbUp style={{color:'var(--Bcolor)'}} onClick={()=>goodPlus('good3',Switch3,setSwitch3)} />

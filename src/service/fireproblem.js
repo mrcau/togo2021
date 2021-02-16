@@ -67,7 +67,7 @@ videoSave(folder,roomName,spot,data){
   fireInit.database().ref(`${folder}/${roomUid}/${spot}`).set(data);
 }
 // 비디오 메시지 싱크
-async videoSync(folder,roomName,spot,cf) {
+videoSync(folder,roomName,spot,cf) {
   const roomUid = roomName.substr(0,roomSubstr);
   if (!roomUid) { return }
   const ref = fireInit.database().ref(`${folder}/${roomUid}/${spot}`);
