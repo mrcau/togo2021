@@ -122,7 +122,8 @@ function Idea({ fireIdea, fireSync, user, userInfo }) {
       name: userInfo.name,
       title: '룸 ID',
       color : 'Light',
-      roomName : newRoom
+      roomName : newRoom,
+      uid : user.uid
     }
     const roomget = fireIdea.roomGet(folder,roomUid)
     roomget < 8 && 
@@ -195,10 +196,12 @@ function Idea({ fireIdea, fireSync, user, userInfo }) {
    
     // 아이템 삭제
   const dataDel = () => { 
-    let entry = Object.entries(items);
-    const itemUid = entry[0][1].uid;
-    console.log(itemUid);
-    if(itemUid && itemUid === user.uid){ 
+    console.log(items,items.length,Object.entries(items),Object.entries(items).length)
+    if(Object.entries(items).length<1){ return}
+    let entry = Object.entries(items)||[];
+    const itemUid = entry[0][1].uid||'';
+    // const itemUid2 = entry[0][1].uid||'';
+    if(!roomName&&itemUid && itemUid === user.uid){  console.log('1',itemUid);
       Swal.fire({ 
         title: '내정보를 삭제하겠습니까?',
         icon:'warning',
@@ -208,14 +211,16 @@ function Idea({ fireIdea, fireSync, user, userInfo }) {
       }});
       }  
       if(roomName!==roomERef.current.value||roomERef.current.value==='') { return }      
-      if(data.userId === user.uid){  
+      if(itemUid === user.uid){   console.log('2');
       Swal.fire({ 
         title: '토론방을 삭제하겠습니까?',
         text:"삭제될 토론방 : "+roomName,
         icon:'warning',
         showCancelButton: true})
-      .then((result) => { if(result.isConfirmed){ Swal.fire('삭제되었습니다.');
-      fireIdea.dataDel(folder,roomName);   
+      .then((result) => { if(result.isConfirmed){
+        fireIdea.dataDel(folder,roomName);   
+        roomERef.current.value='';
+        //  Swal.fire('삭제되었습니다.');
       
       }});
     }
