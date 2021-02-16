@@ -9,8 +9,9 @@ import ScamperReport from './ScamperReport';
 import Swal from 'sweetalert2';
 import placeholder from './placeholder';
 import { useHistory } from 'react-router-dom';
+import firesync from '../../service/firesync';
 
-function Scamper({ fireApp, user, userInfo }) {
+function Scamper({ fireApp, fireSync, user, userInfo }) {
   const folder = "scamper";
   const roomSubstr = 6;
   const Swal = require('sweetalert2');
@@ -63,18 +64,27 @@ function Scamper({ fireApp, user, userInfo }) {
         f3: (p) => { setRoom(p) },
         f4: () => { setRoom({}) },
       }
+      const cff = (p)=>{
+        setNotice(p); 
+        titleRef.current.classList.add("noticeFly");
+        setTimeout(()=>{titleRef.current.classList.remove("noticeFly")},1000)}
+        
       if (e && report===false) {
         console.log('회원+리포트false');
-        // const roomUid = e.uid.substr(0, roomSubstr);
         setRoomUid(e.uid.substr(0, roomSubstr));
         setUserUID(e.uid);
        const stopDataSync = fireApp.dataSync(folder, roomName, cf);
        const stoproomSync = fireApp.roomSync(folder, roomUid, cf);
-        // fireApp.authSync('auth',e.uid,(p)=>setLevel(p))
-        return ()=>{stopDataSync();stoproomSync();}
+       const stopvideoSync = fireApp.videoSync(folder,roomName,'See',(p)=>{setVideo(p); })
+       const stopvideoSync2 = fireApp.videoSync(folder,roomName,'Tok',cff)
+        return ()=>{stopDataSync();stoproomSync();stopvideoSync();stopvideoSync2();}
+        
       }else if(e && !roomName){
         const stopdataSyncB =  fireApp.dataSyncB(folder, roomName, cf);
-        return ()=>{stopdataSyncB();}
+       const stoproomSync = fireSync.roomSync(folder, roomUid, cf);
+       const stopvideoSync = fireApp.videoSync(folder,roomName,'See',(p)=>{setVideo(p); })
+       const stopvideoSync2 = fireApp.videoSync(folder,roomName,'Tok',cff)
+       return ()=>{stopdataSyncB();stoproomSync();stopvideoSync();stopvideoSync2();}
       }
       else {
         console.log('회원이 아니면');
@@ -93,26 +103,28 @@ function Scamper({ fireApp, user, userInfo }) {
        if(report && roomName){
          console.log('비회원이지만 리포트가 true 이고 룸네임이 있으면')
          
-        const stopdataSyncB =  fireApp.dataSyncB(folder, roomName, cf);
-        return ()=>{stopdataSyncB();}
+       const stoproomSync = fireSync.roomSync(folder, roomUid, cf);
+       const stopdataSyncB =  fireApp.dataSyncB(folder, roomName, cf);
+       const stopvideoSync = fireApp.videoSync(folder,roomName,'See',(p)=>{setVideo(p); })
+       const stopvideoSync2 = fireApp.videoSync(folder,roomName,'Tok',cff)
+        return ()=>{stopdataSyncB();stoproomSync();stopvideoSync();stopvideoSync2();}
        }
       }
     })
-  }, [roomName,fireApp,report,roomUid]);
+  }, [roomName,fireApp,report,roomUid,fireSync]);
   
   //수업자료와 공지사항 싱크
-  useEffect(() => {    
-    if(roomName&&!report){ 
-      const stopvideoSync = fireApp.videoSync(folder,roomName,'See',(p)=>{setVideo(p); })
-      const stopvideoSync2 = fireApp.videoSync(folder,roomName,'Tok',(p)=>{
-        setNotice(p); 
-        titleRef.current.classList.add("noticeFly");
-        setTimeout(()=>{titleRef.current.classList.remove("noticeFly")},1000);
-      return ()=>{stopvideoSync(); stopvideoSync2(); }
-    })
-    }
+  // useEffect(() => {    
+  //   if(roomName&&!report){ 
+  //     const stopvideoSync = fireApp.videoSync(folder,roomName,'See',(p)=>{setVideo(p); })
+  //     const stopvideoSync2 = fireApp.videoSync(folder,roomName,'Tok',(p)=>{
+  //       setNotice(p); 
+  //       titleRef.current.classList.add("noticeFly");
+  //       setTimeout(()=>{titleRef.current.classList.remove("noticeFly")},1000)})
+  //     return ()=>{stopvideoSync(); stopvideoSync2(); }
+  //   }
      
-  },[fireApp,roomName,report]);
+  // },[fireApp,roomName,report]);
   
     // 좋아요
     const [Switch0, setSwitch0] = useState(true);
@@ -195,13 +207,26 @@ function Scamper({ fireApp, user, userInfo }) {
     fireApp.roomSave(folder, newRoom, data)
   }
     // input roomName 초기화
-    const roomNameReset=() => {console.log('roomNameReset')
+    const roomNameReset=() => {
+      
+      const stopvideoSync = fireApp.videoSync(folder,roomName,'See',(p)=>{setVideo(p); })
+      stopvideoSync(); 
+
+      const cf = {
+        f1: (p) => { setdata({}) },
+        f2: () => { setdata({}) },
+        f3: (p) => {  setRoom({}) },
+        f4: () => { setRoom({}) },
+      }
+      const stopDataSync = fireSync.dataSync(folder, roomName, cf);
+      stopDataSync();
+
       roomERef.current.value=''; 
       const data = {scamS:'',scamC:'',scamA:'',scamM:'',scamP:'',scamE:'',scamR:'', aTitle:'',bName: '',input3: '',input4:'',input5:'',input6:'', roomName:''}
       setdata(data);setroomName("");setDoor('입장'); setRoomUid('');
       setReport(false); setEntering(false); setSee(true); setRoom({});
       setNotice('');setVideo('');history.push('/scamper');
-      window.location.reload(false); 
+      // window.location.reload(false); 
     }  
     const roomRowReset=() => {console.log('roomRowReset')
       roomERef.current.value=''; 
@@ -425,7 +450,7 @@ function Scamper({ fireApp, user, userInfo }) {
         <div className="adimBar">
           <div> <button className="enterBtn" onClick={createRoom} style={{fontSize:'12px'}}>개설</button> </div>
           <div className="enterNumber" style={{fontSize:'small'}}>
-            {see && room && Object.keys(room).map((e) =>
+            {see && room && Object.keys(room).map((e) => e.length>3 &&
               <button key={e} className="btnRoom" onClick={adminEnter} >{e}</button>) 
             }
           </div>

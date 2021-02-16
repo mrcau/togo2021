@@ -40,6 +40,7 @@ roomUser(folder,roomUid,cf) {
   const roomUid = roomName.substr(0,roomSubstr);
     const roomNum = roomName.substr(roomSubstr);
     if (!roomName) { return }
+
     const ref1 = fireInit.database().ref(`${folder}/${roomUid}/${roomNum}`);
     ref1.on('value', (p) => {
       const data = p.val();
@@ -51,6 +52,7 @@ roomUser(folder,roomUid,cf) {
       data ? cf.f3(data) : cf.f4();
     });   
     return () => {ref1.off(); ref2.off()}
+    
   }
   // Item 씽크
  itemSync(folder, uid, cf) {

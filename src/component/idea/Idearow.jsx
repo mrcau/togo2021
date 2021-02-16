@@ -15,7 +15,7 @@ function  Idearow ({item,fireIdea,level,roomName}) {
   // const [color, setColor] = useState('');
 
   let counter = item.progress;
- 
+ console.log('ideaorw:::',item)
   const plus = () => {
     Switch &&counter++;
     if(roomName){
@@ -64,11 +64,10 @@ function  Idearow ({item,fireIdea,level,roomName}) {
       }
   }
   const fire = () => {Swal.fire({html:item.text2, width:'90%'})}
-
   return (
     <div className="idearow" >
      <Card bg={item.color} text={'white'} style={{ width: '12rem',height:'10rem' }} className="mb-2" >
-      {!item.uid 
+      {item.roomUid 
       ? <Card.Header style={{fontSize:"large",fontWeight:"900",color:"black"}}>룸ID</Card.Header>
       :
       <Card.Header style={{display:'flex',justifyContent:"space-between" ,padding:'5px'}} >
@@ -88,13 +87,14 @@ function  Idearow ({item,fireIdea,level,roomName}) {
             <Dropdown.Item as="button" onClick={()=>changeColor('dark')} style={{color:"#32383e",textAlign:"center", fontSize:"18px",padding:"0 2px"}}>❼</Dropdown.Item>
           </div>
         </DropdownButton>
-        <IconButton style={{width:'30px', height:'20px',transform:"translateX(-10px)"}} >
-        {item.text2 ? <VisibilityIcon style={{color:'white'}} size="small" onClick={fire} />
-        :  <VisibilityIcon style={{color:'black'}} size="small" onClick={fire} />  }
-        </IconButton>
+        { item.text2 &&
+          <IconButton style={{width:'30px', height:'20px',transform:"translateX(-10px)"}} >
+          <VisibilityIcon style={{color:'white'}} size="small" onClick={fire} /> 
+          </IconButton>
+        }
         <IconButton style={{width:'20px', height:'15px'}} >
           <Badge badgeContent={item.progress} color="secondary"   
-            anchorOrigin={{vertical: 'top', horizontal: 'right', }}>
+            anchorOrigin={{vertical: 'top', horizontal: 'right', }}> 
           <ThumbUp style={{color:'white'}} size="small" onClick={Switch?plus:minus} />
           </Badge>
         </IconButton>
@@ -103,7 +103,7 @@ function  Idearow ({item,fireIdea,level,roomName}) {
 
       <div className="cardTitle">
         <Card.Body>
-        {!item.uid
+        {item.roomUid
           ? <Card.Title style={{fontSize:"16px",fontWeight:"900",color:"black"}} > {item.roomName} </Card.Title>
           : <Card.Title style={{fontSize:"16px",fontWeight:"900",lineHeight:"5px"}} > {item.title}  </Card.Title> 
         }

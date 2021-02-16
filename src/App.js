@@ -131,7 +131,7 @@ function App({ fireApp,fireLogin,fireSync, fireTodo, fireIdea, fireOpentool,fire
           </Route>
 
           <Route path='/scamper'> 
-            <Scamper fireApp={fireApp} user={user} userInfo={userInfo} />
+            <Scamper fireApp={fireApp} fireSync={fireSync} user={user} userInfo={userInfo} />
           </Route>
           <Route path='/atable'> 
             <Atable fireApp={fireApp} user={user} userName={userName} />

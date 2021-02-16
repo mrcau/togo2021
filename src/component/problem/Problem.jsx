@@ -63,16 +63,15 @@ function Problem({ fireProblem, fireSync, user, userInfo }) {
       }
       if (e && report===false) {
         console.log('회원+리포트false',e,'report::',report,'룸네임:',roomName,user,userInfo,'로그인중');
-        // const roomUid = e.uid.substr(0, roomSubstr);
         setRoomUid(e.uid.substr(0, roomSubstr));
         setUserUID(e.uid);
        const stopDataSync = fireSync.dataSync(folder, roomName, cf);
        const stoproomSync = fireSync.roomSync(folder, roomUid, cf);
-        // fireSync.authSync('auth',e.uid,(p)=>setLevel(p))
         return ()=>{stopDataSync();stoproomSync();}
       }else if(e && !roomName){
         const stopdataSyncB =  fireSync.dataSyncB(folder, roomName, cf);
-        return ()=>{stopdataSyncB();}
+       const stoproomSync = fireSync.roomSync(folder, roomUid, cf);
+       return ()=>{stopdataSyncB();stoproomSync();}
       }
       else {
         console.log('로그인정보 없음','report::',report,roomName,user,userInfo);
@@ -80,23 +79,21 @@ function Problem({ fireProblem, fireSync, user, userInfo }) {
         if(!e&&!roomName){
         console.log('룸네임이 없으면 퇴장');
         return}
-
        const cf = {
           f1: (p) => { setdata(p) },
           f2: () => { setdata({}) },
           f3: (p) => { setRoom(p) },
           f4: () => { setRoom({}) },
         }
-
        if(report && roomName){
          console.log('비회원이지만 리포트가 true 이고 룸네임이 있으면','report::',report)
-         
-        const stopdataSyncB =  fireSync.dataSyncB(folder, roomName, cf);
-        return ()=>{stopdataSyncB();}
+         const stopdataSyncB =  fireSync.dataSyncB(folder, roomName, cf);
+         const stoproomSync = fireSync.roomSync(folder, roomUid, cf);
+         return ()=>{stopdataSyncB();stoproomSync();}
        }
       }
     })
-  }, [roomName,fireSync,report,roomUid]);
+  }, [roomName,fireSync,report,roomUid,user,userInfo]);
   
   //수업자료와 공지사항 싱크
   useEffect(() => {    
@@ -189,14 +186,26 @@ function Problem({ fireProblem, fireSync, user, userInfo }) {
     fireProblem.roomSave(folder, newRoom, data)
   }
     // input roomName 초기화
-    const roomNameReset=() => {console.log('roomNameReset')
+    const roomNameReset=() => {
+      const cf = {
+        f1: (p) => { setdata({}) },
+        f2: () => { setdata({}) },
+        f3: (p) => {  setRoom({}) },
+        f4: () => { setRoom({}) },
+      }
+      const stopDataSync = fireSync.dataSync(folder, roomName, cf);
+      stopDataSync();
+
       roomERef.current.value=''; 
       const data = {scamS:'',scamC:'',scamA:'',scamM:'',scamP:'', aTitle:'',bName: '',input3: '',input4:'',input5:'',input6:'', roomName:''}
       setdata(data);setroomName("");setDoor('입장'); setRoomUid('');
       setReport(false); setEntering(false); setSee(true); setRoom({});
       setNotice('');setVideo('');history.push('/problem');
-      window.location.reload(false); 
+      // window.location.reload(false); 
     }  
+
+
+
     const roomRowReset=() => {console.log('roomRowReset')
       roomERef.current.value=''; 
       const data = {scamS:'',scamC:'',scamA:'',scamM:'',scamP:'', aTitle:'',bName: '',input3: '',input4:'',input5:'',input6:'', roomName:''}
@@ -222,7 +231,7 @@ function Problem({ fireProblem, fireSync, user, userInfo }) {
             setEntering(true);
             setSee(false);
           }          
-       fireProblem.roomUser(folder,enterRoomId,cf1);
+       fireSync.roomUser(folder,enterRoomId,cf1);
         
         const cf2 = {
             f1: (p) => { setdata(p) },
@@ -230,7 +239,7 @@ function Problem({ fireProblem, fireSync, user, userInfo }) {
             f3: (p) => { setRoom(p) },
             f4: () => { setRoom({}) },
           }
-        fireProblem.dataSync(folder,roomvalue, cf2);
+        fireSync.dataSync(folder,roomvalue, cf2);
 
         }
     }
@@ -411,7 +420,7 @@ function Problem({ fireProblem, fireSync, user, userInfo }) {
         <div className="adimBar">
           <div> <button className="enterBtn" onClick={createRoom} style={{fontSize:'12px'}}>개설</button> </div>
           <div className="enterNumber" style={{fontSize:'small'}}>
-            {see && room && Object.keys(room).map((e) =>
+            {see && room && Object.keys(room).map((e) => e.length>3 &&
               <button key={e} className="btnRoom" onClick={adminEnter} >{e}</button>) 
             }
           </div>

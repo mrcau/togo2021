@@ -52,7 +52,7 @@ function Idea({ fireIdea, fireSync, user, userInfo }) {
         f4: () => { setRoom({}) },
       }
       if (e && roomName) {
-         console.log('회원+리포트false',e,'룸네임:',roomName,userInfo,'로그인중');
+         console.log('회원+리포트false',e,'룸네임:',data,'로그인중');
          setRoomUid(e.uid.substr(0, roomSubstr));
          setUserUID(e.uid);
           const stopDataSync = fireSync.dataSync(folder, roomName, cf);
@@ -73,11 +73,13 @@ function Idea({ fireIdea, fireSync, user, userInfo }) {
           if(roomName){
             console.log('비회원이지만 리포트가 true 이고 룸네임이 있으면','::',)         
             const stopDataSync = fireSync.dataSync(folder, roomName, cf);
-            return ()=>{stopDataSync();}
+          const stoproomSync = fireSync.roomSync(folder, roomUid, cf);
+          return ()=>{stopDataSync();stoproomSync();}
+
            }
       }
     })
-  }, [roomName,fireSync,roomUid,user,userInfo]);
+  }, [roomName,fireSync,roomUid,user,userInfo,data]);
   
   //수업자료와 공지사항 싱크
   useEffect(() => {    
@@ -123,21 +125,35 @@ function Idea({ fireIdea, fireSync, user, userInfo }) {
       title: '룸 ID',
       color : 'Light',
       roomName : newRoom,
-      uid : user.uid
+      uid : user.uid,
+      roomUid : num
     }
-    const roomget = fireIdea.roomGet(folder,roomUid)
-    roomget < 8 && 
-    fireIdea.roomSave(folder, newRoom, dataId, data)
+    // const roomget = fireIdea.roomGet(folder,roomUid)
+    // roomget < 8 && 
+    // fireIdea.roomSave(folder, newRoom, dataId, data)
+    fireIdea.roomGetSave(folder, newRoom, dataId, data);
   }
 
     // input roomName 초기화
-    const roomNameReset=() => {console.log('roomNameReset')
+    const roomNameReset=() => {
+      const cf = {
+        f1: (p) => { setItems({}) },
+        f2: () => { setItems({}) },
+        f3: (p) => {  setRoom({}) },
+        f4: () => { setRoom({}) },
+      }
+      const stopDataSync = fireSync.dataSync(folder, roomName,cf);
+      stopDataSync();
       roomERef.current.value=''; 
-      const data = {scamP:'', roomName:''}
-      setdata(data);setroomName("");setDoor('입장'); setRoomUid('');
-      setEntering(false); setSee(true); setRoom({});
-      setNotice('');setVideo('');history.push('/idea');
-      window.location.reload(false); 
+
+      // const data = {}
+      
+      setdata({});setroomName("");setDoor('입장'); setRoomUid('');
+      setEntering(false); setSee(true); setRoom({}); setItems({});
+      setNotice('');setVideo('');
+      // window.location.reload(false); 
+      history.push('/idea');
+      
     }  
              
   // roomName.substr(0,6) 방입장
@@ -165,7 +181,6 @@ function Idea({ fireIdea, fireSync, user, userInfo }) {
           }
         fireSync.dataSync(folder,roomvalue, cf2);
         }
-        console.log(roomvalue,entering,enterRoomId,roomvalue.length)
       }
 
   // 관리자 방입장
@@ -236,20 +251,20 @@ function Idea({ fireIdea, fireSync, user, userInfo }) {
   }
 
 const submit = (e) => {
+  console.log(roomName,user.uid)
   e.preventDefault();
-  if(e.currentTarget == null){return;}
+  if(!roomName&&!user.uid){return;}
   const title = titleRef2.current.value;
   const text = textRef.current.value;
   const text2 = textRef2.current.value;
-  console.log(title,user,userInfo)
   if(!title || !text){ Swal.fire({title:'제목과 내용을 입력해주세요.',icon:'warning'}) }
   if (userInfo && title && text ) {
     rocketOn();
     const dataId = Date.now();
     const data = {
-      uid: user.uid,
+      uid: user.uid||'',
       dataId: dataId,
-      name: userInfo.name,
+      name: userInfo.name||'',
       title: title,
       text: text,
       text2: text2,
@@ -278,7 +293,7 @@ const submit = (e) => {
         <div className="adimBar">
           <div> <button className="enterBtn" onClick={createRoom} style={{fontSize:'12px'}}>개설</button> </div>
           <div className="enterNumber" style={{fontSize:'small'}}>
-            {see && room && Object.keys(room).map((e) =>
+            {see && room && Object.keys(room).map((e) => e.length>3 &&
               <button key={e} className="btnRoom" onClick={adminEnter} >{e}</button>) 
             }
           </div>

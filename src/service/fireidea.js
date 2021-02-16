@@ -4,8 +4,24 @@ import "firebase/database";
 import "firebase/storage";
 
 const roomSubstr = 6;
+const roomNumer = 6;
 
 class fireidea {  
+
+roomGetSave(folder,newRoom, dataId,data){ console.log('roomGetSave')
+  const roomUid = newRoom.substr(0,roomSubstr);
+  const Uid = newRoom.substr(roomSubstr);
+  let roomGetNum = 0; 
+    const ref = fireInit.database().ref(`${folder}/${roomUid}`);
+    ref.on('value',(p)=>{const data = p.val();
+      if(data){ roomGetNum = Object.keys(data).length;}
+    })
+  
+    if(roomGetNum < roomNumer){
+      fireInit.database().ref(`${folder}/${roomUid}/${Uid}/${dataId}`).set(data)
+    }else{return}
+  
+}
 //  룸 개수 가져오기
 roomGet(folder,roomUid) {
   let roomGetNum = 0; 
