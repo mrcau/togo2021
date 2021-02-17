@@ -8,6 +8,7 @@ const roomNumer = 6;
 
 class fireidea {  
 
+  //룸 개수계산해서 룸 생성하기
 roomGetSave(folder,newRoom, dataId,data){ console.log('roomGetSave')
   const roomUid = newRoom.substr(0,roomSubstr);
   const Uid = newRoom.substr(roomSubstr);
@@ -19,8 +20,7 @@ roomGetSave(folder,newRoom, dataId,data){ console.log('roomGetSave')
   
     if(roomGetNum < roomNumer){
       fireInit.database().ref(`${folder}/${roomUid}/${Uid}/${dataId}`).set(data)
-    }else{return}
-  
+    }else{return}  
 }
 //  룸 개수 가져오기
 roomGet(folder,roomUid) {
