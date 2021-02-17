@@ -6,6 +6,7 @@ import "firebase/storage";
 
 const roomSubstr = 6;
 
+
 class firesync {  
   //회원정보 SYNC
   async onAuth(cf) {
@@ -23,6 +24,7 @@ class firesync {
   }
 
 
+
 //  룸 이름 가져오기
 roomUser(folder,roomUid,cf) {
   const ref = fireInit.database().ref(`${folder}`);
@@ -33,7 +35,7 @@ roomUser(folder,roomUid,cf) {
     if(dataKey.indexOf(roomUid)<0){ return }
      cf();
   })
-  // return ref.off('value', (p) => {cf();});
+  return ()=>ref.off('value', (p) => {cf();});
  }
   // 데이터 씽크
   dataSync(folder, roomName, cf) {

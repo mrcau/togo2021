@@ -52,10 +52,6 @@ function App({ fireApp,fireLogin,fireSync, fireTodo, fireIdea, fireOpentool,fire
   backTopRef.current.classList.add("backNonTop");    
   setRegisterTF(false);
  }
-//  const moveModal0 = (drawref,backref,drawclass,backclass) =>{
-//   drawref.current.classList.add(drawclass);
-//   backref.current.classList.remove(backclass); 
-//  }
 
   //로그아웃
   const logout =  async() =>{
@@ -63,7 +59,6 @@ function App({ fireApp,fireLogin,fireSync, fireTodo, fireIdea, fireOpentool,fire
    setuser({}); setUid(''); setPhoto('');setUserName('');
    history.push('/');
    moveModal2();
-
   } 
 
   // 로그인 싱크
@@ -129,7 +124,6 @@ function App({ fireApp,fireLogin,fireSync, fireTodo, fireIdea, fireOpentool,fire
           <Route path='/mytool'> 
             <Mytool fireTodo={fireTodo} user={user} userInfo={userInfo}/>
           </Route>
-
           <Route path='/scamper'> 
             <Scamper fireApp={fireApp} fireSync={fireSync} user={user} userInfo={userInfo} />
           </Route>
@@ -149,13 +143,13 @@ function App({ fireApp,fireLogin,fireSync, fireTodo, fireIdea, fireOpentool,fire
             <Idea fireSync={fireSync} fireIdea={fireIdea} user={user} userInfo={userInfo} />
           </Route>
           <Route path='/datastudy'>           
-            <Datastudy fireApp={fireApp} user={user} userInfo={userInfo} />
+            <Datastudy fireProblem={fireProblem} fireSync={fireSync} user={user} userInfo={userInfo} />
           </Route>
           <Route path='/solving'>           
-            <Solving fireApp={fireApp} user={user} userInfo={userInfo} />
+            <Solving fireProblem={fireProblem} fireSync={fireSync} user={user} userInfo={userInfo} />
           </Route>
           <Route path='/startup'> 
-            <Startup fireApp={fireApp} user={user} userInfo={userInfo} />
+            <Startup fireProblem={fireProblem} fireSync={fireSync} user={user} userInfo={userInfo} />
           </Route>
           
           

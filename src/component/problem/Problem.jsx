@@ -205,9 +205,7 @@ function Problem({ fireProblem, fireSync, user, userInfo }) {
       setNotice('');setVideo('');history.push('/problem');
       // window.location.reload(false); 
     }  
-
-
-
+    const roomNameHide = ()=>{roomERef.current.value=''; }
     const roomRowReset=() => {console.log('roomRowReset')
       roomERef.current.value=''; 
       const data = {scamS:'',scamC:'',scamA:'',scamM:'',scamP:'', aTitle:'',bName: '',input3: '',input4:'',input5:'',input6:'', roomName:''}
@@ -222,7 +220,7 @@ function Problem({ fireProblem, fireSync, user, userInfo }) {
   const enterRoom = () => {
     const roomvalue = roomERef.current.value || "";
     const enterRoomId =  roomERef.current.value.substr(0,roomSubstr)||"";
-    if(entering){roomNameReset(); }
+    if(entering&&roomvalue){roomNameReset(); }else if(entering&&!roomvalue){roomRowReset();}
     if(roomvalue.length !== 10||!enterRoomId||entering){return;}
     if(roomvalue.length === 10&&!entering){
         const cf1=()=>{
@@ -404,8 +402,8 @@ function Problem({ fireProblem, fireSync, user, userInfo }) {
 
     <div className="drawer" ref={drawerRef}>
     {rightModal && 
-     <ProblemReport fireSync={fireSync} fireProblem={fireProblem} user={user} userUID={userUID} folder={folder} setroomName={setroomName} roomRowReset={roomRowReset}
-      roomName={roomName} setReport={setReport} drawerRef={drawerRef} userInfo={userInfo} 
+     <ProblemReport fireSync={fireSync} fireProblem={fireProblem} user={user} folder={folder} setroomName={setroomName} roomRowReset={roomRowReset}
+      roomName={roomName} setReport={setReport} roomNameHide={roomNameHide} userInfo={userInfo} 
       moveModal2={moveModal2} report={report} setdata={setdata} setDoor={setDoor} setEntering={setEntering}  /> 
     }
     </div>

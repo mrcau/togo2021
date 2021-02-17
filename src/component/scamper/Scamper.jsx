@@ -228,7 +228,7 @@ function Scamper({ fireApp, fireSync, user, userInfo }) {
       setNotice('');setVideo('');history.push('/scamper');
       // window.location.reload(false); 
     }  
-
+    const roomNameHide = ()=>{roomERef.current.value=''; }
     const roomRowReset=() => {console.log('roomRowReset')
       roomERef.current.value=''; 
       const data = {scamS:'',scamC:'',scamA:'',scamM:'',scamP:'',scamE:'',scamR:'', aTitle:'',bName: '',input3: '',input4:'',input5:'',input6:'', roomName:''}
@@ -243,7 +243,7 @@ function Scamper({ fireApp, fireSync, user, userInfo }) {
   const enterRoom = () => {
     const roomvalue = roomERef.current.value || "";
     const enterRoomId =  roomERef.current.value.substr(0,roomSubstr)||"";
-    if(entering){roomNameReset(); }
+    if(entering&&roomvalue){roomNameReset(); }else if(entering&&!roomvalue){roomRowReset();}
     if(roomvalue.length !== 10||!enterRoomId||entering){return;}
     if(roomvalue.length === 10&&!entering){
         const cf1=()=>{
@@ -433,9 +433,9 @@ function Scamper({ fireApp, fireSync, user, userInfo }) {
 
     <div className="drawer" ref={drawerRef}>
     {rightModal && 
-     <ScamperReport fireApp={fireApp} user={user} userUID={userUID} folder={folder} setroomName={setroomName} roomRowReset={roomRowReset}
-      roomName={roomName} setReport={setReport} drawerRef={drawerRef} userInfo={userInfo} 
-      moveModal2={moveModal2} setSwitch7={setSwitch7} report={report} setdata={setdata} /> 
+     <ScamperReport fireApp={fireApp} user={user} folder={folder} setroomName={setroomName} 
+      roomName={roomName} setReport={setReport} userInfo={userInfo} setEntering={setEntering} 
+      moveModal2={moveModal2} roomNameHide={roomNameHide} setdata={setdata} setDoor={setDoor} /> 
     }
     </div>
     <div className="drawerback backNone" ref={backRef} onClick={moveModal2}></div>
