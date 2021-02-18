@@ -5,7 +5,7 @@ import AddCommentIcon from '@material-ui/icons/AddComment';
 import YouTubeIcon from '@material-ui/icons/YouTube';
 import './startup.css';
 import VoiceChatIcon from '@material-ui/icons/VoiceChat';
-import startupReport from './startupReport';
+import StartupReport from './startupReport';
 import Swal from 'sweetalert2';
 import placeholder from './placeholder';
 import { useHistory } from 'react-router-dom';
@@ -38,7 +38,6 @@ function Startup({ fireProblem, fireSync, user, userInfo }) {
   const text12 = useRef();
   const text13 = useRef();
   // 좋아요
-  const [Switch0, setSwitch0] = useState(true);
   const [Switch1, setSwitch1] = useState(true);
   const [Switch2, setSwitch2] = useState(true);
   const [Switch3, setSwitch3] = useState(true);
@@ -68,13 +67,11 @@ function Startup({ fireProblem, fireSync, user, userInfo }) {
   useEffect(() => {
     fireSync.onAuth((e) => {
       const cf = {
-        f1: (p) => { setdata(p) },
-        f2: () => { setdata({}) },
-        f3: (p) => { setRoom(p) },
-        f4: () => { setRoom({}) },
+        f1: (p) => { setdata(p) }, f2: () => { setdata({}) },
+        f3: (p) => { setRoom(p) }, f4: () => { setRoom({}) },
       }
       if (e && report===false) {
-        console.log('회원+리포트false',e,'report::',report,'룸네임:',roomName,user,userInfo,'로그인중');
+        console.log('data',data);
         setRoomUid(e.uid.substr(0, roomSubstr));
         setUserUID(e.uid);
        const stopDataSync = fireSync.dataSync(folder, roomName, cf);
@@ -103,6 +100,7 @@ function Startup({ fireProblem, fireSync, user, userInfo }) {
          const stoproomSync = fireSync.roomSync(folder, roomUid, cf);
          return ()=>{stopdataSyncB();stoproomSync();}
        }
+       
       }
     })
   }, [roomName,fireSync,report,roomUid,user,userInfo]);
@@ -116,11 +114,8 @@ function Startup({ fireProblem, fireSync, user, userInfo }) {
         titleRef.current.classList.add("noticeFly");
         setTimeout(()=>{titleRef.current.classList.remove("noticeFly")},1000);})
         return ()=>{stopvideoSync(); stopvideoSync2(); }
-    }
-     
-  },[fireSync,roomName,report]);
-  
-    
+    }  
+  },[fireSync,roomName,report]);    
     
     const goodPlus = (goodNum,Switch,setSwitch) => {
       console.log(data)
@@ -131,35 +126,19 @@ function Startup({ fireProblem, fireSync, user, userInfo }) {
       fireProblem.goodUp(folder, roomName,goodNum,data[goodNum]);
       }
     }
-    
-    const goodPlus2 = (goodNum,Switch,setSwitch) => {
-      console.log('굿플러스2 goodNum,Switch,roomName,report',goodNum,Switch,roomName,report);
-      setReport(true);
-      if(data[goodNum]===undefined){data[goodNum]=0}
-        if(roomName){
-        Switch ? data[goodNum]++ : data[goodNum]--;
-        setSwitch(!Switch);
-      fireProblem.goodUpB(folder, roomName,goodNum,data[goodNum]);
-      }
-    }
+
     //오른쪽 모달 핸들링
     const moveModal = () => {
       drawerRef.current.classList.add("moveDrawer");
       backRef.current.classList.remove("backNone");    
       setrightModal(true);
-
     }
     const moveModal2 = () => {
       drawerRef.current.classList.remove("moveDrawer");
       backRef.current.classList.add("backNone"); 
       setrightModal(true);
     }
-      //스위치 핸들링
-    // const handleChange = (event) => {
-    //   setState({ ...state, [event.target.name]: event.target.checked });
-    // };
-  
-  
+   
   //모달창3
   const fire = () => {Swal.fire({html:video, width:'90%'})}
   // 자료입력 모달
@@ -179,7 +158,7 @@ function Startup({ fireProblem, fireSync, user, userInfo }) {
   }
 
   let good =[data.good0,data.good1,data.good2,data.good3,data.good4,
-            data.good5,data.good6,data.good7]
+            data.good5,data.good6,data.good7,data.good8,data.good9]
 
   // 방생성
   const createRoom = () => {
@@ -188,7 +167,7 @@ function Startup({ fireProblem, fireSync, user, userInfo }) {
     setroomName(newRoom);
     const data = {userId:user.uid,text1:'',text2:'',text3:'',text4:'',text5:'',text6:'',text7: '',text8: '', 
     text9: '',text10: '',text11: '', text12: '',text13: '', good0:0, good1:0, good2:0, good3:0, good4:0, 
-    good5:0, good6:0, good7:0,good8:0, good9:0,}
+    good5:0, good6:0, good7:0,good8:0, good9:0,writer:''}
     // const roomget = fireProblem.roomGet(folder,roomUid)
     // roomget < 8 && 
     fireProblem.roomGetSave(folder, newRoom, data)
@@ -196,31 +175,23 @@ function Startup({ fireProblem, fireSync, user, userInfo }) {
     // input roomName 초기화
     const roomNameReset=() => {
       const stopvideoSync = fireSync.videoSync(folder,roomName,'See',(p)=>{setVideo(p); })
-      stopvideoSync(); 
-
-      const cf = {
-        f1: (p) => { setdata({}) },
-        f2: () => { setdata({}) },
-        f3: (p) => {  setRoom({}) },
-        f4: () => { setRoom({}) },
+      const stopvideoSync2 = fireSync.videoSync(folder,roomName,'Tok',(p)=>{setNotice(p); })
+      stopvideoSync();  stopvideoSync2();
+      const cf = {  f1: (p) => { setdata({}) }, f2: () => { setdata({}) },
+                    f3: (p) => { setRoom({}) }, f4: () => { setRoom({}) },
       }
+      const cf2 = () => { setdata({});setRoom({});  }
+      const stopRoomSync = fireSync.roomUser(folder,roomUid,cf2);        
       const stopDataSync = fireSync.dataSync(folder, roomName, cf);
-      stopDataSync();
-
-      roomERef.current.value=''; 
-      const data = {text1:'',text2:'',text3:'',text4:'',text5:'',text6:'',text7: '',text8: '', 
-      text9: '',text10: '',text11: '', text12: '',text13: ''}
-      setdata(data);setroomName("");setDoor('입장'); setRoomUid('');
+      stopDataSync();  stopRoomSync();
+      dataReset(); setroomName("");setDoor('입장'); setRoomUid('');
       setReport(false); setEntering(false); setSee(true); setRoom({});
       setNotice('');setVideo('');history.push('/startup');
-      // window.location.reload(false); 
     }  
-
-
-
+    const roomNameHide = ()=>{roomERef.current.value=''; }
     const roomRowReset=() => {console.log('roomRowReset')
       roomERef.current.value=''; 
-      const data = {text1:'',text2:'',text3:'',text4:'',text5:'',text6:'',text7: '',text8: '', 
+      const data = {writer:'',text1:'',text2:'',text3:'',text4:'',text5:'',text6:'',text7: '',text8: '', 
       text9: '',text10: '',text11: '', text12: '',text13: ''}
       setdata(data);
       setDoor('입장'); 
@@ -233,7 +204,7 @@ function Startup({ fireProblem, fireSync, user, userInfo }) {
   const enterRoom = () => {
     const roomvalue = roomERef.current.value || "";
     const enterRoomId =  roomERef.current.value.substr(0,roomSubstr)||"";
-    if(entering){roomNameReset(); }
+    if(entering&&roomvalue){roomNameReset(); }else if(entering&&!roomvalue){roomRowReset();}
     if(roomvalue.length !== 10||!enterRoomId||entering){return;}
     if(roomvalue.length === 10&&!entering){
         const cf1=()=>{
@@ -244,8 +215,7 @@ function Startup({ fireProblem, fireSync, user, userInfo }) {
             setEntering(true);
             setSee(false);
           }          
-       fireSync.roomUser(folder,enterRoomId,cf1);
-        
+       fireSync.roomUser(folder,enterRoomId,cf1);        
         const cf2 = {
             f1: (p) => { setdata(p) },
             f2: () => { setdata({}) },
@@ -253,7 +223,6 @@ function Startup({ fireProblem, fireSync, user, userInfo }) {
             f4: () => { setRoom({}) },
           }
         fireSync.dataSync(folder,roomvalue, cf2);
-
         }
     }
 
@@ -265,8 +234,8 @@ function Startup({ fireProblem, fireSync, user, userInfo }) {
     setroomName(roomUid +room);
     roomERef.current.value =roomname;     
     setReport(false); 
-    setSwitch0(true); setSwitch1(true); 
-    setSwitch2(true); setSwitch3(true); 
+    setSwitch1(true); setSwitch2(true); setSwitch3(true); setSwitch4(true);
+    setSwitch5(true); setSwitch6(true); setSwitch7(true); setSwitch8(true); setSwitch9(true); 
        setEntering(true);
        setDoor('퇴장');
        // enterRoom();
@@ -321,6 +290,7 @@ function Startup({ fireProblem, fireSync, user, userInfo }) {
     text12.current.value = '';
     text13.current.value = '';
     writer.current.value = '';
+    roomERef.current.value='';    
   }
      // 보고서 제출
    const btnInput = (e) => {
@@ -331,12 +301,10 @@ function Startup({ fireProblem, fireSync, user, userInfo }) {
     // if (Object.keys(user).length<1) { return }
     if (!roomName&&!userUID) { return }
     const data = {
-      cDate : today|| '', 
+      Date : today|| '', 
       dataId : dataId|| '',
       userId : user.uid|| '',
       roomName:roomName || '',
-      good7:0,
-
       text1: text1.current.value || '',
       text2: text2.current.value || '',
       text3: text3.current.value || '',
@@ -381,7 +349,7 @@ function Startup({ fireProblem, fireSync, user, userInfo }) {
         icon:'warning',
         showCancelButton: true})
       .then((result) => { if(result.isConfirmed){ Swal.fire('삭제되었습니다.');
-      fireProblem.reportDel(folder,user.uid,data.dataId); dataReset();
+      fireProblem.reportDel(folder,user.uid,data.dataId); roomNameReset();
       }});
       }
     
@@ -395,7 +363,7 @@ function Startup({ fireProblem, fireSync, user, userInfo }) {
         const roomUid =  roomName.substr(0,roomSubstr);
         const roomId = roomUid+'REPORT';
         fireProblem.reportDel(folder,roomId,roomName)
-        dataReset();
+        roomNameReset();
         }});
       }
 
@@ -409,7 +377,7 @@ function Startup({ fireProblem, fireSync, user, userInfo }) {
         showCancelButton: true})
       .then((result) => { if(result.isConfirmed){ Swal.fire('삭제되었습니다.');
       fireProblem.dataDel(folder,roomName);   
-      dataReset();
+      roomNameReset();
       }});
     }
     
@@ -421,9 +389,9 @@ function Startup({ fireProblem, fireSync, user, userInfo }) {
 
     <div className="drawer" ref={drawerRef}>
     {rightModal && 
-     <startupReport fireSync={fireSync} fireProblem={fireProblem} user={user} userUID={userUID} folder={folder} setroomName={setroomName} roomRowReset={roomRowReset}
-      roomName={roomName} setReport={setReport} drawerRef={drawerRef} userInfo={userInfo} 
-      moveModal2={moveModal2} report={report} setdata={setdata} setDoor={setDoor} setEntering={setEntering}  /> 
+     <StartupReport fireSync={fireSync} fireProblem={fireProblem} user={user} folder={folder} setroomName={setroomName} roomRowReset={roomRowReset}
+      roomName={roomName} setReport={setReport} roomNameHide={roomNameHide} userInfo={userInfo} 
+      moveModal2={moveModal2} setdata={setdata} setDoor={setDoor} setEntering={setEntering}  /> 
     }
     </div>
     <div className="drawerback backNone" ref={backRef} onClick={moveModal2}></div>
@@ -597,15 +565,15 @@ function Startup({ fireProblem, fireSync, user, userInfo }) {
           <div className="inputBox" >
             <div className="s-itemTitle" style={{width:"100%"}}>{placeData.title10}</div>
             <textarea cols="30" rows="1" className="problemInput input1" ref={writer} 
-            onChange={onSubmit} value={data.aTitle} placeholder={placeData.writer} />
+            onChange={onSubmit} value={data.writer} placeholder={placeData.writer} />
             <textarea cols="30" rows="1" className="problemInput input2" ref={text10} 
-            onChange={onSubmit} value={data.bName} placeholder={placeData.text10} />
+            onChange={onSubmit} value={data.text10} placeholder={placeData.text10} />
             <textarea cols="30" rows="1" className="problemInput input3" ref={text11} 
-            onChange={onSubmit} value={data.input3} placeholder={placeData.text11} />            
+            onChange={onSubmit} value={data.text11} placeholder={placeData.text11} />            
             <textarea cols="30" rows="1" className="problemInput input4" ref={text12} 
-            onChange={onSubmit} value={data.input4} placeholder={placeData.text12} />
+            onChange={onSubmit} value={data.text12} placeholder={placeData.text12} />
             <textarea cols="30" rows="1" className="problemInput input5 " ref={text13} 
-            onChange={onSubmit} value={data.input5} placeholder={placeData.text13} />       
+            onChange={onSubmit} value={data.text13} placeholder={placeData.text13} />       
             <input type="button" className="problemInput btn" onClick={btnInput} value="저장"/>
           </div>
           

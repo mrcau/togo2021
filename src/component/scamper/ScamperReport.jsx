@@ -2,8 +2,8 @@ import './scamperReport.css';
 import React, { memo, useEffect, useState } from 'react';
 import { DataGrid } from '@material-ui/data-grid';
 
-function ScamperReport({ fireApp, user,userUID, folder,roomName,setroomName,
-  report,setReport,setSwitch7,roomRowReset, moveModal2,userInfo, setdata}) {
+function ScamperReport({ fireApp, user, folder,roomName,setroomName,roomNameHide,setDoor,
+                        setReport, moveModal2,userInfo, setdata,setEntering}) {
 // const [level, setLevel] = useState(0);
 //글목록 담는변수 data2
 const [data2, setData2] = useState({})
@@ -25,13 +25,11 @@ const columns = [
   { field: 'title', headerName: '제목', width: '58vw' },
 ];
 //글 선택하면 실행함수
-const selectRow = () => {
-  setReport(true);
-  // setSwitch7(true);
-  moveModal2();
-  // roomRowReset();
-  
-}
+const selectRow = () => { setReport(true); moveModal2();roomNameHide();}
+const selectRow2 = () => {
+   setReport(true); moveModal2(); roomNameHide();
+   setEntering(true); setDoor('퇴장');
+  }
 // level>0 && <button className="btnRoomDel" style={{margin:'0'}} onClick={data2Del}><DeleteForever /></button>  
 //글목록 data2에서 데이터 하나씩 빼기
 const rows = Object.values(data2).map((e,i) => {
@@ -48,7 +46,7 @@ const rows = Object.values(data2).map((e,i) => {
      autoHeight rowHeight={25} headerHeight={25}  disableColumnMenu 
      onRowSelected={(p)=>{if(roomName){setroomName(p.data.roomName);}
        else{ console.log('룸네임없음',p.data); setdata(p.data)}}}
-     onRowClick={selectRow}  />
+     onRowClick={()=>{if(roomName){selectRow()}else{selectRow2()}}}  />
     </div>
   );
 }

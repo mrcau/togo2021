@@ -35,7 +35,7 @@ roomUser(folder,roomUid,cf) {
     if(dataKey.indexOf(roomUid)<0){ return }
      cf();
   })
-  // return ref.off('value', (p) => {cf();});
+  return ()=>ref.off('value', (p) => {cf();});
  }
   // 데이터 씽크
   dataSync(folder, roomName, cf) {
