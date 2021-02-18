@@ -19,6 +19,7 @@ import Datastudy from './component/datastudy/Datastudy';
 import Solving from './component/solving/Solving';
 import Startup from './component/startup/Startup';
 import Idea from './component/idea/Idea';
+import steering from './component/togo/steering.png';
 
 function App({ fireApp,fireLogin,fireSync, fireTodo, fireIdea, fireOpentool,fireProblem}) {
   const history = useHistory();
@@ -98,7 +99,7 @@ function App({ fireApp,fireLogin,fireSync, fireTodo, fireIdea, fireOpentool,fire
         </IconButton>
         {/* /타이틀 */}
         <div className="headerT">
-          <Link className="link" to='/'> SamTool </Link>
+          <Link className="link" to='/'> <img src={steering} width="25px"  alt="logo"/> </Link>
         </div> 
         {/* 탑메뉴 */}
         <div className="rightMenu" style={{textAlign:"right",paddingRight:"10px",lineHeight:"20px"}}>

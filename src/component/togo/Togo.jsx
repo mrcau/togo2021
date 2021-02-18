@@ -11,6 +11,7 @@ import rocket from './rocket.png';
 import postit from './post-it.png';
 import caht from './chat.png';
 import cube from './cube.png';
+import mainLogo from './mainLogo.png';
 
 import Opentoolbox from '../opentool/Opentoolbox';
 
@@ -19,11 +20,12 @@ function Togo({ fireApp, user, userInfo,  }) {
 const history = useHistory();
   return (
     <div className="togo" style={{paddingBottom:"10px"}}>      
-       <Jumbotron className="jumbo1" style={{background:"none",flex:"1",height:"100px"}}>
+       {/* <Jumbotron className="jumbo1" style={{background:"none",flex:"1",height:"100px"}}>
           <h1 style={{fontWeight:"900",color:"var(--Acolor)"}}>샘툴</h1>
-          <h4> 그룹별로 사용할 수 있는 온라인 쌍방향 협력도구</h4>       
-        </Jumbotron> 
-
+                 
+        </Jumbotron>  */}
+        <div className="jumbo"> <div className="mainlogo"/>  </div>
+        <h2 style={{fontWeight:"900",color:"var(--Acolor)"}} > 온라인 협업도구</h2>
         <div className="togoMain1">                  
         <Card  className="mainCard1" >
           <Card.Img variant="top" src={postit}  className="cardImg1"  />
@@ -53,7 +55,7 @@ const history = useHistory();
             <Card.Text>
             문제해결을 위해업을 창출합니다.
             </Card.Text> */}
-            <button className="btn1 card1" onClick={() =>history.push('/datastudy')}>만다라트</button>
+            <button className="btn1 card1" onClick={() =>history.push('/datastudy')}>큐브씽크</button>
 
           </Card.Body>
         </Card>
@@ -74,14 +76,10 @@ const history = useHistory();
 
 
       <div className="togoTop" style={{display:"flex"}} > 
-        <Jumbotron className="jumbo2" style={{background:"none",flex:"1",minWidth: '300px'}}>
-          <h1 style={{fontWeight:"900",color:"var(--Acolor)"}}>협업! 도전!</h1>
-          <p>디자인씽킹 기반의 협업도구로 기발한 아이디어와 도전을 이끌어내 보세요.
-             {/* 자신만의 도구를 만들고 더욱 편리하게 그룹별 공동작업을 시작할 수 있습니다. */}
-          </p>
-          
-        </Jumbotron> 
-        <div className="togoback" />
+        <div className="jumbo2" >
+          <div className="h1" >협업! 도전!</div>
+          <div className="ppp" style={{padding:"0"}}>디자인씽킹 프로젝트로 기발한 아이디어와 도전을 이끌어내 보세요.</div>
+        </div> 
       </div>
       <div className="togoMain">          
         <Card className="mainCard" >
@@ -117,7 +115,7 @@ const history = useHistory();
             <button className="btn1" onClick={() =>history.push('/scamper')} >바로가기</button>
           </Card.Body>
         </Card>
-        <Card  className="mainCard" >
+        {/* <Card  className="mainCard" >
           <Card.Img variant="top" src={solution}  className="cardImg" />
           <Card.Body>
             <Card.Title style={{fontWeight:"900"}}>문제해결</Card.Title>
@@ -127,7 +125,7 @@ const history = useHistory();
             <button className="btn1" onClick={() =>history.push('/solving')} >바로가기</button>
 
           </Card.Body>
-        </Card>
+        </Card> */}
         <Card  className="mainCard" >
           <Card.Img variant="top" src={rocket}  className="cardImg" />
           <Card.Body>
@@ -139,7 +137,7 @@ const history = useHistory();
 
           </Card.Body>
         </Card>
-        <Card  className="mainCard" >
+        {/* <Card  className="mainCard" >
           <Card.Img variant="top" src={tool}  className="cardImg"  />
           <Card.Body>
             <Card.Title style={{fontWeight:"900"}}>도구의 인간</Card.Title>
@@ -148,7 +146,7 @@ const history = useHistory();
             </Card.Text>
             <button className="btn1" onClick={() =>history.push('/opentool')}>바로가기</button>
           </Card.Body>
-        </Card>
+        </Card> */}
       </div>
 
 

@@ -1,5 +1,5 @@
 
-.problem{
+.datastudy{
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -31,7 +31,8 @@
 /* 여기까지 서랍 */
 
 .enterNumber{  width: 150px;}
-
+  
+  
 .s-header{
   display: flex ;
   justify-content: space-between;
@@ -109,7 +110,7 @@ flex:auto; font-size: small;}
   width: 100%;
   line-height: 20px;
 }
-.problemInput{
+.datastudyInput{
   resize: none;
   outline: none;
   border-radius: 0;
@@ -120,29 +121,29 @@ flex:auto; font-size: small;}
   line-height: 15px;
 }
 
-.problemInput.input2, .input3, .input4, .input5, .input6 {
+.datastudyInput.input2, .input3, .input4, .input5, .input6 {
   flex: auto;
 }
-.problemInput.input2, .input4, .input6{
+.datastudyInput.input2, .input4, .input6{
   border-top: 1px dashed;
   border-bottom: 1px dashed;
 }
-/* .problemInput.input3, .input5, .input6{
+/* .datastudyInput.input3, .input5, .input6{
   resize:vertical;
 } */
 
-.problemInput.btn{
+.datastudyInput.btn{
   padding: 0;
   background: var(--Ccolor);
   color: var(--Bcolor);
   border-radius: 0;
   text-align: center;
 }
-.problemInput.btn:hover{
+.datastudyInput.btn:hover{
   background: var(--Bcolor);
   color: var(--Acolor);
 }
-.problemInput.btn:active{
+.datastudyInput.btn:active{
   color: var(--Bcolor);
   background: var(--Acolor);
 }
@@ -205,7 +206,7 @@ position:absolute !important; left: 10px !important;}
 .noticeFly{
   animation: noticeFly 1000ms ;
 }
-.problem span{
+.datastudy span{
   font-size: 14px; font-weight: 900;
 }
 .voicechat{
@@ -236,25 +237,51 @@ position:absolute !important; left: 10px !important;}
 }
 .items { 
   background: gray;
-  cursor: pointer;
   border:solid 2px black;
 }
 .item { 
-  color:white;  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  color:white;  
   border:solid 0.1px lightgray;
+  font-size: 1.5vw;
 }
-.item:hover { background: rgba(0, 0, 255, 0.2);}
-.item:active { background: rgba(255, 0, 0, 0.5);}
-
+.eye{ flex: auto; height: 50%; background: none;}
+.itemArea.btnArea{
+  flex: auto;
+  background: none;
+  color:white;
+  border: none;
+  outline: none;
+}
+.item5 { 
+  background: #ffffff;
+  color:var(--Acolor);
+  font-weight: 900;  
+}
+.itemArea.area{
+  font-weight: 900;
+  color: var(--Acolor);
+}
+.items5 { border:none; background:none;}
+.itemArea.area5{font-weight: 900;}
+.itemArea{
+  width:100%; height:100%;resize: none;
+  vertical-align:middle;
+  color: var(--Acolor);
+  padding: 3px;
+}
+/* .item:hover { background: rgba(0, 0, 255, 0.2);}
+.item:active { background: rgba(255, 0, 0, 0.5);} */
 .items5 .item1{ background:white;border:solid 3px #dc3545;}
 .items5 .item2{ background:white;border:solid 3px #ffc107;}
 .items5 .item3{ background:white;border:solid 3px #28a745;}
 .items5 .item4{ background:white;border:solid 3px #007bff;}
 .items5 .item5{ background:black;}
 .items5 .item6{ background:white;border:solid 3px #17a2b8;}
-.items5 .item7{ background:white;border:solid 3px #6c757d;}
-.items5 .item8{ background:white;border:solid 3px #343a40;}
-.items5 .item9{ background:white;border:solid 3px #dc3545;}
+.items5 .item7{ background:white;border:solid 3px #7b7de7;}
+.items5 .item8{ background:white;border:solid 3px #6c757d;}
+.items5 .item9{ background:white;border:solid 3px #343a40;}
 
 .items1 { background: #dc3545;}
 .items2 { background: #ffc107;}
@@ -262,9 +289,6 @@ position:absolute !important; left: 10px !important;}
 .items4 { background: #007bff;}
 .items5 { background: #ffffff;}
 .items6 { background: #17a2b8;}
-.items7 { background: #6c757d;}
-.items8 { background: #343a40;}
-.items9 { background: #dc3545;}
-
-.item5 { background: #ffffff;}
-.items5 { border:none; background:none;}
+.items7 { background: #7b7de7;}
+.items8 { background: #6c757d;}
+.items9 { background: #343a40;}

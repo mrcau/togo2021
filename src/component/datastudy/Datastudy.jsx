@@ -23,7 +23,6 @@ function Datastudy({ fireProblem, fireSync, user, userInfo }) {
   const backRef = useRef();
   const history = useHistory();
   
-  const writer = useRef();
   const text1 = useRef();
   const text2 = useRef();
   const text3 = useRef();
@@ -33,21 +32,7 @@ function Datastudy({ fireProblem, fireSync, user, userInfo }) {
   const text7 = useRef();
   const text8 = useRef();
   const text9 = useRef();
-  const text10 = useRef();
-  const text11 = useRef();
-  const text12 = useRef();
-  const text13 = useRef();
   // 좋아요
-  const [Switch0, setSwitch0] = useState(true);
-  const [Switch1, setSwitch1] = useState(true);
-  const [Switch2, setSwitch2] = useState(true);
-  const [Switch3, setSwitch3] = useState(true);
-  const [Switch4, setSwitch4] = useState(true);
-  const [Switch5, setSwitch5] = useState(true);
-  const [Switch6, setSwitch6] = useState(true);
-  const [Switch7, setSwitch7] = useState(true);
-  const [Switch8, setSwitch8] = useState(true);
-  const [Switch9, setSwitch9] = useState(true);
 
   const [data, setdata] = useState({});
   const [room, setRoom] = useState({});
@@ -118,9 +103,7 @@ function Datastudy({ fireProblem, fireSync, user, userInfo }) {
         return ()=>{stopvideoSync(); stopvideoSync2(); }
     }
      
-  },[fireSync,roomName,report]);
-  
-    
+  },[fireSync,roomName,report]);    
     
     const goodPlus = (goodNum,Switch,setSwitch) => {
       console.log(data)
@@ -154,11 +137,6 @@ function Datastudy({ fireProblem, fireSync, user, userInfo }) {
       backRef.current.classList.add("backNone"); 
       setrightModal(true);
     }
-      //스위치 핸들링
-    // const handleChange = (event) => {
-    //   setState({ ...state, [event.target.name]: event.target.checked });
-    // };
-  
   
   //모달창3
   const fire = () => {Swal.fire({html:video, width:'90%'})}
@@ -177,9 +155,27 @@ function Datastudy({ fireProblem, fireSync, user, userInfo }) {
     fireProblem.videoSave(folder, user.uid,'See', text);
     }
   }
-
-  let good =[data.good0,data.good1,data.good2,data.good3,data.good4,
-            data.good5,data.good6,data.good7]
+  // 자료입력 모달
+  const fireArea = async(T,t)=>{
+    // e.preventDefault();
+    const { value: text } = await Swal.fire({
+      input: 'textarea',
+      inputLabel: '참고자료',
+      inputPlaceholder: '이곳에 자료를 입력해주세요.',
+      inputAttributes: {'aria-label': 'Type your message here'},
+      showCancelButton: true
+    })
+    if (text) {
+      Swal.fire(text)
+      // const DATA = {t1:'',t2:'',t3:'',t4:'',t5:'',t6:'',t7:'',t8:''}
+      const DT = {};
+      DT.t1=''; DT.t2=''; DT.t3=''; DT.t4=''; DT.t5=''; DT.t6=''; DT.t7=''; DT.t8='';
+      DT[t].t=text;
+      // const data = {[t]:text}
+      const dataText = {[T]:DT}
+    fireProblem.dataUp(folder, roomName, dataText);
+  }
+  }
 
   // 방생성
   const createRoom = () => {
@@ -187,48 +183,28 @@ function Datastudy({ fireProblem, fireSync, user, userInfo }) {
     const newRoom = roomUid + num;
     setroomName(newRoom);
     const data = {userId:user.uid,text1:'',text2:'',text3:'',text4:'',text5:'',text6:'',text7: '',text8: '', 
-    text9: '',text10: '',text11: '', text12: '',text13: '', good0:0, good1:0, good2:0, good3:0, good4:0, 
-    good5:0, good6:0, good7:0,good8:0, good9:0,}
-    // const roomget = fireProblem.roomGet(folder,roomUid)
-    // roomget < 8 && 
+    text9: ''}
     fireProblem.roomGetSave(folder, newRoom, data)
   }
+    const roomNameHide = ()=>{roomERef.current.value=''; }
     // input roomName 초기화
     const roomNameReset=() => {
       const stopvideoSync = fireSync.videoSync(folder,roomName,'See',(p)=>{setVideo(p); })
-      stopvideoSync(); 
-
-      const cf = {
-        f1: (p) => { setdata({}) },
-        f2: () => { setdata({}) },
-        f3: (p) => {  setRoom({}) },
-        f4: () => { setRoom({}) },
+      const stopvideoSync2 = fireSync.videoSync(folder,roomName,'Tok',(p)=>{setNotice(p); })
+      stopvideoSync();  stopvideoSync2();
+      const cf = {  f1: (p) => { setdata({}) }, f2: () => { setdata({}) },
+                    f3: (p) => { setRoom({}) }, f4: () => { setRoom({}) },
       }
+      const cf2 = () => { setdata({});setRoom({});  }
+      const stopRoomSync = fireSync.roomUser(folder,roomUid,cf2);        
       const stopDataSync = fireSync.dataSync(folder, roomName, cf);
-      stopDataSync();
-
-      roomERef.current.value=''; 
-      const data = {text1:'',text2:'',text3:'',text4:'',text5:'',text6:'',text7: '',text8: '', 
-      text9: '',text10: '',text11: '', text12: '',text13: ''}
-      setdata(data);setroomName("");setDoor('입장'); setRoomUid('');
+      stopDataSync();  stopRoomSync();
+      dataReset(); setroomName("");setDoor('입장'); setRoomUid('');
       setReport(false); setEntering(false); setSee(true); setRoom({});
-      setNotice('');setVideo('');history.push('/startup');
-      // window.location.reload(false); 
+      setNotice('');setVideo('');history.push('/datastudy');
+      roomNameHide();
     }  
-
-
-
-    const roomRowReset=() => {console.log('roomRowReset')
-      roomERef.current.value=''; 
-      const data = {text1:'',text2:'',text3:'',text4:'',text5:'',text6:'',text7: '',text8: '', 
-      text9: '',text10: '',text11: '', text12: '',text13: ''}
-      setdata(data);
-      setDoor('입장'); 
-      // setRoomUid('');
-      // setRoom({});
-      setNotice('');setVideo('');
-    }  
-           
+    
   // roomName.substr(0,6) 방입장
   const enterRoom = () => {
     const roomvalue = roomERef.current.value || "";
@@ -253,7 +229,6 @@ function Datastudy({ fireProblem, fireSync, user, userInfo }) {
             f4: () => { setRoom({}) },
           }
         fireSync.dataSync(folder,roomvalue, cf2);
-
         }
     }
 
@@ -265,8 +240,6 @@ function Datastudy({ fireProblem, fireSync, user, userInfo }) {
     setroomName(roomUid +room);
     roomERef.current.value =roomname;     
     setReport(false); 
-    setSwitch0(true); setSwitch1(true); 
-    setSwitch2(true); setSwitch3(true); 
        setEntering(true);
        setDoor('퇴장');
        // enterRoom();
@@ -295,11 +268,6 @@ function Datastudy({ fireProblem, fireSync, user, userInfo }) {
       text7: text7.current.value || '',
       text8: text8.current.value || '',
       text9: text9.current.value || '',
-      text10: text10.current.value || '',
-      text11: text11.current.value || '',
-      text12: text12.current.value || '',
-      text13: text13.current.value || '',
-      writer: writer.current.value || '',
     }    
     // const roomUid =  roomERef.current.value.substr(0,roomSubstr)
     // fireProblem.dataUp(folder, roomERef.current.value, data);
@@ -316,61 +284,8 @@ function Datastudy({ fireProblem, fireSync, user, userInfo }) {
     text7.current.value = '';
     text8.current.value = '';
     text9.current.value = '';
-    text10.current.value = '';
-    text11.current.value = '';
-    text12.current.value = '';
-    text13.current.value = '';
-    writer.current.value = '';
   }
-     // 보고서 제출
-   const btnInput = (e) => {
-    e.preventDefault();
-    const today = new Date().toLocaleDateString().substr(5);
-    const dataId =  Date.now();
-    // const id = Date.now();
-    // if (Object.keys(user).length<1) { return }
-    if (!roomName&&!userUID) { return }
-    const data = {
-      cDate : today|| '', 
-      dataId : dataId|| '',
-      userId : user.uid|| '',
-      roomName:roomName || '',
-      good7:0,
-
-      text1: text1.current.value || '',
-      text2: text2.current.value || '',
-      text3: text3.current.value || '',
-      text4: text4.current.value || '',
-      text5: text5.current.value || '',
-      text6: text6.current.value || '',
-      text7: text7.current.value || '',
-      text8: text8.current.value || '',
-      text9: text9.current.value || '',
-      text10: text10.current.value || '',
-      text11: text11.current.value || '',
-      text12: text12.current.value || '',
-      text13: text13.current.value || '',
-      writer: writer.current.value || '',
-    }
-    // if (roomName!==roomERef.current.value||roomERef.current.value==='') { return }
-    if(!roomName&&userUID){
-      const roomId = user.uid;
-      if(!data.writer||!data.text10||!data.text11||!data.text12||!data.text13){
-        Swal.fire({title:'빈칸을 모두 채워주세요!',icon:'warning'})}else{
-          Swal.fire({title:'제출완료',icon:'success'});
-          fireProblem.reportSave(folder, roomId, dataId, data);
-        }        
-    }else{
-    const roomUid =  roomERef.current.value.substr(0,roomSubstr);
-    const roomId = roomUid+'REPORT';
-    if(!data.writer||!data.text10||!data.text11||!data.text12||!data.text13){
-      Swal.fire({title:'빈칸을 모두 채워주세요.',icon:'warning'})}else{
-        Swal.fire({title:'제출완료',icon:'success'});
-        fireProblem.reportSave(folder, roomId, roomName, data);
-      }
-    }
-  }
-
+    
     // 아이템 삭제
   const dataDel = () => {
     console.log(report,data.userId,user.uid)
@@ -381,7 +296,7 @@ function Datastudy({ fireProblem, fireSync, user, userInfo }) {
         icon:'warning',
         showCancelButton: true})
       .then((result) => { if(result.isConfirmed){ Swal.fire('삭제되었습니다.');
-      fireProblem.reportDel(folder,user.uid,data.dataId); dataReset();
+      fireProblem.reportDel(folder,user.uid,data.dataId); roomNameReset();
       }});
       }
     
@@ -395,7 +310,7 @@ function Datastudy({ fireProblem, fireSync, user, userInfo }) {
         const roomUid =  roomName.substr(0,roomSubstr);
         const roomId = roomUid+'REPORT';
         fireProblem.reportDel(folder,roomId,roomName)
-        dataReset();
+        roomNameReset();
         }});
       }
 
@@ -409,7 +324,7 @@ function Datastudy({ fireProblem, fireSync, user, userInfo }) {
         showCancelButton: true})
       .then((result) => { if(result.isConfirmed){ Swal.fire('삭제되었습니다.');
       fireProblem.dataDel(folder,roomName);   
-      dataReset();
+      roomNameReset();
       }});
     }
     
@@ -417,15 +332,7 @@ function Datastudy({ fireProblem, fireSync, user, userInfo }) {
 //  console.log(report)
 //titleRef.current.classList.add("noticeFly");
   return (
-    <div className="problem" >     
-
-    {/* <div className="drawer" ref={drawerRef}>
-    {rightModal && 
-     <startupReport fireSync={fireSync} fireProblem={fireProblem} user={user} userUID={userUID} folder={folder} setroomName={setroomName} roomRowReset={roomRowReset}
-      roomName={roomName} setReport={setReport} drawerRef={drawerRef} userInfo={userInfo} 
-      moveModal2={moveModal2} report={report} setdata={setdata} setDoor={setDoor} setEntering={setEntering}  /> 
-    }
-    </div> */}
+    <div className="datastudy" >     
     <div className="drawerback backNone" ref={backRef} onClick={moveModal2}></div>
        
       {level>0 && 
@@ -472,237 +379,164 @@ function Datastudy({ fireProblem, fireSync, user, userInfo }) {
       </div>
       
       <div className="mandarat">
-        <div class="box">
-          <div class="items items1">
-            <div class="item item1">1</div>
-            <div class="item item2">2</div>
-            <div class="item item3">3</div>
-            <div class="item item4">4</div>
-            <div class="item item5">5</div>
-            <div class="item item6">6</div>
-            <div class="item item7">7</div>
-            <div class="item item8">8</div>
-            <div class="item item9">9</div>
+        <div className="box">
+          <div className="items items1">
+            <div className="item item1"><button className="eye" onClick={()=>fireArea('T1','t1')} >✏</button><textarea cols="10" rows="1" className="itemArea btnArea" /></div>
+            <div className="item item2"><button className="eye" onClick={()=>fireArea('T1','t2')} >✏</button><textarea cols="10" rows="1" className="itemArea btnArea" /></div>
+            <div className="item item3"><button className="eye" onClick={()=>fireArea('T1','t3')} >✏</button><textarea cols="10" rows="1" className="itemArea btnArea" /></div>
+            <div className="item item4"><button className="eye" onClick={()=>fireArea('T1','t4')} >✏</button><textarea cols="10" rows="1" className="itemArea btnArea" /></div>
+            <div className="item item5"><textarea cols="10" rows="1"  className="itemArea area" disabled value={data.text1} /></div>
+            <div className="item item6"></div>
+            <div className="item item7"></div>
+            <div className="item item8"></div>
+            <div className="item item9"></div>
           </div>
-          <div class="items items2">
-            <div class="item item1">1</div>
-            <div class="item item2">2</div>
-            <div class="item item3">3</div>
-            <div class="item item4">4</div>
-            <div class="item item5">5</div>
-            <div class="item item6">6</div>
-            <div class="item item7">7</div>
-            <div class="item item8">8</div>
-            <div class="item item9">9</div>
+          <div className="items items2">
+            <div className="item item1"></div>
+            <div className="item item2"></div>
+            <div className="item item3"></div>
+            <div className="item item4"></div>
+            <div className="item item5"><textarea cols="10" rows="1"  className="itemArea area" disabled value={data.text2} /></div>
+            <div className="item item6"></div>
+            <div className="item item7"></div>
+            <div className="item item8"></div>
+            <div className="item item9"></div>
           
           </div>
-          <div class="items items3">
-            <div class="item item1">1</div>
-            <div class="item item2">2</div>
-            <div class="item item3">3</div>
-            <div class="item item4">4</div>
-            <div class="item item5">5</div>
-            <div class="item item6">6</div>
-            <div class="item item7">7</div>
-            <div class="item item8">8</div>
-            <div class="item item9">9</div>
+          <div className="items items3">
+            <div className="item item1"></div>
+            <div className="item item2"></div>
+            <div className="item item3"></div>
+            <div className="item item4"></div>
+            <div className="item item5"><textarea cols="10" rows="1"  className="itemArea area" disabled value={data.text3} /></div>
+            <div className="item item6"></div>
+            <div className="item item7"></div>
+            <div className="item item8"></div>
+            <div className="item item9"></div>
           
           </div>
-          <div class="items items4">
-            <div class="item item1">1</div>
-            <div class="item item2">2</div>
-            <div class="item item3">3</div>
-            <div class="item item4">4</div>
-            <div class="item item5">5</div>
-            <div class="item item6">6</div>
-            <div class="item item7">7</div>
-            <div class="item item8">8</div>
-            <div class="item item9">9</div>
+          <div className="items items4">
+            <div className="item item1"></div>
+            <div className="item item2"></div>
+            <div className="item item3"></div>
+            <div className="item item4"></div>
+            <div className="item item5"><textarea cols="10" rows="1"  className="itemArea area" disabled value={data.text4} /></div>
+            <div className="item item6"></div>
+            <div className="item item7"></div>
+            <div className="item item8"></div>
+            <div className="item item9"></div>
           
           </div>
-          <div class="items items5 itemsCenter">
-            <div class="item item1">1</div>
-            <div class="item item2">2</div>
-            <div class="item item3">3</div>
-            <div class="item item4">4</div>
-            <div class="item item5">5</div>
-            <div class="item item6">6</div>
-            <div class="item item7">7</div>
-            <div class="item item8">8</div>
-            <div class="item item9">9</div>
+          <div className="items items5 itemsCenter">
+            <div className="item item1"><textarea cols="10" rows="1"  className="itemArea area1" ref={text1} onChange={onSubmit} value={data.text1} /></div>
+            <div className="item item2"><textarea cols="10" rows="1"  className="itemArea area2" ref={text2} onChange={onSubmit} value={data.text2} /></div>
+            <div className="item item3"><textarea cols="10" rows="1"  className="itemArea area3" ref={text3} onChange={onSubmit} value={data.text3} /></div>
+            <div className="item item4"><textarea cols="10" rows="1"  className="itemArea area4" ref={text4} onChange={onSubmit} value={data.text4} /></div>
+            <div className="item item5"><textarea cols="10" rows="1"  className="itemArea area5" ref={text5} onChange={onSubmit} value={data.text5} /></div>
+            <div className="item item6"><textarea cols="10" rows="1"  className="itemArea area6" ref={text6} onChange={onSubmit} value={data.text6} /></div>
+            <div className="item item7"><textarea cols="10" rows="1"  className="itemArea area7" ref={text7} onChange={onSubmit} value={data.text7} /></div>
+            <div className="item item8"><textarea cols="10" rows="1"  className="itemArea area8" ref={text8} onChange={onSubmit} value={data.text8} /></div>
+            <div className="item item9"><textarea cols="10" rows="1"  className="itemArea area9" ref={text9} onChange={onSubmit} value={data.text9} /></div>
           
           </div>
-          <div class="items items6">
-            <div class="item item1">1</div>
-            <div class="item item2">2</div>
-            <div class="item item3">3</div>
-            <div class="item item4">4</div>
-            <div class="item item5">5</div>
-            <div class="item item6">6</div>
-            <div class="item item7">7</div>
-            <div class="item item8">8</div>
-            <div class="item item9">9</div>
+          <div className="items items6">
+            <div className="item item1"></div>
+            <div className="item item2"></div>
+            <div className="item item3"></div>
+            <div className="item item4"></div>
+            <div className="item item5"><textarea cols="10" rows="1"  className="itemArea area" disabled value={data.text6} /></div>
+            <div className="item item6"></div>
+            <div className="item item7"></div>
+            <div className="item item8"></div>
+            <div className="item item9"></div>
           
           </div>
-          <div class="items items7">
-            <div class="item item1">1</div>
-            <div class="item item2">2</div>
-            <div class="item item3">3</div>
-            <div class="item item4">4</div>
-            <div class="item item5">5</div>
-            <div class="item item6">6</div>
-            <div class="item item7">7</div>
-            <div class="item item8">8</div>
-            <div class="item item9">9</div>
+          <div className="items items7">
+            <div className="item item1"></div>
+            <div className="item item2"></div>
+            <div className="item item3"></div>
+            <div className="item item4"></div>
+            <div className="item item5"><textarea cols="10" rows="1"  className="itemArea area" disabled value={data.text7} /></div>
+            <div className="item item6"></div>
+            <div className="item item7"></div>
+            <div className="item item8"></div>
+            <div className="item item9"></div>
           
           </div>
-          <div class="items items8">
-            <div class="item item1">1</div>
-            <div class="item item2">2</div>
-            <div class="item item3">3</div>
-            <div class="item item4">4</div>
-            <div class="item item5">5</div>
-            <div class="item item6">6</div>
-            <div class="item item7">7</div>
-            <div class="item item8">8</div>
-            <div class="item item9">9</div>
+          <div className="items items8">
+            <div className="item item1"></div>
+            <div className="item item2"></div>
+            <div className="item item3"></div>
+            <div className="item item4"></div>
+            <div className="item item5"><textarea cols="10" rows="1"  className="itemArea area" disabled value={data.text8} /></div>
+            <div className="item item6"></div>
+            <div className="item item7"></div>
+            <div className="item item8"></div>
+            <div className="item item9"></div>
           
           </div>
-          <div class="items items9">
-            <div class="item item1">1</div>
-            <div class="item item2">2</div>
-            <div class="item item3">3</div>
-            <div class="item item4">4</div>
-            <div class="item item5">5</div>
-            <div class="item item6">6</div>
-            <div class="item item7">7</div>
-            <div class="item item8">8</div>
-            <div class="item item9">9</div>
+          <div className="items items9">
+            <div className="item item1"></div>
+            <div className="item item2"></div>
+            <div className="item item3"></div>
+            <div className="item item4"></div>
+            <div className="item item5"><textarea cols="10" rows="1"  className="itemArea area" disabled value={data.text9} /></div>
+            <div className="item item6"></div>
+            <div className="item item7"></div>
+            <div className="item item8"></div>
+            <div className="item item9"></div>
           
           </div>
         </div>
       </div>
       
-        {/* <form className="s-items" ref={formRef} >     
+        {/* <form className="s-items" ref={formRef} >   
+          
           <div className="s-item">
-            <div className="s-itemTitle" sty>{placeData.title1} 
-            {!report && roomName &&
-            <IconButton style={{width:'25px', height:'25px'}} >
-              <Badge badgeContent={good[1]} color="secondary" style={{paddingRight:'10px'}}>
-                <ThumbUp style={{color:'var(--Bcolor)'}} onClick={()=>goodPlus('good1',Switch1,setSwitch1)} />
-              </Badge>            
-            </IconButton> }
-            </div>
+            <div className="s-itemTitle" sty>{placeData.title1} </div>
             <textarea  className="s-intemInput input1" cols="30" rows="2" placeholder={placeData.text1} 
             ref={text1}  onChange={onSubmit} value={data.text1} />
           </div>
           <div className="s-item">
-            <div className="s-itemTitle">{placeData.title2}
-            {!report &&roomName &&
-            <IconButton style={{width:'25px', height:'25px'}} >
-              <Badge badgeContent={good[2]} color="secondary" style={{paddingRight:'10px'}}>
-                <ThumbUp style={{color:'var(--Bcolor)'}} onClick={()=>goodPlus('good2',Switch2,setSwitch2)} />
-              </Badge>
-            </IconButton>} 
-            </div>
+            <div className="s-itemTitle">{placeData.title2} </div>
             <textarea  className="s-intemInput input1" cols="30" rows="2" placeholder={placeData.text2} 
             ref={text2} onChange={onSubmit} value={data.text2} />
-          </div>
-        
+          </div>        
           <div className="s-item">
-            <div className="s-itemTitle">{placeData.title3}
-            {!report &&roomName &&
-            <IconButton style={{width:'25px', height:'25px'}} >
-              <Badge badgeContent={good[3]} color="secondary" style={{paddingRight:'10px'}}>
-                <ThumbUp style={{color:'var(--Bcolor)'}} onClick={()=>goodPlus('good3',Switch3,setSwitch3)} />
-              </Badge>
-            </IconButton>} 
-            </div>
+            <div className="s-itemTitle">{placeData.title3} </div>
             <textarea  className="s-intemInput input1" cols="30" rows="2" placeholder={placeData.text3} 
             ref={text3} onChange={onSubmit} value={data.text3} />
           </div>
-
           <div className="s-item">
-            <div className="s-itemTitle">{placeData.title4}
-            {!report &&roomName &&
-            <IconButton style={{width:'25px', height:'25px'}} >
-              <Badge badgeContent={good[4]} color="secondary" style={{paddingRight:'10px'}}>
-                <ThumbUp style={{color:'var(--Bcolor)'}} onClick={()=>goodPlus('good4',Switch4,setSwitch4)} />
-              </Badge>
-            </IconButton>} 
-            </div>
+            <div className="s-itemTitle">{placeData.title4} </div>
             <textarea  className="s-intemInput input1" cols="30" rows="2" placeholder={placeData.text4} 
             ref={text4} onChange={onSubmit} value={data.text4} />
-          </div>
-          
+          </div>          
           <div className="s-item">
-            <div className="s-itemTitle">{placeData.title5}
-            {!report &&roomName &&
-            <IconButton style={{width:'25px', height:'25px'}} >
-              <Badge badgeContent={good[5]} color="secondary" style={{paddingRight:'10px'}}>
-                <ThumbUp style={{color:'var(--Bcolor)'}} onClick={()=>goodPlus('good5',Switch5,setSwitch5)} />
-              </Badge>
-            </IconButton>} 
-            </div>
+            <div className="s-itemTitle">{placeData.title5}</div>
             <textarea  className="s-intemInput input1" cols="30" rows="2" placeholder={placeData.text5} 
             ref={text5} onChange={onSubmit} value={data.text5} />
-          </div>
-          
+          </div>          
           <div className="s-item">
-            <div className="s-itemTitle">{placeData.title6}
-            {!report &&roomName &&
-            <IconButton style={{width:'25px', height:'25px'}} >
-              <Badge badgeContent={good[6]} color="secondary" style={{paddingRight:'10px'}}>
-                <ThumbUp style={{color:'var(--Bcolor)'}} onClick={()=>goodPlus('good6',Switch6,setSwitch6)} />
-              </Badge>
-            </IconButton>} 
-            </div>
+            <div className="s-itemTitle">{placeData.title6}</div>
             <textarea  className="s-intemInput input1" cols="30" rows="2" placeholder={placeData.text6} 
             ref={text6} onChange={onSubmit} value={data.text6} />
-          </div>
-
-          
+          </div>          
           <div className="s-item">
-            <div className="s-itemTitle">{placeData.title7}
-            {!report &&roomName &&
-            <IconButton style={{width:'25px', height:'25px'}} >
-              <Badge badgeContent={good[7]} color="secondary" style={{paddingRight:'10px'}}>
-                <ThumbUp style={{color:'var(--Bcolor)'}} onClick={()=>goodPlus('good7',Switch7,setSwitch7)} />
-              </Badge>
-            </IconButton>} 
-            </div>
+            <div className="s-itemTitle">{placeData.title7}</div>
             <textarea  className="s-intemInput input1" cols="30" rows="2" placeholder={placeData.text7} 
             ref={text7} onChange={onSubmit} value={data.text7} />
-          </div>
-
-          
+          </div>          
           <div className="s-item">
-            <div className="s-itemTitle">{placeData.title8}
-            {!report &&roomName &&
-            <IconButton style={{width:'25px', height:'25px'}} >
-              <Badge badgeContent={good[8]} color="secondary" style={{paddingRight:'10px'}}>
-                <ThumbUp style={{color:'var(--Bcolor)'}} onClick={()=>goodPlus('good8',Switch8,setSwitch8)} />
-              </Badge>
-            </IconButton>} 
-            </div>
+            <div className="s-itemTitle">{placeData.title8}</div>
             <textarea  className="s-intemInput input1" cols="30" rows="2" placeholder={placeData.text8} 
             ref={text8} onChange={onSubmit} value={data.text8} />
-          </div>
-
-          
+          </div>          
           <div className="s-item">
-            <div className="s-itemTitle">{placeData.title9}
-            {!report &&roomName &&
-            <IconButton style={{width:'25px', height:'25px'}} >
-              <Badge badgeContent={good[9]} color="secondary" style={{paddingRight:'10px'}}>
-                <ThumbUp style={{color:'var(--Bcolor)'}} onClick={()=>goodPlus('good9',Switch9,setSwitch9)} />
-              </Badge>
-            </IconButton>} 
-            </div>
+            <div className="s-itemTitle">{placeData.title9}</div>
             <textarea  className="s-intemInput input1" cols="30" rows="2" placeholder={placeData.text9} 
             ref={text9} onChange={onSubmit} value={data.text9} />
           </div>
-
           <div className="inputBox" >
             <div className="s-itemTitle" style={{width:"100%"}}>{placeData.title10}</div>
             <textarea cols="30" rows="1" className="problemInput input1" ref={writer} 
