@@ -8,6 +8,9 @@ import idea from './idea.png';
 import solution from './solution.png';
 import tool from './tool.png';
 import rocket from './rocket.png';
+import postit from './post-it.png';
+import caht from './chat.png';
+import cube from './cube.png';
 
 import Opentoolbox from '../opentool/Opentoolbox';
 
@@ -16,21 +19,73 @@ function Togo({ fireApp, user, userInfo,  }) {
 const history = useHistory();
   return (
     <div className="togo" style={{paddingBottom:"10px"}}>      
+       <Jumbotron className="jumbo1" style={{background:"none",flex:"1",height:"100px"}}>
+          <h1 style={{fontWeight:"900",color:"var(--Acolor)"}}>샘툴</h1>
+          <h4> 그룹별로 사용할 수 있는 온라인 쌍방향 협력도구</h4>       
+        </Jumbotron> 
+
+        <div className="togoMain1">                  
+        <Card  className="mainCard1" >
+          <Card.Img variant="top" src={postit}  className="cardImg1"  />
+          <Card.Body>
+            {/* <Card.Title style={{fontWeight:"900"}}>아이디어</Card.Title>
+            <Card.Text>
+            유연한 사고를 이끌어 내는
+            </Card.Text> */}
+            <button className="btn1 card1" onClick={() =>history.push('/idea')} >포스트잇</button>
+          </Card.Body>
+        </Card>
+        <Card  className="mainCard1" >
+          <Card.Img variant="top" src={caht}  className="cardImg1" />
+          <Card.Body>
+            {/* <Card.Title style={{fontWeight:"900"}}>문제해결</Card.Title>
+            <Card.Text>
+            아이디어를 시각·촉각으로 느낄 수 . 
+            </Card.Text> */}
+            <button className="btn1 card1" onClick={() =>history.push('/solving')} >실시간톡</button>
+
+          </Card.Body>
+        </Card>
+        <Card  className="mainCard1" >
+          <Card.Img variant="top" src={cube}  className="cardImg1" />
+          <Card.Body>
+            {/* <Card.Title style={{fontWeight:"900"}}>스타트업</Card.Title>
+            <Card.Text>
+            문제해결을 위해업을 창출합니다.
+            </Card.Text> */}
+            <button className="btn1 card1" onClick={() =>history.push('/datastudy')}>만다라트</button>
+
+          </Card.Body>
+        </Card>
+        <Card  className="mainCard1" >
+          <Card.Img variant="top" src={tool}  className="cardImg1"  />
+          <Card.Body>
+            {/* <Card.Title style={{fontWeight:"900"}}>도구의 인간</Card.Title>
+            <Card.Text>
+              급변하는 새시대에을 개척해보세요.
+            </Card.Text> */}
+            <button className="btn1 card1" onClick={() =>history.push('/opentool')}>공유도구</button>
+          </Card.Body>
+        </Card>
+      </div>
+
+
+
+
+
       <div className="togoTop" style={{display:"flex"}} > 
-        <Jumbotron className="jumbo" style={{background:"none",flex:"1"}}>
+        <Jumbotron className="jumbo2" style={{background:"none",flex:"1",minWidth: '300px'}}>
           <h1 style={{fontWeight:"900",color:"var(--Acolor)"}}>협업! 도전!</h1>
           <p>디자인씽킹 기반의 협업도구로 기발한 아이디어와 도전을 이끌어내 보세요.
-             자신만의 도구를 만들고 더욱 편리하게 그룹별 공동작업을 시작할 수 있습니다.
+             {/* 자신만의 도구를 만들고 더욱 편리하게 그룹별 공동작업을 시작할 수 있습니다. */}
           </p>
-          <p>
-            <button className="btn1" onClick={() =>history.push('/idea')} style={{width:"150px"}}>디자인씽킹</button>
-            </p>
+          
         </Jumbotron> 
         <div className="togoback" />
       </div>
       <div className="togoMain">          
         <Card className="mainCard" >
-          <Card.Img variant="top" src={problem} className="cardImg" />
+          <Card.Img variant="top" src={problem} className="cardImg"  />
           <Card.Body>
             <Card.Title style={{fontWeight:"900"}}>문제찾기</Card.Title>
             <Card.Text>
