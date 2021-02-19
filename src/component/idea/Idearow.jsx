@@ -111,25 +111,6 @@ function  Idearow ({item,fireIdea,level,roomName}) {
         </Card.Body>
       </div>
      </Card>
-      {/* <div className="theader">
-        <div className="headerToday">{item.title}</div>
-        <Badge badgeContent={item.progress} color="secondary" style={{right:'10px'}}  
-          anchorOrigin={{vertical: 'bottom', horizontal: 'left', }}/>
-        <ThumbUp style={{color:'var(--Bcolor)'}} size="small" />        
-      </div>
-      <div className="title"> {item.text}</div>     
-      <textarea  className="title" cols="30" rows="2" style={{resize: 'none'}} 
-            value= {item.text} />
-      <textarea  className="text" cols="30" rows="2" style={{resize: 'none'}} 
-            value= {item.text2} />
-      <div className="btnG">
-        <button className="btn btn0" onClick={plus}>좋아요</button>
-        <button className="btn btn1" onClick={fire}>보기</button>
-        <CopyToClipboard text={item.text2}>
-        <button className="btn btn2" >복사</button>
-        </CopyToClipboard>
-        <button className="btn btn3" onClick={itemDel}>삭제</button>
-      </div> */}
 
     </div>
   );

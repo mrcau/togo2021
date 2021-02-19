@@ -23,17 +23,19 @@ function Datastudy({ fireProblem, fireSync, user, userInfo }) {
   const drawerRef = useRef();
   const backRef = useRef();
   const history = useHistory();
+  const Pen = '•'
   
-  const text1 = useRef();
-  const text2 = useRef();
-  const text3 = useRef();
-  const text4 = useRef();
-  const text5 = useRef();
-  const text6 = useRef();
-  const text7 = useRef();
-  const text8 = useRef();
-  const text9 = useRef();
-  // 좋아요
+  // data 변수 선언
+  const text1 = useRef(); const text2 = useRef(); const text3 = useRef(); const text4 = useRef(); const text5 = useRef();
+  const text6 = useRef(); const text7 = useRef(); const text8 = useRef(); const text9 = useRef();
+  const T1t1=useRef(); const T1t2=useRef(); const T1t3=useRef(); const T1t4=useRef(); const T1t5=useRef(); const T1t6=useRef(); const T1t7=useRef(); const T1t8=useRef(); const T1t9=useRef();
+  const T2t1=useRef(); const T2t2=useRef(); const T2t3=useRef(); const T2t4=useRef(); const T2t5=useRef(); const T2t6=useRef(); const T2t7=useRef(); const T2t8=useRef(); const T2t9=useRef();
+  const T3t1=useRef(); const T3t2=useRef(); const T3t3=useRef(); const T3t4=useRef(); const T3t5=useRef(); const T3t6=useRef(); const T3t7=useRef(); const T3t8=useRef(); const T3t9=useRef();
+  const T4t1=useRef(); const T4t2=useRef(); const T4t3=useRef(); const T4t4=useRef(); const T4t5=useRef(); const T4t6=useRef(); const T4t7=useRef(); const T4t8=useRef(); const T4t9=useRef();
+  const T6t1=useRef(); const T6t2=useRef(); const T6t3=useRef(); const T6t4=useRef(); const T6t5=useRef(); const T6t6=useRef(); const T6t7=useRef(); const T6t8=useRef(); const T6t9=useRef();
+  const T7t1=useRef(); const T7t2=useRef(); const T7t3=useRef(); const T7t4=useRef(); const T7t5=useRef(); const T7t6=useRef(); const T7t7=useRef(); const T7t8=useRef(); const T7t9=useRef();
+  const T8t1=useRef(); const T8t2=useRef(); const T8t3=useRef(); const T8t4=useRef(); const T8t5=useRef(); const T8t6=useRef(); const T8t7=useRef(); const T8t8=useRef(); const T8t9=useRef();
+  const T9t1=useRef(); const T9t2=useRef(); const T9t3=useRef(); const T9t4=useRef(); const T9t5=useRef(); const T9t6=useRef(); const T9t7=useRef(); const T9t8=useRef(); const T9t9=useRef();
 
   const [data, setdata] = useState({});
   const [room, setRoom] = useState({});
@@ -107,26 +109,16 @@ function Datastudy({ fireProblem, fireSync, user, userInfo }) {
      
   },[fireSync,roomName,report]);    
     
-    const goodPlus = (goodNum,Switch,setSwitch) => {
-      console.log(data)
-        if(data[goodNum]===undefined){data[goodNum]=0}
-        if(roomName){
-      Switch ? data[goodNum]++ : data[goodNum]--;
-      setSwitch(!Switch);
-      fireProblem.goodUp(folder, roomName,goodNum,data[goodNum]);
-      }
-    }
+    // const goodPlus = (goodNum,Switch,setSwitch) => {
+    //   console.log(data)
+    //     if(data[goodNum]===undefined){data[goodNum]=0}
+    //     if(roomName){
+    //   Switch ? data[goodNum]++ : data[goodNum]--;
+    //   setSwitch(!Switch);
+    //   fireProblem.goodUp(folder, roomName,goodNum,data[goodNum]);
+    //   }
+    // }
     
-    const goodPlus2 = (goodNum,Switch,setSwitch) => {
-      console.log('굿플러스2 goodNum,Switch,roomName,report',goodNum,Switch,roomName,report);
-      setReport(true);
-      if(data[goodNum]===undefined){data[goodNum]=0}
-        if(roomName){
-        Switch ? data[goodNum]++ : data[goodNum]--;
-        setSwitch(!Switch);
-      fireProblem.goodUpB(folder, roomName,goodNum,data[goodNum]);
-      }
-    }
     //오른쪽 모달 핸들링
     const moveModal = () => {
       drawerRef.current.classList.add("moveDrawer");
@@ -164,9 +156,9 @@ function Datastudy({ fireProblem, fireSync, user, userInfo }) {
     // e.preventDefault();
     if(!roomName){return}
     const cubeData = fireSync.cubeSync(folder, roomName, T, t);
-    
+    const cube = cubeData ||'';
     const { value: text } = await Swal.fire({
-      html:cubeData, width:'80%',height:'90vh',
+      html:cube, width:'80%',height:'90vh',
       input: 'textarea',
       inputPlaceholder: '이곳에 자료를 입력해주세요.',
       inputAttributes: {'aria-label': 'Type your message here'},
@@ -188,23 +180,37 @@ function Datastudy({ fireProblem, fireSync, user, userInfo }) {
     text9: ''}
     fireProblem.roomGetSave(folder, newRoom, data)
   }
-    const roomNameHide = ()=>{roomERef.current.value=''; }
+
+  //데이터 리셋
+  const dataReset = () => {    
+    text1.current.value = ''; text2.current.value = ''; text3.current.value = ''; text4.current.value = '';
+    text5.current.value = ''; text6.current.value = ''; text7.current.value = ''; text8.current.value = ''; text9.current.value = '';
+    
+   T1t1.current.value=''; T1t2.current.value=''; T1t3.current.value=''; T1t4.current.value=''; T1t5.current.value=''; T1t6.current.value=''; T1t7.current.value=''; T1t8.current.value=''; T1t9.current.value='';
+   T2t1.current.value=''; T2t2.current.value=''; T2t3.current.value=''; T2t4.current.value=''; T2t5.current.value=''; T2t6.current.value=''; T2t7.current.value=''; T2t8.current.value=''; T2t9.current.value='';
+   T3t1.current.value=''; T3t2.current.value=''; T3t3.current.value=''; T3t4.current.value=''; T3t5.current.value=''; T3t6.current.value=''; T3t7.current.value=''; T3t8.current.value=''; T3t9.current.value='';
+   T4t1.current.value=''; T4t2.current.value=''; T4t3.current.value=''; T4t4.current.value=''; T4t5.current.value=''; T4t6.current.value=''; T4t7.current.value=''; T4t8.current.value=''; T4t9.current.value='';
+   T6t1.current.value=''; T6t2.current.value=''; T6t3.current.value=''; T6t4.current.value=''; T6t5.current.value=''; T6t6.current.value=''; T6t7.current.value=''; T6t8.current.value=''; T6t9.current.value='';
+   T7t1.current.value=''; T7t2.current.value=''; T7t3.current.value=''; T7t4.current.value=''; T7t5.current.value=''; T7t6.current.value=''; T7t7.current.value=''; T7t8.current.value=''; T7t9.current.value='';
+   T8t1.current.value=''; T8t2.current.value=''; T8t3.current.value=''; T8t4.current.value=''; T8t5.current.value=''; T8t6.current.value=''; T8t7.current.value=''; T8t8.current.value=''; T8t9.current.value='';
+   T9t1.current.value=''; T9t2.current.value=''; T9t3.current.value=''; T9t4.current.value=''; T9t5.current.value=''; T9t6.current.value=''; T9t7.current.value=''; T9t8.current.value=''; T9t9.current.value='';
+  }
+
     // input roomName 초기화
     const roomNameReset=() => {
-      const stopvideoSync = fireSync.videoSync(folder,roomName,'See',(p)=>{setVideo(p); })
-      const stopvideoSync2 = fireSync.videoSync(folder,roomName,'Tok',(p)=>{setNotice(p); })
-      stopvideoSync();  stopvideoSync2();
+      fireSync.videoSync(folder,roomName,'See',(p)=>{setVideo(p); },1)
+      fireSync.videoSync(folder,roomName,'Tok',(p)=>{setNotice(p);},1)      
       const cf = {  f1: (p) => { setdata({}) }, f2: () => { setdata({}) },
                     f3: (p) => { setRoom({}) }, f4: () => { setRoom({}) },
       }
       const cf2 = () => { setdata({});setRoom({});  }
-      const stopRoomSync = fireSync.roomUser(folder,roomUid,cf2);        
-      const stopDataSync = fireSync.dataSync(folder, roomName, cf);
-      stopDataSync();  stopRoomSync();
+      fireSync.roomUser(folder,roomUid,cf2,1);        
+      fireSync.dataSync(folder, roomName, cf,1);
+      fireSync.cubeSync(folder, roomName, 'T1','t1',1);      
       dataReset(); setroomName("");setDoor('입장'); setRoomUid('');
       setReport(false); setEntering(false); setSee(true); setRoom({});
       setNotice('');setVideo('');history.push('/datastudy');
-      roomNameHide();
+      roomERef.current.value='';  setdata({});
     }  
     
   // roomName.substr(0,6) 방입장
@@ -236,7 +242,8 @@ function Datastudy({ fireProblem, fireSync, user, userInfo }) {
 
   // 관리자 방입장
   const adminEnter = (e) => {
-    // roomNameReset();
+    if(roomName){roomNameReset();}else{
+    dataReset();
     const room = e.currentTarget.textContent;
     const roomname = roomUid +room;
     setroomName(roomUid +room);
@@ -244,7 +251,7 @@ function Datastudy({ fireProblem, fireSync, user, userInfo }) {
     setReport(false); 
        setEntering(true);
        setDoor('퇴장');
-       // enterRoom();
+    }
   }
 
 // notice 저장 - 공지 보내기
@@ -257,36 +264,25 @@ function Datastudy({ fireProblem, fireSync, user, userInfo }) {
   }
   //problem 글 데이터 저장, 방개수 6개 이하일때만 데이터 저장
   const onSubmit = () => {
-    if (roomName!==roomERef.current.value||roomERef.current.value===''||report) {
-        // setdata({});
-        return }
+    if (roomName!==roomERef.current.value||roomERef.current.value===''||report) { return }
     const data = {
-      text1: text1.current.value || '',
-      text2: text2.current.value || '',
-      text3: text3.current.value || '',
-      text4: text4.current.value || '',
-      text5: text5.current.value || '',
-      text6: text6.current.value || '',
-      text7: text7.current.value || '',
-      text8: text8.current.value || '',
-      text9: text9.current.value || '',
+      text1: text1.current.value || '', text2: text2.current.value || '', text3: text3.current.value || '', text4: text4.current.value || '',
+      text5: text5.current.value || '', text6: text6.current.value || '', text7: text7.current.value || '', text8: text8.current.value || '', text9: text9.current.value || '',  
+
     }    
-    // const roomUid =  roomERef.current.value.substr(0,roomSubstr)
-    // fireProblem.dataUp(folder, roomERef.current.value, data);
     fireProblem.dataUp(folder, roomName, data);
   }
-  //데이터 리셋
-  const dataReset = () => {    
-    text1.current.value = '';
-    text2.current.value = '';
-    text3.current.value = '';
-    text4.current.value = '';
-    text5.current.value = '';
-    text6.current.value = '';
-    text7.current.value = '';
-    text8.current.value = '';
-    text9.current.value = '';
+
+
+// 큐브 데이터 저장
+  const onSubmit2 = (e,p) => {
+    if (roomName!==roomERef.current.value||roomERef.current.value===''||report) { return }
+    const  evalue = e.current.value ||'';
+    const data = {[p]:evalue}
+    fireSync.cubeUp(folder, roomName,data );
   }
+
+
     
     // 아이템 삭제
   const dataDel = () => {
@@ -324,8 +320,9 @@ function Datastudy({ fireProblem, fireSync, user, userInfo }) {
         text:"삭제될 토론방 : "+roomName,
         icon:'warning',
         showCancelButton: true})
-      .then((result) => { if(result.isConfirmed){ Swal.fire('삭제되었습니다.');
+      .then((result) => { if(result.isConfirmed){ 
       fireProblem.dataDel(folder,roomName);   
+      Swal.fire('삭제되었습니다.');
       roomNameReset();
       }});
     }
@@ -383,50 +380,50 @@ function Datastudy({ fireProblem, fireSync, user, userInfo }) {
       <div className="mandarat">
         <div className="box">
           <div className="items items1">
-            <div className="item item1">{roomName&&<button className="eye" onClick={()=>fireArea('T1','t1')} >✏</button>}<textarea cols="10" rows="1" className="itemArea btnArea" /></div>
-            <div className="item item2">{roomName&&<button className="eye" onClick={()=>fireArea('T1','t2')} >✏</button>}<textarea cols="10" rows="1" className="itemArea btnArea" /></div>
-            <div className="item item3">{roomName&&<button className="eye" onClick={()=>fireArea('T1','t3')} >✏</button>}<textarea cols="10" rows="1" className="itemArea btnArea" /></div>
-            <div className="item item4">{roomName&&<button className="eye" onClick={()=>fireArea('T1','t4')} >✏</button>}<textarea cols="10" rows="1" className="itemArea btnArea" /></div>
-            <div className="item item5"><textarea cols="10" rows="1"  className="itemArea area" disabled value={data.text1} /></div>
-            <div className="item item6"></div>
-            <div className="item item7"></div>
-            <div className="item item8"></div>
-            <div className="item item9"></div>
+            <div className="item item1">{roomName&&<button className="eye" onClick={()=>fireArea('T1','t1')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T1t1} onChange={()=>onSubmit2(T1t1,'T1t1')} value={data.T1t1}  /></div>
+            <div className="item item2">{roomName&&<button className="eye" onClick={()=>fireArea('T1','t2')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T1t2} onChange={()=>onSubmit2(T1t2,'T1t2')} value={data.T1t2}  /></div>
+            <div className="item item3">{roomName&&<button className="eye" onClick={()=>fireArea('T1','t3')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T1t3} onChange={()=>onSubmit2(T1t3,'T1t3')} value={data.T1t3}  /></div>
+            <div className="item item4">{roomName&&<button className="eye" onClick={()=>fireArea('T1','t4')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T1t4} onChange={()=>onSubmit2(T1t4,'T1t4')} value={data.T1t4}  /></div>
+            <div className="item item5"><textarea cols="10" rows="1"  className="itemArea area" disabled value={data.text1} ref={T1t5} /></div>
+            <div className="item item6">{roomName&&<button className="eye" onClick={()=>fireArea('T1','t6')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T1t6} onChange={()=>onSubmit2(T1t6,'T1t6')} value={data.T1t6}  /></div>
+            <div className="item item7">{roomName&&<button className="eye" onClick={()=>fireArea('T1','t7')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T1t7} onChange={()=>onSubmit2(T1t7,'T1t7')} value={data.T1t7}  /></div>
+            <div className="item item8">{roomName&&<button className="eye" onClick={()=>fireArea('T1','t8')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T1t8} onChange={()=>onSubmit2(T1t8,'T1t8')} value={data.T1t8}  /></div>
+            <div className="item item9">{roomName&&<button className="eye" onClick={()=>fireArea('T1','t9')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T1t9} onChange={()=>onSubmit2(T1t9,'T1t9')} value={data.T1t9}  /></div>
           </div>
           <div className="items items2">
-            <div className="item item1"></div>
-            <div className="item item2"></div>
-            <div className="item item3"></div>
-            <div className="item item4"></div>
-            <div className="item item5"><textarea cols="10" rows="1"  className="itemArea area" disabled value={data.text2} /></div>
-            <div className="item item6"></div>
-            <div className="item item7"></div>
-            <div className="item item8"></div>
-            <div className="item item9"></div>
+            <div className="item item1">{roomName&&<button className="eye" onClick={()=>fireArea('T2','t1')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T2t1} onChange={()=>onSubmit2(T2t1,'T2t1')} value={data.T2t1}  /></div>
+            <div className="item item2">{roomName&&<button className="eye" onClick={()=>fireArea('T2','t2')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T2t2} onChange={()=>onSubmit2(T2t2,'T2t2')} value={data.T2t2}  /></div>
+            <div className="item item3">{roomName&&<button className="eye" onClick={()=>fireArea('T2','t3')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T2t3} onChange={()=>onSubmit2(T2t3,'T2t3')} value={data.T2t3}  /></div>
+            <div className="item item4">{roomName&&<button className="eye" onClick={()=>fireArea('T2','t4')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T2t4} onChange={()=>onSubmit2(T2t4,'T2t4')} value={data.T2t4}  /></div>
+            <div className="item item5"><textarea cols="10" rows="1"  className="itemArea area" disabled value={data.text2} ref={T2t5} /></div>
+            <div className="item item6">{roomName&&<button className="eye" onClick={()=>fireArea('T2','t6')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T2t6} onChange={()=>onSubmit2(T2t6,'T2t6')} value={data.T2t6}  /></div>
+            <div className="item item7">{roomName&&<button className="eye" onClick={()=>fireArea('T2','t7')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T2t7} onChange={()=>onSubmit2(T2t7,'T2t7')} value={data.T2t7}  /></div>
+            <div className="item item8">{roomName&&<button className="eye" onClick={()=>fireArea('T2','t8')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T2t8} onChange={()=>onSubmit2(T2t8,'T2t8')} value={data.T2t8}  /></div>
+            <div className="item item9">{roomName&&<button className="eye" onClick={()=>fireArea('T2','t9')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T2t9} onChange={()=>onSubmit2(T2t9,'T2t9')} value={data.T2t9}  /></div>
           
           </div>
           <div className="items items3">
-            <div className="item item1"></div>
-            <div className="item item2"></div>
-            <div className="item item3"></div>
-            <div className="item item4"></div>
-            <div className="item item5"><textarea cols="10" rows="1"  className="itemArea area" disabled value={data.text3} /></div>
-            <div className="item item6"></div>
-            <div className="item item7"></div>
-            <div className="item item8"></div>
-            <div className="item item9"></div>
+            <div className="item item1">{roomName&&<button className="eye" onClick={()=>fireArea('T3','t1')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T3t1} onChange={()=>onSubmit2(T3t1,'T3t1')} value={data.T3t1}  /></div>
+            <div className="item item2">{roomName&&<button className="eye" onClick={()=>fireArea('T3','t2')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T3t2} onChange={()=>onSubmit2(T3t2,'T3t2')} value={data.T3t2}  /></div>
+            <div className="item item3">{roomName&&<button className="eye" onClick={()=>fireArea('T3','t3')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T3t3} onChange={()=>onSubmit2(T3t3,'T3t3')} value={data.T3t3}  /></div>
+            <div className="item item4">{roomName&&<button className="eye" onClick={()=>fireArea('T3','t4')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T3t4} onChange={()=>onSubmit2(T3t4,'T3t4')} value={data.T3t4}  /></div>
+            <div className="item item5"><textarea cols="10" rows="1"  className="itemArea area" disabled value={data.text3} ref={T3t5} /></div>
+            <div className="item item6">{roomName&&<button className="eye" onClick={()=>fireArea('T3','t6')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T3t6} onChange={()=>onSubmit2(T3t6,'T3t6')} value={data.T3t6}  /></div>
+            <div className="item item7">{roomName&&<button className="eye" onClick={()=>fireArea('T3','t7')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T3t7} onChange={()=>onSubmit2(T3t7,'T3t7')} value={data.T3t7}  /></div>
+            <div className="item item8">{roomName&&<button className="eye" onClick={()=>fireArea('T3','t8')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T3t8} onChange={()=>onSubmit2(T3t8,'T3t8')} value={data.T3t8}  /></div>
+            <div className="item item9">{roomName&&<button className="eye" onClick={()=>fireArea('T3','t9')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T3t9} onChange={()=>onSubmit2(T3t9,'T3t9')} value={data.T3t9}  /></div>
           
           </div>
           <div className="items items4">
-            <div className="item item1"></div>
-            <div className="item item2"></div>
-            <div className="item item3"></div>
-            <div className="item item4"></div>
-            <div className="item item5"><textarea cols="10" rows="1"  className="itemArea area" disabled value={data.text4} /></div>
-            <div className="item item6"></div>
-            <div className="item item7"></div>
-            <div className="item item8"></div>
-            <div className="item item9"></div>
+            <div className="item item1">{roomName&&<button className="eye" onClick={()=>fireArea('T4','t1')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T4t1} onChange={()=>onSubmit2(T4t1,'T4t1')} value={data.T4t1}  /></div>
+            <div className="item item2">{roomName&&<button className="eye" onClick={()=>fireArea('T4','t2')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T4t2} onChange={()=>onSubmit2(T4t2,'T4t2')} value={data.T4t2}  /></div>
+            <div className="item item3">{roomName&&<button className="eye" onClick={()=>fireArea('T4','t3')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T4t3} onChange={()=>onSubmit2(T4t3,'T4t3')} value={data.T4t3}  /></div>
+            <div className="item item4">{roomName&&<button className="eye" onClick={()=>fireArea('T4','t4')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T4t4} onChange={()=>onSubmit2(T4t4,'T4t4')} value={data.T4t4}  /></div>
+            <div className="item item5"><textarea cols="10" rows="1"  className="itemArea area" disabled value={data.text4} ref={T4t5} /></div>
+            <div className="item item6">{roomName&&<button className="eye" onClick={()=>fireArea('T4','t6')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T4t6} onChange={()=>onSubmit2(T4t6,'T4t6')} value={data.T4t6}  /></div>
+            <div className="item item7">{roomName&&<button className="eye" onClick={()=>fireArea('T4','t7')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T4t7} onChange={()=>onSubmit2(T4t7,'T4t7')} value={data.T4t7}  /></div>
+            <div className="item item8">{roomName&&<button className="eye" onClick={()=>fireArea('T4','t8')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T4t8} onChange={()=>onSubmit2(T4t8,'T4t8')} value={data.T4t8}  /></div>
+            <div className="item item9">{roomName&&<button className="eye" onClick={()=>fireArea('T4','t9')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T4t9} onChange={()=>onSubmit2(T4t9,'T4t9')} value={data.T4t9}  /></div>
           
           </div>
           <div className="items items5 itemsCenter">
@@ -442,51 +439,51 @@ function Datastudy({ fireProblem, fireSync, user, userInfo }) {
           
           </div>
           <div className="items items6">
-            <div className="item item1"></div>
-            <div className="item item2"></div>
-            <div className="item item3"></div>
-            <div className="item item4"></div>
-            <div className="item item5"><textarea cols="10" rows="1"  className="itemArea area" disabled value={data.text6} /></div>
-            <div className="item item6"></div>
-            <div className="item item7"></div>
-            <div className="item item8"></div>
-            <div className="item item9"></div>
+            <div className="item item1">{roomName&&<button className="eye" onClick={()=>fireArea('T6','t1')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T6t1} onChange={()=>onSubmit2(T6t1,'T6t1')} value={data.T6t1} /></div>
+            <div className="item item2">{roomName&&<button className="eye" onClick={()=>fireArea('T6','t2')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T6t2} onChange={()=>onSubmit2(T6t2,'T6t2')} value={data.T6t2} /></div>
+            <div className="item item3">{roomName&&<button className="eye" onClick={()=>fireArea('T6','t3')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T6t3} onChange={()=>onSubmit2(T6t3,'T6t3')} value={data.T6t3} /></div>
+            <div className="item item4">{roomName&&<button className="eye" onClick={()=>fireArea('T6','t4')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T6t4} onChange={()=>onSubmit2(T6t4,'T6t4')} value={data.T6t4} /></div>
+            <div className="item item5"><textarea cols="10" rows="1"  className="itemArea area" disabled value={data.text6} ref={T6t5} /></div>
+            <div className="item item6">{roomName&&<button className="eye" onClick={()=>fireArea('T6','t6')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T6t6} onChange={()=>onSubmit2(T6t6,'T6t6')} value={data.T6t6} /></div>
+            <div className="item item7">{roomName&&<button className="eye" onClick={()=>fireArea('T6','t7')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T6t7} onChange={()=>onSubmit2(T6t7,'T6t7')} value={data.T6t7} /></div>
+            <div className="item item8">{roomName&&<button className="eye" onClick={()=>fireArea('T6','t8')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T6t8} onChange={()=>onSubmit2(T6t8,'T6t8')} value={data.T6t8} /></div>
+            <div className="item item9">{roomName&&<button className="eye" onClick={()=>fireArea('T6','t9')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T6t9} onChange={()=>onSubmit2(T6t9,'T6t9')} value={data.T6t9} /></div>
           
           </div>
           <div className="items items7">
-            <div className="item item1"></div>
-            <div className="item item2"></div>
-            <div className="item item3"></div>
-            <div className="item item4"></div>
-            <div className="item item5"><textarea cols="10" rows="1"  className="itemArea area" disabled value={data.text7} /></div>
-            <div className="item item6"></div>
-            <div className="item item7"></div>
-            <div className="item item8"></div>
-            <div className="item item9"></div>
+            <div className="item item1">{roomName&&<button className="eye" onClick={()=>fireArea('T7','t1')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T7t1} onChange={()=>onSubmit2(T7t1,'T7t1')} value={data.T7t1} /></div>
+            <div className="item item2">{roomName&&<button className="eye" onClick={()=>fireArea('T7','t2')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T7t2} onChange={()=>onSubmit2(T7t2,'T7t2')} value={data.T7t2} /></div>
+            <div className="item item3">{roomName&&<button className="eye" onClick={()=>fireArea('T7','t3')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T7t3} onChange={()=>onSubmit2(T7t3,'T7t3')} value={data.T7t3} /></div>
+            <div className="item item4">{roomName&&<button className="eye" onClick={()=>fireArea('T7','t4')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T7t4} onChange={()=>onSubmit2(T7t4,'T7t4')} value={data.T7t4} /></div>
+            <div className="item item5"><textarea cols="10" rows="1"  className="itemArea area" disabled value={data.text7} ref={T7t5} /></div>
+            <div className="item item6">{roomName&&<button className="eye" onClick={()=>fireArea('T7','t6')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T7t6} onChange={()=>onSubmit2(T7t6,'T7t6')} value={data.T7t6} /></div>
+            <div className="item item7">{roomName&&<button className="eye" onClick={()=>fireArea('T7','t7')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T7t7} onChange={()=>onSubmit2(T7t7,'T7t7')} value={data.T7t7} /></div>
+            <div className="item item8">{roomName&&<button className="eye" onClick={()=>fireArea('T7','t8')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T7t8} onChange={()=>onSubmit2(T7t8,'T7t8')} value={data.T7t8} /></div>
+            <div className="item item9">{roomName&&<button className="eye" onClick={()=>fireArea('T7','t9')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T7t9} onChange={()=>onSubmit2(T7t9,'T7t9')} value={data.T7t9} /></div>
           
           </div>
           <div className="items items8">
-            <div className="item item1"></div>
-            <div className="item item2"></div>
-            <div className="item item3"></div>
-            <div className="item item4"></div>
-            <div className="item item5"><textarea cols="10" rows="1"  className="itemArea area" disabled value={data.text8} /></div>
-            <div className="item item6"></div>
-            <div className="item item7"></div>
-            <div className="item item8"></div>
-            <div className="item item9"></div>
+            <div className="item item1">{roomName&&<button className="eye" onClick={()=>fireArea('T8','t1')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T8t1} onChange={()=>onSubmit2(T8t1,'T8t1')} value={data.T8t1}  /></div>
+            <div className="item item2">{roomName&&<button className="eye" onClick={()=>fireArea('T8','t2')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T8t2} onChange={()=>onSubmit2(T8t2,'T8t2')} value={data.T8t2}  /></div>
+            <div className="item item3">{roomName&&<button className="eye" onClick={()=>fireArea('T8','t3')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T8t3} onChange={()=>onSubmit2(T8t3,'T8t3')} value={data.T8t3}  /></div>
+            <div className="item item4">{roomName&&<button className="eye" onClick={()=>fireArea('T8','t4')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T8t4} onChange={()=>onSubmit2(T8t4,'T8t4')} value={data.T8t4}  /></div>
+            <div className="item item5"><textarea cols="10" rows="1"  className="itemArea area" disabled value={data.text8} ref={T8t5} /></div>
+            <div className="item item6">{roomName&&<button className="eye" onClick={()=>fireArea('T8','t6')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T8t6} onChange={()=>onSubmit2(T8t6,'T8t6')} value={data.T8t6}  /></div>
+            <div className="item item7">{roomName&&<button className="eye" onClick={()=>fireArea('T8','t7')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T8t7} onChange={()=>onSubmit2(T8t7,'T8t7')} value={data.T8t7}  /></div>
+            <div className="item item8">{roomName&&<button className="eye" onClick={()=>fireArea('T8','t8')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T8t8} onChange={()=>onSubmit2(T8t8,'T8t8')} value={data.T8t8}  /></div>
+            <div className="item item9">{roomName&&<button className="eye" onClick={()=>fireArea('T8','t9')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T8t9} onChange={()=>onSubmit2(T8t9,'T8t9')} value={data.T8t9}  /></div>
           
           </div>
           <div className="items items9">
-            <div className="item item1"></div>
-            <div className="item item2"></div>
-            <div className="item item3"></div>
-            <div className="item item4"></div>
-            <div className="item item5"><textarea cols="10" rows="1"  className="itemArea area" disabled value={data.text9} /></div>
-            <div className="item item6"></div>
-            <div className="item item7"></div>
-            <div className="item item8"></div>
-            <div className="item item9"></div>
+            <div className="item item1">{roomName&&<button className="eye" onClick={()=>fireArea('T9','t1')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T9t1} onChange={()=>onSubmit2(T9t1,'T9t1')} value={data.T9t1}  /></div>
+            <div className="item item2">{roomName&&<button className="eye" onClick={()=>fireArea('T9','t2')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T9t2} onChange={()=>onSubmit2(T9t2,'T9t2')} value={data.T9t2}  /></div>
+            <div className="item item3">{roomName&&<button className="eye" onClick={()=>fireArea('T9','t3')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T9t3} onChange={()=>onSubmit2(T9t3,'T9t3')} value={data.T9t3}  /></div>
+            <div className="item item4">{roomName&&<button className="eye" onClick={()=>fireArea('T9','t4')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T9t4} onChange={()=>onSubmit2(T9t4,'T9t4')} value={data.T9t4}  /></div>
+            <div className="item item5"><textarea cols="10" rows="1"  className="itemArea area" disabled value={data.text9}  ref={T9t5}/></div>
+            <div className="item item6">{roomName&&<button className="eye" onClick={()=>fireArea('T9','t6')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T9t6} onChange={()=>onSubmit2(T9t6,'T9t6')} value={data.T9t6}  /></div>
+            <div className="item item7">{roomName&&<button className="eye" onClick={()=>fireArea('T9','t7')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T9t7} onChange={()=>onSubmit2(T9t7,'T9t7')} value={data.T9t7}  /></div>
+            <div className="item item8">{roomName&&<button className="eye" onClick={()=>fireArea('T9','t8')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T9t8} onChange={()=>onSubmit2(T9t8,'T9t8')} value={data.T9t8}  /></div>
+            <div className="item item9">{roomName&&<button className="eye" onClick={()=>fireArea('T9','t9')} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T9t9} onChange={()=>onSubmit2(T9t9,'T9t9')} value={data.T9t9}  /></div>
           
           </div>
         </div>

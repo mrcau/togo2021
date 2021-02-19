@@ -30,7 +30,7 @@ roomUser(folder,roomUid,cf,off) {
   const data = p.val();
     if(!data){console.log('서버데이터 없음')}
     const dataKey = Object.keys(data);
-    if(dataKey.indexOf(roomUid)<0){ return }
+    if(dataKey.indexOf(roomUid)<0){ ref.off(); return }
      cf();
   })
 
@@ -118,7 +118,7 @@ cubeSync(folder, roomName, T, t, off) {
   const ref =  fireInit.database().ref(`${folder}/${roomUid}/${roomNum}/${T}`);
   ref.on('value', (p) => {     
     const data = p.val();
-
+    if(!data){return}
     if(!data[t]){return}else{ cubeData=data[t] }
   });
 
@@ -126,20 +126,14 @@ cubeSync(folder, roomName, T, t, off) {
     
   return cubeData
 }
-// 큐브 싱크
-// cubeSync(folder, roomName, cf, T, t, off) {
-//     const roomUid = roomName.substr(0,roomSubstr);
-//     const roomNum = roomName.substr(roomSubstr);
-//   const ref =  fireInit.database().ref(`${folder}/${roomUid}/${roomNum}/${T}`);
-//   ref.on('value', (p) => {     
-//     const data = p.val();
-//     if(data[t]){ cf(data[t]); }
-//   });
 
-//   if(off){ref.off();}
-    
-//   return ()=>ref.off();
-// }
+  // 데이터 저장
+  cubeUp(folder, roomName, data) {
+    const roomUid = roomName.substr(0,roomSubstr);
+    const roomNum = roomName.substr(roomSubstr);
+    fireInit.database().ref(`${folder}/${roomUid}/${roomNum}`)
+      .update(data)
+  }
 
 
 
