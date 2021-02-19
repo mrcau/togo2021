@@ -69,6 +69,20 @@ roomUser(folder,roomUid,cf) {
     const roomNum = roomName.substr(roomSubstr);
     fireInit.database().ref(`${folder}/${roomUid}/${roomNum}`).remove();
   }
+  // 큐브 데이터 저장
+ cubeDataUp(folder, roomName, T, data) {
+    const roomUid = roomName.substr(0,roomSubstr);
+    const roomNum = roomName.substr(roomSubstr);
+    fireInit.database().ref(`${folder}/${roomUid}/${roomNum}/${T}`)
+      .update(data)
+  }
+
+  // 큐브 데이터 삭제
+  cubeDataDel(folder, roomName) {
+    const roomUid = roomName.substr(0,roomSubstr);
+    const roomNum = roomName.substr(roomSubstr);
+    fireInit.database().ref(`${folder}/${roomUid}/${roomNum}`).remove();
+  }
     // 리포트데이터 삭제
     reportDel(folder, uid, dataId) {
       fireInit.database().ref(`${folder}/${uid}/${dataId}`).remove();

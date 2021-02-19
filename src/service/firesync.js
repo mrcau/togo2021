@@ -23,10 +23,8 @@ class firesync {
     return ()=>ref.off();
   }
 
-
-
 //  룸 이름 가져오기
-roomUser(folder,roomUid,cf) {
+roomUser(folder,roomUid,cf,off) {
   const ref = fireInit.database().ref(`${folder}`);
   ref.on('value', (p) => {
   const data = p.val();
@@ -35,10 +33,13 @@ roomUser(folder,roomUid,cf) {
     if(dataKey.indexOf(roomUid)<0){ return }
      cf();
   })
+
+  if(off){ref.off();}
+  
   return ()=>ref.off('value', (p) => {cf();});
  }
   // 데이터 씽크
-  dataSync(folder, roomName, cf) {
+  dataSync(folder, roomName, cf,off) {
   const roomUid = roomName.substr(0,roomSubstr);
     const roomNum = roomName.substr(roomSubstr);
     if (!roomName) { return }
@@ -53,27 +54,35 @@ roomUser(folder,roomUid,cf) {
       const data = p.val();
       data ? cf.f3(data) : cf.f4();
     });   
+    
+    if(off){ref1.off(); ref1.off();}
+    
     return () => {ref1.off(); ref2.off()}
 
   }
   // Item 씽크
- itemSync(folder, uid, cf) {
+ itemSync(folder, uid, cf, off) {
   const ref = fireInit.database().ref(`${folder}/${uid}`);
   ref.on('value', (p) => {
     const data = p.val();
     data ? cf.f1(data) : cf.f2();
   })
+  if(off){ref.off();}
+  
   }  
     //비로그인 데이터싱크
-  dataSyncB(folder, roomName, cf) {
+  dataSyncB(folder, roomName, cf,off) {
     const roomUid = roomName.substr(0,roomSubstr);
     const roomReport = roomUid+'REPORT';
     const ref3 = fireInit.database().ref(`${folder}/${roomReport}/${roomName}`);
     ref3.on('value',(p) => {const data = p.val(); data ? cf.f1(data) : cf.f2(); })
+    
+    if(off){ref3.off();}
+    
     return ref3.off();
   }
   //보고서 테이블 싱크
-async reportSync(folder,roomId, cf) {
+async reportSync(folder,roomId, cf,off) {
     if (!roomId) { return }
     // const roomId = roomName.substr(0,6)+'REPORT'
     const ref1 = fireInit.database().ref(`${folder}/${roomId}`);
@@ -82,9 +91,12 @@ async reportSync(folder,roomId, cf) {
       const Data = Object.values(data);
       data ? cf.f1(Data) : cf.f2();
     });
+
+    if(off){ref1.off();}
+    
   }
 // 비디오 메시지 싱크
-videoSync(folder,roomName,spot,cf) {
+videoSync(folder,roomName,spot,cf, off) {
   const roomUid = roomName.substr(0,roomSubstr);
   if (!roomUid) { return }
   const ref = fireInit.database().ref(`${folder}/${roomUid}/${spot}`);
@@ -92,9 +104,46 @@ videoSync(folder,roomName,spot,cf) {
     const data = p.val();
     cf(data);
   });
+
+  if(off){ref.off();}
+    
   return ()=>ref.off();
 }
+
+// 큐브 싱크
+cubeSync(folder, roomName, T, t, off) {
+    const roomUid = roomName.substr(0,roomSubstr);
+    const roomNum = roomName.substr(roomSubstr);
+    let cubeData = '';
+  const ref =  fireInit.database().ref(`${folder}/${roomUid}/${roomNum}/${T}`);
+  ref.on('value', (p) => {     
+    const data = p.val();
+
+    if(!data[t]){return}else{ cubeData=data[t] }
+  });
+
+  if(off){ref.off();}
+    
+  return cubeData
 }
+// 큐브 싱크
+// cubeSync(folder, roomName, cf, T, t, off) {
+//     const roomUid = roomName.substr(0,roomSubstr);
+//     const roomNum = roomName.substr(roomSubstr);
+//   const ref =  fireInit.database().ref(`${folder}/${roomUid}/${roomNum}/${T}`);
+//   ref.on('value', (p) => {     
+//     const data = p.val();
+//     if(data[t]){ cf(data[t]); }
+//   });
+
+//   if(off){ref.off();}
+    
+//   return ()=>ref.off();
+// }
 
 
+
+
+}
 export default firesync
+

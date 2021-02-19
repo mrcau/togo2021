@@ -9,6 +9,7 @@ import startupReport from './startupReport';
 import Swal from 'sweetalert2';
 import placeholder from './placeholder';
 import { useHistory } from 'react-router-dom';
+import fireproblem from '../../service/fireproblem';
 
 function Datastudy({ fireProblem, fireSync, user, userInfo }) {
   const folder = "datastudy";
@@ -48,6 +49,7 @@ function Datastudy({ fireProblem, fireSync, user, userInfo }) {
   const [door, setDoor] = useState('입장')
   const [report, setReport] = useState(false);
   const [userUID, setUserUID] = useState('');
+  // const [cube, setCube] = useState('');
   
    //데이터싱크 
   useEffect(() => {
@@ -155,25 +157,25 @@ function Datastudy({ fireProblem, fireSync, user, userInfo }) {
     fireProblem.videoSave(folder, user.uid,'See', text);
     }
   }
-  // 자료입력 모달
+  
+
+  // 큐브입력 모달
   const fireArea = async(T,t)=>{
     // e.preventDefault();
+    if(!roomName){return}
+    const cubeData = fireSync.cubeSync(folder, roomName, T, t);
+    
     const { value: text } = await Swal.fire({
+      html:cubeData, width:'80%',height:'90vh',
       input: 'textarea',
-      inputLabel: '참고자료',
       inputPlaceholder: '이곳에 자료를 입력해주세요.',
       inputAttributes: {'aria-label': 'Type your message here'},
       showCancelButton: true
     })
     if (text) {
       Swal.fire(text)
-      // const DATA = {t1:'',t2:'',t3:'',t4:'',t5:'',t6:'',t7:'',t8:''}
-      const DT = {};
-      DT.t1=''; DT.t2=''; DT.t3=''; DT.t4=''; DT.t5=''; DT.t6=''; DT.t7=''; DT.t8='';
-      DT[t].t=text;
-      // const data = {[t]:text}
-      const dataText = {[T]:DT}
-    fireProblem.dataUp(folder, roomName, dataText);
+      const data = {[t]:text}
+    fireProblem.cubeDataUp(folder, roomName, T, data);
   }
   }
 
@@ -381,10 +383,10 @@ function Datastudy({ fireProblem, fireSync, user, userInfo }) {
       <div className="mandarat">
         <div className="box">
           <div className="items items1">
-            <div className="item item1"><button className="eye" onClick={()=>fireArea('T1','t1')} >✏</button><textarea cols="10" rows="1" className="itemArea btnArea" /></div>
-            <div className="item item2"><button className="eye" onClick={()=>fireArea('T1','t2')} >✏</button><textarea cols="10" rows="1" className="itemArea btnArea" /></div>
-            <div className="item item3"><button className="eye" onClick={()=>fireArea('T1','t3')} >✏</button><textarea cols="10" rows="1" className="itemArea btnArea" /></div>
-            <div className="item item4"><button className="eye" onClick={()=>fireArea('T1','t4')} >✏</button><textarea cols="10" rows="1" className="itemArea btnArea" /></div>
+            <div className="item item1">{roomName&&<button className="eye" onClick={()=>fireArea('T1','t1')} >✏</button>}<textarea cols="10" rows="1" className="itemArea btnArea" /></div>
+            <div className="item item2">{roomName&&<button className="eye" onClick={()=>fireArea('T1','t2')} >✏</button>}<textarea cols="10" rows="1" className="itemArea btnArea" /></div>
+            <div className="item item3">{roomName&&<button className="eye" onClick={()=>fireArea('T1','t3')} >✏</button>}<textarea cols="10" rows="1" className="itemArea btnArea" /></div>
+            <div className="item item4">{roomName&&<button className="eye" onClick={()=>fireArea('T1','t4')} >✏</button>}<textarea cols="10" rows="1" className="itemArea btnArea" /></div>
             <div className="item item5"><textarea cols="10" rows="1"  className="itemArea area" disabled value={data.text1} /></div>
             <div className="item item6"></div>
             <div className="item item7"></div>
