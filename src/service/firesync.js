@@ -135,6 +135,37 @@ cubeSync(folder, roomName, T, t, off) {
       .update(data)
   }
 
+ // mytool  저장 
+ toolSave(folder,uid, data) {
+  fireInit.database().ref(`${folder}/${uid}/${data.dataId}`).set(data)
+    .then(() => console.log('글 저장성공'))
+    .catch((e) => console.log('저장실패'))
+}
+
+// mytool 씽크
+toolSync(folder,uid, cf) {
+  const ref = fireInit.database().ref(`${folder}/${uid}`);
+  ref.on('value', (p) => {
+    const data = p.val();
+    data ? cf.f1(data) : cf.f2();
+  })
+  
+  return ()=>ref.off();
+}
+// 룸네임 없으면 컬러 업데이트
+itemColorUp(folder, uid,dataId, color) {
+fireInit.database().ref(`${folder}/${uid}/${dataId}`)
+  .update({ color: color })
+}
+ // mytool 업데이트
+ opentoolUp(folder,uid, dataId, counter) {
+  fireInit.database().ref(`${folder}/${uid}/${dataId}`)
+    .update({ progress: counter })
+}
+// mytool 삭제
+opentoolDel(folder,uid,dataId) {
+  fireInit.database().ref(`${folder}/${uid}/${dataId}`).remove();
+}
 
 
 

@@ -450,8 +450,7 @@ function Problem({ fireProblem, fireSync, user, userInfo }) {
       </div>
       
 
-        <form className="s-items" ref={formRef} >
-          
+        <form className="s-items" ref={formRef} >          
           
           <div className="s-item">
             <div className="s-itemTitle" sty>{placeData.title1} 
@@ -465,6 +464,7 @@ function Problem({ fireProblem, fireSync, user, userInfo }) {
             <textarea  className="s-intemInput input1" cols="30" rows="2" placeholder={placeData.text1} 
             ref={problemS}  onChange={onSubmit} value={data.scamS} />
           </div>
+
           <div className="s-item">
             <div className="s-itemTitle">{placeData.title2}
             {!report &&roomName &&

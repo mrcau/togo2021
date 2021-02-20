@@ -55,7 +55,7 @@ const history = useHistory();
             <Card.Text>
             문제해결을 위해업을 창출합니다.
             </Card.Text> */}
-            <button className="btn1 card1" onClick={() =>history.push('/datastudy')}>큐브씽크</button>
+            <button className="btn1 card1" onClick={() =>history.push('/cube')}>큐브씽크</button>
 
           </Card.Body>
         </Card>

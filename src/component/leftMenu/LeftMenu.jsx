@@ -48,8 +48,8 @@ const history = useHistory();
       <div style={{width:'100%',padding:"0"}}>
         <button className="btnLogout"  > 협업도구 </button>
         <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/idea"><div className="icon">포스트잇</div></Link> </div>
-        <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/datastudy"><div className="icon">실시간톡</div></Link></div>
-        <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/datastudy"><div className="icon">큐브씽크</div></Link> </div>
+        <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/solving"><div className="icon">실시간톡</div></Link></div>
+        <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/cube"><div className="icon">큐브씽크</div></Link> </div>
         <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/opentool"><div className="icon">공유도구</div></Link></div>
       </div>  
 

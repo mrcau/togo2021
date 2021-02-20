@@ -117,6 +117,7 @@ itemSave(folder, data) {
     .then(() => console.log('글 저장성공'))
     .catch((e) => console.log(e))
 }
+
 // 로그인 TODO글  저장 
 itemSave2(folder,roomName, dataId, data) {
   const roomUid = roomName.substr(0,roomSubstr);
@@ -125,6 +126,19 @@ itemSave2(folder,roomName, dataId, data) {
     .then(() => console.log('글 저장성공'))
     .catch((e) => console.log(e))
 }  
+
+// 룸네임 없으면  저장 
+itemUpdate(folder, data) {
+  fireInit.database().ref(`${folder}/${data.uid}/${data.dataId}`).update(data);
+}
+
+// 룸네임 있으면 글  저장 
+itemUpdate2(folder,roomName, dataId, data) {
+  const roomUid = roomName.substr(0,roomSubstr);
+  const roomNum = roomName.substr(roomSubstr);
+  fireInit.database().ref(`${folder}/${roomUid}/${roomNum}/${dataId}`).update(data);
+}  
+
 
 // 룸네임 없으면 TODO 삭제
 itemDel(folder, uid, dataId) {

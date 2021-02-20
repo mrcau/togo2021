@@ -73,6 +73,11 @@ class firebaseApp {
       data ? cf.f1(data) : cf.f2();
     })
   }
+  // 룸네임 없으면 컬러 업데이트
+itemColorUp(folder, dataId, color) {
+  fireInit.database().ref(`${folder}/${dataId}`)
+    .update({ color: color })
+}
    // OpenTool 업데이트
    opentoolUp(folder, dataId, counter) {
     fireInit.database().ref(`${folder}/${dataId}`)

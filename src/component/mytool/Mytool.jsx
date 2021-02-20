@@ -3,7 +3,7 @@ import './mytool.css';
 import Toolrow from './Toolrow';
 import Swal from 'sweetalert2';
 
-function Mytool({ fireTodo, user, userInfo  }) {
+function Mytool({fireIdea,fireApp, fireSync,user, userInfo }) {
   const today = new Date().toLocaleDateString();
   const textRef = useRef();
   const textRef2 = useRef();
@@ -12,16 +12,19 @@ function Mytool({ fireTodo, user, userInfo  }) {
   const [items, setItems] = useState({});
   const folder = "mytool"
   const Swal = require('sweetalert2');
+  const level = userInfo.level || 0;
   // 데이터 보여주기 싱크
   useEffect(() => {    
-    // fireTodo.onAuth((e) => {
-    const cf = {
-      f1: (p)=>{setItems(p)},
-      f2: ()=>{setItems({})}
-      }
-   user ? fireTodo.itemSync(folder,user.uid, cf):console.log('no-User')
-    // })
-  }, [fireTodo,user]);
+    fireSync.onAuth((e) => {
+    const cf = { f1: (p)=>{setItems(p)}, f2: ()=>{setItems({})}  }
+   if(user){ 
+      const stopDataSync =fireSync.toolSync(folder,user.uid, cf);
+      return ()=>{stopDataSync();}
+    }else{console.log('no-User')}
+  
+    })
+  }, [fireSync,user]);
+
   //DB에 글 데이터 저장
   const submit = (e) => {
     e.preventDefault();
@@ -29,7 +32,6 @@ function Mytool({ fireTodo, user, userInfo  }) {
     const text = textRef.current.value;
     const text2 = textRef2.current.value;
     const title = titleRef.current.value;
-    console.log(title,user,userInfo)
     if(!title || !text || !text2){ Swal.fire({title:'빈칸을 모두 채워주세요.',icon:'warning'}) }
     if (userInfo && title && text && text2) {
       rocketOn();
@@ -42,9 +44,10 @@ function Mytool({ fireTodo, user, userInfo  }) {
         text: text,
         text2: text2,
         today: today,
-        progress: 0
+        progress: 0,
+        color : 'secondary'
       }
-      fireTodo.itemSave(folder,data);      
+      fireSync.toolSave(folder,user.uid,data);      
       titleRef.current.value = '';
       textRef.current.value = '';
       textRef2.current.value = '';
@@ -66,7 +69,7 @@ function Mytool({ fireTodo, user, userInfo  }) {
       <div className="mytool-items">
         {
           Object.keys(items).map((e) => {
-            return <Toolrow key={e} item={items[e]} fireTodo={fireTodo} />
+            return <Toolrow key={e} item={items[e]} fireSync={fireSync} level={level} user={user} userInfo={userInfo} />
           })
         }
       </div>

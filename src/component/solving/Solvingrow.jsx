@@ -1,5 +1,5 @@
 import './solvingrow.css';
-import React, { memo, useState } from 'react';
+import React, { memo, useRef, useState } from 'react';
 import Swal from 'sweetalert2';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Badge, IconButton, Switch } from '@material-ui/core';
@@ -7,12 +7,15 @@ import { ThumbUp } from '@material-ui/icons';
 import { Card, DropdownButton,Dropdown,ButtonGroup } from 'react-bootstrap';
 import {  DeleteForever, } from '@material-ui/icons';
 import VisibilityIcon from '@material-ui/icons/Visibility';
-function  Solvingrow ({item,fireIdea,level,roomName}) {
+
+function  Solvingrow ({item,roomERef,fireIdea,level,roomName}) {
   const folder = "solving";
   const Swal = require('sweetalert2');
   // const [video, setVideo] = useState('');
   const [Switch, setSwitch] = useState(true);
   // const [color, setColor] = useState('');
+const textRef = useRef();
+const titleRef = useRef();
 
   let counter = item.progress;
   const plus = () => {
@@ -63,12 +66,28 @@ function  Solvingrow ({item,fireIdea,level,roomName}) {
       }
   }
   const fire = () => {Swal.fire({html:item.text2, width:'90%'})}
+
+  const onSubmit = () => { 
+    // if (roomName!==roomERef.current.value||roomERef.current.value==='') { return }
+    const data = {
+      dataId: item.dataId,
+      uid:item.uid,
+      title: titleRef.current.value || '',
+      text: textRef.current.value || '',      
+    }    
+
+    if(roomName){console.log('룸있음'); 
+      fireIdea.itemUpdate2(folder, roomName, item.dataId, data)
+      }
+    else{console.log('룸없음');fireIdea.itemUpdate(folder,data); }
+  }
+
   return (
-    <div className="solvingrow" >
-     <Card bg={item.color} text={'white'} style={{ width: '12rem',height:'10rem' }} className="mb-2" >
-      {item.roomUid 
+    <div className="solvingrow" style={{flex:'auto'}} >
+     <Card bg={item.color} text={'white'} style={{ width: '100%',height:'100%' }} className="mb-2" >
+      {/* {item.roomUid 
       ? <Card.Header style={{fontSize:"large",fontWeight:"900",color:"black"}}>룸ID</Card.Header>
-      :
+      : */}
       <Card.Header style={{display:'flex',justifyContent:"space-between" ,padding:'5px'}} >
         {level>0 && <IconButton style={{width:'20px', height:'15px'}} > <DeleteForever onClick={itemDel} style={{color:'white'}} /></IconButton> }
         <DropdownButton as={ButtonGroup} variant={item.color} title="구분" size="sm" >
@@ -86,11 +105,7 @@ function  Solvingrow ({item,fireIdea,level,roomName}) {
             <Dropdown.Item as="button" onClick={()=>changeColor('dark')} style={{color:"#32383e",textAlign:"center", fontSize:"18px",padding:"0 2px"}}>❼</Dropdown.Item>
           </div>
         </DropdownButton>
-        { item.text2 &&
-          <IconButton style={{width:'30px', height:'20px',transform:"translateX(-10px)"}} >
-          <VisibilityIcon style={{color:'white'}} size="small" onClick={fire} /> 
-          </IconButton>
-        }
+        <input type="text" className="solvingInput"  ref={titleRef} onChange={onSubmit} value={item.title||''}/>
         <IconButton style={{width:'20px', height:'15px'}} >
           <Badge badgeContent={item.progress} color="secondary"   
             anchorOrigin={{vertical: 'top', horizontal: 'right', }}> 
@@ -98,17 +113,21 @@ function  Solvingrow ({item,fireIdea,level,roomName}) {
           </Badge>
         </IconButton>
       </Card.Header>
-      }
+      
 
-      <div className="cardTitle">
-        <Card.Body>
-        {item.roomUid
+      {/* <div className="solvingBody"> */}
+        <Card.Body style={{display:'flex',flexDirection:'column',padding:'5px'}}>
+        {/* {item.roomUid
           ? <Card.Title style={{fontSize:"16px",fontWeight:"900",color:"black"}} > {item.roomName} </Card.Title>
-          : <Card.Title style={{fontSize:"16px",fontWeight:"900",lineHeight:"5px"}} > {item.title}  </Card.Title> 
+          : <Card.Title style={{fontSize:"16px",fontWeight:"900",lineHeight:"5px"}} > {item.title} </Card.Title> 
         }
-          <Card.Text style={{fontSize:"12px",lineHeight:"14px" }}> {item.text||''} </Card.Text>
+          <Card.Text  style={{fontSize:"12px",lineHeight:"14px" }}> {item.text||''} </Card.Text> */}
+          <textarea  className="solvingArea"  ref={textRef} onChange={onSubmit} value={item.text||''}
+          //  placeholder={placeData.text2} ref={problemC} onChange={onSubmit} value={data.scamC}
+            />
+
         </Card.Body>
-      </div>
+      {/* </div> */}
      </Card>
 
     </div>

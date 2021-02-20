@@ -20,6 +20,7 @@ import Solving from './component/solving/Solving';
 import Startup from './component/startup/Startup';
 import Idea from './component/idea/Idea';
 import steering from './component/togo/steering.png';
+import Cube from './component/cube/Cube';
 
 function App({ fireApp,fireLogin,fireSync, fireTodo, fireIdea, fireOpentool,fireProblem}) {
   const history = useHistory();
@@ -123,7 +124,10 @@ function App({ fireApp,fireLogin,fireSync, fireTodo, fireIdea, fireOpentool,fire
             <Todo fireTodo={fireTodo} user={user} userName={userName} />
           </Route>
           <Route path='/mytool'> 
-            <Mytool fireTodo={fireTodo} user={user} userInfo={userInfo}/>
+            <Mytool fireApp={fireApp}fireSync={fireSync} user={user} userInfo={userInfo}/>
+          </Route>
+          <Route path='/opentool'> 
+            <Opentool fireApp={fireApp} fireIdea={fireIdea}  user={user} userInfo={userInfo} />
           </Route>
           <Route path='/scamper'> 
             <Scamper fireApp={fireApp} fireSync={fireSync} user={user} userInfo={userInfo} />
@@ -135,7 +139,7 @@ function App({ fireApp,fireLogin,fireSync, fireTodo, fireIdea, fireOpentool,fire
             <Price fireApp={fireApp} user={user} userInfo={userInfo} />
           </Route>
           <Route path='/opentool'> 
-            <Opentool fireApp={fireApp} user={user} userInfo={userInfo} />
+            <Opentool fireApp={fireApp} fireIdea={fireIdea}  user={user} userInfo={userInfo} />
           </Route>
           <Route path='/problem'>           
             <Problem fireSync={fireSync} fireProblem={fireProblem} user={user} userInfo={userInfo} />
@@ -146,6 +150,11 @@ function App({ fireApp,fireLogin,fireSync, fireTodo, fireIdea, fireOpentool,fire
           <Route path='/datastudy'>           
             <Datastudy fireProblem={fireProblem} fireSync={fireSync} user={user} userInfo={userInfo} />
           </Route>
+          
+          <Route path='/cube'>           
+            <Cube fireProblem={fireProblem} fireSync={fireSync} user={user} userInfo={userInfo} />
+          </Route>
+
           <Route path='/solving'>           
             <Solving fireIdea={fireIdea} fireSync={fireSync} user={user} userInfo={userInfo} />
           </Route>

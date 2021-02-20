@@ -1,9 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
-import './mytool.css';
 import Toolrow from './Toolrow';
 import Swal from 'sweetalert2';
 
-function Opentool({ fireApp, user, userInfo  }) {
+function Opentool({ fireIdea,fireApp, user, userInfo  }) {
 
   const today = new Date().toLocaleDateString();
   const textRef = useRef();
@@ -13,40 +12,44 @@ function Opentool({ fireApp, user, userInfo  }) {
   const [items, setItems] = useState({});
   const folder = "Opentool";
   const Swal = require('sweetalert2');
+  const level = userInfo.level || 0;
   // 데이터 보여주기 싱크
   useEffect(() => {    
-    fireApp.onAuth((e) => {
-    const cf = {
-      f1: (p)=>{setItems(p)},
-      f2: ()=>{setItems({})}
-      }
-   e ? fireApp.opentoolSync(folder,cf):console.log('no-User')
-    })
+    // fireApp.onAuth((e) => {
+    // const cf = { f1: (p)=>{setItems(p)}, f2: ()=>{setItems({})} }
+    //  if(e){
+    //    fireApp.opentoolSync(folder,cf);
+    //   }
+    //    else{return}
+    // })
+    const cf = { f1: (p)=>{setItems(p)}, f2: ()=>{setItems({})} }
+    fireApp.opentoolSync(folder,cf);
+    
   }, [fireApp]);
 
   //DB에 글 데이터 저장
   const submit = (e) => {
     e.preventDefault();
     if(e.currentTarget == null){return;}
+    const title = titleRef.current.value;
     const text = textRef.current.value;
     const text2 = textRef2.current.value;
-    const title = titleRef.current.value;
-    console.log(title,user,userInfo)
     if(!title || !text || !text2){ Swal.fire({title:'빈칸을 모두 채워주세요.',icon:'warning'}) }
     if (userInfo && title && text && text2) {
       rocketOn();
       const dataId = Date.now();
       const data = {
-        uid: user.uid,
+        uid: user.uid||'',
         dataId: dataId,
-        name: userInfo.name,
+        name: userInfo.name||'',
         title: title,
         text: text,
         text2: text2,
         today: today,
-        progress: 0
+        progress: 0,
+        color : 'secondary'
       }
-      fireApp.opentoolSave(folder,data);      
+      fireApp.opentoolSave(folder,data);       
       titleRef.current.value = '';
       textRef.current.value = '';
       textRef2.current.value = '';
@@ -68,7 +71,7 @@ function Opentool({ fireApp, user, userInfo  }) {
       <div className="mytool-items">
         {
           Object.keys(items).map((e) => {
-            return <Toolrow key={e} item={items[e]} fireApp={fireApp} />
+            return <Toolrow key={e} user={user} fireIdea={fireIdea} item={items[e]} fireApp={fireApp} level={level} />
           })
         }
       </div>

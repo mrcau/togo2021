@@ -64,7 +64,7 @@ function  Idearow ({item,fireIdea,level,roomName}) {
   }
   const fire = () => {Swal.fire({html:item.text2, width:'90%'})}
   return (
-    <div className="idearow" >
+    <div className="idearow" > 
      <Card bg={item.color} text={'white'} style={{ width: '12rem',height:'10rem' }} className="mb-2" >
       {item.roomUid 
       ? <Card.Header style={{fontSize:"large",fontWeight:"900",color:"black"}}>룸ID</Card.Header>
@@ -101,7 +101,7 @@ function  Idearow ({item,fireIdea,level,roomName}) {
       }
 
       <div className="cardTitle">
-        <Card.Body>
+        <Card.Body style={{padding:"8px",height:"100px",overflowY:"auto" }}>
         {item.roomUid
           ? <Card.Title style={{fontSize:"16px",fontWeight:"900",color:"black"}} > {item.roomName} </Card.Title>
           : <Card.Title style={{fontSize:"16px",fontWeight:"900",lineHeight:"5px"}} > {item.title}  </Card.Title> 

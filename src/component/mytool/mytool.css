@@ -23,13 +23,14 @@
 }
 .mytool-items {
   flex:  auto;
-  height: 200px;
   display: grid;
-  gap: 10px;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 40px;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
   grid-template-rows: repeat(auto-fill, 70px);
   padding: 10px;
+  padding-right: 30px;
   overflow-y:auto ;
+  overflow-x: hidden;
 }
 .mytool-form{
   display: grid;

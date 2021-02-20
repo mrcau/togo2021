@@ -1,51 +1,97 @@
-import './toolrow.css';
-import React, { memo, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Badge from '@material-ui/core/Badge';
 import { ThumbUp } from '@material-ui/icons';
+import { Card, DropdownButton,Dropdown,ButtonGroup } from 'react-bootstrap';
+import {  DeleteForever, } from '@material-ui/icons';
+import { IconButton } from '@material-ui/core';
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import FileCopyIcon from '@material-ui/icons/FileCopy';
 
-function  Toolrow ({item,fireTodo}) {
+function  Toolrow ({fireSync,item,level, user}) {
   const folder = "mytool";
   const Swal = require('sweetalert2');
-  // const [video, setVideo] = useState('');
   const fire = () => {Swal.fire({html:item.text2, width:'90%'})}
   const [Switch, setSwitch] = useState(true);
-
   let counter = item.progress;
-  const itemDel=() => {
-    fireTodo.itemDel(folder,item.uid,item.dataId)
-  }
+  
+    // 아이템 삭제
+    const itemDel = () => {      
+        Swal.fire({ 
+          title: '데이터를 삭제하겠습니까?',
+          icon:'warning',
+          showCancelButton: true})
+        .then((result) => {fireSync.opentoolDel(folder,user.uid,item.dataId)});
+      }      
+
   const plus = () => {
     Switch &&counter++;
-    fireTodo.itemUp(folder,item.uid,item.dataId,counter)
+    fireSync.opentoolUp(folder,user.uid,item.dataId,counter)
+    setSwitch(!Switch);
+
+  }
+  const minus = () => {
+    counter>0&&counter--;
+    fireSync.opentoolUp(folder,user.uid,item.dataId,counter)
     setSwitch(!Switch);
   }
-  // const minus = () => {
-  //   counter>0&&counter--;
-  //   fireTodo.itemUp(folder,item.uid,item.dataId,counter)
-  // }
+
+  const changeColor = (p)=>{
+    fireSync.itemColorUp(folder,user.uid,item.dataId,p);
+  }
+
+
   return (
     <div className="toolrow">
-      <div className="theader">
-        <div className="headerToday">{item.title}</div>
-        <Badge badgeContent={item.progress} color="secondary" style={{right:'10px'}}  
-          anchorOrigin={{vertical: 'bottom', horizontal: 'left', }}/>
-        <ThumbUp style={{color:'var(--Bcolor)'}} size="small" />        
+
+<Card bg={item.color} text={'white'} style={{ width: '12rem',height:'7rem' }} className="mb-2" >
+      
+      <Card.Header style={{display:'flex',justifyContent:"space-between" ,padding:'5px'}} >
+         <IconButton style={{width:'20px', height:'15px'}} > <DeleteForever onClick={itemDel} style={{color:'white'}} /></IconButton> 
+        {/* {user.uid===item.uid && */}
+        <DropdownButton as={ButtonGroup} variant={item.color} title="구분" size="sm" >
+          <div className="cardSelect">
+            <div>
+            <Dropdown.Item as="button" onClick={()=>changeColor('danger')} style={{color:"#d53343",textAlign:"center", fontSize:"18px",padding:"0 2px"}}>❶</Dropdown.Item>
+            </div>
+            <div>
+            <Dropdown.Item as="button" onClick={()=>changeColor('warning')} style={{color:"#f7bb07",textAlign:"center", fontSize:"18px",padding:"0 "}}>❷</Dropdown.Item>
+            </div>
+            <Dropdown.Item as="button" onClick={()=>changeColor('success')} style={{color:"#27a243",textAlign:"center", fontSize:"18px",padding:"0 "}}>❸</Dropdown.Item>
+            <Dropdown.Item as="button" onClick={()=>changeColor('primary')} style={{color:"#0077f7",textAlign:"center", fontSize:"18px",padding:"0 "}}>❹</Dropdown.Item>
+            <Dropdown.Item as="button" onClick={()=>changeColor('info')} style={{color:"#17a2b8",textAlign:"center", fontSize:"18px",padding:"0 "}}>❺</Dropdown.Item>
+            <Dropdown.Item as="button" onClick={()=>changeColor('secondary')} style={{color:"#697179",textAlign:"center", fontSize:"18px",padding:"0 "}}>❻</Dropdown.Item>
+            <Dropdown.Item as="button" onClick={()=>changeColor('dark')} style={{color:"#32383e",textAlign:"center", fontSize:"18px",padding:"0 2px"}}>❼</Dropdown.Item>
+          </div>
+        </DropdownButton>
+        {/* } */}
+          <IconButton style={{width:'30px', height:'20px'}} >
+            <CopyToClipboard text={item.text2}>
+              <FileCopyIcon style={{color:'white'}} size="small"  /> 
+            </CopyToClipboard>
+          </IconButton>
+          <IconButton style={{width:'30px', height:'20px'}} >
+          <VisibilityIcon style={{color:'white'}} size="small" onClick={fire} /> 
+          </IconButton>
+        
+
+        <IconButton style={{width:'20px', height:'15px'}} >
+          <Badge badgeContent={item.progress} color="secondary"   
+            anchorOrigin={{vertical: 'top', horizontal: 'right', }}> 
+          <ThumbUp style={{color:'white'}} size="small" onClick={Switch?plus:minus} />
+          </Badge>
+        </IconButton>
+      </Card.Header>      
+
+      <div className="cardTitle">
+        <Card.Body style={{padding:"8px",height:"55px",overflowY:"auto" }}>
+          <Card.Text style={{fontSize:"12px",lineHeight:"14px",padding:"0" }}> {item.text||''} </Card.Text>
+        </Card.Body>
       </div>
-      {/* <div className="title"> {item.text}</div>      */}
-      <textarea  className="title" cols="30" rows="2" style={{resize: 'none'}} 
-            value= {item.text} />
-      <textarea  className="text" cols="30" rows="2" style={{resize: 'none'}} 
-            value= {item.text2} />
-      <div className="btnG">
-        <button className="btn btn0" onClick={plus}>좋아요</button>
-        <button className="btn btn1" onClick={fire}>보기</button>
-        <CopyToClipboard text={item.text2}>
-        <button className="btn btn2" >복사</button>
-        </CopyToClipboard>
-        <button className="btn btn3" onClick={itemDel}>삭제</button>
-      </div>
+     </Card>
+
+
     </div>
   );
 }

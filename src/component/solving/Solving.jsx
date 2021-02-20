@@ -1,5 +1,5 @@
-import { Badge, IconButton, Switch } from '@material-ui/core';
-import {  DeleteForever,   MenuSharp, ThumbUp } from '@material-ui/icons';
+import {  IconButton} from '@material-ui/core';
+import {  DeleteForever,   MenuSharp } from '@material-ui/icons';
 import React, { memo, useEffect,  useRef, useState } from 'react';
 import AddCommentIcon from '@material-ui/icons/AddComment';
 import YouTubeIcon from '@material-ui/icons/YouTube';
@@ -17,7 +17,6 @@ function Solving({ fireIdea, fireSync, user, userInfo }) {
   const roomSubstr = 6;
   const Swal = require('sweetalert2');
   const level = userInfo.level || 0;
-    const problemP = useRef();
   const roomERef = useRef();
   const noticeRef = useRef();
   const titleRef = useRef();
@@ -37,10 +36,6 @@ function Solving({ fireIdea, fireSync, user, userInfo }) {
   //itemrow  
   const [items, setItems] = useState({});
   const today = new Date().toLocaleDateString();
-  const textRef = useRef();
-  const textRef2 = useRef();
-  const titleRef2 = useRef();
-  const rocketRef = useRef();
   const [color, setColor] = useState('primary');
   
    //데이터싱크 
@@ -80,12 +75,13 @@ function Solving({ fireIdea, fireSync, user, userInfo }) {
   
   //수업자료와 공지사항 싱크
   useEffect(() => {    
+    if(!roomName){return}
     if(roomName){ 
       const stopvideoSync = fireIdea.videoSync(folder,roomName,'See',(p)=>{setVideo(p); })
       const stopvideoSync2 = fireIdea.videoSync(folder,roomName,'Tok',(p)=>{
         setNotice(p); 
         titleRef.current.classList.add("noticeFly");
-        setTimeout(()=>{titleRef.current.classList.remove("noticeFly")},1000);
+        setTimeout(()=>{titleRef.current.classList.remove("noticeFly")},500);
       return ()=>{stopvideoSync(); stopvideoSync2(); }
     })
     }
@@ -114,16 +110,15 @@ function Solving({ fireIdea, fireSync, user, userInfo }) {
   const createRoom = () => {
     const num = Date.now().toString().substr(9);
     const newRoom = roomUid + num;
-    // setroomName(newRoom);
     const dataId = Date.now();
     const data = {
       dataId: dataId,      
-      name: userInfo.name,
-      title: '룸 ID',
-      color : 'Light',
+      uid : user.uid||'',
+      name: userInfo.name||'',
       roomName : newRoom,
-      uid : user.uid,
-      roomUid : num
+      roomUid : num,
+      progress: 0,
+      color : 'secondary',
     }
     fireIdea.roomGetSave(folder, newRoom, dataId, data);
   }
@@ -186,6 +181,7 @@ function Solving({ fireIdea, fireSync, user, userInfo }) {
 // notice 저장 - 공지 보내기
   const noticeUp = (e) => {
     e.preventDefault();
+    if(!roomName){return}
     const data = noticeRef.current.value;
     fireIdea.videoSave(folder, user.uid,'Tok', data)
     noticeRef.current.value='';
@@ -222,38 +218,26 @@ function Solving({ fireIdea, fireSync, user, userInfo }) {
     }
     
   } 
-  //로켓발사
-  const rocketOn = () => {
-    rocketRef.current.classList.add("rocketOn");
-    setTimeout(() => {
-      rocketRef.current.classList.remove("rocketOn");
-      clearTimeout(rocketOn);
-    }, 500);
-  }
-let title = 0;
+  
+
 const submit = (e) => {
-  e.preventDefault();
   if(!roomName&&!user.uid){return;}
    
-  // if(!title ){ Swal.fire({title:'제목을 입력해주세요.',icon:'warning'}) }
   if (userInfo  ) {
     // rocketOn();
     const dataId = Date.now();
     const data = {
-      uid: user.uid||'',
       dataId: dataId,
+      uid: user.uid||'',
       name: userInfo.name||'',
-      title: title,
-      // text: text,
+      title: '',
+      text: '',
       today: today,
       progress: 0,
       color : 'secondary'
     }
     if(roomName){fireIdea.itemSave2(folder, roomName, dataId, data)}
     else{fireIdea.itemSave(folder,data); }
-    // titleRef2.current.value = '';
-    // textRef.current.value = '';
-    title++;
   }
 }
 
@@ -290,19 +274,19 @@ const submit = (e) => {
         </IconButton>
         </div>    
 
-        <div className="voicechat" >             
+        <div className="voicechat" style={{marginLeft:"86px"}} >             
           <button style={{width:'30px'}}  onClick={fire}>
              <VoiceChatIcon fontSize='small' />
           </button>
           {/* onClick={moveModal} */}
-          <button style={{width:'30px'}} > 
+          {/* <button style={{width:'30px'}} > 
             <MenuSharp />
-          </button> 
+          </button>  */}
         </div>        
       </div>
         {/* <div className="noticeTitle" > 공지 </div> */}
       <div className="s-header noticeHeader" ref={titleRef}>
-        <div className="enterTitle" >{notice}</div>  
+        <div className="enterTitle" style={{background:"var(--Acolor)"}} >{notice}</div>  
       </div>
 
 {/* 여기부터 todo스타일 */}
@@ -310,19 +294,12 @@ const submit = (e) => {
         {/* <div className="s-item"> */}
         {
           Object.keys(items).map((e) => {
-            return <Solvingrow key={e} item={items[e]} roomName={roomName} fireIdea={fireIdea} level={level} setColor={setColor} color={color} />
+            return <div className="s-item"> 
+             <Solvingrow roomERef={roomERef} key={e} item={items[e]} roomName={roomName} fireIdea={fireIdea} level={level} setColor={setColor} color={color} />
+             </div>
           })
         }
-        {/* </div> */}
-        {/* <div className="idea-input">
-          <form onSubmit={submit} className="idea-form">
-            <input type="text" ref={titleRef2} className="inputTitle" placeholder="제목"/>
-            <button className="btnadd" style={{ outline: "none", border: "none" }} >
-              <span className="rocket" ref={rocketRef}  >🚀</span>  추가</button>
-            <textarea className="textarea" ref={textRef} cols="30" rows="2" placeholder="내용" />
-           
-          </form>
-        </div>         */}
+  
         </div>
       </div>      
   );

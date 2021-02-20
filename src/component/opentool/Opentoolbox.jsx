@@ -1,5 +1,4 @@
 import React, { useEffect,  useState } from 'react';
-import './mytool.css';
 import Toolrow from './Toolrow';
 import { Link} from 'react-router-dom';
 

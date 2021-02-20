@@ -1,11 +1,11 @@
 
-.problem{
+.solving{
   height: 100%;
   display: flex;
   flex-direction: column;
 }
 /* 서랍열고닫기 */
-.drawer{
+.solving .drawer{
   width:74vw;
   background:white;
   position: fixed;
@@ -15,24 +15,24 @@
   transition: all 300ms;
   z-index: 2;
 }
-.moveDrawer{
+.solving .moveDrawer{
   /* right:-60vw; */
   transform: translateX(-100vw);
 }
-.drawerback{
+.solving .drawerback{
   position: fixed;
   width: 100vw;
   height: 100vh;
   background-color: rgba(0,0,0,0.5);
 }
-.backNone{
+.solving .backNone{
   display: none;
 }
 /* 여기까지 서랍 */
 
-.enterNumber{  width: 150px;}
+.solving .enterNumber{  width: 150px;}
 
-.s-header{
+.solving .s-header{
   display: flex ;
   justify-content: space-between;
   background: var(--Ccolor);
@@ -40,16 +40,16 @@
   height:25px;
   /* padding: 0 10px; */
 }
-.enterWrap{ display: flex; width: 200px;}
-.enterInput{  display: flex; outline: none;
+.solving .enterWrap{ display: flex; width: 200px;}
+.solving .enterInput{  display: flex; outline: none;
 flex:auto; font-size: small;}
-.enterBtn{  width:50px;}
-.btnRoomDel{
+.solving .enterBtn{  width:40px;}
+.solving .btnRoomDel{
   width:30px;
   background: var(--Ccolor);
 }
 
-.s-items{ 
+.solving .s-items{ 
   flex:  auto;
   display: grid;
   gap: 5px;
@@ -58,13 +58,16 @@ flex:auto; font-size: small;}
   /* grid-template-rows: repeat(auto-fill, 70px); */
   padding: 10px;
   overflow-y:auto ;
+  flex: auto;
 }
-.s-item{
+.solving .s-item{
   display: flex;
-  flex-direction: column;
+   flex-direction: column;
+  background: none ;
+  border: none !important;
   /* background: var(--Bcolor); */
 }
-.s-itemTitle{
+.solving .s-itemTitle{
   background: var(--Acolor);
   color: var(--Bcolor);
   height: 25px;
@@ -73,7 +76,7 @@ flex:auto; font-size: small;}
   padding: 0 10px;
   line-height: 25px;
 }
-.s-intemInput{
+.solving .s-intemInput{
   width: 100%;
   flex: auto;
   outline: none;
@@ -85,7 +88,7 @@ flex:auto; font-size: small;}
   line-height: 14px;
 }
 
-.s-item ::-webkit-scrollbar {
+.solving .s-item ::-webkit-scrollbar {
   width: 4px;
 }
 .s-item ::-webkit-scrollbar-thumb {
@@ -178,9 +181,14 @@ flex:auto; font-size: small;}
 .enterBtn{  font-size: small; width:40px;}
 .enterWrap{ display: flex; width: 150px;}
 .nowRoom{padding: 0 10px;}
-.enterTitle{  flex: auto; font-size: small; 
-  width: 100%; overflow-x: auto; transition: all 300ms;
-  animation: noticeFly 1000ms;}
+.enterTitle{  
+  flex: auto; font-size: small; 
+  width: 100%; overflow-x: auto; 
+  transition: all 300ms;
+  animation: noticeFly 1000ms;
+}
+
+
 .enterInput{  width: 60px; outline: none; border: none;}
 /* .noticeTitle{ width: 40px; background: var(--Acolor);} */
 
