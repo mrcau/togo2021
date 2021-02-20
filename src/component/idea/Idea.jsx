@@ -52,7 +52,6 @@ function Idea({ fireIdea, fireSync, user, userInfo }) {
         f4: () => { setRoom({}) },
       }
       if (e && roomName) {
-         console.log('회원+리포트false',e,'룸네임:',data,'로그인중');
          setRoomUid(e.uid.substr(0, roomSubstr));
          setUserUID(e.uid);
           const stopDataSync = fireSync.dataSync(folder, roomName, cf);
@@ -60,7 +59,6 @@ function Idea({ fireIdea, fireSync, user, userInfo }) {
           return ()=>{stopDataSync();stoproomSync();}
       }
       else if(e && !roomName){ 
-          console.log('회원이지만 룸네임 없음.')
           setRoomUid(e.uid.substr(0, roomSubstr));
           setUserUID(e.uid);
            const stopitemSync = fireSync.itemSync(folder,user.uid, cf);        
@@ -68,10 +66,8 @@ function Idea({ fireIdea, fireSync, user, userInfo }) {
            return ()=>{stopitemSync();stoproomSync();}
       }
       else {
-          console.log('로그인정보 없음',roomName,user,userInfo);
-          if(!e&&!roomName){ console.log('룸네임이 없으면 퇴장');  return}
+          if(!e&&!roomName){  return}
           if(roomName){
-            console.log('비회원이지만 리포트가 true 이고 룸네임이 있으면','::',)         
             const stopDataSync = fireSync.dataSync(folder, roomName, cf);
           const stoproomSync = fireSync.roomSync(folder, roomUid, cf);
           return ()=>{stopDataSync();stoproomSync();}
@@ -136,24 +132,19 @@ function Idea({ fireIdea, fireSync, user, userInfo }) {
 
     // input roomName 초기화
     const roomNameReset=() => {
+      fireSync.videoSync(folder,roomName,'See',(p)=>{setVideo(p); },1);
+      fireSync.videoSync(folder,roomName,'Tok',(p)=>{setNotice(p);},1);  
       const cf = {
-        f1: (p) => { setItems({}) },
-        f2: () => { setItems({}) },
-        f3: (p) => {  setRoom({}) },
-        f4: () => { setRoom({}) },
+        f1: (p) => { setItems({}) },  f2: () => { setItems({}) },
+        f3: (p) => {  setRoom({}) },  f4: () => { setRoom({}) },
       }
-      const stopDataSync = fireSync.dataSync(folder, roomName,cf);
-      stopDataSync();
+      const cf2 = () => { setdata({});setRoom({});  }
+      fireSync.roomUser(folder,roomUid,cf2,1);        
+      fireSync.dataSync(folder, roomName, cf,1);
       roomERef.current.value=''; 
-
-      // const data = {}
-      
       setdata({});setroomName("");setDoor('입장'); setRoomUid('');
       setEntering(false); setSee(true); setRoom({}); setItems({});
-      setNotice('');setVideo('');
-      // window.location.reload(false); 
-      history.push('/idea');
-      
+      setNotice('');setVideo('');  history.push('/idea');      
     }  
              
   // roomName.substr(0,6) 방입장
@@ -163,7 +154,6 @@ function Idea({ fireIdea, fireSync, user, userInfo }) {
     if(entering){roomNameReset(); }
     if(roomvalue.length !== 10||!enterRoomId||entering){return;}
     if(roomvalue.length === 10&&!entering){       
-      console.log('hi')
         const cf1=()=>{
             setroomName(roomvalue);
             setRoomUid(enterRoomId);
@@ -211,12 +201,11 @@ function Idea({ fireIdea, fireSync, user, userInfo }) {
    
     // 아이템 삭제
   const dataDel = () => { 
-    console.log(items,items.length,Object.entries(items),Object.entries(items).length)
     if(Object.entries(items).length<1){ return}
     let entry = Object.entries(items)||[];
     const itemUid = entry[0][1].uid||'';
     // const itemUid2 = entry[0][1].uid||'';
-    if(!roomName&&itemUid && itemUid === user.uid){  console.log('1',itemUid);
+    if(!roomName&&itemUid && itemUid === user.uid){ 
       Swal.fire({ 
         title: '내정보를 삭제하겠습니까?',
         icon:'warning',
@@ -226,7 +215,7 @@ function Idea({ fireIdea, fireSync, user, userInfo }) {
       }});
       }  
       if(roomName!==roomERef.current.value||roomERef.current.value==='') { return }      
-      if(itemUid === user.uid){   console.log('2');
+      if(itemUid === user.uid){  
       Swal.fire({ 
         title: '토론방을 삭제하겠습니까?',
         text:"삭제될 토론방 : "+roomName,
@@ -251,7 +240,6 @@ function Idea({ fireIdea, fireSync, user, userInfo }) {
   }
 
 const submit = (e) => {
-  console.log(roomName,user.uid)
   e.preventDefault();
   if(!roomName&&!user.uid){return;}
   const title = titleRef2.current.value;

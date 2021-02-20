@@ -62,7 +62,6 @@ function Problem({ fireProblem, fireSync, user, userInfo }) {
         f4: () => { setRoom({}) },
       }
       if (e && report===false) {
-        console.log('회원+리포트false',e,'report::',report,'룸네임:',roomName,user,userInfo,'로그인중');
         setRoomUid(e.uid.substr(0, roomSubstr));
         setUserUID(e.uid);
        const stopDataSync = fireSync.dataSync(folder, roomName, cf);
@@ -74,10 +73,8 @@ function Problem({ fireProblem, fireSync, user, userInfo }) {
        return ()=>{stopdataSyncB();stoproomSync();}
       }
       else {
-        console.log('로그인정보 없음','report::',report,roomName,user,userInfo);
         // report===false||
         if(!e&&!roomName){
-        console.log('룸네임이 없으면 퇴장');
         return}
        const cf = {
           f1: (p) => { setdata(p) },
@@ -86,13 +83,12 @@ function Problem({ fireProblem, fireSync, user, userInfo }) {
           f4: () => { setRoom({}) },
         }
        if(report && roomName){
-         console.log('비회원이지만 리포트가 true 이고 룸네임이 있으면','report::',report)
          const stopdataSyncB =  fireSync.dataSyncB(folder, roomName, cf);
          const stoproomSync = fireSync.roomSync(folder, roomUid, cf);
          return ()=>{stopdataSyncB();stoproomSync();}
        }
       }
-    })
+    }) 
   }, [roomName,fireSync,report,roomUid,user,userInfo]);
   
   //수업자료와 공지사항 싱크
@@ -115,7 +111,6 @@ function Problem({ fireProblem, fireSync, user, userInfo }) {
     const [Switch3, setSwitch3] = useState(true);
     
     const goodPlus = (goodNum,Switch,setSwitch) => {
-      console.log('goodNum,Switch,roomName,report',goodNum,Switch,roomName,'리포트::',report)
         if(data[goodNum]===undefined){data[goodNum]=0}
         if(roomName){
       Switch ? data[goodNum]++ : data[goodNum]--;
@@ -125,7 +120,6 @@ function Problem({ fireProblem, fireSync, user, userInfo }) {
     }
     
     const goodPlus2 = (goodNum,Switch,setSwitch) => {
-      console.log('굿플러스2 goodNum,Switch,roomName,report',goodNum,Switch,roomName,report);
       setReport(true);
       if(data[goodNum]===undefined){data[goodNum]=0}
         if(roomName){
@@ -184,26 +178,38 @@ function Problem({ fireProblem, fireSync, user, userInfo }) {
     roomget < 8 && 
     fireProblem.roomSave(folder, newRoom, data)
   }
+
+    //데이터 리셋
+    const dataReset = () => {         
+      aTitle.current.value = '';
+      bName.current.value = '';
+      input3.current.value = '';
+      input4.current.value = '';
+      input5.current.value = '';
+      input6.current.value = '';
+      roomERef.current.value = '';
+      problemS.current.value = '';
+      problemC.current.value = '';
+      problemA.current.value = '';
+      problemM.current.value = '';
+      problemP.current.value = '';
+    }
+      
     // input roomName 초기화
     const roomNameReset=() => {
-      const stopvideoSync = fireSync.videoSync(folder,roomName,'See',(p)=>{setVideo(p); })
-      stopvideoSync(); 
-
-      const cf = {
-        f1: (p) => { setdata({}) },
-        f2: () => { setdata({}) },
-        f3: (p) => {  setRoom({}) },
-        f4: () => { setRoom({}) },
-      }
-      const stopDataSync = fireSync.dataSync(folder, roomName, cf);
-      stopDataSync();
-
-      roomERef.current.value=''; 
-      const data = {scamS:'',scamC:'',scamA:'',scamM:'',scamP:'', aTitle:'',bName: '',input3: '',input4:'',input5:'',input6:'', roomName:''}
-      setdata(data);setroomName("");setDoor('입장'); setRoomUid('');
+      fireSync.videoSync(folder,roomName,'See',(p)=>{setVideo(p); },1);
+      fireSync.videoSync(folder,roomName,'Tok',(p)=>{setNotice(p);},1); 
+      const cf = {     f1: (p) => { setdata({}) },  f2: () => { setdata({}) },
+        f3: (p) => {  setRoom({}) }, f4: () => { setRoom({}) },
+        }
+      const cf2 = () => { setdata({});setRoom({});  }
+      fireSync.roomUser(folder,roomUid,cf2,1);        
+      fireSync.dataSync(folder, roomName, cf,1);
+      
+      dataReset();setroomName("");setDoor('입장'); setRoomUid('');
       setReport(false); setEntering(false); setSee(true); setRoom({});
       setNotice('');setVideo('');history.push('/problem');
-      // window.location.reload(false); 
+      roomERef.current.value=''; 
     }  
     const roomNameHide = ()=>{roomERef.current.value=''; }
     const roomRowReset=() => {console.log('roomRowReset')
@@ -215,6 +221,7 @@ function Problem({ fireProblem, fireSync, user, userInfo }) {
       // setRoom({});
       setNotice('');setVideo('');
     }  
+
            
   // roomName.substr(0,6) 방입장
   const enterRoom = () => {
@@ -290,22 +297,6 @@ function Problem({ fireProblem, fireSync, user, userInfo }) {
     fireProblem.dataUp(folder, roomName, data);
   }
 
-  //데이터 리셋
-  const dataReset = () => {         
-    aTitle.current.value = '';
-    bName.current.value = '';
-    input3.current.value = '';
-    input4.current.value = '';
-    input5.current.value = '';
-    input6.current.value = '';
-    roomERef.current.value = '';
-    problemS.current.value = '';
-    problemC.current.value = '';
-    problemA.current.value = '';
-    problemM.current.value = '';
-    problemP.current.value = '';
-  }
-    
 
    // 보고서 제출
    const btnInput = (e) => {

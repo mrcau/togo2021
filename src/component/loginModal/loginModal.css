@@ -1,13 +1,16 @@
 /* 모달창 */
 .loginModal {
-  /* height: 400px; */
+  height: 50vh;
   max-width: 800px;
   padding:20px;
-  overflow: hidden;
+  overflow-y:auto;
   margin: auto;
 }
 /* 모달내부 */
-
+.loginModal .auth{
+  /* height: 90%; */
+  overflow-y: auto;
+}
 .loginModal h4{
   font-weight:900;
   color:var(--Acolor);
@@ -52,6 +55,7 @@
   padding:0;
   width: 40px;
   margin:0;
+  height: 70px;
   font-size: 40px;
   color:var(--Acolor);
   
@@ -66,6 +70,7 @@
 .btnRegister{
   color: var(--Acolor);
   text-align: left;
+  height: 50px;
 }
 .btnRegister:hover{
   color:var(--Bcolor);

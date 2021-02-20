@@ -147,7 +147,7 @@ function App({ fireApp,fireLogin,fireSync, fireTodo, fireIdea, fireOpentool,fire
             <Datastudy fireProblem={fireProblem} fireSync={fireSync} user={user} userInfo={userInfo} />
           </Route>
           <Route path='/solving'>           
-            <Solving fireProblem={fireProblem} fireSync={fireSync} user={user} userInfo={userInfo} />
+            <Solving fireIdea={fireIdea} fireSync={fireSync} user={user} userInfo={userInfo} />
           </Route>
           <Route path='/startup'> 
             <Startup fireProblem={fireProblem} fireSync={fireSync} user={user} userInfo={userInfo} />

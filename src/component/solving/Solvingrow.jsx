@@ -1,4 +1,4 @@
-import './idearow.css';
+import './solvingrow.css';
 import React, { memo, useState } from 'react';
 import Swal from 'sweetalert2';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
@@ -7,8 +7,8 @@ import { ThumbUp } from '@material-ui/icons';
 import { Card, DropdownButton,Dropdown,ButtonGroup } from 'react-bootstrap';
 import {  DeleteForever, } from '@material-ui/icons';
 import VisibilityIcon from '@material-ui/icons/Visibility';
-function  Idearow ({item,fireIdea,level,roomName}) {
-  const folder = "idea";
+function  Solvingrow ({item,fireIdea,level,roomName}) {
+  const folder = "solving";
   const Swal = require('sweetalert2');
   // const [video, setVideo] = useState('');
   const [Switch, setSwitch] = useState(true);
@@ -64,7 +64,7 @@ function  Idearow ({item,fireIdea,level,roomName}) {
   }
   const fire = () => {Swal.fire({html:item.text2, width:'90%'})}
   return (
-    <div className="idearow" >
+    <div className="solvingrow" >
      <Card bg={item.color} text={'white'} style={{ width: '12rem',height:'10rem' }} className="mb-2" >
       {item.roomUid 
       ? <Card.Header style={{fontSize:"large",fontWeight:"900",color:"black"}}>룸ID</Card.Header>
@@ -115,5 +115,5 @@ function  Idearow ({item,fireIdea,level,roomName}) {
   );
 }
 
-export default memo(Idearow);
+export default memo(Solvingrow);
 

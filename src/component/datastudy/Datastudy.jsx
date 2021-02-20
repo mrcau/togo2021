@@ -57,13 +57,10 @@ function Datastudy({ fireProblem, fireSync, user, userInfo }) {
   useEffect(() => {
     fireSync.onAuth((e) => {
       const cf = {
-        f1: (p) => { setdata(p) },
-        f2: () => { setdata({}) },
-        f3: (p) => { setRoom(p) },
-        f4: () => { setRoom({}) },
+        f1: (p) => { setdata(p) },  f2: () => { setdata({}) },
+        f3: (p) => { setRoom(p) },  f4: () => { setRoom({}) },
       }
       if (e && report===false) {
-        console.log('회원+리포트false',e,'report::',report,'룸네임:',roomName,user,userInfo,'로그인중');
         setRoomUid(e.uid.substr(0, roomSubstr));
         setUserUID(e.uid);
        const stopDataSync = fireSync.dataSync(folder, roomName, cf);
@@ -75,19 +72,11 @@ function Datastudy({ fireProblem, fireSync, user, userInfo }) {
        return ()=>{stopdataSyncB();stoproomSync();}
       }
       else {
-        console.log('로그인정보 없음','report::',report,roomName,user,userInfo);
-        // report===false||
-        if(!e&&!roomName){
-        console.log('룸네임이 없으면 퇴장');
-        return}
-       const cf = {
-          f1: (p) => { setdata(p) },
-          f2: () => { setdata({}) },
-          f3: (p) => { setRoom(p) },
-          f4: () => { setRoom({}) },
+        if(!e&&!roomName){ return}
+        const cf = { f1: (p) => { setdata(p) }, f2: () => { setdata({}) },
+          f3: (p) => { setRoom(p) },  f4: () => { setRoom({}) },
         }
        if(report && roomName){
-         console.log('비회원이지만 리포트가 true 이고 룸네임이 있으면','report::',report)
          const stopdataSyncB =  fireSync.dataSyncB(folder, roomName, cf);
          const stoproomSync = fireSync.roomSync(folder, roomUid, cf);
          return ()=>{stopdataSyncB();stoproomSync();}
@@ -198,8 +187,8 @@ function Datastudy({ fireProblem, fireSync, user, userInfo }) {
 
     // input roomName 초기화
     const roomNameReset=() => {
-      fireSync.videoSync(folder,roomName,'See',(p)=>{setVideo(p); },1)
-      fireSync.videoSync(folder,roomName,'Tok',(p)=>{setNotice(p);},1)      
+      fireSync.videoSync(folder,roomName,'See',(p)=>{setVideo(p); },1);
+      fireSync.videoSync(folder,roomName,'Tok',(p)=>{setNotice(p);},1);      
       const cf = {  f1: (p) => { setdata({}) }, f2: () => { setdata({}) },
                     f3: (p) => { setRoom({}) }, f4: () => { setRoom({}) },
       }
