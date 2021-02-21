@@ -52,9 +52,7 @@ function  Idearow ({item,fireIdea,level,roomName}) {
       }});
     }
     }
-  const cardColor =  [
-    'primary','secondary','success','danger','warning','info','dark',// 'Light',
-  ]
+    
   const changeColor = (p)=>{
     if(roomName){
       fireIdea.itemColorUp2(folder,roomName,item.dataId,p)

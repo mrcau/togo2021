@@ -1,17 +1,20 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Itemrow from './Itemrow';
 import './todo.css';
+import { DropdownButton,Dropdown,ButtonGroup } from 'react-bootstrap';
 
-function Todo({ fireTodo, user, userName,  }) {
+function Todo({ fireTodo, user, userName, setlogoName }) {
 
+  const folder = "todo"
   const today = new Date().toLocaleDateString();
   const textRef = useRef();
   const titleRef = useRef();
   const rocketRef = useRef();
   const [items, setItems] = useState({});
+  const [color, setColor] = useState('secondary')
   const [todoCount, setTodoCount] = useState(0);
-  const folder = "todo"
-  console.log(user)
+  setlogoName('ToDo');
+
   // 데이터 보여주기 싱크
   useEffect(() => {    
     // fireTodo.onAuth((e) => {
@@ -39,7 +42,8 @@ function Todo({ fireTodo, user, userName,  }) {
         title: title,
         text: text,
         today: today,
-        progress: 0
+        progress: 0,
+        color : color
       }
       fireTodo.itemSave(folder,data)
     }
@@ -58,7 +62,6 @@ function Todo({ fireTodo, user, userName,  }) {
 
   return (
     <div className="todo">
-      <div className='todo-header'> 할일 {todoCount}개</div>
       <div className="todo-items">
         {
           Object.keys(items).map((e) => {
@@ -69,6 +72,21 @@ function Todo({ fireTodo, user, userName,  }) {
       </div>
       <div className="todo-input">
         <form onSubmit={submit} className="todo-form">
+          <DropdownButton as={ButtonGroup} variant={color} title="구분" size="sm" >
+          <div className="cardSelect">
+            <div>
+            <Dropdown.Item as="button" onClick={()=>setColor('danger')} style={{color:"#d53343",textAlign:"center", fontSize:"18px",padding:"0 2px"}}>❶</Dropdown.Item>
+            </div>
+            <div>
+            <Dropdown.Item as="button" onClick={()=>setColor('warning')} style={{color:"#f7bb07",textAlign:"center", fontSize:"18px",padding:"0 "}}>❷</Dropdown.Item>
+            </div>
+            <Dropdown.Item as="button" onClick={()=>setColor('success')} style={{color:"#27a243",textAlign:"center", fontSize:"18px",padding:"0 "}}>❸</Dropdown.Item>
+            <Dropdown.Item as="button" onClick={()=>setColor('primary')} style={{color:"#0077f7",textAlign:"center", fontSize:"18px",padding:"0 "}}>❹</Dropdown.Item>
+            <Dropdown.Item as="button" onClick={()=>setColor('info')} style={{color:"#17a2b8",textAlign:"center", fontSize:"18px",padding:"0 "}}>❺</Dropdown.Item>
+            <Dropdown.Item as="button" onClick={()=>setColor('secondary')} style={{color:"#697179",textAlign:"center", fontSize:"18px",padding:"0 "}}>❻</Dropdown.Item>
+            <Dropdown.Item as="button" onClick={()=>setColor('dark')} style={{color:"#32383e",textAlign:"center", fontSize:"18px",padding:"0 2px"}}>❼</Dropdown.Item>
+          </div>
+        </DropdownButton>
           <input type="text" ref={titleRef} className="inputTitle" />
           <button className="btnadd" onClick={rocketOn} style={{ outline: "none", border: "none" }} >
             <span className="rocket" ref={rocketRef}  >🚀</span>  추가</button>

@@ -3,7 +3,7 @@ import './mytool.css';
 import Toolrow from './Toolrow';
 import Swal from 'sweetalert2';
 
-function Mytool({fireIdea,fireApp, fireSync,user, userInfo }) {
+function Mytool({fireIdea,fireApp, fireSync,user, userInfo, setlogoName }) {
   const today = new Date().toLocaleDateString();
   const textRef = useRef();
   const textRef2 = useRef();
@@ -13,6 +13,7 @@ function Mytool({fireIdea,fireApp, fireSync,user, userInfo }) {
   const folder = "mytool"
   const Swal = require('sweetalert2');
   const level = userInfo.level || 0;
+  setlogoName('My ToolBox');
   // 데이터 보여주기 싱크
   useEffect(() => {    
     fireSync.onAuth((e) => {
@@ -65,7 +66,6 @@ function Mytool({fireIdea,fireApp, fireSync,user, userInfo }) {
 
   return (
     <div className="mytool">
-      <div className='mytool-header'>  My ToolBox</div>
       <div className="mytool-items">
         {
           Object.keys(items).map((e) => {

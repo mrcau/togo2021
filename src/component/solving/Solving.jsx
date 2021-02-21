@@ -12,7 +12,7 @@ import { useHistory,useParams } from 'react-router-dom';
 import Solvingrow from './Solvingrow';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 
-function Solving({ fireIdea, fireSync, user, userInfo }) {
+function Solving({ fireIdea, fireSync, user, userInfo ,setlogoName }) {
   const folder = "solving";
   const roomSubstr = 6;
   const Swal = require('sweetalert2');
@@ -38,9 +38,10 @@ function Solving({ fireIdea, fireSync, user, userInfo }) {
   const [items, setItems] = useState({});
   const today = new Date().toLocaleDateString();
   const [color, setColor] = useState('primary');
-  
+  setlogoName('실시간톡');
    //데이터싱크 
   useEffect(() => {
+    if(id.length===10){roomERef.current.value=id; enterRoom();}
     fireSync.onAuth((e) => {
       const cf = {
         f1: (p) => { setItems(p) },
@@ -81,8 +82,8 @@ function Solving({ fireIdea, fireSync, user, userInfo }) {
       const stopvideoSync = fireIdea.videoSync(folder,roomName,'See',(p)=>{setVideo(p); })
       const stopvideoSync2 = fireIdea.videoSync(folder,roomName,'Tok',(p)=>{
         setNotice(p); 
-        titleRef.current.classList.add("noticeFly");
-        setTimeout(()=>{titleRef.current.classList.remove("noticeFly")},500);
+        // titleRef.current.classList.add("noticeFly");
+        // setTimeout(()=>{titleRef.current.classList.remove("noticeFly")},500);
       return ()=>{stopvideoSync(); stopvideoSync2(); }
     })
     }
@@ -138,7 +139,7 @@ function Solving({ fireIdea, fireSync, user, userInfo }) {
       roomERef.current.value=''; 
       setdata({});setroomName("");setDoor('입장'); setRoomUid('');
       setEntering(false); setSee(true); setRoom({}); setItems({});
-      setNotice('');setVideo('');  history.push('/solving');      
+      setNotice('');setVideo('');  history.push('/solving/:id');      
     }  
              
   // roomName.substr(0,6) 방입장

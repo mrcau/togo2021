@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import Toolrow from './Toolrow';
 import Swal from 'sweetalert2';
 
-function Opentool({ fireIdea,fireApp, user, userInfo  }) {
+function Opentool({ fireIdea,fireApp, user, userInfo,setlogoName }) {
 
   const today = new Date().toLocaleDateString();
   const textRef = useRef();
@@ -13,6 +13,7 @@ function Opentool({ fireIdea,fireApp, user, userInfo  }) {
   const folder = "Opentool";
   const Swal = require('sweetalert2');
   const level = userInfo.level || 0;
+  setlogoName('Open ToolBox');
   // 데이터 보여주기 싱크
   useEffect(() => {    
     // fireApp.onAuth((e) => {
@@ -67,7 +68,6 @@ function Opentool({ fireIdea,fireApp, user, userInfo  }) {
 
   return (
     <div className="mytool">
-      <div className='mytool-header'>  Open ToolBox</div>
       <div className="mytool-items">
         {
           Object.keys(items).map((e) => {

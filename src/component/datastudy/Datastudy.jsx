@@ -11,7 +11,7 @@ import placeholder from './placeholder';
 import { useHistory,useParams } from 'react-router-dom';
 import fireproblem from '../../service/fireproblem';
 
-function Datastudy({ fireProblem, fireSync, user, userInfo }) {
+function Datastudy({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
   const folder = "datastudy";
   const roomSubstr = 6;
   const Swal = require('sweetalert2');
@@ -53,7 +53,7 @@ function Datastudy({ fireProblem, fireSync, user, userInfo }) {
   const [report, setReport] = useState(false);
   const [userUID, setUserUID] = useState('');
   // const [cube, setCube] = useState('');
-  
+  setlogoName('Data analysis');
    //데이터싱크 
   useEffect(() => {
     fireSync.onAuth((e) => {
@@ -88,12 +88,14 @@ function Datastudy({ fireProblem, fireSync, user, userInfo }) {
   
   //수업자료와 공지사항 싱크
   useEffect(() => {    
+    if(id.length===10){roomERef.current.value=id; enterRoom();}
     if(roomName&&!report){ 
       const stopvideoSync = fireSync.videoSync(folder,roomName,'See',(p)=>{setVideo(p); })
       const stopvideoSync2 = fireSync.videoSync(folder,roomName,'Tok',(p)=>{
         setNotice(p); 
-        titleRef.current.classList.add("noticeFly");
-        setTimeout(()=>{titleRef.current.classList.remove("noticeFly")},1000);})
+        // titleRef.current.classList.add("noticeFly");
+        // setTimeout(()=>{titleRef.current.classList.remove("noticeFly")},1000);
+      })
         return ()=>{stopvideoSync(); stopvideoSync2(); }
     }
      
@@ -199,7 +201,7 @@ function Datastudy({ fireProblem, fireSync, user, userInfo }) {
       fireSync.cubeSync(folder, roomName, 'T1','t1',1);      
       dataReset(); setroomName("");setDoor('입장'); setRoomUid('');
       setReport(false); setEntering(false); setSee(true); setRoom({});
-      setNotice('');setVideo('');history.push('/datastudy');
+      setNotice('');setVideo('');history.push('/datastudy/:id');
       roomERef.current.value='';  setdata({});
     }  
     

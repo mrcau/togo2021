@@ -11,7 +11,7 @@ import placeholder from './placeholder';
 import { useHistory,useParams } from 'react-router-dom';
 import firesync from '../../service/firesync';
 
-function Scamper({ fireApp, fireSync, user, userInfo }) {
+function Scamper({ fireApp, fireSync, user, userInfo ,setlogoName }) {
   const folder = "scamper";
   const roomSubstr = 6;
   const Swal = require('sweetalert2');
@@ -55,9 +55,10 @@ function Scamper({ fireApp, fireSync, user, userInfo }) {
   const [door, setDoor] = useState('입장')
   const [report, setReport] = useState(false);
   const [userUID, setUserUID] = useState('');
-  
+  setlogoName('IDEA');
    //데이터싱크 
   useEffect(() => {
+    if(id.length===10){roomERef.current.value=id; enterRoom();}
     fireApp.onAuth((e) => {
       const cf = {
         f1: (p) => { setdata(p) },
@@ -93,7 +94,7 @@ function Scamper({ fireApp, fireSync, user, userInfo }) {
        }
       }
     })
-  }, [roomName,fireSync,report,roomUid,fireSync]);
+  }, [roomName,fireSync,report,roomUid,fireApp]);
   
   // 수업자료와 공지사항 싱크
   useEffect(() => {    
@@ -101,8 +102,9 @@ function Scamper({ fireApp, fireSync, user, userInfo }) {
       const stopvideoSync = fireSync.videoSync(folder,roomName,'See',(p)=>{setVideo(p); })
       const stopvideoSync2 = fireSync.videoSync(folder,roomName,'Tok',(p)=>{
         setNotice(p); 
-        titleRef.current.classList.add("noticeFly");
-        setTimeout(()=>{titleRef.current.classList.remove("noticeFly")},1000)})
+        // titleRef.current.classList.add("noticeFly");
+        // setTimeout(()=>{titleRef.current.classList.remove("noticeFly")},1000)
+      })
       return ()=>{stopvideoSync(); stopvideoSync2(); }
     }
      
@@ -202,11 +204,11 @@ function Scamper({ fireApp, fireSync, user, userInfo }) {
 
       dataReset(); setroomName("");setDoor('입장'); setRoomUid('');
       setReport(false); setEntering(false); setSee(true); setRoom({});
-      setNotice('');setVideo('');history.push('/scamper');
+      setNotice('');setVideo('');history.push('/scamper/:id');
       roomERef.current.value=''; 
     }  
     const roomNameHide = ()=>{roomERef.current.value=''; }
-    const roomRowReset=() => {console.log('roomRowReset')
+    const roomRowReset=() => {
       roomERef.current.value=''; 
       const data = {scamS:'',scamC:'',scamA:'',scamM:'',scamP:'',scamE:'',scamR:'', aTitle:'',bName: '',input3: '',input4:'',input5:'',input6:'', roomName:''}
       setdata(data);

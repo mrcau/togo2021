@@ -11,7 +11,7 @@ import { useHistory, useParams } from 'react-router-dom';
 import firesync from '../../service/firesync';
 import Idearow from './Idearow';
 
-function Idea({ fireIdea, fireSync, user, userInfo }) {
+function Idea({ fireIdea, fireSync, user, userInfo ,setlogoName}) {
   const folder = "postit";
   const {id}=useParams();
   const [roomName, setroomName] = useState(id||'');
@@ -43,9 +43,10 @@ function Idea({ fireIdea, fireSync, user, userInfo }) {
   const titleRef2 = useRef();
   const rocketRef = useRef();
   const [color, setColor] = useState('primary');
-  
+  setlogoName('포스트잇');
    //데이터싱크 
   useEffect(() => {
+    if(id.length===10){roomERef.current.value=id; enterRoom();}
     fireSync.onAuth((e) => {
       const cf = {
         f1: (p) => { setItems(p) },
@@ -85,8 +86,8 @@ function Idea({ fireIdea, fireSync, user, userInfo }) {
       const stopvideoSync = fireIdea.videoSync(folder,roomName,'See',(p)=>{setVideo(p); })
       const stopvideoSync2 = fireIdea.videoSync(folder,roomName,'Tok',(p)=>{
         setNotice(p); 
-        titleRef.current.classList.add("noticeFly");
-        setTimeout(()=>{titleRef.current.classList.remove("noticeFly")},1000);
+        // titleRef.current.classList.add("noticeFly");
+        // setTimeout(()=>{titleRef.current.classList.remove("noticeFly")},1000);
       return ()=>{stopvideoSync(); stopvideoSync2(); }
     })
     }
@@ -146,7 +147,7 @@ function Idea({ fireIdea, fireSync, user, userInfo }) {
       roomERef.current.value=''; 
       setdata({});setroomName("");setDoor('입장'); setRoomUid('');
       setEntering(false); setSee(true); setRoom({}); setItems({});
-      setNotice('');setVideo('');  history.push('/postit');      
+      setNotice('');setVideo('');  history.push('/postit/:id');      
     }  
              
   // roomName.substr(0,6) 방입장

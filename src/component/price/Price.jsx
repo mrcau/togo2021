@@ -2,7 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import Swal from 'sweetalert2';
 import "./price.css";
 
-function Price({fireApp,user,userInfo}) {
+function Price({fireApp,user,userInfo,setlogoName}) {
+  setlogoName('');
  
   return (
     <div className="price">      

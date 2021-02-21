@@ -100,7 +100,7 @@ function App({ fireApp,fireLogin,fireSync, fireTodo, fireIdea, fireOpentool,fire
           <MenuSharpIcon style={{color:"var(--Bcolor)",marginRight:"auto"}}   /> 
         </IconButton>
         {/* /타이틀 */}
-        <div className="headerT">
+        <div className="headerT" onClick={()=>setlogoName('')}>
           <Link className="link" to='/'> <img src={steering} width="25px"  alt="logo"/> <span style={{fontSize:'large',color:'white'}}>{logoName}</span>  </Link>
         </div> 
         {/* 탑메뉴 */}
@@ -119,45 +119,45 @@ function App({ fireApp,fireLogin,fireSync, fireTodo, fireIdea, fireOpentool,fire
             <Togo setlogoName={setlogoName} fireApp={fireApp} user={user} userInfo={userInfo}/>
           </Route>
           <Route path='/mypage'> 
-            <Mypage fireApp={fireApp} user={user} userInfo={userInfo} />
+            <Mypage fireApp={fireApp} user={user} userInfo={userInfo} setlogoName={setlogoName} />
           </Route>
           <Route path='/todo'>
-            <Todo fireTodo={fireTodo} user={user} userName={userName} />
+            <Todo fireTodo={fireTodo} user={user} userName={userName} setlogoName={setlogoName} />
           </Route>
           <Route path='/mytool'> 
-            <Mytool fireApp={fireApp}fireSync={fireSync} user={user} userInfo={userInfo}/>
+            <Mytool fireApp={fireApp}fireSync={fireSync} user={user} userInfo={userInfo} setlogoName={setlogoName} />
           </Route>
           <Route path='/opentool'> 
-            <Opentool fireApp={fireApp} fireIdea={fireIdea}  user={user} userInfo={userInfo} />
+            <Opentool fireApp={fireApp} fireIdea={fireIdea}  user={user} userInfo={userInfo} setlogoName={setlogoName} />
           </Route>
           <Route path='/scamper/:id'> 
-            <Scamper fireApp={fireApp} fireSync={fireSync} user={user} userInfo={userInfo} />
+            <Scamper fireApp={fireApp} fireSync={fireSync} user={user} userInfo={userInfo} setlogoName={setlogoName}  />
           </Route>
           <Route path='/atable'> 
-            <Atable fireApp={fireApp} user={user} userName={userName} />
+            <Atable fireApp={fireApp} user={user} userName={userName} setlogoName={setlogoName} />
           </Route>  
           <Route path='/price'> 
-            <Price fireApp={fireApp} user={user} userInfo={userInfo} />
+            <Price fireApp={fireApp} user={user} userInfo={userInfo} setlogoName={setlogoName} />
           </Route>
           <Route path='/problem/:id'>           
-            <Problem fireSync={fireSync} fireProblem={fireProblem} user={user} userInfo={userInfo} />
+            <Problem fireSync={fireSync} fireProblem={fireProblem} user={user} userInfo={userInfo} setlogoName={setlogoName} />
           </Route>
           <Route path="/postit/:id"> 
-            <Idea fireSync={fireSync} fireIdea={fireIdea} user={user} userInfo={userInfo} />
+            <Idea fireSync={fireSync} fireIdea={fireIdea} user={user} userInfo={userInfo} setlogoName={setlogoName} />
           </Route>
           <Route path='/datastudy/:id'>           
-            <Datastudy fireProblem={fireProblem} fireSync={fireSync} user={user} userInfo={userInfo} />
+            <Datastudy fireProblem={fireProblem} fireSync={fireSync} user={user} userInfo={userInfo} setlogoName={setlogoName} />
           </Route>
           
           <Route path='/cube/:id'>           
-            <Cube fireProblem={fireProblem} fireSync={fireSync} user={user} userInfo={userInfo} />
+            <Cube fireProblem={fireProblem} fireSync={fireSync} user={user} userInfo={userInfo} setlogoName={setlogoName} />
           </Route>
 
           <Route path='/solving/:id'>           
-            <Solving fireIdea={fireIdea} fireSync={fireSync} user={user} userInfo={userInfo} />
+            <Solving fireIdea={fireIdea} fireSync={fireSync} user={user} userInfo={userInfo}setlogoName={setlogoName}  />
           </Route>
           <Route path='/startup/:id'> 
-            <Startup fireProblem={fireProblem} fireSync={fireSync} user={user} userInfo={userInfo} />
+            <Startup fireProblem={fireProblem} fireSync={fireSync} user={user} userInfo={userInfo} setlogoName={setlogoName} />
           </Route>
           
           
