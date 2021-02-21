@@ -18,7 +18,7 @@ import Problem from './component/problem/Problem';
 import Datastudy from './component/datastudy/Datastudy';
 import Solving from './component/solving/Solving';
 import Startup from './component/startup/Startup';
-import Idea from './component/idea/Idea';
+import Idea from './component/postit/Idea';
 import steering from './component/togo/steering.png';
 import Cube from './component/cube/Cube';
 
@@ -26,6 +26,7 @@ function App({ fireApp,fireLogin,fireSync, fireTodo, fireIdea, fireOpentool,fire
   const history = useHistory();
   const [user, setuser] = useState({});
   const [uid, setUid] = useState('');
+  const [logoName, setlogoName] = useState('처음');
   const [photo, setPhoto] = useState('');
   const [userName, setUserName] = useState('');
   const drawerRef = useRef();
@@ -82,7 +83,7 @@ function App({ fireApp,fireLogin,fireSync, fireTodo, fireIdea, fireOpentool,fire
   return (
     <div className="App"> 
       <div className="drawerLeft" ref={drawerRef}>
-        <LeftMenu fireApp={fireApp} user={user} photo={photo} setPhoto={setPhoto} logout={logout} userInfo={userInfo} moveModal2={moveModal2} />
+        <LeftMenu setlogoName={setlogoName} fireApp={fireApp} user={user} photo={photo} setPhoto={setPhoto} logout={logout} userInfo={userInfo} moveModal2={moveModal2} />
       </div>
       <div className="drawerbackLeft backNoneLeft" ref={backRef} onClick={moveModal2}></div>
       {/* 위쪽메뉴 */}
@@ -100,7 +101,7 @@ function App({ fireApp,fireLogin,fireSync, fireTodo, fireIdea, fireOpentool,fire
         </IconButton>
         {/* /타이틀 */}
         <div className="headerT">
-          <Link className="link" to='/'> <img src={steering} width="25px"  alt="logo"/> </Link>
+          <Link className="link" to='/'> <img src={steering} width="25px"  alt="logo"/> <span style={{fontSize:'large',color:'white'}}>{logoName}</span>  </Link>
         </div> 
         {/* 탑메뉴 */}
         <div className="rightMenu" style={{textAlign:"right",paddingRight:"10px",lineHeight:"20px"}}>
@@ -115,7 +116,7 @@ function App({ fireApp,fireLogin,fireSync, fireTodo, fireIdea, fireOpentool,fire
       <main>
         <Switch>
           <Route exact path='/'>
-            <Togo fireApp={fireApp} user={user} userInfo={userInfo}/>
+            <Togo setlogoName={setlogoName} fireApp={fireApp} user={user} userInfo={userInfo}/>
           </Route>
           <Route path='/mypage'> 
             <Mypage fireApp={fireApp} user={user} userInfo={userInfo} />
@@ -129,7 +130,7 @@ function App({ fireApp,fireLogin,fireSync, fireTodo, fireIdea, fireOpentool,fire
           <Route path='/opentool'> 
             <Opentool fireApp={fireApp} fireIdea={fireIdea}  user={user} userInfo={userInfo} />
           </Route>
-          <Route path='/scamper'> 
+          <Route path='/scamper/:id'> 
             <Scamper fireApp={fireApp} fireSync={fireSync} user={user} userInfo={userInfo} />
           </Route>
           <Route path='/atable'> 
@@ -138,27 +139,24 @@ function App({ fireApp,fireLogin,fireSync, fireTodo, fireIdea, fireOpentool,fire
           <Route path='/price'> 
             <Price fireApp={fireApp} user={user} userInfo={userInfo} />
           </Route>
-          <Route path='/opentool'> 
-            <Opentool fireApp={fireApp} fireIdea={fireIdea}  user={user} userInfo={userInfo} />
-          </Route>
-          <Route path='/problem'>           
+          <Route path='/problem/:id'>           
             <Problem fireSync={fireSync} fireProblem={fireProblem} user={user} userInfo={userInfo} />
           </Route>
-          <Route path='/idea'> 
+          <Route path="/postit/:id"> 
             <Idea fireSync={fireSync} fireIdea={fireIdea} user={user} userInfo={userInfo} />
           </Route>
-          <Route path='/datastudy'>           
+          <Route path='/datastudy/:id'>           
             <Datastudy fireProblem={fireProblem} fireSync={fireSync} user={user} userInfo={userInfo} />
           </Route>
           
-          <Route path='/cube'>           
+          <Route path='/cube/:id'>           
             <Cube fireProblem={fireProblem} fireSync={fireSync} user={user} userInfo={userInfo} />
           </Route>
 
-          <Route path='/solving'>           
+          <Route path='/solving/:id'>           
             <Solving fireIdea={fireIdea} fireSync={fireSync} user={user} userInfo={userInfo} />
           </Route>
-          <Route path='/startup'> 
+          <Route path='/startup/:id'> 
             <Startup fireProblem={fireProblem} fireSync={fireSync} user={user} userInfo={userInfo} />
           </Route>
           

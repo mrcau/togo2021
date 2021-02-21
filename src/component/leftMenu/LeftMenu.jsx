@@ -7,7 +7,7 @@ import mime from 'mime-types';
 import { Accordion, Card } from 'react-bootstrap';
 
 
-function LeftMenu({ fireApp, user, photo, setPhoto,userInfo, logout,moveModal2 }) {
+function LeftMenu({ fireApp, user, photo, setPhoto,userInfo, logout,moveModal2,setlogoName }) {
 const upLoad = (e) => {
     const file = e.target.files[0];
     const metaData = { contentType: mime.lookup(file.name) }
@@ -47,19 +47,19 @@ const history = useHistory();
       <hr style={{width:'90%',border:'dashed 1px gray'}} />    
       <div style={{width:'100%',padding:"0"}}>
         <button className="btnLogout"  > 협업도구 </button>
-        <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/idea"><div className="icon">포스트잇</div></Link> </div>
-        <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/solving"><div className="icon">실시간톡</div></Link></div>
-        <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/cube"><div className="icon">큐브씽크</div></Link> </div>
+        <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/postit/:id"><div className="icon">포스트잇</div></Link> </div>
+        <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/solving/:id"><div className="icon">실시간톡</div></Link></div>
+        <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/cube/:id"><div className="icon">큐브씽크</div></Link> </div>
         <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/opentool"><div className="icon">공유도구</div></Link></div>
       </div>  
 
       <hr style={{width:'90%',border:'dashed 1px gray'}} />    
       <div style={{width:'100%',padding:"0"}}>
         <button className="btnLogout"  > 디자인씽킹 </button>
-        <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/problem"><BatteryCharging20/>문제찾기</Link> </div>
-        <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/datastudy"><BatteryCharging50/>데이터분석</Link></div>
-        <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/scamper"><BatteryCharging80/>아이디어</Link> </div>
-        <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/startup">🚀 스타트업</Link></div>
+        <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/problem/:id"><BatteryCharging20/>문제찾기</Link> </div>
+        <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/datastudy/:id"><BatteryCharging50/>데이터분석</Link></div>
+        <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/scamper/:id"><BatteryCharging80/>아이디어</Link> </div>
+        <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/startup/:id">🚀 스타트업</Link></div>
       </div>  
 
      

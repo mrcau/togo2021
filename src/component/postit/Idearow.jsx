@@ -8,7 +8,7 @@ import { Card, DropdownButton,Dropdown,ButtonGroup } from 'react-bootstrap';
 import {  DeleteForever, } from '@material-ui/icons';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 function  Idearow ({item,fireIdea,level,roomName}) {
-  const folder = "idea";
+  const folder = "postit";
   const Swal = require('sweetalert2');
   // const [video, setVideo] = useState('');
   const [Switch, setSwitch] = useState(true);

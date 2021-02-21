@@ -16,7 +16,7 @@ import mainLogo from './mainLogo.png';
 import Opentoolbox from '../opentool/Opentoolbox';
 
 
-function Togo({ fireApp, user, userInfo,  }) {
+function Togo({ fireApp, user, userInfo, setlogoName }) {
 const history = useHistory();
   return (
     <div className="togo" style={{paddingBottom:"10px"}}>      
@@ -25,7 +25,7 @@ const history = useHistory();
                  
         </Jumbotron>  */}
         <div className="jumbo"> <div className="mainlogo"/>  </div>
-        <h2 style={{fontWeight:"900",color:"var(--Acolor)"}} > 온라인 협업도구</h2>
+        <h2 style={{fontWeight:"900",color:"var(--Acolor)"}} > 온라인 쌍방향 협업도구</h2>
         <div className="togoMain1">                  
         <Card  className="mainCard1" >
           <Card.Img variant="top" src={postit}  className="cardImg1"  />
@@ -34,7 +34,7 @@ const history = useHistory();
             <Card.Text>
             유연한 사고를 이끌어 내는
             </Card.Text> */}
-            <button className="btn1 card1" onClick={() =>history.push('/idea')} >포스트잇</button>
+            <button className="btn1 card1" onClick={() =>{history.push('/postit/:id');setlogoName('포스트잇');}} >포스트잇</button>
           </Card.Body>
         </Card>
         <Card  className="mainCard1" >
@@ -44,7 +44,7 @@ const history = useHistory();
             <Card.Text>
             아이디어를 시각·촉각으로 느낄 수 . 
             </Card.Text> */}
-            <button className="btn1 card1" onClick={() =>history.push('/solving')} >실시간톡</button>
+            <button className="btn1 card1" onClick={() =>{history.push('/solving/:id');setlogoName('실시간톡');}} >실시간톡</button>
 
           </Card.Body>
         </Card>
@@ -55,7 +55,7 @@ const history = useHistory();
             <Card.Text>
             문제해결을 위해업을 창출합니다.
             </Card.Text> */}
-            <button className="btn1 card1" onClick={() =>history.push('/cube')}>큐브씽크</button>
+            <button className="btn1 card1" onClick={() =>{history.push('/cube/:id');setlogoName('큐브씽크');}}>큐브씽크</button>
 
           </Card.Body>
         </Card>
@@ -66,7 +66,7 @@ const history = useHistory();
             <Card.Text>
               급변하는 새시대에을 개척해보세요.
             </Card.Text> */}
-            <button className="btn1 card1" onClick={() =>history.push('/opentool')}>공유도구</button>
+            <button className="btn1 card1" onClick={() =>{history.push('/opentool');setlogoName('공유도구');}}>공유도구</button>
           </Card.Body>
         </Card>
       </div>
@@ -89,7 +89,7 @@ const history = useHistory();
             <Card.Text>
             다양한 관점의 관찰과 공감을 통해 문제 상황을 인식하고 해결의 <br/> 실마리를 찾을 수 있습니다. 
             </Card.Text>
-            <button className="btn1" onClick={() =>history.push('/problem')}>바로가기</button>
+            <button className="btn1" onClick={() =>{history.push('/problem/:id');setlogoName('문제찾기');}}>바로가기</button>
 
           </Card.Body>
         </Card>      
@@ -100,7 +100,7 @@ const history = useHistory();
             <Card.Text>
             데이터 수집/분석은 문제해결을<br/> 위한 최적의 판단을 내리는 과학적 근거가 됩니다.
             </Card.Text>
-            <button className="btn1" onClick={() =>history.push('/datastudy')}>바로가기</button>
+            <button className="btn1" onClick={() =>{history.push('/datastudy/:id');setlogoName('데이터분석');}}>바로가기</button>
 
           </Card.Body>
         </Card>
@@ -112,7 +112,7 @@ const history = useHistory();
             <Card.Text>
             유연한 사고를 이끌어 내는 창의적 발상법을 통해 다양한 아이디어를 생각할 수 있습니다.
             </Card.Text>
-            <button className="btn1" onClick={() =>history.push('/scamper')} >바로가기</button>
+            <button className="btn1" onClick={() =>{history.push('/scamper/:id');setlogoName('아이디어');}} >바로가기</button>
           </Card.Body>
         </Card>
         {/* <Card  className="mainCard" >
@@ -133,7 +133,7 @@ const history = useHistory();
             <Card.Text>
             문제해결을 위해 '새로움'을 만들고 '도전'하는 '기업가정신'으로 혁신적인 사업을 창출합니다.
             </Card.Text>
-            <button className="btn1" onClick={() =>history.push('/startup')}>바로가기</button>
+            <button className="btn1" onClick={() =>{history.push('/startup/:id');setlogoName('스타트업');}}>바로가기</button>
 
           </Card.Body>
         </Card>

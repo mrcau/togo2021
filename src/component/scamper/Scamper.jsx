@@ -8,7 +8,7 @@ import VoiceChatIcon from '@material-ui/icons/VoiceChat';
 import ScamperReport from './ScamperReport';
 import Swal from 'sweetalert2';
 import placeholder from './placeholder';
-import { useHistory } from 'react-router-dom';
+import { useHistory,useParams } from 'react-router-dom';
 import firesync from '../../service/firesync';
 
 function Scamper({ fireApp, fireSync, user, userInfo }) {
@@ -40,7 +40,8 @@ function Scamper({ fireApp, fireSync, user, userInfo }) {
 
   const [data, setdata] = useState({});
   const [room, setRoom] = useState({});
-  const [roomName, setroomName] = useState('');
+  const {id}=useParams();
+  const [roomName, setroomName] = useState(id||'');
   // const '' = userInfo ? userInfo.user.substr(0, 6) :'';
   const [roomUid, setRoomUid] = useState('');
   const [video, setVideo] = useState('');

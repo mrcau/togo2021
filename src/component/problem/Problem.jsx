@@ -8,7 +8,7 @@ import VoiceChatIcon from '@material-ui/icons/VoiceChat';
 import ProblemReport from './problemReport';
 import Swal from 'sweetalert2';
 import placeholder from './placeholder';
-import { useHistory } from 'react-router-dom';
+import { useHistory,useParams } from 'react-router-dom';
 
 function Problem({ fireProblem, fireSync, user, userInfo }) {
   const folder = "problem";
@@ -37,7 +37,8 @@ function Problem({ fireProblem, fireSync, user, userInfo }) {
 
   const [data, setdata] = useState({});
   const [room, setRoom] = useState({});
-  const [roomName, setroomName] = useState('');
+  const {id}=useParams();
+  const [roomName, setroomName] = useState(id||'');
   // const '' = userInfo ? userInfo.user.substr(0, 6) :'';
   const [roomUid, setRoomUid] = useState('');
   const [video, setVideo] = useState('');

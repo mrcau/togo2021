@@ -7,12 +7,15 @@ import './idea.css';
 import VoiceChatIcon from '@material-ui/icons/VoiceChat';
 import Swal from 'sweetalert2';
 // import placeholder from './placeholder';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import firesync from '../../service/firesync';
 import Idearow from './Idearow';
 
 function Idea({ fireIdea, fireSync, user, userInfo }) {
-  const folder = "idea";
+  const folder = "postit";
+  const {id}=useParams();
+  const [roomName, setroomName] = useState(id||'');
+  console.log('hi',roomName,id);
   const roomSubstr = 6;
   const Swal = require('sweetalert2');
   const level = userInfo.level || 0;
@@ -23,7 +26,6 @@ function Idea({ fireIdea, fireSync, user, userInfo }) {
   const history = useHistory();
   const [data, setdata] = useState({});
   const [room, setRoom] = useState({});
-  const [roomName, setroomName] = useState('');
   const [roomUid, setRoomUid] = useState('');
   const [video, setVideo] = useState('');
   const [notice, setNotice] = useState('');
@@ -144,7 +146,7 @@ function Idea({ fireIdea, fireSync, user, userInfo }) {
       roomERef.current.value=''; 
       setdata({});setroomName("");setDoor('입장'); setRoomUid('');
       setEntering(false); setSee(true); setRoom({}); setItems({});
-      setNotice('');setVideo('');  history.push('/idea');      
+      setNotice('');setVideo('');  history.push('/postit');      
     }  
              
   // roomName.substr(0,6) 방입장
