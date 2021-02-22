@@ -1,5 +1,5 @@
 import { Badge, IconButton, Switch } from '@material-ui/core';
-import {  DeleteForever,   MenuSharp, ThumbUp } from '@material-ui/icons';
+import {  DeleteForever,   MenuSharp, ThumbUp,InsertEmoticon } from '@material-ui/icons';
 import React, { memo, useEffect,  useRef, useState } from 'react';
 import AddCommentIcon from '@material-ui/icons/AddComment';
 import YouTubeIcon from '@material-ui/icons/YouTube';
@@ -40,7 +40,7 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
   const [data, setdata] = useState({});
   const [room, setRoom] = useState({});
   const {id}=useParams();
-  const [roomName, setroomName] = useState(id||'');
+  const [roomName, setroomName] = useState('');
   const [roomUid, setRoomUid] = useState('');
   const [video, setVideo] = useState('');
   const [notice, setNotice] = useState('');
@@ -53,11 +53,10 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
   const [report, setReport] = useState(false);
   const [userUID, setUserUID] = useState('');
   // const [cube, setCube] = useState('');
-  setlogoName('큐브씽크');
+  setlogoName('큐브툴');
    //데이터싱크 
   useEffect(() => { 
     if(id.length===10){roomERef.current.value=id; enterRoom();}
-
     fireSync.onAuth((e) => {
       const cf = {
         f1: (p) => { setdata(p) },  f2: () => { setdata({}) },
@@ -163,6 +162,7 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
     fireProblem.cubeDataUp(folder, roomName, T, data);
   }
   }
+// 입장카운팅
 
   // 방생성
   const createRoom = () => {
@@ -170,7 +170,7 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
     const newRoom = roomUid + num;
     setroomName(newRoom);
     const data = {userId:user.uid,text1:'',text2:'',text3:'',text4:'',text5:'',text6:'',text7: '',text8: '', 
-    text9: ''}
+    text9: '',enterMan:2}
     fireProblem.roomGetSave(folder, newRoom, data)
   }
 
@@ -219,9 +219,9 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
       setroomName("");
       setRoomUid('');
       setReport(false);
-       setEntering(false);
-        setSee(true); 
-        setRoom({});
+      setEntering(false);
+      setSee(true); 
+      setRoom({});
       setNotice('');
       setVideo('');
       roomERef.current.value='';  
@@ -229,7 +229,7 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
     
   // roomName.substr(0,6) 방입장
   const enterRoom = () => {
-    const roomvalue = roomERef.current.value || "";
+  const roomvalue = roomERef.current.value || "";
     const enterRoomId =  roomERef.current.value.substr(0,roomSubstr)||"";
     if(entering){roomNameReset(); }
     if(roomvalue.length !== 10||!enterRoomId||entering){return;}
@@ -251,7 +251,11 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
             f4: () => { setRoom({}) },
           }
         fireSync.dataSync(folder,roomvalue, cf2);
+
+        // fireSync.cubeUp(folder, roomName,{enterMan:data['enterMan']++} );
         }
+      
+
     }
     // roomERef.current.value = id;
     // enterRoom();
@@ -261,7 +265,7 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
 // notice 저장 - 공지 보내기
   const noticeUp = (e) => {
     e.preventDefault();
-    const data = noticeRef.current.value;
+  const data = noticeRef.current.value;
     fireProblem.videoSave(folder, user.uid,'Tok', data)
     noticeRef.current.value='';
     
@@ -378,6 +382,10 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
 
         {/* <div className="noticeTitle" > 공지 </div> */}
       <div className="s-header noticeHeader" ref={titleRef}>
+        {/* 접속자 카운트 */}
+        <Badge badgeContent={data.enterMan||1} color="secondary" style={{width:'40px', paddingLeft:'10px',marginTop:'2px'}}>
+          <InsertEmoticon  /> 
+        </Badge> 
         <div className="enterTitle" >{notice}</div>  
       </div>
       
