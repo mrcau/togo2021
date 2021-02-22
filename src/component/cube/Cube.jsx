@@ -1,5 +1,5 @@
 import { Badge, IconButton, Switch } from '@material-ui/core';
-import {  DeleteForever,   MenuSharp, ThumbUp } from '@material-ui/icons';
+import {  DeleteForever,   MenuSharp, ThumbUp,InsertEmoticon } from '@material-ui/icons';
 import React, { memo, useEffect,  useRef, useState } from 'react';
 import AddCommentIcon from '@material-ui/icons/AddComment';
 import YouTubeIcon from '@material-ui/icons/YouTube';
@@ -40,7 +40,7 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
   const [data, setdata] = useState({});
   const [room, setRoom] = useState({});
   const {id}=useParams();
-  const [roomName, setroomName] = useState(id||'');
+  const [roomName, setroomName] = useState('');
   const [roomUid, setRoomUid] = useState('');
   const [video, setVideo] = useState('');
   const [notice, setNotice] = useState('');
@@ -53,23 +53,22 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
   const [report, setReport] = useState(false);
   const [userUID, setUserUID] = useState('');
   // const [cube, setCube] = useState('');
-  setlogoName('큐브씽크');
+  setlogoName('큐브툴');
    //데이터싱크 
   useEffect(() => { 
     if(id.length===10){roomERef.current.value=id; enterRoom();}
-
     fireSync.onAuth((e) => {
       const cf = {
         f1: (p) => { setdata(p) },  f2: () => { setdata({}) },
         f3: (p) => { setRoom(p) },  f4: () => { setRoom({}) },
       }
-      if (e && report===false) {
+      if (e && report===false) { 
         setRoomUid(e.uid.substr(0, roomSubstr));
         setUserUID(e.uid);
        const stopDataSync = fireSync.dataSync(folder, roomName, cf);
        const stoproomSync = fireSync.roomSync(folder, roomUid, cf);
         return ()=>{stopDataSync();stoproomSync();}
-      }else if(e && !roomName){
+      }else if(e && !roomName){  
         const stopdataSyncB =  fireSync.dataSyncB(folder, roomName, cf);
        const stoproomSync = fireSync.roomSync(folder, roomUid, cf);
        return ()=>{stopdataSyncB();stoproomSync();}
@@ -79,7 +78,7 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
         const cf = { f1: (p) => { setdata(p) }, f2: () => { setdata({}) },
           f3: (p) => { setRoom(p) },  f4: () => { setRoom({}) },
         }
-       if(report && roomName){
+       if(report && roomName){ 
          const stopdataSyncB =  fireSync.dataSyncB(folder, roomName, cf);
          const stoproomSync = fireSync.roomSync(folder, roomUid, cf);
          return ()=>{stopdataSyncB();stoproomSync();}
@@ -101,6 +100,15 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
     }
      
   },[fireSync,roomName,report]);    
+
+//입장자 카운팅
+  useEffect(() => {
+    if(entering&&roomERef.current.value&&roomName){
+      let num = ++data['enterMan']||0 ;
+      console.log(entering,folder,num,roomName,data['enterMan'])
+      fireSync.cubeUp(folder,roomName, {enterMan:num});
+    }
+  },[entering])
     
     // const goodPlus = (goodNum,Switch,setSwitch) => {
     //   console.log(data)
@@ -163,6 +171,7 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
     fireProblem.cubeDataUp(folder, roomName, T, data);
   }
   }
+// 입장카운팅
 
   // 방생성
   const createRoom = () => {
@@ -170,7 +179,7 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
     const newRoom = roomUid + num;
     setroomName(newRoom);
     const data = {userId:user.uid,text1:'',text2:'',text3:'',text4:'',text5:'',text6:'',text7: '',text8: '', 
-    text9: ''}
+    text9: '',enterMan:0}
     fireProblem.roomGetSave(folder, newRoom, data)
   }
 
@@ -189,17 +198,22 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
   }
  // 관리자 방입장
  const adminEnter = (e) => {
-  // if(roomName){roomNameReset();}else{
   // dataReset();
-  dataReset();
-  
+  setEntering(true);  
   const room = e.currentTarget.textContent;
   const roomname = roomUid +room;
   setroomName(roomUid +room);
   roomERef.current.value =roomname;     
   setReport(false); 
-     setEntering(true);
-     setDoor('퇴장');    
+  setDoor('퇴장');    
+  const cf2 = {
+    f1: (p) => { setdata(p);  },
+    f2: () => { setdata({}) },
+    f3: (p) => { setRoom(p) },
+    f4: () => { setRoom({}) },
+  }
+fireSync.dataSync(folder,roomname, cf2);
+console.log(roomERef.current.value.length,entering)
 }
     // input roomName 초기화
     const roomNameReset=() => {
@@ -219,20 +233,29 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
       setroomName("");
       setRoomUid('');
       setReport(false);
-       setEntering(false);
-        setSee(true); 
-        setRoom({});
+      setEntering(false);
+      setSee(true); 
+      setRoom({});
       setNotice('');
       setVideo('');
       roomERef.current.value='';  
     }  
     
   // roomName.substr(0,6) 방입장
+
+  const manMinus = () => {
+    let num = 0;
+    if(data['enterMan']>0){ num=--data['enterMan']}else{return}
+    fireSync.cubeUp(folder, roomName,{enterMan:num} );
+    return;
+  }
+
   const enterRoom = () => {
-    const roomvalue = roomERef.current.value || "";
+  const roomvalue = roomERef.current.value || "";
     const enterRoomId =  roomERef.current.value.substr(0,roomSubstr)||"";
-    if(entering){roomNameReset(); }
-    if(roomvalue.length !== 10||!enterRoomId||entering){return;}
+    if(entering){roomNameReset(); manMinus();console.log(data.enterMan);}
+    // if(roomvalue.length !== 10||!enterRoomId||entering){console.log('hello',data);return;}
+    if(roomvalue.length !== 10){console.log('hello',data);return;}
     if(roomvalue.length === 10&&!entering){
         const cf1=()=>{
             setroomName(roomvalue);
@@ -241,27 +264,26 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
             setReport(false);
             setEntering(true);
             setSee(false);
+            
           }          
        fireSync.roomUser(folder,enterRoomId,cf1);
-        
+      //  manPlus(folder,roomERef.current.value,p);
         const cf2 = {
-            f1: (p) => { setdata(p) },
+            f1: (p) => { setdata(p);  },
             f2: () => { setdata({}) },
             f3: (p) => { setRoom(p) },
             f4: () => { setRoom({}) },
           }
         fireSync.dataSync(folder,roomvalue, cf2);
-        }
-    }
-    // roomERef.current.value = id;
-    // enterRoom();
-    // if(id){setroomName(id)}
- 
+        console.log('hihi',data)
+         }   
+      }
+  
 
 // notice 저장 - 공지 보내기
   const noticeUp = (e) => {
     e.preventDefault();
-    const data = noticeRef.current.value;
+  const data = noticeRef.current.value;
     fireProblem.videoSave(folder, user.uid,'Tok', data)
     noticeRef.current.value='';
     
@@ -378,6 +400,10 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
 
         {/* <div className="noticeTitle" > 공지 </div> */}
       <div className="s-header noticeHeader" ref={titleRef}>
+        {/* 접속자 카운트 */}
+        <Badge badgeContent={data.enterMan||0} color="error" style={{width:'40px', paddingLeft:'10px',marginTop:'2px'}}>
+          <InsertEmoticon /> 
+        </Badge> 
         <div className="enterTitle" >{notice}</div>  
       </div>
       

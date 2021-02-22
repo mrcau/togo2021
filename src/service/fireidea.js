@@ -109,7 +109,13 @@ goodUpB(folder, roomName, goodNum,good) {
   fireInit.database().ref(`${folder}/${roomId}/${roomName}`)
     .update({[goodNum]: good })
 }
-
+// manUpdate 업데이트
+manUp(folder, roomName, data) {
+  const roomUid = roomName.substr(0,roomSubstr);
+  const roomNum = roomName.substr(roomSubstr);
+  fireInit.database().ref(`${folder}/${roomUid}/${roomNum}`)
+    .update(data)
+}
 
 // TODO글  저장 
 itemSave(folder, data) {

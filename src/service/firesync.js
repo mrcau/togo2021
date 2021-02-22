@@ -60,6 +60,7 @@ roomUser(folder,roomUid,cf,off) {
     return () => {ref1.off(); ref2.off()}
 
   }
+
   // Item 씽크
  itemSync(folder, uid, cf, off) {
   const ref = fireInit.database().ref(`${folder}/${uid}`);

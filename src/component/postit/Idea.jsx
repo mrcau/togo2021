@@ -1,5 +1,5 @@
 import { Badge, IconButton, Switch } from '@material-ui/core';
-import {  DeleteForever,   MenuSharp, ThumbUp } from '@material-ui/icons';
+import {  DeleteForever,   MenuSharp, ThumbUp,InsertEmoticon } from '@material-ui/icons';
 import React, { memo, useEffect,  useRef, useState } from 'react';
 import AddCommentIcon from '@material-ui/icons/AddComment';
 import YouTubeIcon from '@material-ui/icons/YouTube';
@@ -15,7 +15,6 @@ function Idea({ fireIdea, fireSync, user, userInfo ,setlogoName}) {
   const folder = "postit";
   const {id}=useParams();
   const [roomName, setroomName] = useState(id||'');
-  console.log('hi',roomName,id);
   const roomSubstr = 6;
   const Swal = require('sweetalert2');
   const level = userInfo.level || 0;
@@ -94,6 +93,15 @@ function Idea({ fireIdea, fireSync, user, userInfo ,setlogoName}) {
      
   },[fireIdea,roomName]);
 
+  //입장자 카운팅
+  useEffect(() => {
+    if(entering&&roomERef.current.value&&roomName){
+      let num = ++items['enterMan']||0 ;
+      console.log(entering,folder,num,roomName,items,items['enterMan'])
+  fireIdea.manUp(folder,roomName,{enterMan:num});
+    }
+  },[entering])
+
   //모달창3
   const fire = () => {Swal.fire({html:video, width:'90%'})}
   // 자료입력 모달
@@ -125,7 +133,7 @@ function Idea({ fireIdea, fireSync, user, userInfo ,setlogoName}) {
       color : 'Light',
       roomName : newRoom,
       uid : user.uid,
-      roomUid : num
+      roomUid : num,
     }
     // const roomget = fireIdea.roomGet(folder,roomUid)
     // roomget < 8 && 
@@ -149,12 +157,20 @@ function Idea({ fireIdea, fireSync, user, userInfo ,setlogoName}) {
       setEntering(false); setSee(true); setRoom({}); setItems({});
       setNotice('');setVideo('');  history.push('/postit/:id');      
     }  
+
+    const manMinus = () => {
+      let num = 0;
+      if(items['enterMan']>0){ num = --items['enterMan']}else{return}
+    fireIdea.manUp(folder,roomName,{enterMan:num});
+  return;
+    }
+ 
              
   // roomName.substr(0,6) 방입장
   const enterRoom = () => { 
     const roomvalue = roomERef.current.value || "";
     const enterRoomId =  roomERef.current.value.substr(0,roomSubstr)||"";
-    if(entering){roomNameReset(); }
+    if(entering){roomNameReset();manMinus(); }
     if(roomvalue.length !== 10||!enterRoomId||entering){return;}
     if(roomvalue.length === 10&&!entering){       
         const cf1=()=>{
@@ -179,13 +195,19 @@ function Idea({ fireIdea, fireSync, user, userInfo ,setlogoName}) {
   // 관리자 방입장
   const adminEnter = (e) => {
     // roomNameReset();
+    setEntering(true);
     const room = e.currentTarget.textContent;
     const roomname = roomUid +room;
     setroomName(roomUid +room);
     roomERef.current.value =roomname; 
-       setEntering(true);
-       setDoor('퇴장');
-       // enterRoom();
+       setDoor('퇴장');       
+  const cf2 = {
+    f1: (p) => { setItems(p);  },
+    f2: () => { setItems({}) },
+    f3: (p) => { setRoom(p) },
+    f4: () => { setRoom({}) },
+  }
+fireSync.dataSync(folder,roomname, cf2);
   }
 
 // notice 저장 - 공지 보내기
@@ -307,6 +329,10 @@ const submit = (e) => {
       </div>
         {/* <div className="noticeTitle" > 공지 </div> */}
       <div className="s-header noticeHeader" ref={titleRef}>
+         {/* 접속자 카운트 */}
+         <Badge badgeContent={items.enterMan||0} color="error" style={{width:'40px', paddingLeft:'10px',marginTop:'2px'}}>
+          <InsertEmoticon /> 
+        </Badge> 
         <div className="enterTitle" >{notice}</div>  
       </div>
 

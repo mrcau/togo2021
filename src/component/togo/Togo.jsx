@@ -36,7 +36,7 @@ const history = useHistory();
             <Card.Text>
             유연한 사고를 이끌어 내는
             </Card.Text> */}
-            <button className="btn1 card1" >포스트잇</button>
+            <button className="btn1 card1" >포스툴</button>
           </Card.Body>
         </Card>
         <Card  className="mainCard1"  onClick={() =>{history.push('/solving/:id');}} >
@@ -46,7 +46,7 @@ const history = useHistory();
             <Card.Text>
             아이디어를 시각·촉각으로 느낄 수 . 
             </Card.Text> */}
-            <button className="btn1 card1">실시간톡</button>
+            <button className="btn1 card1">게시툴</button>
 
           </Card.Body>
         </Card>
@@ -57,7 +57,7 @@ const history = useHistory();
             <Card.Text>
             문제해결을 위해업을 창출합니다.
             </Card.Text> */}
-            <button className="btn1 card1" >큐브씽크</button>
+            <button className="btn1 card1" >큐브툴</button>
 
           </Card.Body>
         </Card>
@@ -68,7 +68,7 @@ const history = useHistory();
             <Card.Text>
               급변하는 새시대에을 개척해보세요.
             </Card.Text> */}
-            <button className="btn1 card1" >공유도구</button>
+            <button className="btn1 card1" >공유툴</button>
           </Card.Body>
         </Card>
       </div>
