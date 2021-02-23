@@ -1,5 +1,5 @@
 import { Badge, IconButton, Switch } from '@material-ui/core';
-import {  DeleteForever,   MenuSharp, ThumbUp } from '@material-ui/icons';
+import {  DeleteForever,   MenuSharp, ThumbUp, InsertEmoticon  } from '@material-ui/icons';
 import React, { memo, useEffect,  useRef, useState } from 'react';
 import AddCommentIcon from '@material-ui/icons/AddComment';
 import YouTubeIcon from '@material-ui/icons/YouTube';
@@ -53,9 +53,10 @@ function Datastudy({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
   const [report, setReport] = useState(false);
   const [userUID, setUserUID] = useState('');
   // const [cube, setCube] = useState('');
-  setlogoName('Data analysis');
+  setlogoName('데이터분석');
    //데이터싱크 
   useEffect(() => {
+    if(id.length===10){roomERef.current.value=id; enterRoom();}
     fireSync.onAuth((e) => {
       const cf = {
         f1: (p) => { setdata(p) },  f2: () => { setdata({}) },
@@ -100,6 +101,15 @@ function Datastudy({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
     }
      
   },[fireSync,roomName,report]);    
+    
+//입장자 카운팅
+  useEffect(() => {
+    if(entering&&roomERef.current.value&&roomName){
+      let num = ++data['enterMan']||0 ;
+      fireSync.cubeUp(folder,roomName, {enterMan:num});
+    }
+    return ()=>{manMinus();}
+  },[entering])
     
     // const goodPlus = (goodNum,Switch,setSwitch) => {
     //   console.log(data)
@@ -167,7 +177,7 @@ function Datastudy({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
   const createRoom = () => {
     const num = Date.now().toString().substr(9);
     const newRoom = roomUid + num;
-    setroomName(newRoom);
+    // setroomName(newRoom);
     const data = {userId:user.uid,text1:'',text2:'',text3:'',text4:'',text5:'',text6:'',text7: '',text8: '', 
     text9: ''}
     fireProblem.roomGetSave(folder, newRoom, data)
@@ -199,12 +209,19 @@ function Datastudy({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
       fireSync.roomUser(folder,roomUid,cf2,1);        
       fireSync.dataSync(folder, roomName, cf,1);
       fireSync.cubeSync(folder, roomName, 'T1','t1',1);      
-      dataReset(); setroomName("");setDoor('입장'); setRoomUid('');
-      setReport(false); setEntering(false); setSee(true); setRoom({});
-      setNotice('');setVideo('');history.push('/datastudy/:id');
-      roomERef.current.value='';  setdata({});
+      setDoor('입장'); dataReset(); setRoomUid(''); setroomName("");
+      setReport(false); setSee(true); setRoom({});
+      setNotice('');setVideo('');
+      roomERef.current.value=''; 
     }  
-    
+        
+  const manMinus = () => {
+    let num = 0;
+    if(data['enterMan']>0){ num=--data['enterMan']}else{return}
+    fireSync.cubeUp(folder, roomName,{enterMan:num} );
+    return;
+  }
+  
   // roomName.substr(0,6) 방입장
   const enterRoom = () => {
     const roomvalue = roomERef.current.value || "";
@@ -234,7 +251,6 @@ function Datastudy({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
 
   // 관리자 방입장
   const adminEnter = (e) => {
-    if(roomName){roomNameReset();}else{
     dataReset();
     const room = e.currentTarget.textContent;
     const roomname = roomUid +room;
@@ -242,8 +258,15 @@ function Datastudy({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
     roomERef.current.value =roomname;     
     setReport(false); 
        setEntering(true);
-       setDoor('퇴장');
-    }
+       setDoor('퇴장');   
+  const cf2 = {
+    f1: (p) => { setdata(p);  },
+    f2: () => { setdata({}) },
+    f3: (p) => { setRoom(p) },
+    f4: () => { setRoom({}) },
+  }
+fireSync.dataSync(folder,roomname, cf2);
+
   }
 
 // notice 저장 - 공지 보내기
@@ -314,7 +337,6 @@ function Datastudy({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
         showCancelButton: true})
       .then((result) => { if(result.isConfirmed){ 
       fireProblem.dataDel(folder,roomName);   
-      Swal.fire('삭제되었습니다.');
       roomNameReset();
       }});
     }
@@ -365,7 +387,11 @@ function Datastudy({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
       </div>
 
         {/* <div className="noticeTitle" > 공지 </div> */}
-      <div className="s-header noticeHeader" ref={titleRef}>
+      <div className="s-header noticeHeader" ref={titleRef}> 
+      {/* 접속자 카운트 */}
+        <Badge badgeContent={data.enterMan||0} color="error" style={{width:'40px', paddingLeft:'10px',marginTop:'2px'}}>
+          <InsertEmoticon /> 
+        </Badge> 
         <div className="enterTitle" >{notice}</div>  
       </div>
       
@@ -419,15 +445,15 @@ function Datastudy({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
           
           </div>
           <div className="items items5 itemsCenter">
-            <div className="item item1"><textarea cols="10" rows="1"  className="itemArea area1" ref={text1} onChange={onSubmit} value={data.text1} /></div>
-            <div className="item item2"><textarea cols="10" rows="1"  className="itemArea area2" ref={text2} onChange={onSubmit} value={data.text2} /></div>
-            <div className="item item3"><textarea cols="10" rows="1"  className="itemArea area3" ref={text3} onChange={onSubmit} value={data.text3} /></div>
-            <div className="item item4"><textarea cols="10" rows="1"  className="itemArea area4" ref={text4} onChange={onSubmit} value={data.text4} /></div>
-            <div className="item item5"><textarea cols="10" rows="1"  className="itemArea area5" ref={text5} onChange={onSubmit} value={data.text5} /></div>
-            <div className="item item6"><textarea cols="10" rows="1"  className="itemArea area6" ref={text6} onChange={onSubmit} value={data.text6} /></div>
-            <div className="item item7"><textarea cols="10" rows="1"  className="itemArea area7" ref={text7} onChange={onSubmit} value={data.text7} /></div>
-            <div className="item item8"><textarea cols="10" rows="1"  className="itemArea area8" ref={text8} onChange={onSubmit} value={data.text8} /></div>
-            <div className="item item9"><textarea cols="10" rows="1"  className="itemArea area9" ref={text9} onChange={onSubmit} value={data.text9} /></div>
+            <div className="item item1"><textarea cols="10" rows="1"  className="itemArea area1" ref={text1} onChange={onSubmit} value={data.text1} placeholder="관련자료" /></div>
+            <div className="item item2"><textarea cols="10" rows="1"  className="itemArea area2" ref={text2} onChange={onSubmit} value={data.text2} placeholder="관련자료" /></div>
+            <div className="item item3"><textarea cols="10" rows="1"  className="itemArea area3" ref={text3} onChange={onSubmit} value={data.text3} placeholder="관련자료" /></div>
+            <div className="item item4"><textarea cols="10" rows="1"  className="itemArea area4" ref={text4} onChange={onSubmit} value={data.text4} placeholder="관련자료" /></div>
+            <div className="item item5"><textarea cols="10" rows="1"  className="itemArea area5" ref={text5} onChange={onSubmit} value={data.text5} placeholder="분석자료" /></div>
+            <div className="item item6"><textarea cols="10" rows="1"  className="itemArea area6" ref={text6} onChange={onSubmit} value={data.text6} placeholder="관련자료" /></div>
+            <div className="item item7"><textarea cols="10" rows="1"  className="itemArea area7" ref={text7} onChange={onSubmit} value={data.text7} placeholder="관련자료" /></div>
+            <div className="item item8"><textarea cols="10" rows="1"  className="itemArea area8" ref={text8} onChange={onSubmit} value={data.text8} placeholder="관련자료" /></div>
+            <div className="item item9"><textarea cols="10" rows="1"  className="itemArea area9" ref={text9} onChange={onSubmit} value={data.text9} placeholder="관련자료" /></div>
           
           </div>
           <div className="items items6">

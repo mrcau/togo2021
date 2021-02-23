@@ -1,5 +1,5 @@
-import {  IconButton} from '@material-ui/core';
-import {  DeleteForever,   MenuSharp } from '@material-ui/icons';
+import {  IconButton,Badge} from '@material-ui/core';
+import {  DeleteForever,   MenuSharp ,InsertEmoticon } from '@material-ui/icons';
 import React, { memo, useEffect,  useRef, useState } from 'react';
 import AddCommentIcon from '@material-ui/icons/AddComment';
 import YouTubeIcon from '@material-ui/icons/YouTube';
@@ -38,7 +38,7 @@ function Solving({ fireIdea, fireSync, user, userInfo ,setlogoName }) {
   const [items, setItems] = useState({});
   const today = new Date().toLocaleDateString();
   const [color, setColor] = useState('primary');
-  setlogoName('실시간톡');
+  setlogoName('게시툴');
    //데이터싱크 
   useEffect(() => {
     if(id.length===10){roomERef.current.value=id; enterRoom();}
@@ -90,6 +90,16 @@ function Solving({ fireIdea, fireSync, user, userInfo ,setlogoName }) {
      
   },[fireIdea,roomName]);
 
+  //입장자 카운팅
+  useEffect(() => {
+    if(entering&&roomERef.current.value&&roomName){
+      let num = ++items['enterMan']||0 ;
+      // console.log(entering,folder,num,roomName,items,items['enterMan'])
+  fireIdea.manUp(folder,roomName,{enterMan:num});
+    }
+    return ()=>{manMinus();}
+  },[entering])
+  
   //모달창3
   const fire = () => {Swal.fire({html:video, width:'90%'})}
   // 자료입력 모달
@@ -139,14 +149,21 @@ function Solving({ fireIdea, fireSync, user, userInfo ,setlogoName }) {
       roomERef.current.value=''; 
       setdata({});setroomName("");setDoor('입장'); setRoomUid('');
       setEntering(false); setSee(true); setRoom({}); setItems({});
-      setNotice('');setVideo('');  history.push('/solving/:id');      
+      setNotice('');setVideo(''); 
+      //  history.push('/solving/:id');      
     }  
              
+    const manMinus = () => {
+      let num = 0;
+      if(items['enterMan']>0){ num = --items['enterMan']}else{return}
+    fireIdea.manUp(folder,roomName,{enterMan:num});
+  return;
+    }
   // roomName.substr(0,6) 방입장
   const enterRoom = () => { 
     const roomvalue = roomERef.current.value || "";
     const enterRoomId =  roomERef.current.value.substr(0,roomSubstr)||"";
-    if(entering){roomNameReset(); }
+    if(entering){roomNameReset(); manMinus(); }
     if(roomvalue.length !== 10||!enterRoomId||entering){return;}
     if(roomvalue.length === 10&&!entering){       
         const cf1=()=>{
@@ -176,8 +193,14 @@ function Solving({ fireIdea, fireSync, user, userInfo ,setlogoName }) {
     setroomName(roomUid +room);
     roomERef.current.value =roomname; 
        setEntering(true);
-       setDoor('퇴장');
-       // enterRoom();
+       setDoor('퇴장');    
+       const cf2 = {
+         f1: (p) => { setItems(p);  },
+         f2: () => { setItems({}) },
+         f3: (p) => { setRoom(p) },
+         f4: () => { setRoom({}) },
+       }
+     fireSync.dataSync(folder,roomname, cf2);
   }
 
 // notice 저장 - 공지 보내기
@@ -213,8 +236,7 @@ function Solving({ fireIdea, fireSync, user, userInfo ,setlogoName }) {
         showCancelButton: true})
       .then((result) => { if(result.isConfirmed){
         fireIdea.dataDel(folder,roomName);   
-        roomERef.current.value='';
-        //  Swal.fire('삭제되었습니다.');
+        roomNameReset();
       
       }});
     }
@@ -271,9 +293,11 @@ const submit = (e) => {
         {level>0 && <button className="btnRoomDel" style={{margin:'0'}} onClick={dataDel}><DeleteForever /></button>  }
           {/* 스위치호출 */}
         <div className="enterTitle" > 
+        {entering &&
         <IconButton size="small" onClick={submit}  > 
           <AddCircleOutlineIcon style={{color:"var(--Bcolor)"}}   /> 
         </IconButton>
+}
         </div>    
 
         <div className="voicechat" style={{marginLeft:"86px"}} >             
@@ -288,6 +312,10 @@ const submit = (e) => {
       </div>
         {/* <div className="noticeTitle" > 공지 </div> */}
       <div className="s-header noticeHeader" ref={titleRef}>
+         {/* 접속자 카운트 */}
+         <Badge badgeContent={items.enterMan||0} color="error" style={{width:'40px',background:'var(--Acolor)', paddingLeft:'10px',marginTop:'2px'}}>
+          <InsertEmoticon  /> 
+        </Badge> 
         <div className="enterTitle" style={{background:"var(--Acolor)"}} >{notice}</div>  
       </div>
 

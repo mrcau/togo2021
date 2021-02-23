@@ -62,13 +62,13 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
         f1: (p) => { setdata(p) },  f2: () => { setdata({}) },
         f3: (p) => { setRoom(p) },  f4: () => { setRoom({}) },
       }
-      if (e && report===false) {
+      if (e && report===false) { 
         setRoomUid(e.uid.substr(0, roomSubstr));
         setUserUID(e.uid);
        const stopDataSync = fireSync.dataSync(folder, roomName, cf);
        const stoproomSync = fireSync.roomSync(folder, roomUid, cf);
         return ()=>{stopDataSync();stoproomSync();}
-      }else if(e && !roomName){
+      }else if(e && !roomName){  
         const stopdataSyncB =  fireSync.dataSyncB(folder, roomName, cf);
        const stoproomSync = fireSync.roomSync(folder, roomUid, cf);
        return ()=>{stopdataSyncB();stoproomSync();}
@@ -78,7 +78,7 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
         const cf = { f1: (p) => { setdata(p) }, f2: () => { setdata({}) },
           f3: (p) => { setRoom(p) },  f4: () => { setRoom({}) },
         }
-       if(report && roomName){
+       if(report && roomName){ 
          const stopdataSyncB =  fireSync.dataSyncB(folder, roomName, cf);
          const stoproomSync = fireSync.roomSync(folder, roomUid, cf);
          return ()=>{stopdataSyncB();stoproomSync();}
@@ -89,6 +89,7 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
   
   //수업자료와 공지사항 싱크
   useEffect(() => {    
+    if(id.length===10){roomERef.current.value=id; enterRoom();}
     if(roomName&&!report){ 
       const stopvideoSync = fireSync.videoSync(folder,roomName,'See',(p)=>{setVideo(p); })
       const stopvideoSync2 = fireSync.videoSync(folder,roomName,'Tok',(p)=>{
@@ -100,6 +101,15 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
     }
      
   },[fireSync,roomName,report]);    
+
+//입장자 카운팅
+  useEffect(() => {
+    if(entering&&roomERef.current.value&&roomName){
+      let num = ++data['enterMan']||0 ;
+      fireSync.cubeUp(folder,roomName, {enterMan:num});
+    }
+    return ()=>{manMinus();}
+  },[entering])
     
     // const goodPlus = (goodNum,Switch,setSwitch) => {
     //   console.log(data)
@@ -168,9 +178,9 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
   const createRoom = () => {
     const num = Date.now().toString().substr(9);
     const newRoom = roomUid + num;
-    setroomName(newRoom);
+    // setroomName(newRoom);
     const data = {userId:user.uid,text1:'',text2:'',text3:'',text4:'',text5:'',text6:'',text7: '',text8: '', 
-    text9: '',enterMan:2}
+    text9: '',enterMan:0}
     fireProblem.roomGetSave(folder, newRoom, data)
   }
 
@@ -187,22 +197,10 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
    T8t1.current.value=''; T8t2.current.value=''; T8t3.current.value=''; T8t4.current.value=''; T8t5.current.value=''; T8t6.current.value=''; T8t7.current.value=''; T8t8.current.value=''; T8t9.current.value='';
    T9t1.current.value=''; T9t2.current.value=''; T9t3.current.value=''; T9t4.current.value=''; T9t5.current.value=''; T9t6.current.value=''; T9t7.current.value=''; T9t8.current.value=''; T9t9.current.value='';
   }
- // 관리자 방입장
- const adminEnter = (e) => {
-  // if(roomName){roomNameReset();}else{
-  // dataReset();
-  dataReset();
-  
-  const room = e.currentTarget.textContent;
-  const roomname = roomUid +room;
-  setroomName(roomUid +room);
-  roomERef.current.value =roomname;     
-  setReport(false); 
-     setEntering(true);
-     setDoor('퇴장');    
-}
+
     // input roomName 초기화
     const roomNameReset=() => {
+      // setEntering(false);
       fireSync.videoSync(folder,roomName,'See',(p)=>{setVideo(p); },1);
       fireSync.videoSync(folder,roomName,'Tok',(p)=>{setNotice(p);},1);      
       const cf = {  f1: (p) => { setdata({}) }, f2: () => { setdata({}) },
@@ -212,27 +210,28 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
       fireSync.roomUser(folder,roomUid,cf2,1);        
       fireSync.dataSync(folder, roomName, cf,1);
       fireSync.cubeSync(folder, roomName, 'T1','t1',1);    
-      history.push('/cube/:id');
-      setDoor('입장'); 
-      dataReset(); 
-      setdata({});
-      setroomName("");
-      setRoomUid('');
-      setReport(false);
-      setEntering(false);
-      setSee(true); 
-      setRoom({});
-      setNotice('');
-      setVideo('');
+      // history.push('/cube/:id');
+      setDoor('입장'); dataReset(); setRoomUid('');setroomName("");
+      setReport(false);  setSee(true); setRoom({});
+      setNotice(''); setVideo('');
       roomERef.current.value='';  
     }  
     
   // roomName.substr(0,6) 방입장
+
+  const manMinus = () => {
+    let num = 0;
+    if(data['enterMan']>0){ num=--data['enterMan']}else{return}
+    fireSync.cubeUp(folder, roomName,{enterMan:num} );
+    return;
+  }
+
   const enterRoom = () => {
   const roomvalue = roomERef.current.value || "";
     const enterRoomId =  roomERef.current.value.substr(0,roomSubstr)||"";
-    if(entering){roomNameReset(); }
-    if(roomvalue.length !== 10||!enterRoomId||entering){return;}
+    if(entering){roomNameReset(); manMinus();console.log(data.enterMan);}
+    // if(roomvalue.length !== 10||!enterRoomId||entering){console.log('hello',data);return;}
+    if(roomvalue.length !== 10){console.log('hello',data);return;}
     if(roomvalue.length === 10&&!entering){
         const cf1=()=>{
             setroomName(roomvalue);
@@ -241,26 +240,39 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
             setReport(false);
             setEntering(true);
             setSee(false);
+            
           }          
        fireSync.roomUser(folder,enterRoomId,cf1);
-        
+      //  manPlus(folder,roomERef.current.value,p);
         const cf2 = {
-            f1: (p) => { setdata(p) },
+            f1: (p) => { setdata(p);  },
             f2: () => { setdata({}) },
             f3: (p) => { setRoom(p) },
             f4: () => { setRoom({}) },
           }
         fireSync.dataSync(folder,roomvalue, cf2);
+         }   
+      }
 
-        // fireSync.cubeUp(folder, roomName,{enterMan:data['enterMan']++} );
-        }
-      
+   // 관리자 방입장
+ const adminEnter = (e) => {
+  dataReset();
+  setEntering(true);  
+  const room = e.currentTarget.textContent;
+  const roomname = roomUid +room;
+  setroomName(roomUid +room);
+  roomERef.current.value =roomname;     
+  setReport(false); 
+  setDoor('퇴장');      
+  const cf2 = {
+    f1: (p) => { setdata(p);  },
+    f2: () => { setdata({}) },
+    f3: (p) => { setRoom(p) },
+    f4: () => { setRoom({}) },
+  }
+fireSync.dataSync(folder,roomname, cf2);
 
-    }
-    // roomERef.current.value = id;
-    // enterRoom();
-    // if(id){setroomName(id)}
- 
+}
 
 // notice 저장 - 공지 보내기
   const noticeUp = (e) => {
@@ -302,7 +314,8 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
         icon:'warning',
         showCancelButton: true})
       .then((result) => { if(result.isConfirmed){ Swal.fire('삭제되었습니다.');
-      fireProblem.reportDel(folder,user.uid,data.dataId); roomNameReset();
+      fireProblem.reportDel(folder,user.uid,data.dataId); 
+      // roomNameReset();
       }});
       }
     
@@ -312,7 +325,7 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
           text:"삭제될 게시물 : "+data.text10,
           icon:'warning',
           showCancelButton: true})
-        .then((result) => { if(result.isConfirmed){ Swal.fire('삭제되었습니다.');
+        .then((result) => { if(result.isConfirmed){ 
         const roomUid =  roomName.substr(0,roomSubstr);
         const roomId = roomUid+'REPORT';
         fireProblem.reportDel(folder,roomId,roomName)
@@ -330,7 +343,7 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
         showCancelButton: true})
       .then((result) => { if(result.isConfirmed){ 
       fireProblem.dataDel(folder,roomName);   
-      Swal.fire('삭제되었습니다.');
+      // Swal.fire('삭제되었습니다.');
       roomNameReset();
       }});
     }
@@ -383,8 +396,8 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
         {/* <div className="noticeTitle" > 공지 </div> */}
       <div className="s-header noticeHeader" ref={titleRef}>
         {/* 접속자 카운트 */}
-        <Badge badgeContent={data.enterMan||1} color="secondary" style={{width:'40px', paddingLeft:'10px',marginTop:'2px'}}>
-          <InsertEmoticon  /> 
+        <Badge badgeContent={data.enterMan||0} color="error" style={{width:'40px', paddingLeft:'10px',marginTop:'2px'}}>
+          <InsertEmoticon /> 
         </Badge> 
         <div className="enterTitle" >{notice}</div>  
       </div>
@@ -439,15 +452,15 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
           
           </div>
           <div className="items items5 itemsCenter">
-            <div className="item item1"><textarea cols="10" rows="1"  className="itemArea area1" ref={text1} onChange={onSubmit} value={data.text1} /></div>
-            <div className="item item2"><textarea cols="10" rows="1"  className="itemArea area2" ref={text2} onChange={onSubmit} value={data.text2} /></div>
-            <div className="item item3"><textarea cols="10" rows="1"  className="itemArea area3" ref={text3} onChange={onSubmit} value={data.text3} /></div>
-            <div className="item item4"><textarea cols="10" rows="1"  className="itemArea area4" ref={text4} onChange={onSubmit} value={data.text4} /></div>
-            <div className="item item5"><textarea cols="10" rows="1"  className="itemArea area5" ref={text5} onChange={onSubmit} value={data.text5} /></div>
-            <div className="item item6"><textarea cols="10" rows="1"  className="itemArea area6" ref={text6} onChange={onSubmit} value={data.text6} /></div>
-            <div className="item item7"><textarea cols="10" rows="1"  className="itemArea area7" ref={text7} onChange={onSubmit} value={data.text7} /></div>
-            <div className="item item8"><textarea cols="10" rows="1"  className="itemArea area8" ref={text8} onChange={onSubmit} value={data.text8} /></div>
-            <div className="item item9"><textarea cols="10" rows="1"  className="itemArea area9" ref={text9} onChange={onSubmit} value={data.text9} /></div>
+            <div className="item item1"><textarea cols="10" rows="1"  className="itemArea area1" ref={text1} onChange={onSubmit} value={data.text1} placeholder="소주제" /></div>
+            <div className="item item2"><textarea cols="10" rows="1"  className="itemArea area2" ref={text2} onChange={onSubmit} value={data.text2} placeholder="소주제" /></div>
+            <div className="item item3"><textarea cols="10" rows="1"  className="itemArea area3" ref={text3} onChange={onSubmit} value={data.text3} placeholder="소주제" /></div>
+            <div className="item item4"><textarea cols="10" rows="1"  className="itemArea area4" ref={text4} onChange={onSubmit} value={data.text4} placeholder="소주제" /></div>
+            <div className="item item5"><textarea cols="10" rows="1"  className="itemArea area5" ref={text5} onChange={onSubmit} value={data.text5} placeholder="대주제" /></div>
+            <div className="item item6"><textarea cols="10" rows="1"  className="itemArea area6" ref={text6} onChange={onSubmit} value={data.text6} placeholder="소주제" /></div>
+            <div className="item item7"><textarea cols="10" rows="1"  className="itemArea area7" ref={text7} onChange={onSubmit} value={data.text7} placeholder="소주제" /></div>
+            <div className="item item8"><textarea cols="10" rows="1"  className="itemArea area8" ref={text8} onChange={onSubmit} value={data.text8} placeholder="소주제" /></div>
+            <div className="item item9"><textarea cols="10" rows="1"  className="itemArea area9" ref={text9} onChange={onSubmit} value={data.text9} placeholder="소주제" /></div>
           
           </div>
           <div className="items items6">

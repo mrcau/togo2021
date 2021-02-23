@@ -81,13 +81,9 @@ const titleRef = useRef();
       }
     else{console.log('룸없음');fireIdea.itemUpdate(folder,data); }
   }
-
-  return (
-    <div className="solvingrow" style={{flex:'auto'}} >
+  return ( 
+    <div className="solvingrow" style={{flex:'auto'}} > {item.color && 
      <Card bg={item.color} text={'white'} style={{ width: '100%',height:'100%' }} className="mb-2" >
-      {/* {item.roomUid 
-      ? <Card.Header style={{fontSize:"large",fontWeight:"900",color:"black"}}>룸ID</Card.Header>
-      : */}
       <Card.Header style={{display:'flex',justifyContent:"space-between" ,padding:'5px'}} >
         {level>0 && <IconButton style={{width:'20px', height:'15px'}} > <DeleteForever onClick={itemDel} style={{color:'white'}} /></IconButton> }
         <DropdownButton as={ButtonGroup} variant={item.color} title="구분" size="sm" >
@@ -114,24 +110,13 @@ const titleRef = useRef();
         </IconButton>
       </Card.Header>
       
-
-      {/* <div className="solvingBody"> */}
-        <Card.Body style={{display:'flex',flexDirection:'column',padding:'5px'}}>
-        {/* {item.roomUid
-          ? <Card.Title style={{fontSize:"16px",fontWeight:"900",color:"black"}} > {item.roomName} </Card.Title>
-          : <Card.Title style={{fontSize:"16px",fontWeight:"900",lineHeight:"5px"}} > {item.title} </Card.Title> 
-        }
-          <Card.Text  style={{fontSize:"12px",lineHeight:"14px" }}> {item.text||''} </Card.Text> */}
-          <textarea  className="solvingArea"  ref={textRef} onChange={onSubmit} value={item.text||''}
-          //  placeholder={placeData.text2} ref={problemC} onChange={onSubmit} value={data.scamC}
-            />
-
+        <Card.Body style={{display:'flex',flexDirection:'column',padding:'5px'}}>    
+          <textarea  className="solvingArea"  ref={textRef} onChange={onSubmit} value={item.text||''} />
         </Card.Body>
-      {/* </div> */}
-     </Card>
-
+     </Card>  }
     </div>
   );
+
 }
 
 export default memo(Solvingrow);
