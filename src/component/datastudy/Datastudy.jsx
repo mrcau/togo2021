@@ -5,11 +5,9 @@ import AddCommentIcon from '@material-ui/icons/AddComment';
 import YouTubeIcon from '@material-ui/icons/YouTube';
 import './datastudy.css';
 import VoiceChatIcon from '@material-ui/icons/VoiceChat';
-import startupReport from './startupReport';
 import Swal from 'sweetalert2';
 import placeholder from './placeholder';
 import { useHistory,useParams } from 'react-router-dom';
-import fireproblem from '../../service/fireproblem';
 
 function Datastudy({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
   const folder = "datastudy";
@@ -17,7 +15,6 @@ function Datastudy({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
   const Swal = require('sweetalert2');
   const level = userInfo.level || 0;
   const roomERef = useRef();
-  const formRef = useRef();
   const noticeRef = useRef();
   const titleRef = useRef();
   const drawerRef = useRef();
@@ -40,11 +37,10 @@ function Datastudy({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
   const [data, setdata] = useState({});
   const [room, setRoom] = useState({});
   const {id}=useParams();
-  const [roomName, setroomName] = useState(id||'');
+  const [roomName, setroomName] = useState('');
   const [roomUid, setRoomUid] = useState('');
   const [video, setVideo] = useState('');
   const [notice, setNotice] = useState('');
-  const placeData = placeholder
   const [rightModal,setrightModal] = useState(false);
   const [entering, setEntering] = useState(false);
   const [see, setSee] = useState(true)
@@ -89,7 +85,6 @@ function Datastudy({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
   
   //수업자료와 공지사항 싱크
   useEffect(() => {    
-    if(id.length===10){roomERef.current.value=id; enterRoom();}
     if(roomName&&!report){ 
       const stopvideoSync = fireSync.videoSync(folder,roomName,'See',(p)=>{setVideo(p); })
       const stopvideoSync2 = fireSync.videoSync(folder,roomName,'Tok',(p)=>{
@@ -101,7 +96,7 @@ function Datastudy({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
     }
      
   },[fireSync,roomName,report]);    
-    
+
 //입장자 카운팅
   useEffect(() => {
     if(entering&&roomERef.current.value&&roomName){
@@ -133,6 +128,7 @@ function Datastudy({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
       backRef.current.classList.add("backNone"); 
       setrightModal(true);
     }
+    console.log(roomName);
   
   //모달창3
   const fire = () => {Swal.fire({html:video, width:'90%'})}
@@ -177,9 +173,9 @@ function Datastudy({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
   const createRoom = () => {
     const num = Date.now().toString().substr(9);
     const newRoom = roomUid + num;
-    // setroomName(newRoom);
+    setroomName(newRoom);
     const data = {userId:user.uid,text1:'',text2:'',text3:'',text4:'',text5:'',text6:'',text7: '',text8: '', 
-    text9: ''}
+    text9: '',enterMan:0}
     fireProblem.roomGetSave(folder, newRoom, data)
   }
 
@@ -187,7 +183,6 @@ function Datastudy({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
   const dataReset = () => {    
     text1.current.value = ''; text2.current.value = ''; text3.current.value = ''; text4.current.value = '';
     text5.current.value = ''; text6.current.value = ''; text7.current.value = ''; text8.current.value = ''; text9.current.value = '';
-    
    T1t1.current.value=''; T1t2.current.value=''; T1t3.current.value=''; T1t4.current.value=''; T1t5.current.value=''; T1t6.current.value=''; T1t7.current.value=''; T1t8.current.value=''; T1t9.current.value='';
    T2t1.current.value=''; T2t2.current.value=''; T2t3.current.value=''; T2t4.current.value=''; T2t5.current.value=''; T2t6.current.value=''; T2t7.current.value=''; T2t8.current.value=''; T2t9.current.value='';
    T3t1.current.value=''; T3t2.current.value=''; T3t3.current.value=''; T3t4.current.value=''; T3t5.current.value=''; T3t6.current.value=''; T3t7.current.value=''; T3t8.current.value=''; T3t9.current.value='';
@@ -198,6 +193,24 @@ function Datastudy({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
    T9t1.current.value=''; T9t2.current.value=''; T9t3.current.value=''; T9t4.current.value=''; T9t5.current.value=''; T9t6.current.value=''; T9t7.current.value=''; T9t8.current.value=''; T9t9.current.value='';
   }
 
+  // 관리자 방입장
+  const adminEnter = (e) => {
+    dataReset();
+    const room = e.currentTarget.textContent;
+    const roomname = roomUid +room;
+    setroomName(roomUid +room);
+    roomERef.current.value =roomname;     
+    setReport(false); 
+      //  setEntering(true);
+       setDoor('퇴장');   
+  const cf2 = {
+    f1: (p) => { setdata(p);  },
+    f2: () => { setdata({}) },
+    f3: (p) => { setRoom(p) },
+    f4: () => { setRoom({}) },
+  }
+  fireSync.dataSync(folder,roomname, cf2);
+  }
     // input roomName 초기화
     const roomNameReset=() => {
       fireSync.videoSync(folder,roomName,'See',(p)=>{setVideo(p); },1);
@@ -209,9 +222,17 @@ function Datastudy({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
       fireSync.roomUser(folder,roomUid,cf2,1);        
       fireSync.dataSync(folder, roomName, cf,1);
       fireSync.cubeSync(folder, roomName, 'T1','t1',1);      
-      setDoor('입장'); dataReset(); setRoomUid(''); setroomName("");
-      setReport(false); setSee(true); setRoom({});
-      setNotice('');setVideo('');
+      history.push('/datastudy/:id');
+      setDoor('입장'); 
+      dataReset(); 
+      setdata({});
+      setRoomUid(''); 
+      setroomName("");
+      setReport(false); 
+      setSee(true); 
+      setRoom({});
+      setNotice('');
+      setVideo('');
       roomERef.current.value=''; 
     }  
         
@@ -226,8 +247,8 @@ function Datastudy({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
   const enterRoom = () => {
     const roomvalue = roomERef.current.value || "";
     const enterRoomId =  roomERef.current.value.substr(0,roomSubstr)||"";
-    if(entering){roomNameReset(); }
-    if(roomvalue.length !== 10||!enterRoomId||entering){return;}
+    if(entering){roomNameReset(); manMinus(); }
+    if(roomvalue.length !== 10){return;}
     if(roomvalue.length === 10&&!entering){
         const cf1=()=>{
             setroomName(roomvalue);
@@ -237,8 +258,7 @@ function Datastudy({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
             setEntering(true);
             setSee(false);
           }          
-       fireSync.roomUser(folder,enterRoomId,cf1);
-        
+       fireSync.roomUser(folder,enterRoomId,cf1);        
         const cf2 = {
             f1: (p) => { setdata(p) },
             f2: () => { setdata({}) },
@@ -249,25 +269,6 @@ function Datastudy({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
         }
     }
 
-  // 관리자 방입장
-  const adminEnter = (e) => {
-    dataReset();
-    const room = e.currentTarget.textContent;
-    const roomname = roomUid +room;
-    setroomName(roomUid +room);
-    roomERef.current.value =roomname;     
-    setReport(false); 
-       setEntering(true);
-       setDoor('퇴장');   
-  const cf2 = {
-    f1: (p) => { setdata(p);  },
-    f2: () => { setdata({}) },
-    f3: (p) => { setRoom(p) },
-    f4: () => { setRoom({}) },
-  }
-fireSync.dataSync(folder,roomname, cf2);
-
-  }
 
 // notice 저장 - 공지 보내기
   const noticeUp = (e) => {
@@ -507,73 +508,6 @@ fireSync.dataSync(folder,roomname, cf2);
         </div>
       </div>
       
-        {/* <form className="s-items" ref={formRef} >   
-          
-          <div className="s-item">
-            <div className="s-itemTitle" sty>{placeData.title1} </div>
-            <textarea  className="s-intemInput input1" cols="30" rows="2" placeholder={placeData.text1} 
-            ref={text1}  onChange={onSubmit} value={data.text1} />
-          </div>
-          <div className="s-item">
-            <div className="s-itemTitle">{placeData.title2} </div>
-            <textarea  className="s-intemInput input1" cols="30" rows="2" placeholder={placeData.text2} 
-            ref={text2} onChange={onSubmit} value={data.text2} />
-          </div>        
-          <div className="s-item">
-            <div className="s-itemTitle">{placeData.title3} </div>
-            <textarea  className="s-intemInput input1" cols="30" rows="2" placeholder={placeData.text3} 
-            ref={text3} onChange={onSubmit} value={data.text3} />
-          </div>
-          <div className="s-item">
-            <div className="s-itemTitle">{placeData.title4} </div>
-            <textarea  className="s-intemInput input1" cols="30" rows="2" placeholder={placeData.text4} 
-            ref={text4} onChange={onSubmit} value={data.text4} />
-          </div>          
-          <div className="s-item">
-            <div className="s-itemTitle">{placeData.title5}</div>
-            <textarea  className="s-intemInput input1" cols="30" rows="2" placeholder={placeData.text5} 
-            ref={text5} onChange={onSubmit} value={data.text5} />
-          </div>          
-          <div className="s-item">
-            <div className="s-itemTitle">{placeData.title6}</div>
-            <textarea  className="s-intemInput input1" cols="30" rows="2" placeholder={placeData.text6} 
-            ref={text6} onChange={onSubmit} value={data.text6} />
-          </div>          
-          <div className="s-item">
-            <div className="s-itemTitle">{placeData.title7}</div>
-            <textarea  className="s-intemInput input1" cols="30" rows="2" placeholder={placeData.text7} 
-            ref={text7} onChange={onSubmit} value={data.text7} />
-          </div>          
-          <div className="s-item">
-            <div className="s-itemTitle">{placeData.title8}</div>
-            <textarea  className="s-intemInput input1" cols="30" rows="2" placeholder={placeData.text8} 
-            ref={text8} onChange={onSubmit} value={data.text8} />
-          </div>          
-          <div className="s-item">
-            <div className="s-itemTitle">{placeData.title9}</div>
-            <textarea  className="s-intemInput input1" cols="30" rows="2" placeholder={placeData.text9} 
-            ref={text9} onChange={onSubmit} value={data.text9} />
-          </div>
-          <div className="inputBox" >
-            <div className="s-itemTitle" style={{width:"100%"}}>{placeData.title10}</div>
-            <textarea cols="30" rows="1" className="problemInput input1" ref={writer} 
-            onChange={onSubmit} value={data.aTitle} placeholder={placeData.writer} />
-            <textarea cols="30" rows="1" className="problemInput input2" ref={text10} 
-            onChange={onSubmit} value={data.bName} placeholder={placeData.text10} />
-            <textarea cols="30" rows="1" className="problemInput input3" ref={text11} 
-            onChange={onSubmit} value={data.input3} placeholder={placeData.text11} />            
-            <textarea cols="30" rows="1" className="problemInput input4" ref={text12} 
-            onChange={onSubmit} value={data.input4} placeholder={placeData.text12} />
-            <textarea cols="30" rows="1" className="problemInput input5 " ref={text13} 
-            onChange={onSubmit} value={data.input5} placeholder={placeData.text13} />       
-            <input type="button" className="problemInput btn" onClick={btnInput} value="저장"/>
-          </div> */}
-        
-        {/* </form> */}
-
-
-
-
       </div>
   );
 }

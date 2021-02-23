@@ -1,5 +1,5 @@
 import { Badge, IconButton, Switch } from '@material-ui/core';
-import {  DeleteForever,   MenuSharp, ThumbUp } from '@material-ui/icons';
+import {  DeleteForever,   MenuSharp, ThumbUp, InsertEmoticon } from '@material-ui/icons';
 import React, { memo, useEffect,  useRef, useState } from 'react';
 import AddCommentIcon from '@material-ui/icons/AddComment';
 import YouTubeIcon from '@material-ui/icons/YouTube';
@@ -63,7 +63,7 @@ function Startup({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
   const [door, setDoor] = useState('입장')
   const [report, setReport] = useState(false);
   const [userUID, setUserUID] = useState('');
-  setlogoName('StartUp');
+  setlogoName('스타트업');
    //데이터싱크 
   useEffect(() => {
     if(id.length===10){roomERef.current.value=id; enterRoom();}
@@ -111,6 +111,16 @@ function Startup({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
     }  
   },[fireSync,roomName,report]);    
     
+//입장자 카운팅
+useEffect(() => {
+  if(entering&&roomERef.current.value&&roomName){
+    let num = ++data['enterMan']||0 ;
+    console.log(entering,folder,num,roomName,data['enterMan'])
+    fireSync.cubeUp(folder,roomName, {enterMan:num});
+  }
+  return ()=>{manMinus();}
+},[entering])
+
     const goodPlus = (goodNum,Switch,setSwitch) => {
       console.log(data)
         if(data[goodNum]===undefined){data[goodNum]=0}
@@ -161,7 +171,7 @@ function Startup({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
     setroomName(newRoom);
     const data = {userId:user.uid,text1:'',text2:'',text3:'',text4:'',text5:'',text6:'',text7: '',text8: '', 
     text9: '',text10: '',text11: '', text12: '',text13: '', good0:0, good1:0, good2:0, good3:0, good4:0, 
-    good5:0, good6:0, good7:0,good8:0, good9:0,writer:''}
+    good5:0, good6:0, good7:0,good8:0, good9:0,writer:'',enterMan:0}
     // const roomget = fireProblem.roomGet(folder,roomUid)
     // roomget < 8 && 
     fireProblem.roomGetSave(folder, newRoom, data)
@@ -179,9 +189,18 @@ function Startup({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
          
       dataReset(); setroomName("");setDoor('입장'); setRoomUid('');
       setReport(false); setEntering(false); setSee(true); setRoom({});
-      setNotice('');setVideo('');history.push('/startup/:id');
+      setNotice('');setVideo('');
+      // history.push('/startup/:id');
       roomERef.current.value=''; 
     }  
+
+    //카운터 줄이기
+    const manMinus = () => {
+      let num = 0;
+      if(data['enterMan']>0){ num=--data['enterMan']}else{return}
+      fireSync.cubeUp(folder, roomName,{enterMan:num} );
+      return;
+    }
 
     const roomNameHide = ()=>{roomERef.current.value=''; }
     const roomRowReset=() => {console.log('roomRowReset')
@@ -431,6 +450,10 @@ function Startup({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
 
         {/* <div className="noticeTitle" > 공지 </div> */}
       <div className="s-header noticeHeader" ref={titleRef}>
+         {/* 접속자 카운트 */}
+         <Badge badgeContent={data.enterMan||0} color="error" style={{width:'40px', paddingLeft:'10px',marginTop:'2px'}}>
+          <InsertEmoticon /> 
+        </Badge> 
         <div className="enterTitle" >{notice}</div>  
       </div>
       

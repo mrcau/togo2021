@@ -17,7 +17,7 @@ function Mytoolbox({ fireTodo, user, userName,  }) {
 
 
   return (
-    <div className="mytool" style={{background:"var(--Bcolor)",boxShadow:"2px 4px 11px -2px rgba(69,69,69,1)"}} >
+    <div className="mytool" style={{background:"var(--Ecolor)",boxShadow:"2px 4px 11px -2px rgba(69,69,69,1)"}} >
       <div className='mytool-header' style={{height:"30px",background:"var(--Acolor)",fontSize:"large"}}>My ToolBox</div>
       <div className="mytool-items" style={{height:"50vh"}}>
         {

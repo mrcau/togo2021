@@ -1,6 +1,7 @@
 .mypage {
   background: var(--Ecolor);
   padding: 10px;
+  height: 100%;
 }
 .mypageForm{
   display: flex;

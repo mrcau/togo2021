@@ -106,7 +106,7 @@ function App({ fireApp,fireLogin,fireSync, fireTodo, fireIdea, fireOpentool,fire
         {/* 탑메뉴 */}
         <div className="rightMenu" style={{textAlign:"right",paddingRight:"10px",lineHeight:"20px"}}>
           {uid ? <Tooltip arrow title="My ToolBox">
-          <Chip size="small" avatar={<Avatar src={photo}/>} label={uid.substr(0,6)} as="button"  onClick={moveModal3}/>
+          <Chip size="small" avatar={<Avatar src={photo}/>} label={userInfo.name||''} as="button"  onClick={moveModal3}/>
           </Tooltip> 
             : <IconButton size="small" component="span" onClick={moveModal3} 
             style={{color:"var(--Bcolor)"}}> Login </IconButton>

@@ -1,5 +1,5 @@
 import { Badge, IconButton, Switch } from '@material-ui/core';
-import {  DeleteForever,   MenuSharp, ThumbUp } from '@material-ui/icons';
+import {  DeleteForever,   MenuSharp, ThumbUp,InsertEmoticon  } from '@material-ui/icons';
 import React, { memo, useEffect,  useRef, useState } from 'react';
 import AddCommentIcon from '@material-ui/icons/AddComment';
 import YouTubeIcon from '@material-ui/icons/YouTube';
@@ -110,6 +110,16 @@ function Scamper({ fireApp, fireSync, user, userInfo ,setlogoName }) {
      
   },[fireSync,roomName,report]);
   
+//입장자 카운팅
+useEffect(() => {
+  if(entering&&roomERef.current.value&&roomName){
+    let num = ++data['enterMan']||0 ;
+    console.log(entering,folder,num,roomName,data['enterMan'])
+    fireSync.cubeUp(folder,roomName, {enterMan:num});
+  }
+  return ()=>{manMinus();}
+},[entering])
+
     // 좋아요
     const [Switch0, setSwitch0] = useState(true);
     const [Switch1, setSwitch1] = useState(true);
@@ -121,7 +131,6 @@ function Scamper({ fireApp, fireSync, user, userInfo ,setlogoName }) {
     const [Switch7, setSwitch7] = useState(true);
     
     const goodPlus = (goodNum,Switch,setSwitch) => {
-      console.log('goodNum,Switch,roomName,report',goodNum,Switch,roomName,report)
         if(data[goodNum]===undefined){data[goodNum]=0}
         if(roomName){
       Switch ? data[goodNum]++ : data[goodNum]--;
@@ -131,7 +140,6 @@ function Scamper({ fireApp, fireSync, user, userInfo ,setlogoName }) {
     }
     
     const goodPlus2 = (goodNum,Switch,setSwitch) => {
-      console.log('굿플러스2 goodNum,Switch,roomName,report',goodNum,Switch,roomName,report);
       setReport(true);
       if(data[goodNum]===undefined){data[goodNum]=0}
         if(roomName){
@@ -184,7 +192,7 @@ function Scamper({ fireApp, fireSync, user, userInfo ,setlogoName }) {
     const num = Date.now().toString().substr(9);
     const newRoom = roomUid + num;
     setroomName(newRoom);
-    const data = {scamS:'',scamC:'',scamA:'',scamM:'',scamP:'',scamE:'',scamR:'',aTitle:'',bName: '',input3: '', 
+    const data = {scamS:'',scamC:'',scamA:'',scamM:'',scamP:'',scamE:'',scamR:'',aTitle:'',bName: '',input3: '', enterMan:0,
     input4: '',input5: '',input6: '',  good0:0, good1:0, good2:0, good3:0, good4:0, good5:0, good6:0, good7:0,userId:user.uid}
     const roomget = fireApp.roomGet(folder,roomUid)
     roomget < 8 && 
@@ -204,7 +212,8 @@ function Scamper({ fireApp, fireSync, user, userInfo ,setlogoName }) {
 
       dataReset(); setroomName("");setDoor('입장'); setRoomUid('');
       setReport(false); setEntering(false); setSee(true); setRoom({});
-      setNotice('');setVideo('');history.push('/scamper/:id');
+      setNotice('');setVideo('');
+      // history.push('/scamper/:id');
       roomERef.current.value=''; 
     }  
     const roomNameHide = ()=>{roomERef.current.value=''; }
@@ -218,6 +227,13 @@ function Scamper({ fireApp, fireSync, user, userInfo ,setlogoName }) {
       setNotice('');setVideo('');
     }  
            
+    //카운터 줄이기
+    const manMinus = () => {
+      let num = 0;
+      if(data['enterMan']>0){ num=--data['enterMan']}else{return}
+      fireSync.cubeUp(folder, roomName,{enterMan:num} );
+      return;
+    }
   // roomName.substr(0,6) 방입장
   const enterRoom = () => {
     const roomvalue = roomERef.current.value || "";
@@ -465,6 +481,10 @@ function Scamper({ fireApp, fireSync, user, userInfo ,setlogoName }) {
 
         {/* <div className="noticeTitle" > 공지 </div> */}
       <div className="s-header noticeHeader" ref={titleRef}>
+        {/* 접속자 카운트 */}
+        <Badge badgeContent={data.enterMan||0} color="error" style={{width:'40px', paddingLeft:'10px',marginTop:'2px'}}>
+          <InsertEmoticon /> 
+        </Badge> 
         <div className="enterTitle" >{notice}</div>  
       </div>
       

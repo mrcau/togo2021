@@ -13,7 +13,7 @@ function Opentool({ fireIdea,fireApp, user, userInfo,setlogoName }) {
   const folder = "Opentool";
   const Swal = require('sweetalert2');
   const level = userInfo.level || 0;
-  setlogoName('Open ToolBox');
+  setlogoName('공유툴');
   // 데이터 보여주기 싱크
   useEffect(() => {    
     // fireApp.onAuth((e) => {
