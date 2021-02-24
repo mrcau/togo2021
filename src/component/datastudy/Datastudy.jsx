@@ -128,7 +128,6 @@ function Datastudy({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
       backRef.current.classList.add("backNone"); 
       setrightModal(true);
     }
-    console.log(roomName);
   
   //모달창3
   const fire = () => {Swal.fire({html:video, width:'90%'})}

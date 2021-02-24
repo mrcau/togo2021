@@ -63,12 +63,6 @@ roomUser(folder,roomUid,cf) {
       .update(data)
   }
 
-  // 데이터 삭제
-  dataDel(folder, roomName) {
-    const roomUid = roomName.substr(0,roomSubstr);
-    const roomNum = roomName.substr(roomSubstr);
-    fireInit.database().ref(`${folder}/${roomUid}/${roomNum}`).remove();
-  }
   // 큐브 데이터 저장
  cubeDataUp(folder, roomName, T, data) {
     const roomUid = roomName.substr(0,roomSubstr);
@@ -76,7 +70,19 @@ roomUser(folder,roomUid,cf) {
     fireInit.database().ref(`${folder}/${roomUid}/${roomNum}/${T}`)
       .update(data)
   }
+  //리포트 데이터 업데이트
+  reportUp(folder, roomId,dataId, data) {
+    fireInit.database().ref(`${folder}/${roomId}/${dataId}`)
+      .update(data)
+  }
 
+
+  // 데이터 삭제
+  dataDel(folder, roomName) {
+    const roomUid = roomName.substr(0,roomSubstr);
+    const roomNum = roomName.substr(roomSubstr);
+    fireInit.database().ref(`${folder}/${roomUid}/${roomNum}`).remove();
+  }
   // 큐브 데이터 삭제
   cubeDataDel(folder, roomName) {
     const roomUid = roomName.substr(0,roomSubstr);

@@ -133,10 +133,12 @@ flex:auto; font-size: small;}
 
 .problemInput.btn{
   padding: 0;
-  background: var(--Ccolor);
+  height: 25px;
+  /* background: var(--Ccolor); */
   color: var(--Bcolor);
   border-radius: 0;
   text-align: center;
+  font-weight: 900;
 }
 .problemInput.btn:hover{
   background: var(--Bcolor);

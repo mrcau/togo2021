@@ -82,7 +82,9 @@ roomUser(folder,roomUid,cf,off) {
     
     return ref3.off();
   }
-  //보고서 테이블 싱크
+
+
+  //전체 보고서 테이블 싱크
 async reportSync(folder,roomId, cf,off) {
     if (!roomId) { return }
     // const roomId = roomName.substr(0,6)+'REPORT'
@@ -92,10 +94,21 @@ async reportSync(folder,roomId, cf,off) {
       const Data = Object.values(data);
       data ? cf.f1(Data) : cf.f2();
     });
-
-    if(off){ref1.off();}
-    
+    if(off){ref1.off();}    
   }
+
+  //개별 보고서 테이블 싱크
+
+  reportSync2(folder, roomId,dataId, cf,off) { console.log(dataId)
+    const ref1 =fireInit.database().ref(`${folder}/${roomId}/${dataId}`)
+    ref1.on('value', (p) => {
+      const data = p.val()||{};
+      const Data = Object.values(data);
+      data ? cf.f1(Data) : cf.f2();
+    });
+    if(off){ref1.off();} 
+  }
+
 // 비디오 메시지 싱크
 videoSync(folder,roomName,spot,cf, off) {
   const roomUid = roomName.substr(0,roomSubstr);
