@@ -446,15 +446,15 @@ function Datastudy({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
           
           </div>
           <div className="items items5 itemsCenter">
-            <div className="item item1"><textarea cols="10" rows="1"  className="itemArea area1" ref={text1} onChange={onSubmit} value={data.text1} placeholder="관련자료" /></div>
-            <div className="item item2"><textarea cols="10" rows="1"  className="itemArea area2" ref={text2} onChange={onSubmit} value={data.text2} placeholder="관련자료" /></div>
-            <div className="item item3"><textarea cols="10" rows="1"  className="itemArea area3" ref={text3} onChange={onSubmit} value={data.text3} placeholder="관련자료" /></div>
-            <div className="item item4"><textarea cols="10" rows="1"  className="itemArea area4" ref={text4} onChange={onSubmit} value={data.text4} placeholder="관련자료" /></div>
+            <div className="item item1"><textarea cols="10" rows="1"  className="itemArea area1" ref={text1} onChange={onSubmit} value={data.text1}  /></div>
+            <div className="item item2"><textarea cols="10" rows="1"  className="itemArea area2" ref={text2} onChange={onSubmit} value={data.text2}  /></div>
+            <div className="item item3"><textarea cols="10" rows="1"  className="itemArea area3" ref={text3} onChange={onSubmit} value={data.text3}  /></div>
+            <div className="item item4"><textarea cols="10" rows="1"  className="itemArea area4" ref={text4} onChange={onSubmit} value={data.text4}  /></div>
             <div className="item item5"><textarea cols="10" rows="1"  className="itemArea area5" ref={text5} onChange={onSubmit} value={data.text5} placeholder="분석자료" /></div>
-            <div className="item item6"><textarea cols="10" rows="1"  className="itemArea area6" ref={text6} onChange={onSubmit} value={data.text6} placeholder="관련자료" /></div>
-            <div className="item item7"><textarea cols="10" rows="1"  className="itemArea area7" ref={text7} onChange={onSubmit} value={data.text7} placeholder="관련자료" /></div>
-            <div className="item item8"><textarea cols="10" rows="1"  className="itemArea area8" ref={text8} onChange={onSubmit} value={data.text8} placeholder="관련자료" /></div>
-            <div className="item item9"><textarea cols="10" rows="1"  className="itemArea area9" ref={text9} onChange={onSubmit} value={data.text9} placeholder="관련자료" /></div>
+            <div className="item item6"><textarea cols="10" rows="1"  className="itemArea area6" ref={text6} onChange={onSubmit} value={data.text6}  /></div>
+            <div className="item item7"><textarea cols="10" rows="1"  className="itemArea area7" ref={text7} onChange={onSubmit} value={data.text7}  /></div>
+            <div className="item item8"><textarea cols="10" rows="1"  className="itemArea area8" ref={text8} onChange={onSubmit} value={data.text8}  /></div>
+            <div className="item item9"><textarea cols="10" rows="1"  className="itemArea area9" ref={text9} onChange={onSubmit} value={data.text9}  /></div>
           
           </div>
           <div className="items items6">

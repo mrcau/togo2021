@@ -6,7 +6,7 @@ import YouTubeIcon from '@material-ui/icons/YouTube';
 import './datastudy.css';
 import VoiceChatIcon from '@material-ui/icons/VoiceChat';
 import Swal from 'sweetalert2';
-import placeholder from './placeholder';
+import ProblemReport from './problemReport';
 import { useHistory,useParams } from 'react-router-dom';
 
 function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
@@ -103,6 +103,7 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
       let num = ++data['enterMan']||0 ;
       fireSync.cubeUp(folder,roomName, {enterMan:num});
     }
+    return ()=>{manMinus();}
   },[entering])
     
     // const goodPlus = (goodNum,Switch,setSwitch) => {
@@ -180,8 +181,8 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
 
   //데이터 리셋
   const dataReset = () => {    
-    text1.current.value = ''; text2.current.value = ''; text3.current.value = ''; text4.current.value = '';
-    text5.current.value = ''; text6.current.value = ''; text7.current.value = ''; text8.current.value = ''; text9.current.value = '';    
+   text1.current.value = ''; text2.current.value = ''; text3.current.value = ''; text4.current.value = '';
+   text5.current.value = ''; text6.current.value = ''; text7.current.value = ''; text8.current.value = ''; text9.current.value = '';    
    T1t1.current.value=''; T1t2.current.value=''; T1t3.current.value=''; T1t4.current.value=''; T1t5.current.value=''; T1t6.current.value=''; T1t7.current.value=''; T1t8.current.value=''; T1t9.current.value='';
    T2t1.current.value=''; T2t2.current.value=''; T2t3.current.value=''; T2t4.current.value=''; T2t5.current.value=''; T2t6.current.value=''; T2t7.current.value=''; T2t8.current.value=''; T2t9.current.value='';
    T3t1.current.value=''; T3t2.current.value=''; T3t3.current.value=''; T3t4.current.value=''; T3t5.current.value=''; T3t6.current.value=''; T3t7.current.value=''; T3t8.current.value=''; T3t9.current.value='';
@@ -244,6 +245,16 @@ fireSync.dataSync(folder,roomname, cf2);
     return;
   }
 
+  const roomNameHide = ()=>{roomERef.current.value=''; }
+  const roomRowReset=() => {
+    roomERef.current.value=''; 
+      dataReset(); 
+      setdata(data);
+    setDoor('입장'); 
+    // setRoomUid('');
+    // setRoom({});
+    setNotice('');setVideo('');
+  }  
   const enterRoom = () => {
   const roomvalue = roomERef.current.value || "";
     const enterRoomId =  roomERef.current.value.substr(0,roomSubstr)||"";
@@ -277,17 +288,16 @@ fireSync.dataSync(folder,roomname, cf2);
     e.preventDefault();
   const data = noticeRef.current.value;
     fireProblem.videoSave(folder, user.uid,'Tok', data)
-    noticeRef.current.value='';
-    
+    noticeRef.current.value='';    
   }
+
   //problem 글 데이터 저장, 방개수 6개 이하일때만 데이터 저장
   const onSubmit = () => {
     if (roomName!==roomERef.current.value||roomERef.current.value===''||report) { return }
-    const data = {
-      text1: text1.current.value || '', text2: text2.current.value || '', text3: text3.current.value || '', text4: text4.current.value || '',
-      text5: text5.current.value || '', text6: text6.current.value || '', text7: text7.current.value || '', text8: text8.current.value || '', text9: text9.current.value || '',  
-
-    }    
+  //   const data = {
+  //     text1: text1.current.value || '', text2: text2.current.value || '', text3: text3.current.value || '', text4: text4.current.value || '',
+  //    text5: text5.current.value || '', text6: text6.current.value || '', text7: text7.current.value || '', text8: text8.current.value || '', text9: text9.current.value || '',  
+  //  }    
     fireProblem.dataUp(folder, roomName, data);
   }
 
@@ -350,6 +360,13 @@ fireSync.dataSync(folder,roomname, cf2);
 //titleRef.current.classList.add("noticeFly");
   return (
     <div className="datastudy" >     
+    <div className="drawer" ref={drawerRef}>
+    {rightModal && 
+     <ProblemReport fireSync={fireSync} fireProblem={fireProblem} user={user} folder={folder} setroomName={setroomName} roomRowReset={roomRowReset}
+      roomName={roomName} setReport={setReport} roomNameHide={roomNameHide} userInfo={userInfo} 
+      moveModal2={moveModal2} report={report} setdata={setdata} setDoor={setDoor} setEntering={setEntering}  /> 
+    }
+    </div>
     <div className="drawerback backNone" ref={backRef} onClick={moveModal2}></div>
        
       {level>0 && 
@@ -378,7 +395,11 @@ fireSync.dataSync(folder,roomname, cf2);
         {level>0 && <button className="btnRoomDel" style={{margin:'0'}} onClick={dataDel}><DeleteForever /></button>  }
 
           {/* 스위치호출 */}
-        <div className="enterTitle" > </div>    
+        <div className="enterTitle" > 
+        <button style={{width:'30px'}} onClick={onSubmit}> 
+            <MenuSharp />
+          </button>
+        </div>    
         <div className="voicechat" >             
           <button style={{width:'30px'}}  onClick={fire}>
              <VoiceChatIcon fontSize='small' />
@@ -449,15 +470,15 @@ fireSync.dataSync(folder,roomname, cf2);
           
           </div>
           <div className="items items5 itemsCenter">
-            <div className="item item1"><textarea cols="10" rows="1"  className="itemArea area1" ref={text1} onChange={onSubmit} value={data.text1} placeholder="소주제" /></div>
-            <div className="item item2"><textarea cols="10" rows="1"  className="itemArea area2" ref={text2} onChange={onSubmit} value={data.text2} placeholder="소주제" /></div>
-            <div className="item item3"><textarea cols="10" rows="1"  className="itemArea area3" ref={text3} onChange={onSubmit} value={data.text3} placeholder="소주제" /></div>
-            <div className="item item4"><textarea cols="10" rows="1"  className="itemArea area4" ref={text4} onChange={onSubmit} value={data.text4} placeholder="소주제" /></div>
-            <div className="item item5"><textarea cols="10" rows="1"  className="itemArea area5" ref={text5} onChange={onSubmit} value={data.text5} placeholder="대주제" /></div>
-            <div className="item item6"><textarea cols="10" rows="1"  className="itemArea area6" ref={text6} onChange={onSubmit} value={data.text6} placeholder="소주제" /></div>
-            <div className="item item7"><textarea cols="10" rows="1"  className="itemArea area7" ref={text7} onChange={onSubmit} value={data.text7} placeholder="소주제" /></div>
-            <div className="item item8"><textarea cols="10" rows="1"  className="itemArea area8" ref={text8} onChange={onSubmit} value={data.text8} placeholder="소주제" /></div>
-            <div className="item item9"><textarea cols="10" rows="1"  className="itemArea area9" ref={text9} onChange={onSubmit} value={data.text9} placeholder="소주제" /></div>
+            <div className="item item1"><textarea cols="10" rows="1"  className="itemArea area1" ref={text1} onChange={onSubmit} value={data.text1}  /></div>
+            <div className="item item2"><textarea cols="10" rows="1"  className="itemArea area2" ref={text2} onChange={onSubmit} value={data.text2}  /></div>
+            <div className="item item3"><textarea cols="10" rows="1"  className="itemArea area3" ref={text3} onChange={onSubmit} value={data.text3}  /></div>
+            <div className="item item4"><textarea cols="10" rows="1"  className="itemArea area4" ref={text4} onChange={onSubmit} value={data.text4}  /></div>
+            <div className="item item5"><textarea cols="10" rows="1"  className="itemArea area5" ref={text5} onChange={onSubmit} value={data.text5} placeholder="주제" /></div>
+            <div className="item item6"><textarea cols="10" rows="1"  className="itemArea area6" ref={text6} onChange={onSubmit} value={data.text6}  /></div>
+            <div className="item item7"><textarea cols="10" rows="1"  className="itemArea area7" ref={text7} onChange={onSubmit} value={data.text7}  /></div>
+            <div className="item item8"><textarea cols="10" rows="1"  className="itemArea area8" ref={text8} onChange={onSubmit} value={data.text8}  /></div>
+            <div className="item item9"><textarea cols="10" rows="1"  className="itemArea area9" ref={text9} onChange={onSubmit} value={data.text9}  /></div>
           
           </div>
           <div className="items items6">

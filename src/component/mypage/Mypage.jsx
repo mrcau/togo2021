@@ -35,18 +35,18 @@ function Mypage({fireApp,user,userInfo}) {
       <div className="mypageTop"><div className="logo"/>My page</div>
 
       <form className="mypageForm" onSubmit={profileUp}>
-      <VpnKey/> <span style={{textAlign:"left",margin:"0 0 10px 0"}}>{uid.substr(0,6)}</span>
-      <MailOutline />  <span style={{textAlign:"left",margin:"0 0 10px 0"}}>{userEmail}</span>
-      
-      <InsertEmoticon  /> 
-      <input className="mypageInput name" name="name" defaultValue={userName} placeholder="name" ref={nameRef} />
-       
-       
-        
-        <span style={{textAlign:"left",fontSize:"small"}} >👩🏻‍🏫</span>
-        <input className="mypageInput mypagejob" name="job" ref={jobRef}  defaultValue={job}  />
-        <span style={{textAlign:"right",fontSize:"small"}} >교사인 경우 학교이름을 적어주세요.</span>
-        <button type="submit" style={{marginTop:"30px",borderRadius:"5px"}}>업데이트</button>
+      <VpnKey style={{fontSize:"40px"}}  /> 
+      <span className="mypageIcon" >{uid.substr(0,6)}</span>
+      <MailOutline style={{fontSize:"40px"}} />  
+      <span className="mypageIcon" >{userEmail}</span>
+      <InsertEmoticon style={{fontSize:"40px"}} /> 
+      <input className="mypageInput" name="name" defaultValue={userName} placeholder="name" ref={nameRef} />
+      <InsertEmoticon style={{fontSize:"40px"}}/> 
+        <input className="mypageInput job" name="job" ref={jobRef}  defaultValue={job}  />
+        <span style={{textAlign:"right",fontSize:"20px"}} >교사인 경우 학교이름을 적어주세요.</span>
+        <button type="submit" style={{fontSize:"30px", marginTop:"30px",borderRadius:"5px"}}>
+          업데이트
+          </button>
       </form>
 
     </div>

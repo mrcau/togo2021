@@ -91,7 +91,16 @@
 .btnmenu{ width: 80px; padding: 0 40px 0 0;}
 .headerT{
   flex:1; padding: 0;}
-.rightMenu{ width:90px;font-size:small;}
+
+.steering{
+    transition: all 300ms;
+    width: 25px;
+  }
+
+.headerT:hover .steering{
+    transform: rotate(180deg) scale(1.4);
+  }
+.rightMenu{ font-size:small;}
 .droplogOut{width:20px !important;}
 main{
   display: flex ;
@@ -100,9 +109,9 @@ main{
   position: relative;
 }
 footer {
-  height: 25px;
+  height: 30px;
   line-height: 15px;
-  font-size: small;
+  font-size: large;
   font-weight: 900;
   color: var(--Bcolor);
   background: var(--Acolor);

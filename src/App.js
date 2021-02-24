@@ -101,7 +101,7 @@ function App({ fireApp,fireLogin,fireSync, fireTodo, fireIdea, fireOpentool,fire
         </IconButton>
         {/* /타이틀 */}
         <div className="headerT" onClick={()=>setlogoName('')}>
-          <Link className="link" to='/'> <img src={steering} width="25px"  alt="logo"/> <span style={{fontSize:'large',color:'white'}}>{logoName}</span>  </Link>
+          <Link className="link" to='/'> <img src={steering} className="steering" alt="logo"/> <span style={{fontSize:'large',color:'white'}}>{logoName}</span>  </Link>
         </div> 
         {/* 탑메뉴 */}
         <div className="rightMenu" style={{textAlign:"right",paddingRight:"10px",lineHeight:"20px"}}>
