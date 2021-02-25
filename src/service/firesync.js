@@ -24,14 +24,20 @@ class firesync {
   }
 
 //  룸 이름 가져오기
-roomUser(folder,roomUid,cf,off) {
+roomUser(folder,roomvalue,cf,off) {
+  const enterRoomId =  roomvalue.substr(0,roomSubstr);
+  const roomNum = roomvalue.substr(roomSubstr);
   const ref = fireInit.database().ref(`${folder}`);
-  ref.on('value', (p) => {
-  const data = p.val();
-    if(!data){console.log('서버데이터 없음')}
+  const ref2 = fireInit.database().ref(`${folder}/${enterRoomId}`);
+  ref.on('value', (p) => { const data = p.val();
+    if(!data){return}
     const dataKey = Object.keys(data);
-    if(dataKey.indexOf(roomUid)<0){ ref.off(); return }
-     cf();
+    if(dataKey.indexOf(enterRoomId)<0){ ref.off();  return }
+  })
+  ref2.on('value', (p) => { const data = p.val();
+    if(!data){ return}
+    const dataKey = Object.keys(data);
+    if(dataKey.indexOf(roomNum)<0){ ref.off(); return }else{cf()}
   })
 
   if(off){ref.off();}
@@ -103,8 +109,9 @@ async reportSync(folder,roomId, cf,off) {
     const ref1 =fireInit.database().ref(`${folder}/${roomId}/${dataId}`)
     ref1.on('value', (p) => {
       const data = p.val()||{};
-      const Data = Object.values(data);
-      data ? cf.f1(Data) : cf.f2();
+      // const Data = Object.values(data);
+      console.log(data)
+      data ? cf.f1(data) : cf.f2();
     });
     if(off){ref1.off();} 
   }
@@ -148,6 +155,12 @@ cubeSync(folder, roomName, T, t, off) {
     fireInit.database().ref(`${folder}/${roomUid}/${roomNum}`)
       .update(data)
   }
+
+    // 데이터 저장
+    reportUp(folder, roomId, roomName, data) {
+      fireInit.database().ref(`${folder}/${roomId}/${roomName}`).update(data)
+    }
+
 
  // mytool  저장 
  toolSave(folder,uid, data) {

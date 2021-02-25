@@ -6,8 +6,9 @@ import LockOpenIcon from '@material-ui/icons/LockOpen';
 import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
 import Swal from 'sweetalert2';
 import google from './goolge.png';
+import { useHistory } from 'react-router-dom';
 
-function LoginModal({ fireApp, setuser,moveModal4,registerTF, setRegisterTF }) {
+function LoginModal({ fireApp, setuser,moveModal4,registerTF, setRegisterTF, user, userInfo }) {
   const emailRef = useRef();
   const passRef = useRef();
   const emailRegisterRef = useRef();
@@ -15,7 +16,7 @@ function LoginModal({ fireApp, setuser,moveModal4,registerTF, setRegisterTF }) {
   const passRegisterRef = useRef();
   const repassRegisterRef = useRef();
   const Swal = require('sweetalert2');
-
+  const history = useHistory();
   // 이메일로그인
   const emailLogin = (e) => {
     e.preventDefault();
@@ -71,8 +72,8 @@ function LoginModal({ fireApp, setuser,moveModal4,registerTF, setRegisterTF }) {
           </Form>
           <button className="btnGoogle" style={{ background: "white" }} onClick={googleLogin} >
             <img src={google} alt="googe" width="50px" /> </button>
-          <button className="btnRegister" style={{ background: "white" }} onClick={() => setRegisterTF(true)} >
-            아이디가 없다면...</button>
+          <Button variant="primary"  onClick={() => setRegisterTF(true)} style={{marginTop:"30px"}}> 회원가입</Button>
+
         </div>
       }
 

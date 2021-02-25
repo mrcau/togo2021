@@ -89,7 +89,7 @@ function App({ fireApp,fireLogin,fireSync, fireTodo, fireIdea, fireOpentool,fire
       {/* 위쪽메뉴 */}
       <div className="drawerTop " ref={drawerTopRef}>
         {uid ? <Mytoolbox fireTodo={fireTodo} user={user} userName={userName} />
-           : <LoginModal fireApp={fireApp} setuser={setuser} moveModal4={moveModal4}  registerTF={registerTF} setRegisterTF={setRegisterTF} /> }
+           : <LoginModal fireApp={fireApp} setuser={setuser} moveModal4={moveModal4} user={user} userInfo={userInfo}  registerTF={registerTF} setRegisterTF={setRegisterTF} /> }
       </div>
       <div className="drawerbackTop backNonTop" ref={backTopRef} onClick={moveModal4}></div>
 

@@ -59,9 +59,31 @@ roomUser(folder,roomUid,cf) {
   dataUp(folder, roomName, data) {
     const roomUid = roomName.substr(0,roomSubstr);
     const roomNum = roomName.substr(roomSubstr);
-    fireInit.database().ref(`${folder}/${roomUid}/${roomNum}`)
-      .update(data)
+
+    const ref = fireInit.database().ref(`${folder}`);
+    const ref2 = fireInit.database().ref(`${folder}/${roomUid}`);
+    ref.on('value', (p) => { const data = p.val();
+      if(!data){return}
+      const dataKey = Object.keys(data);
+      if(dataKey.indexOf(roomUid)<0){ ref.off(); return }    
+    })
+
+    ref2.on('value', (p) => { const data = p.val();
+      if(!data){ return}
+      const dataKey = Object.keys(data);
+      if(dataKey.indexOf(roomNum)<0){ ref.off(); return }
+      // else{
+      //   fireInit.database().ref(`${folder}/${roomUid}/${roomNum}`).update(data)
+      // }
+    })
+    fireInit.database().ref(`${folder}/${roomUid}/${roomNum}`).update(data)
+    
   }
+
+
+
+
+
 
   // 큐브 데이터 저장
  cubeDataUp(folder, roomName, T, data) {
@@ -94,7 +116,7 @@ roomUser(folder,roomUid,cf) {
       fireInit.database().ref(`${folder}/${uid}/${dataId}`).remove();
     }
   // 보고서 저장
-  reportSave(folder, roomId, roomName, data) {
+  reportSave(folder, roomId, roomName, data) {console.log('리포트세이브')
     fireInit.database().ref(`${folder}/${roomId}/${roomName}`)
       .set(data)
   }

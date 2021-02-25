@@ -2,7 +2,7 @@ import './problemReport.css';
 import React, { memo, useEffect, useState } from 'react';
 import { DataGrid } from '@material-ui/data-grid';
 
-function ProblemReport({ fireProblem, fireSync,user,folder,roomName,setroomName,
+function ProblemReport({ setLinkCopy, fireProblem, fireSync,user,folder,roomName,setroomName,
   setReport,moveModal2,userInfo, setdata,setEntering,setDoor,roomNameHide}) {
 const [data2, setData2] = useState({})
 //데이터싱크 
@@ -32,8 +32,9 @@ const rows = Object.values(data2).map((e,i) => {
      큐브툴
      <DataGrid  scrollbarSize={10} className="row"  rows={rows} columns={columns} pageSize={10} 
      autoHeight rowHeight={25} headerHeight={25}  disableColumnMenu 
-     onRowSelected={(p)=>{ setdata(p.data); console.log('p',p,'row',rows)}}
-     onRowClick={()=>{selectRow();console.log('pp')}} />
+     onRowSelected={(p)=>{ setdata({...p.data}); setroomName(p.data.dataId);
+  setLinkCopy('http://localhost:3000/'+folder+'/'+p.data.dataId+'re');  }}
+     onRowClick={()=>{selectRow();}} />
     </div>
   );
 }
