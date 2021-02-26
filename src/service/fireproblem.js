@@ -92,6 +92,13 @@ roomUser(folder,roomUid,cf) {
     fireInit.database().ref(`${folder}/${roomUid}/${roomNum}/${T}`)
       .update(data)
   }
+  // 큐브 리포트 데이터 첨부내용 업데이트
+ cubeReportDataUp(folder, roomName, T, data) {
+    const roomUid = roomName.substr(0,roomSubstr);
+  const roomId = roomUid+'REPORT';
+    fireInit.database().ref(`${folder}/${roomId}/${roomName}/${T}`)
+      .update(data)
+  }
   //리포트 데이터 업데이트
   reportUp(folder, roomId,dataId, data) {
     fireInit.database().ref(`${folder}/${roomId}/${dataId}`)

@@ -148,6 +148,25 @@ cubeSync(folder, roomName, T, t, off) {
   return cubeData
 }
 
+//큐브리포트 싱크
+cubeReportSync(folder, roomName, T, t, off) {
+
+  const roomUid = roomName.substr(0,roomSubstr);
+  const roomId = roomUid+'REPORT';
+  const ref = fireInit.database().ref(`${folder}/${roomId}/${roomName}/${T}`)
+  let cubeData = '';
+  ref.on('value', (p) => {     
+    const data = p.val();
+    if(!data){return}
+    if(!data[t]){return}else{ cubeData=data[t] }
+  });
+
+  if(off){ref.off();}
+    
+  return cubeData
+}
+
+
   // 데이터 저장
   cubeUp(folder, roomName, data) {
     const roomUid = roomName.substr(0,roomSubstr);
@@ -156,10 +175,16 @@ cubeSync(folder, roomName, T, t, off) {
       .update(data)
   }
 
-    // 데이터 저장
+    // 큐브 테두리 리포트 데이터 저장
     reportUp(folder, roomId, roomName, data) {
       fireInit.database().ref(`${folder}/${roomId}/${roomName}`).update(data)
     }
+
+    // 큐브 리포트 저장
+    cubeReportUp(folder, roomId, roomName, data) {console.log('리포트세이브')
+  fireInit.database().ref(`${folder}/${roomId}/${roomName}`)
+    .update(data)
+}
 
 
  // mytool  저장 
