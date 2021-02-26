@@ -76,10 +76,11 @@ roomUser(folder,roomUid,cf) {
       fireInit.database().ref(`${folder}/${uid}`).remove();
     }
   // 보고서 저장
-  reportSave(folder, roomId, roomName, data) {
+  async reportSave(folder, roomId, roomName, data) {
     fireInit.database().ref(`${folder}/${roomId}/${roomName}`)
       .set(data)
   }
+  
 // 비디오 메시지 저장
 videoSave(folder,roomName,spot,data){
   const roomUid = roomName.substr(0,roomSubstr);

@@ -123,7 +123,7 @@ roomUser(folder,roomUid,cf) {
       fireInit.database().ref(`${folder}/${uid}/${dataId}`).remove();
     }
   // 보고서 저장
-  reportSave(folder, roomId, roomName, data) {console.log('리포트세이브')
+ async reportSave(folder, roomId, roomName, data) {console.log('리포트세이브')
     fireInit.database().ref(`${folder}/${roomId}/${roomName}`)
       .set(data)
   }

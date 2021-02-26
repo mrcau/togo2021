@@ -32,7 +32,7 @@
 
 .solving .enterNumber{  width: 150px;}
 
-.solving .s-header{
+.s-header{
   display: flex ;
   justify-content: space-between;
   background: var(--Ccolor);
@@ -217,7 +217,10 @@ position:absolute !important; left: 10px !important;}
   font-size: 14px; font-weight: 900;
 }
 .voicechat{
-  width:100px; display: flex; justify-content: flex-end;
+  width:100px; justify-content: flex-end;
+}
+.topMenuA{
+  font-size: 1.5vw;
 }
 @keyframes noticeFly{
  from{ transform : scale(3); background:white}
