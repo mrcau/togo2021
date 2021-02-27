@@ -97,15 +97,22 @@ function App({ fireApp,fireLogin,fireSync, fireTodo, fireIdea, fireOpentool,fire
         {/* 좌측메유 */}
         {/* <div className="btnmenu"> <button onClick={moveModal}><MenuSharpIcon/></button> </div> */}
         <IconButton size="small" component="span" onClick={moveModal} style={{paddingLeft:"10px",width:"90px"}} > 
+        <Tooltip arrow placement="left" title="메뉴보기">
           <MenuSharpIcon style={{color:"var(--Bcolor)",marginRight:"auto"}}   /> 
+          </Tooltip> 
         </IconButton>
         {/* /타이틀 */}
         <div className="headerT" onClick={()=>setlogoName('')}>
-          <Link className="link" to='/'> <img src={steering} className="steering" alt="logo"/> <span style={{fontSize:'large',color:'white'}}>{logoName}</span>  </Link>
+        <Tooltip arrow placement="left"  title="홈으로 이동">
+          <Link className="link" to='/'> 
+          <img src={steering} className="steering" alt="logo"/> 
+          <span style={{fontSize:'large',color:'white'}}>{logoName}</span>  
+          </Link>
+          </Tooltip> 
         </div> 
         {/* 탑메뉴 */}
         <div className="rightMenu" style={{textAlign:"right",paddingRight:"10px",lineHeight:"20px"}}>
-          {uid ? <Tooltip arrow title="My ToolBox">
+          {uid ? <Tooltip arrow placement="left"  title="나의 툴 보기">
           <Chip size="small" avatar={<Avatar src={photo}/>} label={userInfo.name||''} as="button"  onClick={moveModal3}/>
           </Tooltip> 
             : <IconButton size="small" component="span" onClick={moveModal3} 

@@ -187,7 +187,7 @@ cubeReportSync(folder, roomName, T, t, off) {
 
 
   // 데이터 저장
-  cubeUp(folder, roomName, data) {
+  cubeUp(folder, roomName, data) { console.log('handle cubeup',folder, roomName, data)
     const roomUid = roomName.substr(0,roomSubstr);
     const roomNum = roomName.substr(roomSubstr);
     if(!roomUid||!roomNum){return}

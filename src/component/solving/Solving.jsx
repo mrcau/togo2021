@@ -1,4 +1,4 @@
-import {  IconButton,Badge} from '@material-ui/core';
+import {  IconButton,Badge,Tooltip} from '@material-ui/core';
 import {  DeleteForever,   MenuSharp ,InsertEmoticon } from '@material-ui/icons';
 import React, { memo, useEffect,  useRef, useState } from 'react';
 import LinkIcon from '@material-ui/icons/Link';
@@ -58,7 +58,7 @@ function Solving({ fireIdea, fireSync, user, userInfo ,setlogoName }) {
       const cf = () => {roomERef.current.value=id.substr(0,10); setReportId(id); setroomName(id.substr(0,10));setReport(true); enterRoom();} 
       fireSync.roomUser(folder,id.substr(0,10),cf);
     }
-    if(id.length===10){roomERef.current.value=id; enterRoom();}
+    // if(id.length===10){roomERef.current.value=id; enterRoom();}
 
     fireSync.onAuth((e) => {
       if(!e&&!roomName){ return}
@@ -159,8 +159,8 @@ function Solving({ fireIdea, fireSync, user, userInfo ,setlogoName }) {
       roomUid : num,
       progress: 0,
       color : 'secondary',
-      title:'',text:''
-
+      title:'',text:'',
+      host:false
     }
     fireIdea.roomGetSave(folder, newRoom, dataId, data);
   }
@@ -178,7 +178,7 @@ function Solving({ fireIdea, fireSync, user, userInfo ,setlogoName }) {
       history.push('/solving/:id');
       setDoor('입장');setItems({});setroomName("");
       setRoomUid('');setReport(false); setSee(true); setRoom({}); 
-      setNotice('');setVideo(''); 
+      setNotice('');setVideo(''); setEntering(false);
       roomERef.current.value=''; 
       //  history.push('/solving/:id');      
     }  
@@ -227,28 +227,31 @@ function Solving({ fireIdea, fireSync, user, userInfo ,setlogoName }) {
             f4: () => { setRoom({}) },
           }
         fireSync.dataSync(folder,roomvalue, cf2);
-        // let num = ++data['enterMan']||0 ;
-        // fireSync.cubeUp(folder,roomName, {enterMan:num});
+        let num = ++items['enterMan']||0 ;
+        fireSync.cubeUp(folder,roomvalue, {enterMan:num});
         }
       }
 
   // 관리자 방입장
-  const adminEnter = (e) => {
+  const adminEnter = (e) => { 
     // roomNameReset();
     const room = e.currentTarget.textContent;
-    const roomname = roomUid +room;
+    const roomname = roomUid +room; 
     setroomName(roomUid +room);
     roomERef.current.value =roomname; 
   setLinkCopy('http://localhost:3000/'+folder+'/'+roomUid +room);  
   setEntering(true);
-       setDoor('퇴장');    
+       setDoor('퇴장');   
        const cf2 = {
-         f1: (p) => { setItems(p);  },
+         f1: (p) => { setItems(p); },
          f2: () => { setItems({}) },
          f3: (p) => { setRoom(p) },
          f4: () => { setRoom({}) },
        }
      fireSync.dataSync(folder,roomname, cf2);
+     let num = ++items['enterMan']||0 ;
+      fireSync.cubeUp(folder,roomname, {enterMan:num});
+      console.log('adminenter',items,items['enterMan'])
   }
 
 // notice 저장 - 공지 보내기
@@ -330,17 +333,23 @@ const submit = (e) => {
       moveModal2={moveModal2} report={report} setItems={setItems} setDoor={setDoor} setEntering={setEntering}  /> 
     }
     </div>
-    <div className="drawerback backNone" ref={backRef} onClick={moveModal2}></div>
+    <div className="drawerback backNone" ref={backRef} onClick={moveModal2} style={{zIndex:"1"}}></div>
       {level>0 && 
         <form className="adimBar">
+         <Tooltip arrow placement="left" title="메시지 전송">
           <button className="enterBtn"  onClick={noticeUp}><AddCommentIcon/></button> 
+          </Tooltip>
           <input type="text" className="enterInput" placeholder="전달사항" ref={noticeRef} />
+         <Tooltip arrow placement="left" title="회의자료 입력">
           <button className="enterBtn"  style={{width:'30px'}} onClick={fireInsert}><YouTubeIcon/></button> 
+          </Tooltip>
         </form>
       }
       {level>0 &&
         <div className="adimBar">
+         <Tooltip arrow placement="left" title="새로운 룸 생성">
           <div> <button className="enterBtn" onClick={createRoom} style={{fontSize:'12px'}}>개설</button> </div>
+          </Tooltip>
           <div className="enterNumber" style={{fontSize:'small'}}>
             {see && room && Object.keys(room).map((e) => e.length>3 &&
               <button key={e} className="btnRoom" onClick={adminEnter} >{e}</button>) 
@@ -356,40 +365,52 @@ const submit = (e) => {
         </div>
         <div style={{width:"100%", display:'flex'}}>
         {level>0 && 
-           <IconButton size="small" component="span" onClick={()=> { if(roomName){Swal.fire({ title: '링크가 복사되었습니다.',text:linkCopy,icon:'warning'});}}}
+         <Tooltip arrow title="룸링크 복사">
+         <IconButton size="small" component="span" onClick={()=> { if(roomName){Swal.fire({ title: '링크가 복사되었습니다.',text:linkCopy,icon:'warning'});}}}
              style={{color:"var(--Bcolor)"}}>
                <CopyToClipboard text={linkCopy}>               
-                <div ><LinkIcon /> <span className="topMenuA">링크 </span> </div>
+                <LinkIcon />
                 </CopyToClipboard>
           </IconButton>
+          </Tooltip>
           }
           
         {level>0 && entering &&        
-        <IconButton size="small" onClick={submit} style={{flex:'auto',color:"var(--Bcolor)",minWidth:"40px",padding:"0"}} > 
-          <AddCircleOutlineIcon  />  <span className="topMenuA">추가 </span> 
+         <IconButton size="small" onClick={submit} style={{flex:'auto',color:"var(--Bcolor)",minWidth:"40px",padding:"0"}} > 
+         <Tooltip arrow title="페이지 추가">
+          <AddCircleOutlineIcon  />  
+          </Tooltip>
         </IconButton>
         }
 
           {level>0 && 
-          <IconButton size="small"  onClick={reportSave} style={{color:"var(--Bcolor)",flex:"auto",minWidth:"40px",padding:"0"}}>
-                <SaveIcon />  <span className="topMenuA">저장 </span> 
+         <IconButton size="small"  onClick={reportSave} style={{color:"var(--Bcolor)",flex:"auto",minWidth:"40px",padding:"0"}}>
+         <Tooltip arrow title="저장">
+                <SaveIcon /> 
+          </Tooltip>
           </IconButton>
           }
 
         {level>0 && 
+         <Tooltip arrow title="삭제">
           <IconButton size="small" component="span" onClick={dataDel} style={{color:"var(--Bcolor)",padding:"0"}}>
-                <DeleteForever />  <span className="topMenuA">삭제 </span> 
+                <DeleteForever />  
           </IconButton>
+          </Tooltip>
         }
         {/* 게시판추가 */}
         </div>
         <div className="voicechat"  >             
+         <Tooltip arrow  title="회의자료 보기">
           <button style={{width:'30px'}}  onClick={fire}>
              <VoiceChatIcon fontSize='small' />
           </button>          
+          </Tooltip>
+         <Tooltip arrow  title="저장자료 보기">
           <button style={{width:'30px'}} onClick={moveModal}> 
             <MenuSharp />
           </button> 
+          </Tooltip>
         </div>        
       </div>
 
