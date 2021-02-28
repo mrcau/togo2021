@@ -47,7 +47,8 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
   const [notice, setNotice] = useState('');
   const [rightModal,setrightModal] = useState(false);
   const [entering, setEntering] = useState(false);
-  const [see, setSee] = useState(true)
+  const [see, setSee] = useState(true);
+  const [reportInput, setReportInput] = useState(false);
   // const [linkName, setLinkName] = useState(roomName)
   const [linkCopy, setLinkCopy] = useState('');
   //입장중 http://localhost:3000/'+folder+roomName
@@ -57,17 +58,26 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
   // const [cube, setCube] = useState('');
   setlogoName('큐브툴');
    //데이터싱크 
-  useEffect(() => { 
+
+   useEffect(() => {     
     if(id.length===10){  setroomName(id);
-      const cf = () => {  setroomName(id);enterRoom(); roomERef.current.value=id;  }
+      const cf = (host) => {  
+        if(host==='입장'){ setroomName(id);enterRoom(); roomERef.current.value=id;}
+        else if(host==='퇴장'){ setroomName(""); roomNameReset(); setEntering(false);} 
+      }
       fireSync.roomUser(folder,id,cf)
     }
-    if(id.length===12){setroomName(id.substr(0,10));
-      const cf = () => {roomERef.current.value=id.substr(0,10); setReportId(id); setroomName(id.substr(0,10));setReport(true); enterRoom();} 
-      fireSync.roomUser(folder,id.substr(0,10),cf);
+    if(id.length===12){setroomName(id.substr(0,10));setReport(true); 
+      const cf = () => {roomERef.current.value=id.substr(0,10); setReportId(id);
+                     setroomName(id.substr(0,10));setReport(true); enterRoom();} 
+      fireSync.roomUser2(folder,id.substr(0,10),cf); console.log('리포트모냐?',report)
     }
+   },[fireSync,roomName])
+
+
+  useEffect(() => { 
     
-    fireSync.onAuth((e) => {
+    fireSync.onAuth((e) => { 
       if(!e&&!roomName){ return}
 
       const cf = {
@@ -75,7 +85,7 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
         f3: (p) => { setRoom(p) },  f4: () => { setRoom({}) },
       }
 
-        if (e && report===false && !id) { 
+        if (e && report===false && !id) { console.log('e && report===false && !id')
           setRoomUid(e.uid.substr(0, roomSubstr));
           setUserUID(e.uid);
          const stopDataSync = fireSync.dataSync(folder, roomName, cf);
@@ -83,7 +93,7 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
           return ()=>{stopDataSync();stoproomSync();}
         }
         
-        else if(e && !roomName && !report){ 
+        else if(e && !roomName && !report){  console.log('e && !roomName && !report')
         setRoomUid(e.uid.substr(0, roomSubstr));
         setUserUID(e.uid);
           const stopdataSyncB =  fireSync.dataSyncB(folder, roomName, cf);
@@ -93,8 +103,9 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
         
         else { 
           const cf = { f1: (p) => { setdata(p);setroomName(roomName) }, f2: () => { setdata({}) } }
-         if(report){   
-           const roomId = user.uid ? user.uid.substr(0,6)+'REPORT': id.substr(0,6)+'REPORT';
+       
+       if(report){   console.log('report보기',report); setReportInput(true);
+          const roomId = user.uid ? user.uid.substr(0,6)+'REPORT': id.substr(0,6)+'REPORT';
            const value = data.length>0 ? data.dataId :  id.substr(0,10)
            const stopdataSync = fireSync.reportSync2(folder,roomId,value,cf);     
            return ()=>{stopdataSync();}
@@ -157,7 +168,7 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
   
 
   // 큐브입력 모달
-  const fireArea = async(T,t)=>{
+  const fireArea = async(T,t)=>{console.log('user1',user,'data',data,'roomName',roomName)
     // e.preventDefault();
     if(!roomName||report){return}
     const cubeData = fireSync.cubeSync(folder, roomName, T, t);
@@ -176,7 +187,7 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
   }
 
   // 리포트 큐브입력 모달
-  const fireAreaReport = async(T,t)=>{
+  const fireAreaReport = async(T,t)=>{console.log('user2',user,'data',data,'roomName',roomName)
     // e.preventDefault();
     if(!roomName){return}
     let cubeData = '';
@@ -190,9 +201,13 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
       inputAttributes: {'aria-label': 'Type your message here'},
       showCancelButton: true
     })
+   
     if(report){
-    if (text) {Swal.fire(text); const data = {[t]:text};
+    if (text&&user.uid!==undefined) { console.log('리포트판단', user.uid.substr(0,6),roomName.substr(0,6))
+      if(user.uid.substr(0,6)===roomName.substr(0,6)){
+      Swal.fire(text); const data = {[t]:text};
     fireProblem.cubeReportDataUp(folder, roomName, T, data);
+      }else{return}
     }}
   }
 
@@ -204,7 +219,7 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
     const newRoom = roomUid + num;
     setroomName(newRoom);
     const data = {userId:user.uid,text1:'',text2:'',text3:'',text4:'',text5:'',text6:'',text7: '',text8: '', 
-    text9: '',enterMan:0,dataId:newRoom}
+    text9: '',enterMan:0,dataId:newRoom,host:'입장'}
     console.log(newRoom)
     fireProblem.roomGetSave(folder, newRoom, data)
   }
@@ -223,9 +238,6 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
    T9t1.current.value=''; T9t2.current.value=''; T9t3.current.value=''; T9t4.current.value=''; T9t5.current.value=''; T9t6.current.value=''; T9t7.current.value=''; T9t8.current.value=''; T9t9.current.value='';
   }
 
-  const linkName = () => {
-    
-  }
 
  // 관리자 방입장
  const adminEnter = (e) => {
@@ -245,6 +257,9 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
     f4: () => { setRoom({}) },
   }
 fireSync.dataSync(folder,roomname, cf2);
+
+fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
+
 }
     // input roomName 초기화
     const roomNameReset=() => {   console.log('퇴장');
@@ -262,6 +277,12 @@ fireSync.dataSync(folder,roomname, cf2);
       setRoomUid(''); setReport(false); setSee(true); setRoom({});
       setNotice(''); setVideo('');
       roomERef.current.value='';  
+        
+      if(user.uid){
+        if(user.uid.substr(0,roomSubstr)===roomName.substr(0,roomSubstr)){
+          fireSync.cubeUp(folder,roomName, {host:'퇴장'});
+        }}
+
     }  
     
     // 토론방 삭제시 데이터 리셋 entering 제거
@@ -308,12 +329,16 @@ fireSync.dataSync(folder,roomname, cf2);
     setNotice('');setVideo('');
   }  
 
-  const enterRoom = () => {
+  const enterRoom = () => { console.log('방입장',data)
     const roomvalue = roomERef.current.value || "";
     const enterRoomId =  roomERef.current.value.substr(0,roomSubstr)||"";
-    if(entering){
+    if(entering){ console.log('퇴장실행')
       setEntering(false); roomNameReset(); manMinus();
-      setroomName("");setDoor('입장');      
+      setroomName("");setDoor('입장');   
+      if(data.id){
+      if(data.dataId.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){
+        fireSync.cubeUp(folder,roomvalue, {host:'퇴장',roomName:roomvalue});
+      }   }
     }
 
     if(roomvalue.length !== 10){ return;}
@@ -334,8 +359,11 @@ fireSync.dataSync(folder,roomname, cf2);
             f4: () => { setRoom({}) },
           }
         fireSync.dataSync(folder,roomvalue, cf2);
+
+        if(!report){
         let num = ++data['enterMan']||0 ;
         fireSync.cubeUp(folder,roomName, {enterMan:num});
+        }
          }   
       }
   
@@ -348,19 +376,23 @@ fireSync.dataSync(folder,roomname, cf2);
     noticeRef.current.value='';    
   }
  //리포트 저장
-  const reportSave = () => {
+  const reportSave = () => {console.log(text5.current.value.length)
     if (roomName!==roomERef.current.value||roomERef.current.value===''||report) { return }
-    if (!text5.current.value){Swal.fire('주제를 입력해주세요.')}
+    if (text5.current.value.length<2){Swal.fire('주제를 입력해주세요.')}
+    else{
     const roomUid =  user.uid.substr(0,roomSubstr);
     const roomId = roomUid+'REPORT';
     const value = {
       text1: text1.current.value || '', text2: text2.current.value || '', text3: text3.current.value || '', text4: text4.current.value || '', dataId: roomName ||'',
       text5: text5.current.value || '', text6: text6.current.value || '', text7: text7.current.value || '', text8: text8.current.value || '', text9: text9.current.value || '',  
       }
-        fireProblem.reportSave(folder, roomId, roomName, value).then(()=>{Swal.fire('저장완료')})
+      fireProblem.reportSave(folder, roomId, roomName, value).then(()=>{Swal.fire('저장완료')})
+    }
+
+
       }
   //problem 글 데이터 저장, 방개수 6개 이하일때만 데이터 저장
-  const onSubmit = () => { 
+  const onSubmit = () => {  console.log('onsubmit1',report);
     // if(!user){ console.log('유저없음'); return}
     if(!roomName && !report){  return  }
     if( roomName===roomERef.current.value && !report ){
@@ -369,11 +401,12 @@ fireSync.dataSync(folder,roomname, cf2);
           text5: text5.current.value || '', text6: text6.current.value || '', text7: text7.current.value || '', text8: text8.current.value || '', text9: text9.current.value || '',  
           }    
         fireProblem.dataUp(folder, roomName, data);
-    }  
+      }  
+
   }
 
 // 큐브 데이터 저장
-const onSubmit2 = (e,p) => {
+const onSubmit2 = (e,p) => {console.log('onsubmit2',report);
   if(!roomName && !report){ return}
   // if (roomName!==roomERef.current.value||roomERef.current.value===''||report) { return }
   if( roomName===roomERef.current.value && !report ){
@@ -383,7 +416,7 @@ const onSubmit2 = (e,p) => {
   }
 }
   // 큐브 리포트 가운데 input 저장
-  const onSubmit3 = () => {
+  const onSubmit3 = () => {console.log('onsubmit3',report);
     if (!report||!user.uid) { return }
     const roomUid =  user.uid.substr(0,roomSubstr);
     const roomId = roomUid+'REPORT';
@@ -395,13 +428,14 @@ const onSubmit2 = (e,p) => {
   }
 
 // 큐브 리포트 테두리 input 저장
-const onSubmit4 = (e,p) => {console.log('submit4')
-if (!report||!user.uid) { return }
+const onSubmit4 = (e,p) => {console.log('submit4',report,user.uid)
+if (!report||user.uid===undefined) { return }else{
   const roomUid =   user.uid.substr(0,roomSubstr);
   const roomId = roomUid+'REPORT';
   const  evalue = e.current.value ||'';
     const value = {[p]:evalue}
     fireSync.reportUp(folder, roomId, roomName, value);
+}
 }
 
     
@@ -624,7 +658,7 @@ if (!report||!user.uid) { return }
             <div className="item item6">{roomName&&<button className="eye" onClick={()=>{if(!report&&reportId.length<11){fireArea('T9','t6')}else{fireAreaReport('T9','t6')}}} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T9t6} onChange={()=>{if(report){onSubmit4(T9t6,'T9t6')}else{onSubmit2(T9t6,'T9t6')}}} value={data.T9t6}  /></div>
             <div className="item item7">{roomName&&<button className="eye" onClick={()=>{if(!report&&reportId.length<11){fireArea('T9','t7')}else{fireAreaReport('T9','t7')}}} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T9t7} onChange={()=>{if(report){onSubmit4(T9t7,'T9t7')}else{onSubmit2(T9t7,'T9t7')}}} value={data.T9t7}  /></div>
             <div className="item item8">{roomName&&<button className="eye" onClick={()=>{if(!report&&reportId.length<11){fireArea('T9','t8')}else{fireAreaReport('T9','t8')}}} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T9t8} onChange={()=>{if(report){onSubmit4(T9t8,'T9t8')}else{onSubmit2(T9t8,'T9t8')}}} value={data.T9t8}  /></div>
-            <div className="item item9">{roomName&&<button className="eye" onClick={()=>{if(!report&&reportId.length<11){fireArea('T9','t9')}else{fireAreaReport('T9','t9')}}} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T9t9} onChange={()=>{if(report){onSubmit4(T9t9,'T9t9')}else{onSubmit2(T9t9,'T9t9')}}} value={data.T9t9}  /></div>
+            <div className="item item9">{roomName&&<button className="eye" onClick={()=>{if(!report&&reportId.length<11){fireArea('T9','t9')}else{fireAreaReport('T9','t9')}}} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T9t9} onChange={()=>{if(!report&&reportId.length<11){onSubmit2(T9t9,'T9t9')}else{onSubmit4(T9t9,'T9t9')}}} value={data.T9t9} disabled={reportInput} /></div>
           
           </div>
         </div>

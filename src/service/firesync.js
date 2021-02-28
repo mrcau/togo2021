@@ -36,11 +36,18 @@ roomUser(folder,roomvalue,cf,off) {
   })
   ref2.on('value', (p) => { const data = p.val();
     if(!data){ return}
-    const dataKey = Object.keys(data);
-    if(dataKey.indexOf(roomNum)<0){ ref.off(); return }else{cf()}
+    const dataKey = Object.keys(data); console.log('ref2데이터',data,dataKey,dataKey.indexOf(roomNum));
+    if(dataKey.indexOf(roomNum)<0){ ref.off(); return }else{cf(); console.log('re2')}
   })
-  if(off){ref.off();}
-    return ()=>ref.off('value', (p) => {cf();});
+
+    const ref3 = fireInit.database().ref(`${folder}/${enterRoomId}/${roomNum}`);
+  ref3.on('value', (p) => { const data = p.val();
+    if(!data){ return}
+    cf(data.host);
+  })
+
+  if(off){ref.off();ref2.off();ref3.off();}
+    return ()=>{ref.off();ref2.off();ref3.off();}
  }
  
  // 리포트 룸 이름 가져오기
@@ -120,19 +127,21 @@ async reportSync(folder,roomId, cf,off) {
       data ? cf.f1(Data) : cf.f2();
     });
     if(off){ref1.off();}    
+  return ()=>ref1.off();
+
   }
 
   //개별 보고서 테이블 싱크
-
-  reportSync2(folder, roomId,dataId, cf,off) { console.log(dataId)
+  reportSync2(folder, roomId,dataId, cf,off) { 
     const ref1 =fireInit.database().ref(`${folder}/${roomId}/${dataId}`)
     ref1.on('value', (p) => {
       const data = p.val()||{};
       // const Data = Object.values(data);
-      console.log(data)
+      console.log(data,dataId)
       data ? cf.f1(data) : cf.f2();
     });
     if(off){ref1.off();} 
+  return ()=>ref1.off();
   }
 
 // 비디오 메시지 싱크
@@ -187,7 +196,7 @@ cubeReportSync(folder, roomName, T, t, off) {
 
 
   // 데이터 저장
-  cubeUp(folder, roomName, data) { console.log('handle cubeup',folder, roomName, data)
+  cubeUp(folder, roomName, data) { 
     const roomUid = roomName.substr(0,roomSubstr);
     const roomNum = roomName.substr(roomSubstr);
     if(!roomUid||!roomNum){return}
