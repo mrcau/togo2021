@@ -1,4 +1,4 @@
-import { Badge, IconButton, Switch } from '@material-ui/core';
+import { Badge, IconButton,Tooltip } from '@material-ui/core';
 import {  DeleteForever,   MenuSharp, ThumbUp,InsertEmoticon } from '@material-ui/icons';
 import React, { memo, useEffect,  useRef, useState } from 'react';
 import LinkIcon from '@material-ui/icons/Link';
@@ -40,6 +40,7 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
   const [data, setdata] = useState({});
   const [room, setRoom] = useState({});
   const {id}=useParams(); 
+
   const [reportId, setReportId] = useState(id||'') ;
   const [roomName, setroomName] = useState('');
   const [roomUid, setRoomUid] = useState('');
@@ -48,17 +49,16 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
   const [rightModal,setrightModal] = useState(false);
   const [entering, setEntering] = useState(false);
   const [see, setSee] = useState(true);
-  const [reportInput, setReportInput] = useState(false);
-  // const [linkName, setLinkName] = useState(roomName)
   const [linkCopy, setLinkCopy] = useState('');
+  const [reportInput, setReportInput] = useState(false);
   //입장중 http://localhost:3000/'+folder+roomName
   const [door, setDoor] = useState('입장')
   const [report, setReport] = useState(false);
   const [userUID, setUserUID] = useState('');
   // const [cube, setCube] = useState('');
   setlogoName('큐브툴');
-   //데이터싱크 
 
+   //링크접속
    useEffect(() => {     
     if(id.length===10){  setroomName(id);
       const cf = (host) => {  
@@ -74,7 +74,7 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
     }
    },[fireSync,roomName])
 
-
+   //일반접속
   useEffect(() => { 
       fireSync.onAuth((e) => { 
       if(!e&&!roomName){ return}
@@ -83,25 +83,24 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
         f3: (p) => { setRoom(p) },  f4: () => { setRoom({}) },
       }
 
-        if (e && report===false && !id) {  
+        if (e && report===false && !id) {   console.log('로그인하고 리포트false')
           setRoomUid(e.uid.substr(0, roomSubstr));
           setUserUID(e.uid);
          const stopDataSync = fireSync.dataSync(folder, roomName, cf);
          const stoproomSync = fireSync.roomSync(folder, roomUid, cf);
           return ()=>{stopDataSync();stoproomSync();}
         }        
-        else if(e && !roomName && !report){  
+        else if(e && !roomName && !report){   console.log('로그인하고  룸네임 없고 리포트false',id,report)
         setRoomUid(e.uid.substr(0, roomSubstr));
         setUserUID(e.uid);
           const stopdataSyncB =  fireSync.dataSyncB(folder, roomName, cf);
          const stoproomSync = fireSync.roomSync(folder, roomUid, cf);
          return ()=>{stopdataSyncB();stoproomSync();}
         }        
-        else { 
+        else { console.log('리포트 트루',roomName,data.dataId,data,report,id);
           const cf = { f1: (p) => { setdata(p);setroomName(roomName) }, f2: () => { setdata({}) } }
               if(report){  
-                const roomId = id.length===12 ?id.substr(0,6)+'REPORT': user.uid.substr(0,6)+'REPORT' ;
-                //  const roomId = user.uid ? user.uid.substr(0,6)+'REPORT': id.substr(0,6)+'REPORT';          
+                  const roomId = id.length===12 ?id.substr(0,6)+'REPORT': user.uid.substr(0,6)+'REPORT' ;
                   const value = data.length>0 ? data.dataId :  id.substr(0,10)
                   const stopdataSync = fireSync.reportSync2(folder,roomId,value,cf);     
                   if(!data.dataId){return}
@@ -164,6 +163,21 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
     }
   }
   
+  // 방생성
+  const createRoom = () => {
+    const num = Date.now().toString().substr(9);
+    const newRoom = roomUid + num;
+    setroomName(newRoom);
+    const data = {
+      dataId:newRoom,
+      userId:user.uid,
+      text1:'', text2:'',text3:'',text4:'',text5:'',text6:'',text7: '',text8: '',  text9: '',
+      // progress: 0,
+      enterMan:0,
+      host:'입장'
+    } 
+    fireProblem.roomGetSave(folder, newRoom, data)
+  }
 
   // 큐브입력 모달
   const fireArea = async(T,t)=>{ 
@@ -211,15 +225,6 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
 
 // 입장카운팅
 
-  // 방생성
-  const createRoom = () => {
-    const num = Date.now().toString().substr(9);
-    const newRoom = roomUid + num;
-    setroomName(newRoom);
-    const data = {userId:user.uid,text1:'',text2:'',text3:'',text4:'',text5:'',text6:'',text7: '',text8: '', 
-    text9: '',enterMan:0,dataId:newRoom,host:'입장'} 
-    fireProblem.roomGetSave(folder, newRoom, data)
-  }
 
   //데이터 리셋
   const dataReset = () => {    
@@ -279,7 +284,6 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
         if(user.uid.substr(0,roomSubstr)===roomName.substr(0,roomSubstr)){
           fireSync.cubeUp(folder,roomName, {host:'퇴장',enterMan:0});
         }}
-
     }  
     
     // 토론방 삭제시 데이터 리셋 entering 제거
@@ -333,10 +337,10 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
     if(entering){  
       setEntering(false); roomNameReset(); manMinus();
       setroomName("");setDoor('입장');   
-      if(data.id){
-      if(data.dataId.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){
-        fireSync.cubeUp(folder,roomvalue, {host:'퇴장',roomName:roomvalue});
-      }   }
+    //   if(data.id){
+    //   if(data.dataId.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){
+    //     fireSync.cubeUp(folder,roomvalue, {host:'퇴장',roomName:roomvalue});
+    //   }   }
     }
 
     if(roomvalue.length !== 10){ return;}
@@ -351,13 +355,12 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
           }          
        fireSync.roomUser(folder,roomvalue,cf1);
         const cf2 = { 
-            f1: (p) => { setdata(p);  },
+            f1: (p) => { setdata(p) },
             f2: () => { setdata({}) },
             f3: (p) => { setRoom(p) },
             f4: () => { setRoom({}) },
           }
         fireSync.dataSync(folder,roomvalue, cf2);
-console.log('enterman',data,data['enterMan'])
         if(!report){
         let num = ++data['enterMan']||0 ;
         fireSync.cubeUp(folder,roomName, {enterMan:num});
@@ -369,7 +372,8 @@ console.log('enterman',data,data['enterMan'])
 // notice 저장 - 공지 보내기
   const noticeUp = (e) => {
     e.preventDefault();
-  const data = noticeRef.current.value;
+    if(!roomName){return}
+    const data = noticeRef.current.value;
     fireProblem.videoSave(folder, user.uid,'Tok', data)
     noticeRef.current.value='';    
   }
@@ -485,14 +489,20 @@ if (!report||user.uid===undefined) { return }else{
       {level>0 && 
       
         <form className="adimBar">
+        <Tooltip arrow placement="left" title="메시지 전송">
           <button className="enterBtn"  onClick={noticeUp}><AddCommentIcon/></button> 
+          </Tooltip>
           <input type="text" className="enterInput" placeholder="전달사항" ref={noticeRef} />
+         <Tooltip arrow placement="left" title="회의자료 입력">
           <button className="enterBtn"  style={{width:'30px'}} onClick={fireInsert}><YouTubeIcon/></button> 
+          </Tooltip>
         </form>
       }
       {level>0 &&
         <div className="adimBar">
+         <Tooltip arrow placement="left" title="새로운 룸 생성">
           <div> <button className="enterBtn" onClick={createRoom} style={{fontSize:'12px'}}>개설</button> </div>
+          </Tooltip>
           <div className="enterNumber" style={{fontSize:'small'}}>
             {see && room && Object.keys(room).map((e) => e.length>3 &&
               <button key={e} className="btnRoom" onClick={adminEnter} >{e}</button>) 
@@ -507,33 +517,43 @@ if (!report||user.uid===undefined) { return }else{
           <input type="text" className="enterInput roomnum" placeholder="방번호" style={{width:'85px'}} ref={roomERef} />
         </div>
         {level>0 && 
-           <IconButton size="small" component="span" onClick={()=> { if(roomName){Swal.fire({ title: '링크가 복사되었습니다.',text:linkCopy,icon:'warning'});}}}
+         <Tooltip arrow title="룸링크 복사">
+         <IconButton size="small" component="span" onClick={()=> { if(roomName){Swal.fire({ title: '링크가 복사되었습니다.',text:linkCopy,icon:'warning'});}}}
              style={{color:"var(--Bcolor)"}}>
                <CopyToClipboard text={linkCopy}>               
-                <div ><LinkIcon />링크</div>
+               <LinkIcon />
                 </CopyToClipboard>
           </IconButton>
+          </Tooltip>
           }
           {level>0 && 
           <IconButton size="small" component="span" onClick={reportSave} style={{color:"var(--Bcolor)",flex:"auto",minWidth:"60px"}}>
-                <SaveIcon /> 저장
+         <Tooltip arrow title="저장">
+                <SaveIcon /> 
+          </Tooltip>
           </IconButton>
           }
           {level>0 && 
-          <IconButton size="small" component="span" onClick={dataDel} style={{color:"var(--Bcolor)"}}>
-                <DeleteForever /> 삭제
+         <Tooltip arrow title="삭제">
+         <IconButton size="small" component="span" onClick={dataDel} style={{color:"var(--Bcolor)"}}>
+                <DeleteForever /> 
           </IconButton>
+          </Tooltip>
            }
           {/* </div> */}
         {/* </div>     */}
         <div className="voicechat">             
+         <Tooltip arrow  title="회의자료 보기">
           <button style={{width:'30px'}}  onClick={fire}>
              <VoiceChatIcon fontSize='small' />
           </button>
+          </Tooltip>
 
+         <Tooltip arrow  title="저장자료 보기">
           <button style={{width:'30px'}} onClick={moveModal}> 
             <MenuSharp />
           </button> 
+          </Tooltip>
         </div>        
       </div>
 

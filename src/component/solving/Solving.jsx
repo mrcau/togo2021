@@ -24,20 +24,23 @@ function Solving({ fireIdea, fireSync, user, userInfo ,setlogoName }) {
   const noticeRef = useRef();
   const titleRef = useRef();
   const history = useHistory();
-  const {id}=useParams();
-  const [reportId, setReportId] = useState(id||'') ;
-  const [roomName, setroomName] = useState(id||'');
+
   const [data, setdata] = useState({});
   const [room, setRoom] = useState({});
+  const {id}=useParams();
+
+  const [reportId, setReportId] = useState(id||'') ;
+  const [roomName, setroomName] = useState('');
   const [roomUid, setRoomUid] = useState('');
   const [video, setVideo] = useState('');
   const [notice, setNotice] = useState('');
   const [entering, setEntering] = useState(false);
-  const [see, setSee] = useState(true)
-  const [linkCopy, setLinkCopy] = useState('');
   const [rightModal,setrightModal] = useState(false);
   const drawerRef = useRef();
+  const [see, setSee] = useState(true)
+  const [linkCopy, setLinkCopy] = useState('');
   const backRef = useRef();
+  const [reportInput, setReportInput] = useState(false);
   //입장중
   const [door, setDoor] = useState('입장')
   const [report, setReport] = useState(false);
@@ -48,43 +51,49 @@ function Solving({ fireIdea, fireSync, user, userInfo ,setlogoName }) {
   const today = new Date().toLocaleDateString();
   const [color, setColor] = useState('primary');
   setlogoName('게시툴');
-   //데이터싱크 
-  useEffect(() => {console.log('length10')
-    if(id.length===10){ 
-      const cf = () => {  setroomName(id);enterRoom(); roomERef.current.value=id;  }
+
+   //링크접속
+   useEffect(() => {     
+    if(id.length===10){  setroomName(id);
+      const cf = (host) => {  
+        if(host==='입장'){ setroomName(id);enterRoom(); roomERef.current.value=id;}
+        else if(host==='퇴장'){ setroomName(""); roomNameReset(); setEntering(false);} 
+      }
       fireSync.roomUser(folder,id,cf)
     }
-    if(id.length===12){setroomName(id.substr(0,10)); console.log('length12')
-      const cf = () => {roomERef.current.value=id.substr(0,10); setReportId(id); setroomName(id.substr(0,10));setReport(true); enterRoom();} 
-      fireSync.roomUser(folder,id.substr(0,10),cf);
+    if(id.length===12){setroomName(id.substr(0,10));setReport(true); 
+      const cf = () => {roomERef.current.value=id.substr(0,10); setReportId(id);
+                     setroomName(id.substr(0,10));setReport(true); enterRoom();} 
+      fireSync.roomUser2(folder,id.substr(0,10),cf); 
     }
-    // if(id.length===10){roomERef.current.value=id; enterRoom();}
+   },[fireSync,roomName])
 
+   //일반접속
+  useEffect(() => { 
     fireSync.onAuth((e) => {
       if(!e&&!roomName){ return}
-
       const cf = {
         f1: (p) => { setItems(p) },  f2: () => { setItems({}) },
         f3: (p) => { setRoom(p) },   f4: () => { setRoom({}) },
       }
 
-      if (e && report===false) { console.log('로그인하고 리포트false')
+      if (e && report===false && !id) { console.log('로그인하고 리포트false')
          setRoomUid(e.uid.substr(0, roomSubstr));
          setUserUID(e.uid);
           const stopDataSync = fireSync.dataSync(folder, roomName, cf);
           const stoproomSync = fireSync.roomSync(folder, roomUid, cf);
           return ()=>{stopDataSync();stoproomSync();}
       }
-      else if(e && !roomName&& !report){  console.log('로그인하고  룸네임 없고 리포트false',id)
+      else if(e && !roomName&& !report){  console.log('로그인하고  룸네임 없고 리포트false',report,id)
           setRoomUid(e.uid.substr(0, roomSubstr));
           setUserUID(e.uid);
            const stopitemSync = fireSync.itemSync(folder,user.uid, cf);        
            const stoproomSync = fireSync.roomSync(folder, roomUid, cf);
            return ()=>{stopitemSync();stoproomSync();}
       }
-      else { console.log('리포트 트루',roomName,data.dataId,data,report,id);
-          const cf = { f1: (p) => { setdata(p);setroomName(roomName) }, f2: () => { setdata({}) } }
-          if(report){
+      else { console.log('리포트 트루',report,roomName);
+        const cf = { f1: (p) => { setdata(p);setroomName(roomName) }, f2: () => { setdata({}) } }
+          if(report){console.log('리포트 트루2',report)
             const roomId = user.uid ? user.uid.substr(0,6)+'REPORT': id.substr(0,6)+'REPORT';
             const value = data.length>0 ? data.dataId :  id.substr(0,10)
             const stopdataSync = fireSync.reportSync2(folder,roomId,value,cf);     
@@ -160,11 +169,32 @@ function Solving({ fireIdea, fireSync, user, userInfo ,setlogoName }) {
       progress: 0,
       color : 'secondary',
       title:'',text:'',
-      host:false
+      host:'입장'
     }
     fireIdea.roomGetSave(folder, newRoom, dataId, data);
   }
 
+  // 관리자 방입장
+  const adminEnter = (e) => {  
+    // roomNameReset();
+  setEntering(true);  
+  const room = e.currentTarget.textContent;
+    const roomname = roomUid +room; 
+    setroomName(roomUid +room);
+    roomERef.current.value =roomname; 
+  setLinkCopy('http://localhost:3000/'+folder+'/'+roomUid +room);  
+  setReport(false); 
+  setDoor('퇴장');   
+       const cf2 = {
+         f1: (p) => { setItems(p); },
+         f2: () => { setItems({}) },
+         f3: (p) => { setRoom(p) },
+         f4: () => { setRoom({}) },
+       }
+     fireSync.dataSync(folder,roomname, cf2);
+fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
+
+  }
     // input roomName 초기화
     const roomNameReset=() => {
       fireSync.videoSync(folder,roomName,'See',(p)=>{setVideo(p); },1);
@@ -178,22 +208,43 @@ function Solving({ fireIdea, fireSync, user, userInfo ,setlogoName }) {
       history.push('/solving/:id');
       setDoor('입장');setItems({});setroomName("");
       setRoomUid('');setReport(false); setSee(true); setRoom({}); 
-      setNotice('');setVideo(''); setEntering(false);
+      setNotice('');setVideo(''); 
       roomERef.current.value=''; 
-      //  history.push('/solving/:id');      
+      
+      if(user.uid){
+        if(user.uid.substr(0,roomSubstr)===roomName.substr(0,roomSubstr)){
+          fireSync.cubeUp(folder,roomName, {host:'퇴장',enterMan:0});
+        }}
     }  
              
-  //   const manMinus = () => {
-  //     let num = 0;
-  //     if(items['enterMan']>0){ num = --items['enterMan']}else{return}
-  //   fireIdea.manUp(folder,roomName,{enterMan:num});
-  // return;
-  //   }
+    // 토론방 삭제시 데이터 리셋 entering 제거
+    const roomNameReset2=() => {
+      fireSync.videoSync(folder,roomName,'See',(p)=>{setVideo(p); },1);
+      fireSync.videoSync(folder,roomName,'Tok',(p)=>{setNotice(p);},1);  
+      const cf = { f1: (p) => { setItems({}) },  f2: () => { setItems({}) },
+                   f3: (p) => {  setRoom({}) },  f4: () => { setRoom({}) },
+      }
+      const cf2 = () => { setItems({});setRoom({});  }
+      fireSync.roomUser(folder,roomUid,cf2,1);        
+      fireSync.dataSync(folder, roomName, cf,1);
+      history.push('/solving/:id');
+      setDoor('입장');setItems({});setroomName("");
+      setRoomUid('');setReport(false); setSee(true); setRoom({}); 
+      setNotice('');setVideo(''); 
+      roomERef.current.value=''; 
+      } 
+
+    const manMinus = () => {
+      let num = 0;
+      if(items['enterMan']>0){ num = --items['enterMan']}else{return}
+    fireIdea.manUp(folder,roomName,{enterMan:num});
+  return;
+    }
     
   const roomNameHide = ()=>{roomERef.current.value=''; }
   const roomRowReset=() => {
     roomERef.current.value=''; 
-      setdata(data);
+    setItems(data);
     setDoor('입장'); 
     // setRoomUid('');
     // setRoom({});
@@ -201,12 +252,11 @@ function Solving({ fireIdea, fireSync, user, userInfo ,setlogoName }) {
   }  
 
   // roomName.substr(0,6) 방입장
-  const enterRoom = () => { 
-    const roomvalue = roomERef.current.value || "";
+  const enterRoom = () => {
+    const roomvalue = roomERef.current.value || ""; 
     const enterRoomId =  roomERef.current.value.substr(0,roomSubstr)||"";
     if(entering){
-      setEntering(false); roomNameReset();
-      //  manMinus();
+      setEntering(false); roomNameReset(); manMinus();
       setroomName("");setDoor('입장');      
     }
     if(roomvalue.length !== 10){ return;}
@@ -227,32 +277,12 @@ function Solving({ fireIdea, fireSync, user, userInfo ,setlogoName }) {
             f4: () => { setRoom({}) },
           }
         fireSync.dataSync(folder,roomvalue, cf2);
-        let num = ++items['enterMan']||0 ;
+        if(!report){
+          let num = ++items['enterMan']||0 ;
         fireSync.cubeUp(folder,roomvalue, {enterMan:num});
         }
       }
-
-  // 관리자 방입장
-  const adminEnter = (e) => { 
-    // roomNameReset();
-    const room = e.currentTarget.textContent;
-    const roomname = roomUid +room; 
-    setroomName(roomUid +room);
-    roomERef.current.value =roomname; 
-  setLinkCopy('http://localhost:3000/'+folder+'/'+roomUid +room);  
-  setEntering(true);
-       setDoor('퇴장');   
-       const cf2 = {
-         f1: (p) => { setItems(p); },
-         f2: () => { setItems({}) },
-         f3: (p) => { setRoom(p) },
-         f4: () => { setRoom({}) },
-       }
-     fireSync.dataSync(folder,roomname, cf2);
-     let num = ++items['enterMan']||0 ;
-      fireSync.cubeUp(folder,roomname, {enterMan:num});
-      console.log('adminenter',items,items['enterMan'])
-  }
+      }
 
 // notice 저장 - 공지 보내기
   const noticeUp = (e) => {
@@ -262,6 +292,7 @@ function Solving({ fireIdea, fireSync, user, userInfo ,setlogoName }) {
     fireIdea.videoSave(folder, user.uid,'Tok', data)
     noticeRef.current.value='';    
   }
+
   //리포트 저장
    const reportSave = () => {
      if (roomName!==roomERef.current.value||roomERef.current.value===''||report) { return }
@@ -271,36 +302,7 @@ function Solving({ fireIdea, fireSync, user, userInfo ,setlogoName }) {
      const value = items
      fireIdea.reportSave(folder, roomId, roomName, value).then(()=>{Swal.fire('저장완료')})
        }}
-    // 아이템 삭제
-  const dataDel = () => { 
-    if(Object.entries(items).length<1){ return}
-    let entry = Object.entries(items)||[];
-    const itemUid = entry[0][1].uid||'';
-    // const itemUid2 = entry[0][1].uid||'';
-    if(!roomName&&itemUid && itemUid === user.uid){ 
-      Swal.fire({ 
-        title: '내정보를 삭제하겠습니까?',
-        icon:'warning',
-        showCancelButton: true})
-      .then((result) => { if(result.isConfirmed){ 
-      fireIdea.myIdeaDel(folder,user.uid); 
-      }});
-      }  
-      if(roomName!==roomERef.current.value||roomERef.current.value==='') { return }      
-      if(itemUid === user.uid){  
-      Swal.fire({ 
-        title: '토론방을 삭제하겠습니까?',
-        text:"삭제될 토론방 : "+roomName,
-        icon:'warning',
-        showCancelButton: true})
-      .then((result) => { if(result.isConfirmed){
-        fireIdea.dataDel(folder,roomName);   
-        roomNameReset();
-      
-      }});
-    }
-    
-  } 
+
   
 
 const submit = (e) => {
@@ -323,6 +325,42 @@ const submit = (e) => {
     else{fireIdea.itemSave(folder,data); }
   }
 }
+
+    // 아이템 삭제
+    const dataDel = () => { 
+      if(!report){
+      if(!roomName||!user||items.roomName.substr(0,roomSubstr) !== user.uid.substr(0,roomSubstr)){return}
+      }
+
+      if(Object.entries(items).length<1){ return}
+      let entry = Object.entries(items)||[];
+      const itemUid = entry[0][1].uid||'';
+      // const itemUid2 = entry[0][1].uid||'';
+      if(!roomName&&itemUid && itemUid === user.uid){ 
+        Swal.fire({ 
+          title: '내정보를 삭제하겠습니까?',
+          icon:'warning',
+          showCancelButton: true})
+        .then((result) => { if(result.isConfirmed){ 
+        fireIdea.myIdeaDel(folder,user.uid); 
+        Swal.fire('삭제되었습니다.');
+        roomNameReset2();
+        }});
+      }  
+        if(roomName!==roomERef.current.value||roomERef.current.value==='') { return }      
+        if(itemUid === user.uid){  
+        Swal.fire({ 
+          title: '토론방을 삭제하겠습니까?',
+          text:"삭제될 토론방 : "+roomName,
+          icon:'warning',
+          showCancelButton: true})
+        .then((result) => { if(result.isConfirmed){
+          fireIdea.dataDel(folder,roomName);   
+        Swal.fire('삭제되었습니다.');
+        roomNameReset2();        
+        }});
+      }      
+    } 
 
   return (
     <div className="solving" >     
