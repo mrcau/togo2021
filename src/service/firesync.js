@@ -36,8 +36,8 @@ roomUser(folder,roomvalue,cf,off) {
   })
   ref2.on('value', (p) => { const data = p.val();
     if(!data){ return}
-    const dataKey = Object.keys(data); console.log('ref2데이터',data,dataKey,dataKey.indexOf(roomNum));
-    if(dataKey.indexOf(roomNum)<0){ ref.off(); return }else{cf(); console.log('re2')}
+    const dataKey = Object.keys(data); 
+    if(dataKey.indexOf(roomNum)<0){ ref.off(); return }else{cf();  }
   })
 
     const ref3 = fireInit.database().ref(`${folder}/${enterRoomId}/${roomNum}`);
@@ -135,9 +135,7 @@ async reportSync(folder,roomId, cf,off) {
   reportSync2(folder, roomId,dataId, cf,off) { 
     const ref1 =fireInit.database().ref(`${folder}/${roomId}/${dataId}`)
     ref1.on('value', (p) => {
-      const data = p.val()||{};
-      // const Data = Object.values(data);
-      console.log(data,dataId)
+      const data = p.val()||{}; 
       data ? cf.f1(data) : cf.f2();
     });
     if(off){ref1.off();} 
@@ -210,7 +208,7 @@ cubeReportSync(folder, roomName, T, t, off) {
     }
 
     // 큐브 리포트 저장
-    cubeReportUp(folder, roomId, roomName, data) {console.log('리포트세이브')
+    cubeReportUp(folder, roomId, roomName, data) { 
   fireInit.database().ref(`${folder}/${roomId}/${roomName}`)
     .update(data)
 }
