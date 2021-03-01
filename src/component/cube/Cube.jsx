@@ -60,14 +60,15 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
 
    //링크접속
    useEffect(() => {     
-    if(id.length===10){  setroomName(id);
+    if(id.length===10){  setroomName(id); 
       const cf = (host) => {  
         if(host==='입장'){ setroomName(id);enterRoom(); roomERef.current.value=id;}
         else if(host==='퇴장'){ setroomName(""); roomNameReset(); setEntering(false);} 
+       
       }
       fireSync.roomUser(folder,id,cf)
     }
-    if(id.length===12){setroomName(id.substr(0,10));setReport(true); 
+    if(id.length===12){setroomName(id.substr(0,10));setReport(true);  
       const cf = () => {roomERef.current.value=id.substr(0,10); setReportId(id);
                      setroomName(id.substr(0,10));setReport(true); enterRoom();} 
       fireSync.roomUser2(folder,id.substr(0,10),cf); 
@@ -186,21 +187,23 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
     const cubeData = fireSync.cubeSync(folder, roomName, T, t);
     const cube = cubeData ||'';
 
+
+
     const { value: text } = await Swal.fire({
-      input: 'textarea',input: 'url',
+      input: 'textarea',
       html:cube, width:'80%',height:'90vh',
-      imageUrl:cube, width:'80%',height:'90vh',
-      // inputValue:cube,
-      inputLabel:'코드입력시: <iframe width="100%" src="주소" /> / 링크입력시:<a href="링크" target="_blank">제목</a>',
-      inputPlaceholder: '이곳에 자료를 입력해주세요',
+      imageUrl:cube,      
+      // inputLabel:'예시:  , ',
+      inputPlaceholder: '내용을 입력해주세요.\n 예시:<iframe width="100%" src="주소" />\n<a href="링크" target="_blank">제목</a>',
       inputAttributes: {'aria-label': 'Type your message here'},
+      // inputValue:cube,
       showCancelButton: true
     })    
     if (text) {
       if(!entering){return};
-      Swal.fire(text); 
       const data = {[t]:text};
       fireProblem.cubeDataUp(folder, roomName, T, data);
+      Swal.fire(text); 
     }
 
 
@@ -257,7 +260,7 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
   const roomname = roomUid +room;
   setroomName(roomUid +room);
   roomERef.current.value =roomname;   
-  setLinkCopy('http://localhost:3000/'+folder+'/'+roomUid +room);  
+  setLinkCopy('/'+folder+'/'+roomUid +room);  
   setReport(false); 
   setDoor('퇴장');    
   const cf2 = {

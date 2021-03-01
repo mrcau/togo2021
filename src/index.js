@@ -23,7 +23,7 @@ const fireSync = new firesync();
 
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename="/sam">
     <App fireApp={fireApp} fireLogin={fireLogin} fireTodo={fireTodo} fireSync={fireSync}
     fireIdea={fireIdea} fireOpentool={fireOpentool} fireProblem={fireProblem} />
     </BrowserRouter>
