@@ -185,17 +185,25 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
     if(!roomName||report){return}
     const cubeData = fireSync.cubeSync(folder, roomName, T, t);
     const cube = cubeData ||'';
+
     const { value: text } = await Swal.fire({
+      input: 'textarea',input: 'url',
       html:cube, width:'80%',height:'90vh',
-      input: 'textarea',
-      inputPlaceholder: '이곳에 자료를 입력해주세요.',
+      imageUrl:cube, width:'80%',height:'90vh',
+      // inputValue:cube,
+      inputLabel:'코드입력시: <iframe width="100%" src="주소" /> / 링크입력시:<a href="링크" target="_blank">제목</a>',
+      inputPlaceholder: '이곳에 자료를 입력해주세요',
       inputAttributes: {'aria-label': 'Type your message here'},
       showCancelButton: true
     })    
-    if (text) {if(!entering){return};
-    Swal.fire(text); const data = {[t]:text};
-    fireProblem.cubeDataUp(folder, roomName, T, data);
+    if (text) {
+      if(!entering){return};
+      Swal.fire(text); 
+      const data = {[t]:text};
+      fireProblem.cubeDataUp(folder, roomName, T, data);
     }
+
+
   }
 
   // 리포트 큐브입력 모달

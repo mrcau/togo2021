@@ -145,6 +145,10 @@ itemUpdate2(folder,roomName, dataId, data) {
   const roomNum = roomName.substr(roomSubstr);
   fireInit.database().ref(`${folder}/${roomUid}/${roomNum}/${dataId}`).update(data);
 }  
+// 리포트 일경우 관리자  글  업데이트 저장 
+itemUpdate3(folder,roomId,roomName, dataId, data) {
+  fireInit.database().ref(`${folder}/${roomId}/${roomName}/${dataId}`).update(data);
+}  
 
 
 // 룸네임 없으면 TODO 삭제

@@ -8,7 +8,7 @@ import { Card, DropdownButton,Dropdown,ButtonGroup } from 'react-bootstrap';
 import {  DeleteForever, } from '@material-ui/icons';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 
-function  Solvingrow ({item,roomERef,fireIdea,level,roomName}) {
+function  Solvingrow ({item,roomERef,fireIdea,level,roomName,reportInput,report}) {
   const folder = "solving";
   const Swal = require('sweetalert2');
   // const [video, setVideo] = useState('');
@@ -76,17 +76,18 @@ const titleRef = useRef();
       text: textRef.current.value || '',      
     }    
 
-    if(roomName){console.log('룸있음'); 
+    if(roomName){ 
       fireIdea.itemUpdate2(folder, roomName, item.dataId, data)
       }
     else{console.log('룸없음');fireIdea.itemUpdate(folder,data); }
   }
+
   return ( 
     <div className="solvingrow" style={{flex:'auto'}} > {item.color && 
      <Card bg={item.color} text={'white'} style={{ width: '100%',height:'100%' }} className="mb-2" >
       <Card.Header style={{display:'flex',justifyContent:"space-between" ,padding:'5px'}} >
         {level>0 && <IconButton style={{width:'20px', height:'15px'}} > <DeleteForever onClick={itemDel} style={{color:'white'}} /></IconButton> }
-        <DropdownButton as={ButtonGroup} variant={item.color} title="구분" size="sm" >
+        <DropdownButton as={ButtonGroup} variant={item.color} title="구분" size="sm"  disabled={reportInput} >
           <div className="cardSelect">
             <div>
             <Dropdown.Item as="button" onClick={()=>changeColor('danger')} style={{color:"#d53343",textAlign:"center", fontSize:"18px",padding:"0 2px"}}>❶</Dropdown.Item>
@@ -101,17 +102,19 @@ const titleRef = useRef();
             <Dropdown.Item as="button" onClick={()=>changeColor('dark')} style={{color:"#32383e",textAlign:"center", fontSize:"18px",padding:"0 2px"}}>❼</Dropdown.Item>
           </div>
         </DropdownButton>
-        <input type="text" className="solvingInput"  ref={titleRef} onChange={onSubmit} value={item.title||''}/>
+        <input type="text" className="solvingInput"  ref={titleRef} onChange={onSubmit} value={item.title||''}  disabled={reportInput} />
+        {report&&
         <IconButton style={{width:'20px', height:'15px'}} >
           <Badge badgeContent={item.progress} color="secondary"   
             anchorOrigin={{vertical: 'top', horizontal: 'right', }}> 
           <ThumbUp style={{color:'white'}} size="small" onClick={Switch?plus:minus} />
           </Badge>
         </IconButton>
+        }
       </Card.Header>
       
         <Card.Body style={{display:'flex',flexDirection:'column',padding:'5px'}}>    
-          <textarea  className="solvingArea"  ref={textRef} onChange={onSubmit} value={item.text||''} />
+          <textarea  className="solvingArea"  ref={textRef} onChange={onSubmit} value={item.text||''}  disabled={reportInput}  />
         </Card.Body>
      </Card>  }
     </div>

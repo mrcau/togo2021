@@ -92,11 +92,14 @@ function Solving({ fireIdea, fireSync, user, userInfo ,setlogoName }) {
            return ()=>{stopitemSync();stoproomSync();}
       }
       else { console.log('리포트 트루',report,roomName);
-        const cf = { f1: (p) => { setdata(p);setroomName(roomName) }, f2: () => { setdata({}) } }
+        const cf = { f1: (p) => { setItems(p);setroomName(roomName) }, f2: () => { setItems({}) } }
           if(report){console.log('리포트 트루2',report)
-            const roomId = user.uid ? user.uid.substr(0,6)+'REPORT': id.substr(0,6)+'REPORT';
-            const value = data.length>0 ? data.dataId :  id.substr(0,10)
-            const stopdataSync = fireSync.reportSync2(folder,roomId,value,cf);     
+            const roomId = id.length===12 ?id.substr(0,6)+'REPORT': user.uid.substr(0,6)+'REPORT' ;
+            const value = items.length>0 ? items.roomName :  id.substr(0,10)
+            const stopdataSync = fireSync.reportSync2(folder,roomId,value,cf);   
+            if(!items.roomName){return}
+            else if(user.uid===undefined||items.roomName.substr(0,6) !== user.uid.substr(0,roomSubstr)){setReportInput(true);}           
+              
             return ()=>{stopdataSync();}
            }
       }
@@ -467,7 +470,7 @@ const submit = (e) => {
         {
           Object.keys(items).map((e) => {
             return <div className="s-item"> 
-             <Solvingrow roomERef={roomERef} key={e} item={items[e]} roomName={roomName} fireIdea={fireIdea} level={level} setColor={setColor} color={color} />
+             <Solvingrow roomERef={roomERef} key={e} reportInput={reportInput} report={report} item={items[e]} roomName={roomName} fireIdea={fireIdea} level={level} setColor={setColor} color={color} />
              </div>
           })
         }
