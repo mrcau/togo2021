@@ -185,7 +185,7 @@ function Solving({ fireIdea, fireSync, user, userInfo ,setlogoName }) {
     const roomname = roomUid +room; 
     setroomName(roomUid +room);
     roomERef.current.value =roomname; 
-  setLinkCopy('http://localhost:3000/'+folder+'/'+roomUid +room);  
+  setLinkCopy('https://samtool.netlify.app/#/'+folder+'/'+roomUid +room);  
   setReport(false); 
   setDoor('퇴장');   
        const cf2 = {
@@ -404,6 +404,7 @@ const submit = (e) => {
         
           <input type="text" className="enterInput roomnum" placeholder="방번호" style={{width:'85px'}} ref={roomERef} />
         </div>
+
         <div style={{width:"100%", display:'flex'}}>
         {level>0 && 
          <Tooltip arrow title="룸링크 복사">
@@ -439,8 +440,8 @@ const submit = (e) => {
           </IconButton>
           </Tooltip>
         }
-        {/* 게시판추가 */}
         </div>
+
         <div className="voicechat"  >             
          <Tooltip arrow  title="회의자료 보기">
           <button style={{width:'30px'}}  onClick={fire}>
@@ -452,7 +453,8 @@ const submit = (e) => {
             <MenuSharp />
           </button> 
           </Tooltip>
-        </div>        
+        </div>    
+            
       </div>
 
         {/* <div className="noticeTitle" > 공지 </div> */}

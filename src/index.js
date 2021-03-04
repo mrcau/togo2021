@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, HashRouter } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import firebaseApp from './service/firebase';
 import firelogin from './service/firelogin';
@@ -23,10 +23,10 @@ const fireSync = new firesync();
 
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter basename="/sam">
+    <HashRouter >
     <App fireApp={fireApp} fireLogin={fireLogin} fireTodo={fireTodo} fireSync={fireSync}
     fireIdea={fireIdea} fireOpentool={fireOpentool} fireProblem={fireProblem} />
-    </BrowserRouter>
+    </HashRouter>
   </React.StrictMode>,
   document.getElementById('root')
 );

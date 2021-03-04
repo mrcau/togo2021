@@ -1,0 +1,52 @@
+{
+  "rules": {
+    "auth": {
+      ".read": "auth.uid != null",
+      ".write": "auth.uid != null"
+    },
+    "Opentool": {
+      ".read": "auth.uid != null",
+      ".write": "auth.uid != null"
+    },
+    "idea": {
+      ".read": true,
+      ".write": true
+    },
+    "mytool": {
+      ".read": "auth.uid != null",
+      ".write": "auth.uid != null"
+    },
+    "problem": {
+      ".read": true,
+      ".write": true
+    },
+    "scamper": {
+      ".read": true,
+      ".write": true
+    },
+    "todo": {
+      ".read": "auth.uid != null",
+      ".write": "auth.uid != null"
+    },
+    "startup": {
+      ".read": true,
+      ".write": true
+    },
+    "datastudy": {
+      ".read": true,
+      ".write": true
+    },
+    "postit": {
+      ".read": true,
+      ".write": true
+    },
+    "cube": {
+      ".read": true,
+      ".write": true
+    },
+    "solving": {
+      ".read": true,
+      ".write": true
+    }
+  }
+}

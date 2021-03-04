@@ -60,12 +60,16 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
 
    //링크접속
    useEffect(() => {     
-    if(id.length===10){  setroomName(id);  console.log('입장1');
-      const cf = (host) => {  
-        if(host==='입장'){ setroomName(id);enterRoom(); roomERef.current.value=id;}
-        else if(host==='퇴장'){ setroomName(""); roomNameReset(); setEntering(false);} 
-      }
-      fireSync.roomUser(folder,id,cf)
+    if(id.length===10){  
+      const enterRoomId =  id.substr(0,roomSubstr)||"";
+      const cf1 = { 
+      f1: ()=>{setroomName(id); setRoomUid(enterRoomId);setDoor('퇴장');setReport(false);
+      setEntering(true);  setSee(false)},      
+      f2: (p) => { setdata(p) },     
+      f3: (p) => { setRoom(p) }, 
+      f4: (host) => { setroomName(""); roomNameReset(); setEntering(false)}
+    }          
+ fireSync.roomUser(folder,id,cf1);
     }
     if(id.length===12){console.log('입장2'); setroomName(id.substr(0,10));setReport(true); 
       const cf = () => {roomERef.current.value=id.substr(0,10); setReportId(id);
@@ -186,9 +190,9 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
     const cube = cubeData ||'';
 
     const { value: text } = await Swal.fire({
-      input: 'textarea',input: 'url',
+      input: 'textarea',
       html:cube, width:'80%',height:'90vh',
-      imageUrl:cube, width:'80%',height:'90vh',
+      imageUrl:cube,
       // inputValue:cube,
       inputLabel:'코드입력시: <iframe width="100%" src="주소" /> / 링크입력시:<a href="링크" target="_blank">제목</a>',
       inputPlaceholder: '이곳에 자료를 입력해주세요',
@@ -256,7 +260,7 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
   const roomname = roomUid +room;
   setroomName(roomUid +room);
   roomERef.current.value =roomname;   
-  setLinkCopy('http://localhost:3000/'+folder+'/'+roomUid +room);  
+  setLinkCopy('https://samtool.netlify.app/#/'+folder+'/'+roomUid +room);  
   setReport(false); 
   setDoor('퇴장');    
   const cf2 = {
@@ -266,7 +270,6 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
     f4: () => { setRoom({}) },
   }
 fireSync.dataSync(folder,roomname, cf2);
-
 fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
 
 }
@@ -693,31 +696,3 @@ if (!report||user.uid===undefined) { return }else{
 
 
 export default memo(Cube);
-
- // if(report && data.dataId && data.userId === user.uid){ 
-    //   Swal.fire({ 
-    //     title: '내정보를 삭제하겠습니까?',
-    //     text:"삭제될 게시물 : "+data.aTitle,
-    //     icon:'warning',
-    //     showCancelButton: true})
-    //   .then((result) => { if(result.isConfirmed){ Swal.fire('삭제되었습니다.');
-    //   fireProblem.reportDel(folder,user.uid,data.dataId); roomNameReset();
-    //   }});
-    //   }
-    
-    // if(roomName && report && data.userId === user.uid){      
-    //     Swal.fire({ 
-    //       title: '정보를 삭제하겠습니까?',
-    //       text:"삭제될 게시물 : "+data.text10,
-    //       icon:'warning',
-    //       showCancelButton: true})
-    //     .then((result) => { if(result.isConfirmed){ Swal.fire('삭제되었습니다.');
-    //     const roomUid =  roomName.substr(0,roomSubstr);
-    //     const roomId = roomUid+'REPORT';
-    //     fireProblem.reportDel(folder,roomId,roomName)
-    //     roomNameReset();
-    //     }});
-    //   }
-
-    //   if(!roomName) { return }
-      // if(roomName!==roomERef.current.value||roomERef.current.value==='') { return }
