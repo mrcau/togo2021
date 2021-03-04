@@ -60,15 +60,14 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
 
    //링크접속
    useEffect(() => {     
-    if(id.length===10){  setroomName(id); 
+    if(id.length===10){  setroomName(id);  console.log('입장1');
       const cf = (host) => {  
         if(host==='입장'){ setroomName(id);enterRoom(); roomERef.current.value=id;}
         else if(host==='퇴장'){ setroomName(""); roomNameReset(); setEntering(false);} 
-       
       }
       fireSync.roomUser(folder,id,cf)
     }
-    if(id.length===12){setroomName(id.substr(0,10));setReport(true);  
+    if(id.length===12){console.log('입장2'); setroomName(id.substr(0,10));setReport(true); 
       const cf = () => {roomERef.current.value=id.substr(0,10); setReportId(id);
                      setroomName(id.substr(0,10));setReport(true); enterRoom();} 
       fireSync.roomUser2(folder,id.substr(0,10),cf); 
@@ -98,7 +97,7 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
          const stoproomSync = fireSync.roomSync(folder, roomUid, cf);
          return ()=>{stopdataSyncB();stoproomSync();}
         }        
-        else { console.log('리포트 트루',roomName,data.dataId,data,report,id);
+        else  if(e && roomName && !report){ console.log('리포트 트루',roomName,data.dataId,data,report,id);
           const cf = { f1: (p) => { setdata(p);setroomName(roomName) }, f2: () => { setdata({}) } }
               if(report){  
                   const roomId = id.length===12 ?id.substr(0,6)+'REPORT': user.uid.substr(0,6)+'REPORT' ;
@@ -109,6 +108,7 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
                   return ()=>{stopdataSync();}
               }
       }
+      else {return}
     }) 
   }, [roomName,fireSync,report,roomUid,user,userInfo]);
 
@@ -116,9 +116,7 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
   useEffect(() => {    
     if(roomName&&!report){ 
       const stopvideoSync = fireSync.videoSync(folder,roomName,'See',(p)=>{setVideo(p); })
-      const stopvideoSync2 = fireSync.videoSync(folder,roomName,'Tok',(p)=>{
-        setNotice(p); 
-      })
+      const stopvideoSync2 = fireSync.videoSync(folder,roomName,'Tok',(p)=>{setNotice(p);})
         return ()=>{stopvideoSync(); stopvideoSync2(); }
     }
      
@@ -187,23 +185,21 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
     const cubeData = fireSync.cubeSync(folder, roomName, T, t);
     const cube = cubeData ||'';
 
-
-
     const { value: text } = await Swal.fire({
-      input: 'textarea',
+      input: 'textarea',input: 'url',
       html:cube, width:'80%',height:'90vh',
-      imageUrl:cube,      
-      // inputLabel:'예시:  , ',
-      inputPlaceholder: '내용을 입력해주세요.\n 예시:<iframe width="100%" src="주소" />\n<a href="링크" target="_blank">제목</a>',
-      inputAttributes: {'aria-label': 'Type your message here'},
+      imageUrl:cube, width:'80%',height:'90vh',
       // inputValue:cube,
+      inputLabel:'코드입력시: <iframe width="100%" src="주소" /> / 링크입력시:<a href="링크" target="_blank">제목</a>',
+      inputPlaceholder: '이곳에 자료를 입력해주세요',
+      inputAttributes: {'aria-label': 'Type your message here'},
       showCancelButton: true
     })    
     if (text) {
       if(!entering){return};
+      Swal.fire(text); 
       const data = {[t]:text};
       fireProblem.cubeDataUp(folder, roomName, T, data);
-      Swal.fire(text); 
     }
 
 
@@ -260,7 +256,7 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
   const roomname = roomUid +room;
   setroomName(roomUid +room);
   roomERef.current.value =roomname;   
-  setLinkCopy('/'+folder+'/'+roomUid +room);  
+  setLinkCopy('http://localhost:3000/'+folder+'/'+roomUid +room);  
   setReport(false); 
   setDoor('퇴장');    
   const cf2 = {
@@ -348,34 +344,35 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
     if(entering){  
       setEntering(false); roomNameReset(); manMinus();
       setroomName("");setDoor('입장');   
-    //   if(data.id){
-    //   if(data.dataId.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){
-    //     fireSync.cubeUp(folder,roomvalue, {host:'퇴장',roomName:roomvalue});
-    //   }   }
+      if(data.id){
+      if(data.dataId.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){
+        fireSync.cubeUp(folder,roomvalue, {host:'퇴장',roomName:roomvalue});
+      }   }
     }
 
     if(roomvalue.length !== 10){ return;}
     if(roomvalue.length === 10&&!entering){ 
-        const cf1=()=>{ 
-            setroomName(roomvalue);
-            setRoomUid(enterRoomId);
-            setDoor('퇴장');
-            setReport(false);
-            setEntering(true);
-            setSee(false);            
+        const cf1 = { 
+            f1: ()=>{setroomName(roomvalue); setRoomUid(enterRoomId);setDoor('퇴장');setReport(false);
+            setEntering(true);  setSee(false)},      
+            f2: (p) => { setdata(p) },     
+            f3: (p) => { setRoom(p) }, 
+            f4: (host) => { setroomName(""); roomNameReset(); setEntering(false)}
           }          
        fireSync.roomUser(folder,roomvalue,cf1);
-        const cf2 = { 
-            f1: (p) => { setdata(p) },
-            f2: () => { setdata({}) },
-            f3: (p) => { setRoom(p) },
-            f4: () => { setRoom({}) },
-          }
-        fireSync.dataSync(folder,roomvalue, cf2);
-        if(!report){
-        let num = ++data['enterMan']||0 ;
-        fireSync.cubeUp(folder,roomName, {enterMan:num});
-        }
+        // const cf2 = { 
+        //     f1: (p) => { setdata(p) },
+        //     f2: () => { setdata({}) },
+        //     f3: (p) => { setRoom(p) },
+        //     f4: () => { setRoom({}) },
+        //   }
+        // fireSync.dataSync(folder,roomvalue, cf2);
+
+        // if(!report){
+        // let num = ++data['enterMan']||0 ;
+        // fireSync.cubeUp(folder,roomName, {enterMan:num});
+        // }
+
          }   
       }
   
@@ -724,4 +721,3 @@ export default memo(Cube);
 
     //   if(!roomName) { return }
       // if(roomName!==roomERef.current.value||roomERef.current.value==='') { return }
-      

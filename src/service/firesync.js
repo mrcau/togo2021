@@ -24,11 +24,13 @@ class firesync {
   }
 
 // 일반 룸 이름 가져오기
-roomUser(folder,roomvalue,cf,off) {
+async roomUser(folder,roomvalue,cf,off) {
   const enterRoomId =  roomvalue.substr(0,roomSubstr);
   const roomNum = roomvalue.substr(roomSubstr);
   const ref = fireInit.database().ref(`${folder}`);
   const ref2 = fireInit.database().ref(`${folder}/${enterRoomId}`);
+  const ref3 = fireInit.database().ref(`${folder}/${enterRoomId}/${roomNum}`);
+
   ref.on('value', (p) => { const data = p.val();
     if(!data){return}
     const dataKey = Object.keys(data);
@@ -37,15 +39,16 @@ roomUser(folder,roomvalue,cf,off) {
   ref2.on('value', (p) => { const data = p.val();
     if(!data){ return}
     const dataKey = Object.keys(data); 
-    if(dataKey.indexOf(roomNum)<0){ ref.off(); return }else{cf();  }
+    if(dataKey.indexOf(roomNum)<0){ ref2.off(); return }else{
+          
+      ref3.on('value', (p) => { const data = p.val();
+        if(!data.host||data.host!=="입장"){ cf.f4(); ref.off(); ref2.off(); ref3.off();  return}
+        else{ cf.f1();cf.f2(data);cf.f3(data);   }
+        // cf(data.host);
+      })
+    
+    }
   })
-
-    const ref3 = fireInit.database().ref(`${folder}/${enterRoomId}/${roomNum}`);
-  ref3.on('value', (p) => { const data = p.val();
-    if(!data){ return}
-    cf(data.host);
-  })
-
   if(off){ref.off();ref2.off();ref3.off();}
     return ()=>{ref.off();ref2.off();ref3.off();}
  }
@@ -250,4 +253,3 @@ opentoolDel(folder,uid,dataId) {
 
 }
 export default firesync
-
