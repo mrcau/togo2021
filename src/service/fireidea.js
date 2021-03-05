@@ -4,7 +4,7 @@ import "firebase/database";
 import "firebase/storage";
 
 const roomSubstr = 6;
-const roomNumer = 6;
+const roomNumer = 10;
 
 class fireidea {  
 

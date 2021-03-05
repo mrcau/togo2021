@@ -74,43 +74,6 @@ function Idea({ fireIdea, fireSync, user, userInfo ,setlogoName}) {
     }
    },[fireSync,roomName])
 
-  //  데이터싱크 
-  // useEffect(() => {
-    // if(id.length===10){roomERef.current.value=id; enterRoom();}
-  //   fireSync.onAuth((e) => {
-  //     const cf = {
-  //       f1: (p) => { setItems(p) },
-  //       f2: () => { setItems({}) },
-  //       f3: (p) => { setRoom(p) },
-  //       f4: () => { setRoom({}) },
-  //     }
-  //     if (e && roomName) {console.log('로그인하고 리포트false')
-  //        setRoomUid(e.uid.substr(0, roomSubstr));
-  //        setUserUID(e.uid);
-  //         const stopDataSync = fireSync.dataSync(folder, roomName, cf);
-  //         const stoproomSync = fireSync.roomSync(folder, roomUid, cf);
-  //         return ()=>{stopDataSync();stoproomSync();}
-  //     }
-  //     else if(e && !roomName){ console.log('로그인하고  룸네임 없고 리포트false',report,id)
-  //         setRoomUid(e.uid.substr(0, roomSubstr));
-  //         setUserUID(e.uid);
-  //          const stopitemSync = fireSync.itemSync(folder,user.uid, cf);        
-  //          const stoproomSync = fireSync.roomSync(folder, roomUid, cf);
-  //          return ()=>{stopitemSync();stoproomSync();}
-  //     }
-  //     else {
-  //         if(!e&&!roomName){  return}
-  //         if(roomName){ console.log('리포트 트루',report,roomName);
-  //           const stopDataSync = fireSync.dataSync(folder, roomName, cf);
-  //         const stoproomSync = fireSync.roomSync(folder, roomUid, cf);
-  //         return ()=>{stopDataSync();stoproomSync();}
-
-  //          }
-  //     }
-  //   })
-  // }, [roomName,fireSync,roomUid,user,userInfo,data]);
-  
-
 //일반접속
 useEffect(() => { 
   fireSync.onAuth((e) => {
@@ -159,15 +122,22 @@ useEffect(() => {
      
   },[fireSync,roomName,report]);    
 
-  //입장자 카운팅
-  // useEffect(() => {
-  //   if(entering&&roomERef.current.value&&roomName){
-  //     let num = ++items['enterMan']||0 ;
-  //     console.log(entering,folder,num,roomName,items,items['enterMan'])
-  // fireIdea.manUp(folder,roomName,{enterMan:num});
-  //   }
-  //   return ()=>{manMinus();}
-  // },[entering])
+  const manMinus = () => {
+    let num = 0;
+    if(items['enterMan']>0){ num = --items['enterMan']}else{return}
+  fireIdea.manUp(folder,roomName,{enterMan:num});
+return;
+  }
+
+//   // 입장자 카운팅
+//   useEffect(() => {
+//     if(entering&&roomERef.current.value&&roomName){
+//       let num = ++items['enterMan']||0 ;
+//       console.log(entering,folder,num,roomName,items,items['enterMan'])
+//   fireIdea.manUp(folder,roomName,{enterMan:num});
+//     }
+//     return ()=>{manMinus();}
+//   },[entering])
 
 
     
@@ -305,13 +275,6 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
       setNotice('');setVideo('');
     }  
 
-    const manMinus = () => {
-      let num = 0;
-      if(items['enterMan']>0){ num = --items['enterMan']}else{return}
-    fireIdea.manUp(folder,roomName,{enterMan:num});
-  return;
-    }
- 
              
   // roomName.substr(0,6) 방입장
   const enterRoom = () => { 
