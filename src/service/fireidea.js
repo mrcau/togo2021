@@ -114,9 +114,21 @@ goodUpB(folder, roomName, goodNum,good) {
 manUp(folder, roomName, data) {
   const roomUid = roomName.substr(0,roomSubstr);
   const roomNum = roomName.substr(roomSubstr);
-  fireInit.database().ref(`${folder}/${roomUid}/${roomNum}`)
-    .update(data)
+  const ref = fireInit.database().ref(`${folder}/${roomUid}/${roomNum}`);
+    ref.update(data)
 }
+
+// manUpdate 업데이트
+// manPlus(folder, roomName, data) {
+//   const roomUid = roomName.substr(0,roomSubstr);
+//   const roomNum = roomName.substr(roomSubstr);
+//   const ref = fireInit.database().ref(`${folder}/${roomUid}/${roomNum}`);
+//   ref.on('value',(p)=>{
+//     const data = p.val();
+//     if(data.enterMan)
+//   })
+//     ref.update(data)
+// }
 
 // TODO글  저장 
 itemSave(folder, data) {

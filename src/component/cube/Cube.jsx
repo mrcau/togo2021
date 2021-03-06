@@ -60,7 +60,7 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
 
    //링크접속
    useEffect(() => {     
-    if(id.length===10){  
+    if(id.length===10){   console.log('입장1');
       const enterRoomId =  id.substr(0,roomSubstr)||"";
       const cf1 = { 
       f1: ()=>{setroomName(id); setRoomUid(enterRoomId);setDoor('퇴장');setReport(false);
@@ -457,7 +457,7 @@ if (!report||user.uid===undefined) { return }else{
     if(!report){
     if(!roomName||!user||data.dataId.substr(0,roomSubstr) !== user.uid.substr(0,roomSubstr)){return}
     }
-      if(!report&&data.dataId.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){  
+      if(!report && data.dataId.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){  
       Swal.fire({ 
         title: '토론방을 삭제하겠습니까?',
         text:"삭제될 토론방 : "+roomName,

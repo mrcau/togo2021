@@ -86,18 +86,18 @@ useEffect(() => {
     if (e  && roomName===false && !id) { console.log('로그인하고 리포트false',roomName)
        setRoomUid(e.uid.substr(0, roomSubstr));
        setUserUID(e.uid);
-        const stopitemSync = fireSync.itemSync(folder, roomName, cf);
+        const stopitemSync = fireSync.dataSync(folder, roomName, cf);
         const stoproomSync = fireSync.roomSync(folder, roomUid, cf);
         return ()=>{stopitemSync();stoproomSync();}
     }
     else if(e && !roomName && !report){  console.log('로그인하고  룸네임 없고 리포트false',level,report,id)
         setRoomUid(e.uid.substr(0, roomSubstr));
         setUserUID(e.uid);
-         const stopitemSync = fireSync.itemSync(folder,user.uid, cf);        
+         const stopitemSync = fireSync.dataSync(folder,roomName, cf);        
          const stoproomSync = fireSync.roomSync(folder, roomUid, cf);
          return ()=>{stopitemSync();stoproomSync();}
     }
-    else { console.log('리포트 트루',report,roomName);
+    else if(e && roomName && !report){ console.log('리포트 트루',report,roomName);
       const cf = { f1: (p) => { setItems(p);setroomName(roomName) }, f2: () => { setItems({}) } }
         if(report){console.log('리포트 트루2',report)
           const roomId = id.length===12 ?id.substr(0,6)+'REPORT': user.uid.substr(0,6)+'REPORT' ;
@@ -105,10 +105,10 @@ useEffect(() => {
           const stopdataSync = fireSync.reportSync2(folder,roomId,value,cf);   
           if(!items.roomName){return}
           else if(user.uid===undefined||items.roomName.substr(0,6) !== user.uid.substr(0,roomSubstr)){setReportInput(true);}           
-            
           return ()=>{stopdataSync();}
          }
     }
+    else {return}
   })
 }, [roomName,fireSync,report,roomUid,user,userInfo]);
 
@@ -128,6 +128,14 @@ useEffect(() => {
   fireIdea.manUp(folder,roomName,{enterMan:num});
 return;
   }
+  const manStart = (roomvalue) => {console.log('hlleo',folder,roomvalue,items)
+    // let num = 0;
+    // if(items['enterMan']>0){ num = ++items['enterMan']}else{return}
+  fireIdea.manUp(folder,roomvalue,{enterMan:1});
+return;
+  }
+  
+  
 
 //   // 입장자 카운팅
 //   useEffect(() => {
@@ -280,40 +288,35 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
   const enterRoom = () => { 
     const roomvalue = roomERef.current.value || "";
     const enterRoomId =  roomERef.current.value.substr(0,roomSubstr)||"";
-    if(entering){setEntering(false); roomNameReset();manMinus();setroomName("");setDoor('입장');  }
-    if(roomvalue.length !== 10||!enterRoomId||entering){return;}
-    if(roomvalue.length === 10&&!entering){       
-        const cf1=()=>{
-            setroomName(roomvalue);
-            setRoomUid(enterRoomId);
-            setDoor('퇴장');
-            setReport(false);
-            setEntering(true);
-            setSee(false);
-          }          
-        fireSync.roomUser(folder,enterRoomId,cf1);
-        
-        const cf2 = {
-            f1: (p) => { setItems(p) },
-            f2: () => { setItems({}) },
-            f3: (p) => { setRoom(p) },
-            f4: () => { setRoom({}) },
-          }
-        fireSync.dataSync(folder,roomvalue, cf2);
-        if(!report){
-          let num = ++items['enterMan']||0 ;
-        fireSync.cubeUp(folder,roomvalue, {enterMan:num});
-        }
+    if(entering){
+      setEntering(false); 
+      roomNameReset();
+      manMinus();
+      setroomName("");setDoor('입장'); 
+      // if(data.id){
+      // if(data.dataId.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){
+      //   fireSync.cubeUp(folder,roomvalue, {host:'퇴장',roomName:roomvalue});
+      // }   }    
+    }
+    if(roomvalue.length !== 10){return;}
+    if(roomvalue.length === 10&&!entering){  
+        const cf1 = { 
+          f1: ()=>{setroomName(roomvalue); setRoomUid(enterRoomId);setDoor('퇴장');setReport(false);
+          setEntering(true);  setSee(false);},      
+          f2: (p) => { setItems(p) },     
+          f3: (p) => { setRoom(p) }, 
+          f4: (host) => { setroomName(""); roomNameReset(); setEntering(false)}
+        }          
+ fireSync.roomUser(folder,roomvalue,cf1).then(()=>{ manStart(roomvalue); })
         }
       }
-
 // notice 저장 - 공지 보내기
   const noticeUp = (e) => {
     e.preventDefault();
+    if(!roomName){return}
     const data = noticeRef.current.value;
     fireIdea.videoSave(folder, user.uid,'Tok', data)
-    noticeRef.current.value='';
-    
+    noticeRef.current.value='';    
   }
 
     //리포트 저장
@@ -340,33 +343,35 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
     }
 
     if(Object.entries(items).length<1){ return}
+
     let entry = Object.entries(items)||[];
     const itemUid = entry[0][1].uid||'';
-    // const itemUid2 = entry[0][1].uid||'';
-    if(!roomName&&itemUid && itemUid === user.uid){ 
-      Swal.fire({ 
-        title: '내정보를 삭제하겠습니까?',
-        icon:'warning',
-        showCancelButton: true})
-      .then((result) => { if(result.isConfirmed){ 
-      fireIdea.myIdeaDel(folder,user.uid); 
-        Swal.fire('삭제되었습니다.');
-        roomNameReset2();
-      }});
-      }  
-      if(roomName!==roomERef.current.value||roomERef.current.value==='') { return }      
-      if(itemUid === user.uid){  
+
+    if(!report && items.roomName.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){ console.log('뻥',roomName)
       Swal.fire({ 
         title: '토론방을 삭제하겠습니까?',
         text:"삭제될 토론방 : "+roomName,
         icon:'warning',
         showCancelButton: true})
-      .then((result) => { if(result.isConfirmed){
-        fireIdea.dataDel(folder,roomName);   
-        roomNameReset();
-        // roomERef.current.value='';
-        //  Swal.fire('삭제되었습니다.');
-      
+      .then((result) => { if(result.isConfirmed){ 
+      fireIdea.dataDel(folder,roomName); 
+        Swal.fire('삭제되었습니다.');
+        roomNameReset2();
+      }});
+      }  
+
+      if(report&&roomName.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){  console.log('치지마')
+      Swal.fire({ 
+        title: '토론방을 삭제하겠습니까?',
+        text:"삭제될 토론방 : "+roomName,
+        icon:'warning',
+        showCancelButton: true})
+      .then((result) => { if(result.isConfirmed){ 
+        const roomUid =   user.uid.substr(0,roomSubstr);
+        const roomId = roomUid+'REPORT';
+        fireIdea.reportDel(folder,roomId,roomName);   
+      Swal.fire('삭제되었습니다.');
+      roomNameReset2();
       }});
     }
     

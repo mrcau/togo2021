@@ -31,19 +31,22 @@ async roomUser(folder,roomvalue,cf,off) {
   const ref2 = fireInit.database().ref(`${folder}/${enterRoomId}`);
   const ref3 = fireInit.database().ref(`${folder}/${enterRoomId}/${roomNum}`);
 
-  ref.on('value', (p) => { const data = p.val();
+  ref.on('value', (p) => { 
+    const data = p.val();
     if(!data){return}
     const dataKey = Object.keys(data);
     if(dataKey.indexOf(enterRoomId)<0){ ref.off();  return }
   })
-  ref2.on('value', (p) => { const data = p.val();
+  ref2.on('value', (p) => { 
+    const data = p.val();
     if(!data){ return}
     const dataKey = Object.keys(data); 
     if(dataKey.indexOf(roomNum)<0){ ref2.off(); return }else{
           
-      ref3.on('value', (p) => { const data = p.val();
+      ref3.on('value', (p) => {
+        const data = p.val();
         if(!data.host||data.host!=="입장"){ cf.f4(); ref.off(); ref2.off(); ref3.off();  return}
-        else{ cf.f1();cf.f2(data);cf.f3(data);   }
+        else{ cf.f1();cf.f2(data);cf.f3(data);}
         // cf(data.host);
       })
     
@@ -104,8 +107,10 @@ roomUser2(folder,roomvalue,cf,off) {
     data ? cf.f1(data) : cf.f2();
   })
   if(off){ref.off();}
-  
+  return ref.off();  
   }  
+
+  
     //비로그인 데이터싱크
   dataSyncB(folder, roomName, cf,off) {
     const roomUid = roomName.substr(0,roomSubstr);
