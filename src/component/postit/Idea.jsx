@@ -52,7 +52,7 @@ function Idea({ fireIdea, fireSync, user, userInfo ,setlogoName}) {
   const [items, setItems] = useState({});
   const today = new Date().toLocaleDateString();
   const [color, setColor] = useState('primary');
-  setlogoName('포스툴');
+  setlogoName(' 포스툴');
   
    //링크접속
    useEffect(() => {     
@@ -60,7 +60,7 @@ function Idea({ fireIdea, fireSync, user, userInfo ,setlogoName}) {
       const enterRoomId =  id.substr(0,roomSubstr)||"";
       const cf1 = { 
       f1: ()=>{setroomName(id); setRoomUid(enterRoomId);setDoor('퇴장');setReport(false);
-      setEntering(true);  setSee(false)},      
+      setEntering(true);  setSee(false);roomERef.current.value =id;},      
       f2: (p) => { setItems(p) },     
       f3: (p) => { setRoom(p) }, 
       f4: (host) => { setroomName(""); roomNameReset(); setEntering(false)}
@@ -69,7 +69,7 @@ function Idea({ fireIdea, fireSync, user, userInfo ,setlogoName}) {
     }
     if(id.length===12){console.log('입장2'); setroomName(id.substr(0,10));setReport(true); 
       const cf = () => {roomERef.current.value=id.substr(0,10); setReportId(id);
-                     setroomName(id.substr(0,10));setReport(true); enterRoom();} 
+                     setroomName(id.substr(0,10));setReport(true); enterRoom();roomERef.current.value =id.substr(0,10);} 
       fireSync.roomUser2(folder,id.substr(0,10),cf); 
     }
    },[fireSync,roomName])

@@ -98,7 +98,7 @@
   }
 
 .headerT:hover .steering{
-    transform: rotate(180deg) scale(1.4);
+    transform: rotate(180deg) scale(1.2);
   }
 .rightMenu{ font-size:small;}
 .droplogOut{width:20px !important;}

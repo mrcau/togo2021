@@ -52,7 +52,7 @@ function Problem({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
   const [door, setDoor] = useState('입장')
   const [report, setReport] = useState(false);
   const [userUID, setUserUID] = useState('');
-  setlogoName('문제찾기');
+  setlogoName(' 문제찾기');
    //데이터싱크 
   useEffect(() => {
     if(id.length===10){roomERef.current.value=id; enterRoom();}

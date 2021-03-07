@@ -56,15 +56,15 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
   const [report, setReport] = useState(false);
   const [userUID, setUserUID] = useState('');
   // const [cube, setCube] = useState('');
-  setlogoName('큐브툴');
+  setlogoName(' 큐브툴');
 
    //링크접속
    useEffect(() => {     
     if(id.length===10){   
       const enterRoomId =  id.substr(0,roomSubstr)||"";
       const cf1 = { 
-      f1: ()=>{setroomName(id); setRoomUid(enterRoomId);setDoor('퇴장');setReport(false);
-      setEntering(true);  setSee(false)},      
+      f1: ()=>{setroomName(id); setRoomUid(enterRoomId);setDoor('퇴장');setReport(false);    
+  setEntering(true);  setSee(false);roomERef.current.value =id;},      
       f2: (p) => { setdata(p) },     
       f3: (p) => { setRoom(p) }, 
       f4: (host) => { setroomName(""); roomNameReset(); setEntering(false)}
@@ -73,7 +73,7 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
     }
     if(id.length===12){console.log('입장2'); setroomName(id.substr(0,10));setReport(true); 
       const cf = () => {roomERef.current.value=id.substr(0,10); setReportId(id);
-                     setroomName(id.substr(0,10));setReport(true); enterRoom();} 
+                     setroomName(id.substr(0,10));setReport(true); enterRoom();roomERef.current.value =id.substr(0,10);} 
       fireSync.roomUser2(folder,id.substr(0,10),cf); 
     }
    },[fireSync,roomName])
