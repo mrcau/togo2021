@@ -35,7 +35,7 @@ const rows = Object.values(data2).map((e,i) => {
      onRowSelected={(p)=>{  console.log(p,p.data,'리포트는?');
     //  delete p.data.id; delete p.data.title;
      setItems(p.data); setroomName(p.data.roomName);enterRoom();setReport(true);
-  setLinkCopy('http://localhost:3000/'+folder+'/'+p.data.roomName+'re');  }}
+  setLinkCopy('https://samtool.netlify.app/#/'+folder+'/'+p.data.roomName+'re');  }}
      onRowClick={()=>{selectRow();}} />
     </div>
   );

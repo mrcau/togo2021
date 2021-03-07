@@ -60,7 +60,7 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
 
    //링크접속
    useEffect(() => {     
-    if(id.length===10){   console.log('입장1');
+    if(id.length===10){   
       const enterRoomId =  id.substr(0,roomSubstr)||"";
       const cf1 = { 
       f1: ()=>{setroomName(id); setRoomUid(enterRoomId);setDoor('퇴장');setReport(false);

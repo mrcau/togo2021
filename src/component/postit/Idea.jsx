@@ -6,7 +6,6 @@ import YouTubeIcon from '@material-ui/icons/YouTube';
 import './idea.css';
 import VoiceChatIcon from '@material-ui/icons/VoiceChat';
 import Swal from 'sweetalert2';
-// import placeholder from './placeholder';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { useHistory, useParams } from 'react-router-dom';
 import Idearow from './Idearow';
@@ -33,30 +32,31 @@ function Idea({ fireIdea, fireSync, user, userInfo ,setlogoName}) {
   const [notice, setNotice] = useState('');
   const [entering, setEntering] = useState(false);
   const [see, setSee] = useState(true)
+  const [reportId, setReportId] = useState(id||'') ;
   //입장중
   const [door, setDoor] = useState('입장')
   const [userUID, setUserUID] = useState('');
 
   //itemrow  
-  const [items, setItems] = useState({});
-  const today = new Date().toLocaleDateString();
   const textRef = useRef();
   const textRef2 = useRef();
   const titleRef2 = useRef();
   const rocketRef = useRef();
-  const [color, setColor] = useState('primary');
   const [rightModal,setrightModal] = useState(false);
   const [linkCopy, setLinkCopy] = useState('');
   const backRef = useRef();
   const drawerRef = useRef();
   const [report, setReport] = useState(false);
   const [reportInput, setReportInput] = useState(false);
-  const [reportId, setReportId] = useState(id||'') ;
+  //itemrow  
+  const [items, setItems] = useState({});
+  const today = new Date().toLocaleDateString();
+  const [color, setColor] = useState('primary');
   setlogoName('포스툴');
   
    //링크접속
    useEffect(() => {     
-    if(id.length===10){  console.log('입장1');
+    if(id.length===10){ 
       const enterRoomId =  id.substr(0,roomSubstr)||"";
       const cf1 = { 
       f1: ()=>{setroomName(id); setRoomUid(enterRoomId);setDoor('퇴장');setReport(false);
@@ -83,14 +83,14 @@ useEffect(() => {
       f3: (p) => { setRoom(p) },   f4: () => { setRoom({}) },
     }
 
-    if (e  && roomName===false && !id) { console.log('로그인하고 리포트false',roomName)
+    if (e  && roomName===false && !id) { 
        setRoomUid(e.uid.substr(0, roomSubstr));
        setUserUID(e.uid);
         const stopitemSync = fireSync.dataSync(folder, roomName, cf);
         const stoproomSync = fireSync.roomSync(folder, roomUid, cf);
         return ()=>{stopitemSync();stoproomSync();}
     }
-    else if(e && !roomName && !report){  console.log('로그인하고  룸네임 없고 리포트false',level,report,id)
+    else if(e && !roomName && !report){  
         setRoomUid(e.uid.substr(0, roomSubstr));
         setUserUID(e.uid);
          const stopitemSync = fireSync.dataSync(folder,roomName, cf);        
@@ -122,22 +122,19 @@ useEffect(() => {
      
   },[fireSync,roomName,report]);    
 
-  const manMinus = () => {
-    let num = 0;
-    if(items['enterMan']>0){ num = --items['enterMan']}else{return}
-  fireIdea.manUp(folder,roomName,{enterMan:num});
-return;
-  }
-  const manStart = (roomvalue) => {console.log('hlleo',folder,roomvalue,items)
-    // let num = 0;
-    // if(items['enterMan']>0){ num = ++items['enterMan']}else{return}
-  fireIdea.manUp(folder,roomvalue,{enterMan:1});
-return;
-  }
-  
-  
 
 //   // 입장자 카운팅
+const manMinus = () => {
+  let num = 0;
+  if(items['enterMan']>0){ num = --items['enterMan']}else{return}
+fireIdea.manUp(folder,roomName,{enterMan:num});
+return;
+}
+const manStart = (roomvalue) => {
+fireIdea.manUp(folder,roomvalue,{enterMan:1});
+return;
+}
+
 //   useEffect(() => {
 //     if(entering&&roomERef.current.value&&roomName){
 //       let num = ++items['enterMan']||0 ;
@@ -198,17 +195,12 @@ return;
       roomUid : num,
       text:'',
       host:'입장'
-
     }
-    // const roomget = fireIdea.roomGet(folder,roomUid)
-    // roomget < 8 && 
-    // fireIdea.roomSave(folder, newRoom, dataId, data)
     fireIdea.roomGetSave(folder, newRoom, dataId, data);
   }
   
   // 관리자 방입장
   const adminEnter = (e) => {
-    // roomNameReset();
     setEntering(true);
     const room = e.currentTarget.textContent;
     const roomname = roomUid +room;
@@ -243,7 +235,6 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
       setReport(false); setSee(true); setRoom({});
       setNotice('');setVideo('');        
       roomERef.current.value=''; 
-      // setEntering(false);
       if(user.uid){
         if(user.uid.substr(0,roomSubstr)===roomName.substr(0,roomSubstr)){
           fireSync.cubeUp(folder,roomName, {host:'퇴장',enterMan:0});
@@ -278,8 +269,6 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
       roomERef.current.value=''; 
         setItems(data);
       setDoor('입장'); 
-      // setRoomUid('');
-      // setRoom({});
       setNotice('');setVideo('');
     }  
 
@@ -293,10 +282,6 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
       roomNameReset();
       manMinus();
       setroomName("");setDoor('입장'); 
-      // if(data.id){
-      // if(data.dataId.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){
-      //   fireSync.cubeUp(folder,roomvalue, {host:'퇴장',roomName:roomvalue});
-      // }   }    
     }
     if(roomvalue.length !== 10){return;}
     if(roomvalue.length === 10&&!entering){  
@@ -310,6 +295,7 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
  fireSync.roomUser(folder,roomvalue,cf1).then(()=>{ manStart(roomvalue); })
         }
       }
+
 // notice 저장 - 공지 보내기
   const noticeUp = (e) => {
     e.preventDefault();
@@ -320,22 +306,17 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
   }
 
     //리포트 저장
-    const reportSave = () => {
+    const reportSave = () => { console.log(Object.values(items)[3])
       if (roomName!==roomERef.current.value||roomERef.current.value===''||report) { return }
-     if (Object.values(items)[0].title.length<1){Swal.fire('내용을 입력해주세요.')}else{
+      if (!Object.values(items)[3]){Swal.fire('내용을 입력해주세요.'); return}
+      else{
       const roomUid =  user.uid.substr(0,roomSubstr);
       const roomId = roomUid+'REPORT';
       const value = items
       fireIdea.reportSave(folder, roomId, roomName, value).then(()=>{Swal.fire('저장완료')})
         }}
  
-   
-  
-  //데이터 리셋
-  // const dataReset = () => {    
-  //   problemP.current.value = '';
-  // }
-   
+      
     // 아이템 삭제
   const dataDel = () => {  
     if(!report){
