@@ -25,6 +25,7 @@ function Datastudy({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
   const backRef = useRef();
   const history = useHistory();
   const Pen = '•'
+  const Pen2 = '👁️‍🗨️'
   
   // data 변수 선언
   const text1 = useRef(); const text2 = useRef(); const text3 = useRef(); const text4 = useRef(); const text5 = useRef();
@@ -38,10 +39,23 @@ function Datastudy({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
   const T8t1=useRef(); const T8t2=useRef(); const T8t3=useRef(); const T8t4=useRef(); const T8t5=useRef(); const T8t6=useRef(); const T8t7=useRef(); const T8t8=useRef(); const T8t9=useRef();
   const T9t1=useRef(); const T9t2=useRef(); const T9t3=useRef(); const T9t4=useRef(); const T9t5=useRef(); const T9t6=useRef(); const T9t7=useRef(); const T9t8=useRef(); const T9t9=useRef();
 
-  const [data, setdata] = useState({});
+  const [data, setdata] = useState({     
+    T1:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
+    T2:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
+    T3:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
+    T4:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
+    T5:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
+    T6:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
+    T7:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
+    T8:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
+    T9:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
+    dataId:'',
+  });
+
   const [room, setRoom] = useState({});
   const {id}=useParams(); 
 
+  const [userClass, setUserClass] = useState(false)
   const [reportId, setReportId] = useState(id||'') ;
   const [roomName, setroomName] = useState('');
   const [roomUid, setRoomUid] = useState('');
@@ -62,7 +76,7 @@ function Datastudy({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
  
    //링크접속
    useEffect(() => {     
-    if(id.length===10){   
+    if(id.length===10){   console.log('입장1',roomName,data.dataId,data,report,id,user,'userClass',userClass);
       const enterRoomId =  id.substr(0,roomSubstr)||"";
       const cf1 = { 
       f1: ()=>{setroomName(id); setRoomUid(enterRoomId);setDoor('퇴장');setReport(false);    
@@ -94,6 +108,7 @@ function Datastudy({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
           setUserUID(e.uid);
          const stopDataSync = fireSync.dataSync(folder, roomName, cf);
          const stoproomSync = fireSync.roomSync(folder, roomUid, cf);
+         if(data.dataId.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){setUserClass(true)}
           return ()=>{stopDataSync();stoproomSync();}
         }        
         else if(e && !roomName && !report){   console.log('로그인하고  룸네임 없고 리포트false',id,report)
@@ -103,9 +118,14 @@ function Datastudy({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
          const stoproomSync = fireSync.roomSync(folder, roomUid, cf);
          return ()=>{stopdataSyncB();stoproomSync();}
         }        
-        else  if(e && roomName && !report){ console.log('리포트 트루',roomName,data.dataId,data,report,id);
+        else  if(e && roomName && !report){ console.log(data)
+          if(data.dataId){
+          if(data.dataId.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){setUserClass(true)}
+          }
+          // console.log('리포트 트루',roomName,data.dataId,data,report,id,user,'userClass',userClass,data.T1.t1);
           const cf = { f1: (p) => { setdata(p);setroomName(roomName) }, f2: () => { setdata({}) } }
               if(report){  
+                 
                   const roomId = id.length===12 ?id.substr(0,6)+'REPORT': user.uid.substr(0,6)+'REPORT' ;
                   const value = data.length>0 ? data.dataId :  id.substr(0,10)
                   const stopdataSync = fireSync.reportSync2(folder,roomId,value,cf);     
@@ -173,11 +193,19 @@ function Datastudy({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
     const num = Date.now().toString().substr(9);
     const newRoom = roomUid + num;
     setroomName(newRoom);
-    const data = {
+    const data = {      
+      T1:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
+      T2:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
+      T3:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
+      T4:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
+      T5:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
+      T6:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
+      T7:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
+      T8:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
+      T9:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
       dataId:newRoom,
       userId:user.uid,
       text1:'', text2:'',text3:'',text4:'',text5:'',text6:'',text7: '',text8: '',  text9: '',
-      // progress: 0,
       enterMan:0,
       host:'입장'
     } 
@@ -186,19 +214,16 @@ function Datastudy({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
 
   // 큐브입력 모달
   const fireArea = async(T,t)=>{ 
-    // e.preventDefault();
     if(!roomName||report){return}
     const cubeData = fireSync.cubeSync(folder, roomName, T, t);
     const cube = cubeData ||'';
-
     const { value: text } = await Swal.fire({
       input: 'textarea',
       html:cube, width:'80%',height:'90vh',
       imageUrl:cube,
-      // inputValue:cube,
-      inputLabel:'코드입력시: <iframe width="100%" src="주소" /> / 링크입력시:<a href="링크" target="_blank">제목</a>',
-      inputPlaceholder: '이곳에 자료를 입력해주세요',
-      inputAttributes: {'aria-label': 'Type your message here'},
+      inputValue:cube,
+      inputLabel:'내용을 입력해주세요.',
+      inputPlaceholder: '코드입력시: <iframe width="100%" src="주소" /> / 링크입력시:<a href="링크" target="_blank">제목</a>',
       showCancelButton: true
     })    
     if (text) {
@@ -207,10 +232,17 @@ function Datastudy({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
       const data = {[t]:text};
       fireProblem.cubeDataUp(folder, roomName, T, data);
     }
-
-
   }
-
+  // 큐브입력 모달2
+  const fireArea2 = async(T,t)=>{ 
+    if(!roomName||report){return}
+    const cubeData = fireSync.cubeSync(folder, roomName, T, t);
+    const cube = cubeData ||'';
+    Swal.fire({
+      html:cube, width:'80%',height:'90vh',
+      imageUrl:cube,
+    })  
+  }
   // 리포트 큐브입력 모달
   const fireAreaReport = async(T,t)=>{ 
     // e.preventDefault();
@@ -291,6 +323,17 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
       setRoomUid(''); setReport(false); setSee(true); setRoom({});
       setNotice(''); setVideo('');
       roomERef.current.value='';  
+      setdata({
+        T1:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
+        T2:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
+        T3:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
+        T4:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
+        T5:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
+        T6:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
+        T7:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
+        T8:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
+        T9:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
+      });
         
       if(user.uid){
         if(user.uid.substr(0,roomSubstr)===roomName.substr(0,roomSubstr)){
@@ -311,7 +354,7 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
       fireSync.cubeSync(folder, roomName, 'T1','t1',1);    
       history.push('/datastudy/:id');
       setDoor('입장'); 
-      dataReset(); 
+      // dataReset(); 
       setdata({});
       setroomName("");
       setRoomUid('');
@@ -320,7 +363,18 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
       setRoom({});
       setNotice('');
       setVideo('');
-      roomERef.current.value='';  
+      // roomERef.current.value='';  
+      setdata({
+        T1:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
+      T2:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
+      T3:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
+      T4:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
+      T5:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
+      T6:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
+      T7:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
+      T8:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
+      T9:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
+      });
     }  
   // roomName.substr(0,6) 방입장
 
@@ -360,7 +414,7 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
         const cf1 = { 
             f1: ()=>{setroomName(roomvalue); setRoomUid(enterRoomId);setDoor('퇴장');setReport(false);
             setEntering(true);  setSee(false)},      
-            f2: (p) => { setdata(p) },     
+            f2: (p) => { setdata({...data,...p}) },     
             f3: (p) => { setRoom(p) }, 
             f4: (host) => { setroomName(""); roomNameReset(); setEntering(false)}
           }          
@@ -391,17 +445,17 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
     noticeRef.current.value='';    
   }
  //리포트 저장
-  const reportSave = () => { 
+  const reportSave = () => { console.log(data)
     if (roomName!==roomERef.current.value||roomERef.current.value===''||report) { return }
     if (text5.current.value.length<2){Swal.fire('주제를 입력해주세요.')}
     else{
     const roomUid =  user.uid.substr(0,roomSubstr);
     const roomId = roomUid+'REPORT';
-    const value = {
-      text1: text1.current.value || '', text2: text2.current.value || '', text3: text3.current.value || '', text4: text4.current.value || '', dataId: roomName ||'',
-      text5: text5.current.value || '', text6: text6.current.value || '', text7: text7.current.value || '', text8: text8.current.value || '', text9: text9.current.value || '',  
-      }
-      fireProblem.reportSave(folder, roomId, roomName, value).then(()=>{Swal.fire('저장완료')})
+    // const value = {
+    //   text1: text1.current.value || '', text2: text2.current.value || '', text3: text3.current.value || '', text4: text4.current.value || '', dataId: roomName ||'',
+    //   text5: text5.current.value || '', text6: text6.current.value || '', text7: text7.current.value || '', text8: text8.current.value || '', text9: text9.current.value || '',  
+    //   }
+      fireProblem.reportSave(folder, roomId, roomName, data).then(()=>{Swal.fire('저장완료')})
     }
 
 
@@ -585,22 +639,55 @@ if (!report||user.uid===undefined) { return }else{
         <div className="box">
           <div className="items items1">
             {/* <Item item={'item item1'}  Tt={'T1t1'} roomName={roomName} report={report} reportId={reportId} fireArea={fireArea} fireAreaReport={fireAreaReport} onSubmit2={onSubmit2} onSubmit4={onSubmit4} data={data} reportInput={reportInput}/> */}
-            <div className="item item1">{roomName&&<button className="eye" onClick={()=>{if(!report&&reportId.length<11){fireArea('T1','t1')}else{fireAreaReport('T1','t1')}}} >{Pen}</button>}
+            <div className="item item1"> <div style={{display:'flex'}}>
+                                        {roomName&&data.T1.t1===''&&<button className="eye" onClick={()=>{if(!report&&reportId.length<11){fireArea('T1','t1')}else{fireAreaReport('T1','t1')}}} >{Pen}</button>}
+                                        {roomName&&data.T1.t1!==''&&<button className="eye" onClick={()=>{if(!report&&reportId.length<11){fireArea2('T1','t1')}else{fireAreaReport('T1','t1')}}} >{Pen2}</button>}
+                                        {roomName&&userClass&&<button className="eye" onClick={()=>{if(!report&&reportId.length<11){fireArea('T1','t1')}else{fireAreaReport('T1','t1')}}} >{Pen}</button>}
+                                        </div>
             <textarea cols="10" rows="1" className="itemArea btnArea" ref={T1t1} onChange={()=>{if(!report){onSubmit2(T1t1,'T1t1')}else{onSubmit4(T1t1,'T1t1')}}} value={data.T1t1}  disabled={reportInput}  /></div>
-            <div className="item item2">{roomName&&<button className="eye" onClick={()=>{if(!report&&reportId.length<11){fireArea('T1','t2')}else{fireAreaReport('T1','t2')}}} >{Pen}</button>}
+            <div className="item item2"><div style={{display:'flex'}}>
+                                        {roomName&&data.T1.t2===''&&<button className="eye" onClick={()=>{if(!report&&reportId.length<11){fireArea('T1','t2')}else{fireAreaReport('T1','t2')}}} >{Pen}</button>}
+                                        {roomName&&data.T1.t2!==''&&<button className="eye" onClick={()=>{if(!report&&reportId.length<11){fireArea2('T1','t2')}else{fireAreaReport('T1','t2')}}} >{Pen2}</button>}
+                                        {roomName&&userClass&&<button className="eye" onClick={()=>{if(!report&&reportId.length<11){fireArea('T1','t2')}else{fireAreaReport('T1','t2')}}} >{Pen}</button>}
+                                        </div>
             <textarea cols="10" rows="1" className="itemArea btnArea" ref={T1t2} onChange={()=>{if(!report){onSubmit2(T1t2,'T1t2')}else{onSubmit4(T1t2,'T1t2')}}} value={data.T1t2}  disabled={reportInput}  /></div>
-            <div className="item item3">{roomName&&<button className="eye" onClick={()=>{if(!report&&reportId.length<11){fireArea('T1','t3')}else{fireAreaReport('T1','t3')}}} >{Pen}</button>}
+            <div className="item item3"><div style={{display:'flex'}}>
+                                        {roomName&&data.T1.t3===''&&<button className="eye" onClick={()=>{if(!report&&reportId.length<11){fireArea('T1','t3')}else{fireAreaReport('T1','t3')}}} >{Pen}</button>}
+                                        {roomName&&data.T1.t3!==''&&<button className="eye" onClick={()=>{if(!report&&reportId.length<11){fireArea2('T1','t3')}else{fireAreaReport('T1','t3')}}} >{Pen2}</button>}
+                                        {roomName&&userClass&&<button className="eye" onClick={()=>{if(!report&&reportId.length<11){fireArea('T1','t3')}else{fireAreaReport('T1','t3')}}} >{Pen}</button>}
+                                        </div>
             <textarea cols="10" rows="1" className="itemArea btnArea" ref={T1t3} onChange={()=>{if(!report){onSubmit2(T1t3,'T1t3')}else{onSubmit4(T1t3,'T1t3')}}} value={data.T1t3}  disabled={reportInput}  /></div>
-            <div className="item item4">{roomName&&<button className="eye" onClick={()=>{if(!report&&reportId.length<11){fireArea('T1','t4')}else{fireAreaReport('T1','t4')}}} >{Pen}</button>}
+            <div className="item item4"> <div style={{display:'flex'}}>
+                                        {roomName&&data.T1.t4===''&&<button className="eye" onClick={()=>{if(!report&&reportId.length<11){fireArea('T1','t4')}else{fireAreaReport('T1','t4')}}} >{Pen}</button>}
+                                        {roomName&&data.T1.t4!==''&&<button className="eye" onClick={()=>{if(!report&&reportId.length<11){fireArea2('T1','t4')}else{fireAreaReport('T1','t4')}}} >{Pen2}</button>}
+                                        {roomName&&userClass&&<button className="eye" onClick={()=>{if(!report&&reportId.length<11){fireArea('T1','t4')}else{fireAreaReport('T1','t4')}}} >{Pen}</button>}
+                                        </div>              
             <textarea cols="10" rows="1" className="itemArea btnArea" ref={T1t4} onChange={()=>{if(!report){onSubmit2(T1t4,'T1t4')}else{onSubmit4(T1t4,'T1t4')}}} value={data.T1t4}  disabled={reportInput}  /></div>
             <div className="item item5"><textarea cols="10" rows="1"  className="itemArea area" disabled value={data.text1} ref={T1t5} /></div>
-            <div className="item item6">{roomName&&<button className="eye" onClick={()=>{if(!report&&reportId.length<11){fireArea('T1','t6')}else{fireAreaReport('T1','t6')}}} >{Pen}</button>}
+            <div className="item item6"> <div style={{display:'flex'}}>
+                                        {roomName&&data.T1.t6===''&&<button className="eye" onClick={()=>{if(!report&&reportId.length<11){fireArea('T1','t6')}else{fireAreaReport('T1','t6')}}} >{Pen}</button>}
+                                        {roomName&&data.T1.t6!==''&&<button className="eye" onClick={()=>{if(!report&&reportId.length<11){fireArea2('T1','t6')}else{fireAreaReport('T1','t6')}}} >{Pen2}</button>}
+                                        {roomName&&userClass&&<button className="eye" onClick={()=>{if(!report&&reportId.length<11){fireArea('T1','t6')}else{fireAreaReport('T1','t6')}}} >{Pen}</button>}
+                                        </div>              
             <textarea cols="10" rows="1" className="itemArea btnArea" ref={T1t6} onChange={()=>{if(!report){onSubmit2(T1t6,'T1t6')}else{onSubmit4(T1t6,'T1t6')}}} value={data.T1t6}  disabled={reportInput}  /></div>
-            <div className="item item7">{roomName&&<button className="eye" onClick={()=>{if(!report&&reportId.length<11){fireArea('T1','t7')}else{fireAreaReport('T1','t7')}}} >{Pen}</button>}
+            <div className="item item7"> <div style={{display:'flex'}}>
+                                        {roomName&&data.T1.t7===''&&<button className="eye" onClick={()=>{if(!report&&reportId.length<11){fireArea('T1','t7')}else{fireAreaReport('T1','t7')}}} >{Pen}</button>}
+                                        {roomName&&data.T1.t7!==''&&<button className="eye" onClick={()=>{if(!report&&reportId.length<11){fireArea2('T1','t7')}else{fireAreaReport('T1','t7')}}} >{Pen2}</button>}
+                                        {roomName&&userClass&&<button className="eye" onClick={()=>{if(!report&&reportId.length<11){fireArea('T1','t7')}else{fireAreaReport('T1','t7')}}} >{Pen}</button>}
+                                        </div>              
             <textarea cols="10" rows="1" className="itemArea btnArea" ref={T1t7} onChange={()=>{if(!report){onSubmit2(T1t7,'T1t7')}else{onSubmit4(T1t7,'T1t7')}}} value={data.T1t7}  disabled={reportInput}  /></div>
-            <div className="item item8">{roomName&&<button className="eye" onClick={()=>{if(!report&&reportId.length<11){fireArea('T1','t8')}else{fireAreaReport('T1','t8')}}} >{Pen}</button>}
+            <div className="item item8"> <div style={{display:'flex'}}>
+                                        {roomName&&data.T1.t8===''&&<button className="eye" onClick={()=>{if(!report&&reportId.length<11){fireArea('T1','t8')}else{fireAreaReport('T1','t8')}}} >{Pen}</button>}
+                                        {roomName&&data.T1.t8!==''&&<button className="eye" onClick={()=>{if(!report&&reportId.length<11){fireArea2('T1','t8')}else{fireAreaReport('T1','t8')}}} >{Pen2}</button>}
+                                        {roomName&&userClass&&<button className="eye" onClick={()=>{if(!report&&reportId.length<11){fireArea('T1','t8')}else{fireAreaReport('T1','t8')}}} >{Pen}</button>}
+                                        </div>              
             <textarea cols="10" rows="1" className="itemArea btnArea" ref={T1t8} onChange={()=>{if(!report){onSubmit2(T1t8,'T1t8')}else{onSubmit4(T1t8,'T1t8')}}} value={data.T1t8}  disabled={reportInput}  /></div>
-            <div className="item item9">{roomName&&<button className="eye" onClick={()=>{if(!report&&reportId.length<11){fireArea('T1','t9')}else{fireAreaReport('T1','t9')}}} >{Pen}</button>}
+            <div className="item item9"> <div style={{display:'flex'}}>
+                                        {roomName&&data.T1.t9===''&&<button className="eye" onClick={()=>{if(!report&&reportId.length<11){fireArea('T1','t9')}else{fireAreaReport('T1','t9')}}} >{Pen}</button>}
+                                        {roomName&&data.T1.t9!==''&&<button className="eye" onClick={()=>{if(!report&&reportId.length<11){fireArea2('T1','t9')}else{fireAreaReport('T1','t9')}}} >{Pen2}</button>}
+                                        {roomName&&userClass&&<button className="eye" onClick={()=>{if(!report&&reportId.length<11){fireArea('T1','t9')}else{fireAreaReport('T1','t9')}}} >{Pen}</button>}
+                                        </div>
+              
             <textarea cols="10" rows="1" className="itemArea btnArea" ref={T1t9} onChange={()=>{if(!report){onSubmit2(T1t9,'T1t9')}else{onSubmit4(T1t9,'T1t9')}}} value={data.T1t9}  disabled={reportInput}  /></div>
           </div>
           <div className="items items2">
@@ -610,7 +697,8 @@ if (!report||user.uid===undefined) { return }else{
             <textarea cols="10" rows="1" className="itemArea btnArea" ref={T2t2} onChange={()=>{if(!report){onSubmit2(T2t2,'T2t2')}else{onSubmit4(T2t2,'T2t2')}}} value={data.T2t2}  disabled={reportInput}  /></div>
             <div className="item item3">{roomName&&<button className="eye" onClick={()=>{if(!report&&reportId.length<11){fireArea('T2','t3')}else{fireAreaReport('T2','t3')}}} >{Pen}</button>}
             <textarea cols="10" rows="1" className="itemArea btnArea" ref={T2t3} onChange={()=>{if(!report){onSubmit2(T2t3,'T2t3')}else{onSubmit4(T2t3,'T2t3')}}} value={data.T2t3}  disabled={reportInput}  /></div>
-            <div className="item item4">{roomName&&<button className="eye" onClick={()=>{if(!report&&reportId.length<11){fireArea('T2','t4')}else{fireAreaReport('T2','t4')}}} >{Pen}</button>}<textarea cols="10" rows="1" className="itemArea btnArea" ref={T2t4} onChange={()=>{if(!report){onSubmit2(T2t4,'T2t4')}else{onSubmit4(T2t4,'T2t4')}}} value={data.T2t4}  disabled={reportInput}  /></div>
+            <div className="item item4">{roomName&&<button className="eye" onClick={()=>{if(!report&&reportId.length<11){fireArea('T2','t4')}else{fireAreaReport('T2','t4')}}} >{Pen}</button>}
+            <textarea cols="10" rows="1" className="itemArea btnArea" ref={T2t4} onChange={()=>{if(!report){onSubmit2(T2t4,'T2t4')}else{onSubmit4(T2t4,'T2t4')}}} value={data.T2t4}  disabled={reportInput}  /></div>
             <div className="item item5"><textarea cols="10" rows="1"  className="itemArea area" disabled value={data.text2} ref={T2t5} /></div>
             <div className="item item6">{roomName&&<button className="eye" onClick={()=>{if(!report&&reportId.length<11){fireArea('T2','t6')}else{fireAreaReport('T2','t6')}}} >{Pen}</button>}
             <textarea cols="10" rows="1" className="itemArea btnArea" ref={T2t6} onChange={()=>{if(!report){onSubmit2(T2t6,'T2t6')}else{onSubmit4(T2t6,'T2t6')}}} value={data.T2t6}  disabled={reportInput}  /></div>
