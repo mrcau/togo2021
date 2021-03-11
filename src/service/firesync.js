@@ -23,6 +23,29 @@ class firesync {
     return ()=>ref.off();
   }
 
+ 
+ // 리포트 룸 이름 가져오기
+roomUser2(folder,roomvalue,cf,off) {
+  const enterRoomId =  roomvalue.substr(0,roomSubstr)+'REPORT';
+  // const roomNum = roomvalue.substr(roomSubstr);
+  const ref = fireInit.database().ref(`${folder}`);
+  const ref2 = fireInit.database().ref(`${folder}/${enterRoomId}`);
+  ref.on('value', (p) => { const data = p.val();
+    if(!data){return}
+    const dataKey = Object.keys(data);
+    if(dataKey.indexOf(enterRoomId)<0){ ref.off();  return }
+  })
+  ref2.on('value', (p) => { const data = p.val();
+    if(!data){ return}
+    const dataKey = Object.keys(data);
+    if(dataKey.indexOf(roomvalue)<0){ ref.off(); return }else{cf()}
+  })
+  if(off){ref.off();}
+    return ()=>ref.off('value', (p) => {cf();});
+ }
+ 
+
+ 
 // 일반 룸 이름 가져오기
 async roomUser(folder,roomvalue,cf,off) {
   const enterRoomId =  roomvalue.substr(0,roomSubstr);
@@ -55,26 +78,35 @@ async roomUser(folder,roomvalue,cf,off) {
   if(off){ref.off();ref2.off();ref3.off();}
     return ()=>{ref.off();ref2.off();ref3.off();}
  }
- 
- // 리포트 룸 이름 가져오기
-roomUser2(folder,roomvalue,cf,off) {
-  const enterRoomId =  roomvalue.substr(0,roomSubstr)+'REPORT';
-  // const roomNum = roomvalue.substr(roomSubstr);
-  const ref = fireInit.database().ref(`${folder}`);
-  const ref2 = fireInit.database().ref(`${folder}/${enterRoomId}`);
-  ref.on('value', (p) => { const data = p.val();
-    if(!data){return}
-    const dataKey = Object.keys(data);
-    if(dataKey.indexOf(enterRoomId)<0){ ref.off();  return }
-  })
-  ref2.on('value', (p) => { const data = p.val();
-    if(!data){ return}
-    const dataKey = Object.keys(data);
-    if(dataKey.indexOf(roomvalue)<0){ ref.off(); return }else{cf()}
-  })
-  if(off){ref.off();}
-    return ()=>ref.off('value', (p) => {cf();});
- }
+
+ // 데이터분석 큐브 리포트 룸 이름 가져오기
+ roomUser3(folder,roomvalue,cf,off) {
+ const enterRoomId =  roomvalue.substr(0,roomSubstr)+'REPORT';
+ const roomNum = roomvalue.substr(0,10);
+ const ref = fireInit.database().ref(`${folder}`);
+ const ref2 = fireInit.database().ref(`${folder}/${enterRoomId}`);
+ const ref3 = fireInit.database().ref(`${folder}/${enterRoomId}/${roomNum}`);
+ ref.on('value', (p) => { 
+   const data = p.val();
+   if(!data){return}
+   const dataKey = Object.keys(data);
+   if(dataKey.indexOf(enterRoomId)<0){ ref.off();  return }
+ })
+ ref2.on('value', (p) => { 
+   const data = p.val();
+   if(!data){ return}
+   const dataKey = Object.keys(data); 
+   if(dataKey.indexOf(roomNum)<0){ ref2.off(); return }else{
+     ref3.on('value', (p) => { console.log(p);
+     const data = p.val();
+     cf.f1();cf.f2(data);cf.f3(data);
+     })
+    }
+ })
+ if(off){ console.log('off')
+   ref.off();ref2.off();ref3.off();}
+   return ()=>{ref.off();ref2.off();ref3.off();}
+}
 
   // 데이터 씽크
   dataSync(folder, roomName, cf,off) {

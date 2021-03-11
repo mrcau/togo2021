@@ -112,6 +112,13 @@ roomUser(folder,roomUid,cf) {
     const roomNum = roomName.substr(roomSubstr);
     fireInit.database().ref(`${folder}/${roomUid}/${roomNum}`).remove();
   }
+  // 데이터 삭제2
+  dataDel2(folder, roomName,cf) {
+    cf();
+    const roomUid = roomName.substr(0,roomSubstr);
+    const roomNum = roomName.substr(roomSubstr);
+    fireInit.database().ref(`${folder}/${roomUid}/${roomNum}`).remove();
+  }
   // 큐브 데이터 삭제
   cubeDataDel(folder, roomName) {
     const roomUid = roomName.substr(0,roomSubstr);
@@ -122,6 +129,12 @@ roomUser(folder,roomUid,cf) {
     reportDel(folder, uid, dataId) {
       fireInit.database().ref(`${folder}/${uid}/${dataId}`).remove();
     }
+ // 리포트데이터 삭제
+ reportDel2(folder, uid, dataId,cf) {
+   cf();
+  fireInit.database().ref(`${folder}/${uid}/${dataId}`).remove();
+}
+
   // 보고서 저장
  async reportSave(folder, roomId, roomName, data) {console.log('리포트세이브')
     fireInit.database().ref(`${folder}/${roomId}/${roomName}`)

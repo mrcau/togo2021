@@ -12,7 +12,7 @@ import { useHistory,useParams } from 'react-router-dom';
 import SaveIcon from '@material-ui/icons/Save';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Item from './Item';
-
+// roomERef.current.value =id.substr(0,10);
 function Datastudy({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
   const folder = "datastudy";
   const roomSubstr = 6;
@@ -76,24 +76,29 @@ function Datastudy({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
  
    //링크접속
    useEffect(() => {     
-    if(id.length===10){   console.log('입장1',roomName,data.dataId,data,report,id,user,'userClass',userClass);
-      const enterRoomId =  id.substr(0,roomSubstr)||"";
-      const cf1 = { 
-      f1: ()=>{setroomName(id); setRoomUid(enterRoomId);setDoor('퇴장');setReport(false);    
-  setEntering(true);  setSee(false);roomERef.current.value =id;},      
-      f2: (p) => { setdata(p) },     
-      f3: (p) => { setRoom(p) }, 
-      f4: (host) => { setroomName(""); roomNameReset(); setEntering(false)}
-    }          
- fireSync.roomUser(folder,id,cf1);
-    }
-    if(id.length===12){console.log('입장2'); setroomName(id.substr(0,10));setReport(true); 
-      const cf = () => {roomERef.current.value=id.substr(0,10); setReportId(id);
-                     setroomName(id.substr(0,10));setReport(true); enterRoom();roomERef.current.value =id.substr(0,10);} 
-      fireSync.roomUser2(folder,id.substr(0,10),cf); 
-    }
+    if(id.length===10){   console.log('입장1','id',id,id.length,data.dataId,data,report,id,user,'userClass',userClass);
+        const enterRoomId =  id.substr(0,roomSubstr)||"";
+        const cf1 = { 
+        f1: ()=>{setroomName(id); setRoomUid(enterRoomId);setDoor('퇴장');setReport(false);    
+        setEntering(true);  setSee(false);roomERef.current.value =id;},      
+        f2: (p) => { setdata(p) },     
+        f3: (p) => { setRoom(p) }, 
+        f4: (host) => { setroomName(""); roomNameReset(); setEntering(false)}
+        }          
+        fireSync.roomUser(folder,id,cf1);
+      }else if(id.length===12){console.log('입장2','id',id,id.length,data.dataId,data,report);  
+        const enterRoomId =  id.substr(0,roomSubstr)||"";
+        const cf = { 
+        f1: ()=>{setroomName(id.substr(0,10)); setRoomUid(enterRoomId);setDoor('퇴장');setReport(true); setReportInput(true);  
+        setEntering(true);  setSee(false);roomERef.current.value ='';},      
+        f2: (p) => { setdata(p) },     
+        f3: (p) => { setRoom(p) }, 
+        }                      
+        fireSync.roomUser3(folder,id,cf); 
+      }
    },[fireSync,roomName])
 
+   
    //일반접속
   useEffect(() => { 
       fireSync.onAuth((e) => { 
@@ -283,6 +288,7 @@ function Datastudy({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
    T7t1.current.value=''; T7t2.current.value=''; T7t3.current.value=''; T7t4.current.value=''; T7t5.current.value=''; T7t6.current.value=''; T7t7.current.value=''; T7t8.current.value=''; T7t9.current.value='';
    T8t1.current.value=''; T8t2.current.value=''; T8t3.current.value=''; T8t4.current.value=''; T8t5.current.value=''; T8t6.current.value=''; T8t7.current.value=''; T8t8.current.value=''; T8t9.current.value='';
    T9t1.current.value=''; T9t2.current.value=''; T9t3.current.value=''; T9t4.current.value=''; T9t5.current.value=''; T9t6.current.value=''; T9t7.current.value=''; T9t8.current.value=''; T9t9.current.value='';
+   
   }
 
 
@@ -314,14 +320,14 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
       const cf = {  f1: (p) => { setdata({}) }, f2: () => { setdata({}) },
                     f3: (p) => { setRoom({}) }, f4: () => { setRoom({}) },
       }
-      const cf2 = () => { setdata({});setRoom({});  }
+      const cf2 = () => { setdata({});setRoom({});setroomName("");  }
       fireSync.roomUser(folder,roomUid,cf2,1);        
       fireSync.dataSync(folder, roomName, cf,1);
       fireSync.cubeSync(folder, roomName, 'T1','t1',1);    
       history.push('/datastudy/:id');
       setDoor('입장'); dataReset(); setdata({}); setroomName("");
       setRoomUid(''); setReport(false); setSee(true); setRoom({});
-      setNotice(''); setVideo('');
+      setNotice(''); setVideo(''); 
       roomERef.current.value='';  
       setdata({
         T1:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
@@ -349,12 +355,13 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
                     f3: (p) => { setRoom({}) }, f4: () => { setRoom({}) },
       }
       const cf2 = () => { setdata({});setRoom({});  }
-      fireSync.roomUser(folder,roomUid,cf2,1);        
+      // fireSync.roomUser(folder,roomUid,cf2,1);        
+      fireSync.roomUser3(folder,roomUid,cf2,1);        
       fireSync.dataSync(folder, roomName, cf,1);
       fireSync.cubeSync(folder, roomName, 'T1','t1',1);    
       history.push('/datastudy/:id');
       setDoor('입장'); 
-      // dataReset(); 
+      dataReset(); 
       setdata({});
       setroomName("");
       setRoomUid('');
@@ -363,6 +370,7 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
       setRoom({});
       setNotice('');
       setVideo('');
+      // setReportInput(false);
       // roomERef.current.value='';  
       setdata({
         T1:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
@@ -401,13 +409,18 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
     const roomvalue = roomERef.current.value || "";
     const enterRoomId =  roomERef.current.value.substr(0,roomSubstr)||"";
     if(entering){  
+      if(!report){
       setEntering(false); roomNameReset(); manMinus();
       setroomName("");setDoor('입장');   
       if(data.id){
       if(data.dataId.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){
         fireSync.cubeUp(folder,roomvalue, {host:'퇴장',roomName:roomvalue});
       }   }
+    }else{
+      setEntering(false); roomNameReset2(); manMinus();
+      setroomName("");setDoor('입장');  
     }
+  }
 
     if(roomvalue.length !== 10){ return;}
     if(roomvalue.length === 10&&!entering){ 
@@ -484,8 +497,8 @@ const onSubmit2 = (e,p) => {
   }
 }
   // 큐브 리포트 가운데 input 저장
-  const onSubmit3 = () => { 
-    if (!report||!user.uid) { return }
+  const onSubmit3 = () => { console.log('hi')
+    if (!user.uid||roomERef.current.value==='') { return }
     const roomUid =  user.uid.substr(0,roomSubstr);
     const roomId = roomUid+'REPORT';
     const value = {dataId:roomName || '',
@@ -496,8 +509,9 @@ const onSubmit2 = (e,p) => {
   }
 
 // 큐브 리포트 테두리 input 저장
-const onSubmit4 = (e,p) => { 
-if (!report||user.uid===undefined) { return }else{
+const onSubmit4 = (e,p) => {  console.log('hello')
+if (!user.uid||roomERef.current.value ==='') { return }else{
+
   const roomUid =   user.uid.substr(0,roomSubstr);
   const roomId = roomUid+'REPORT';
   const  evalue = e.current.value ||'';
@@ -514,15 +528,16 @@ if (!report||user.uid===undefined) { return }else{
     if(!roomName||!user||data.dataId.substr(0,roomSubstr) !== user.uid.substr(0,roomSubstr)){return}
     }
       if(!report && data.dataId.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){  
+        console.log( '토론방을 삭제하겠습니까?');
       Swal.fire({ 
         title: '토론방을 삭제하겠습니까?',
         text:"삭제될 토론방 : "+roomName,
         icon:'warning',
         showCancelButton: true})
       .then((result) => { if(result.isConfirmed){ 
-      fireProblem.dataDel(folder,roomName);   
-      Swal.fire('삭제되었습니다.');
-      roomNameReset2();
+      const cf = ()=>{setroomName(""); roomNameReset(); setEntering(false); manMinus(); setDoor('입장'); }
+      fireProblem.dataDel2(folder,roomName,cf);  
+      Swal.fire('삭제되었습니다.');   
       }});
     }
 
@@ -535,9 +550,9 @@ if (!report||user.uid===undefined) { return }else{
       .then((result) => { if(result.isConfirmed){ 
         const roomUid =   user.uid.substr(0,roomSubstr);
         const roomId = roomUid+'REPORT';
-      fireProblem.reportDel(folder,roomId,roomName);   
+        const cf = ()=>{setroomName(""); roomNameReset(); setEntering(false); manMinus(); setDoor('입장'); }
+      fireProblem.reportDel2(folder,roomId,roomName,cf);   
       Swal.fire('삭제되었습니다.');
-      roomNameReset2();
       }});
     }
   }  
