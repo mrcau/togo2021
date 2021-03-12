@@ -81,6 +81,37 @@ roomUser(folder,roomUid,cf) {
   }
 
 
+  // 큐브 리포트 데이터 첨부내용 업데이트
+  // cubeReportUp(folder, roomName, data) { console.log('cubereport')
+  //   const roomUid = roomName.substr(0,roomSubstr);
+  // const roomId = roomUid+'REPORT';
+  //   fireInit.database().ref(`${folder}/${roomId}/${roomName}`).update(data)
+  // }
+
+  cubeReportUp(folder, roomName, data) {console.log(folder,roomName, data)
+    const roomUid = roomName.substr(0,roomSubstr);
+  const roomId = roomUid+'REPORT';
+    // const roomNum = roomName.substr(roomSubstr);
+
+    const ref = fireInit.database().ref(`${folder}`);
+    const ref2 = fireInit.database().ref(`${folder}/${roomId}`);
+    ref.on('value', (p) => { const data = p.val();
+      if(!data){return}
+      const dataKey = Object.keys(data);
+      if(dataKey.indexOf(roomId)<0){ ref.off(); return }    
+    })
+
+    ref2.on('value', (p) => { const data = p.val();
+      if(!data){ return}
+      const dataKey = Object.keys(data);
+      if(dataKey.indexOf(roomName)<0){ ref.off(); return }
+      // else{
+      //   fireInit.database().ref(`${folder}/${roomUid}/${roomNum}`).update(data)
+      // }
+    })
+    fireInit.database().ref(`${folder}/${roomId}/${roomName}`).update(data)
+    
+  }
 
 
 
@@ -99,6 +130,7 @@ roomUser(folder,roomUid,cf) {
     fireInit.database().ref(`${folder}/${roomId}/${roomName}/${T}`)
       .update(data)
   }
+  
   //리포트 데이터 업데이트
   reportUp(folder, roomId,dataId, data) {
     fireInit.database().ref(`${folder}/${roomId}/${dataId}`)

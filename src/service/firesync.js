@@ -97,9 +97,11 @@ async roomUser(folder,roomvalue,cf,off) {
    if(!data){ return}
    const dataKey = Object.keys(data); 
    if(dataKey.indexOf(roomNum)<0){ ref2.off(); return }else{
+
      ref3.on('value', (p) => { console.log(p);
      const data = p.val();
-     cf.f1();cf.f2(data);cf.f3(data);
+        if(!data){ cf.f4(); ref.off(); ref2.off(); ref3.off();  return}
+        else{cf.f1();cf.f2(data);cf.f3(data);}
      })
     }
  })
@@ -249,8 +251,7 @@ cubeReportSync(folder, roomName, T, t, off) {
 
     // 큐브 리포트 저장
     cubeReportUp(folder, roomId, roomName, data) { 
-  fireInit.database().ref(`${folder}/${roomId}/${roomName}`)
-    .update(data)
+  fireInit.database().ref(`${folder}/${roomId}/${roomName}`).update(data)
 }
 
 

@@ -21,7 +21,7 @@ const columns = [
 ];
 
 //글 선택하면 실행함수
-const selectRow = () => { setReport(true); moveModal2(); roomNameHide();}
+const selectRow = () => { setReport(true); moveModal2(); roomNameHide();setDoor('퇴장');setEntering(true);}
   // roomRowReset();  
 const rows = Object.values(data2).map((e,i) => { 
   return( { id: i, title: e.text5, ...e}) 
