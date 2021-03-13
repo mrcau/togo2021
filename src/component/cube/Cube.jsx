@@ -75,7 +75,7 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
 
    //링크접속
    useEffect(() => {     
-    if(id.length===10){   console.log('입장1','id',id,id.length,data.dataId,data,report,id,user,'userClass',userClass);
+    if(id.length===10){
         const enterRoomId =  id.substr(0,roomSubstr)||"";
         const cf1 = { 
         f1: ()=>{setroomName(id); setRoomUid(enterRoomId);setDoor('퇴장');setReport(false);    
@@ -88,7 +88,7 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
          return ()=>{stoproomSync();}
       }
     
-    else if(id.length===12){console.log('입장2','id',id,id.length,data.dataId,data,report);  
+    else if(id.length===12){
         const enterRoomId =  id.substr(0,roomSubstr)||"";
         const cf = { 
         f1: ()=>{setroomName(id.substr(0,10)); setRoomUid(enterRoomId);setDoor('퇴장');setReport(true); setReportInput(true);  
@@ -330,7 +330,6 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
         }
       fireSync.dataSync(folder,roomname, cf2);
       fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
-      console.log(data)
       }
    
       // input roomName 초기화

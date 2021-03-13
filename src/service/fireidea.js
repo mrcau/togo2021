@@ -131,6 +131,12 @@ manUp(folder, roomName, data) {
 // }
 
 // TODO글  저장 
+itemRefresh(folder,roomName, data) {
+  const roomUid = roomName.substr(0,roomSubstr);
+  const roomNum = roomName.substr(roomSubstr);
+  fireInit.database().ref(`${folder}/${roomUid}/${roomNum}`).set(data)
+}
+// TODO글  저장 
 itemSave(folder, data) {
   fireInit.database().ref(`${folder}/${data.uid}/${data.dataId}`).set(data)
     .then(() => console.log('글 저장성공'))

@@ -3,7 +3,7 @@ import React, { memo, useEffect, useState } from 'react';
 import { DataGrid } from '@material-ui/data-grid';
 
 function ProblemReport({ setLinkCopy, fireProblem, fireSync,user,folder,roomName,setroomName,
-  setReport,moveModal2,userInfo, setItems,enterRoom,setDoor,roomNameHide}) {
+  setReport,moveModal2,userInfo, setItems,enterRoom,setDoor,roomNameHide,setEntering}) {
 const [data2, setData2] = useState({})
 //데이터싱크 
 useEffect(() => {
@@ -21,7 +21,7 @@ const columns = [
 ];
 
 //글 선택하면 실행함수
-const selectRow = () => { setReport(true); moveModal2(); roomNameHide();}
+const selectRow = () => { setReport(true); moveModal2(); roomNameHide();setDoor('퇴장');setEntering(true);}
   // roomRowReset();  
 const rows = Object.values(data2).map((e,i) => { 
   return({ id: i, title: Object.values(e)[1].title, ...e}) 

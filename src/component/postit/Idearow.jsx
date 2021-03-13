@@ -102,7 +102,7 @@ function  Idearow ({item,fireIdea,level,roomName}) {
         <Card.Body style={{padding:"8px",height:"100px",overflowY:"auto" }}>
         {item.roomUid
           ? <Card.Title style={{fontSize:"16px",fontWeight:"900",color:"black"}} > {item.roomName} </Card.Title>
-          : <Card.Title style={{fontSize:"16px",fontWeight:"900",lineHeight:"5px"}} > {item.title}  </Card.Title> 
+          : <Card.Title style={{fontSize:"16px",fontWeight:"900",lineHeight:"16px"}} > {item.title}  </Card.Title> 
         }
           <Card.Text style={{fontSize:"12px",lineHeight:"14px" }}> {item.text||''} </Card.Text>
         </Card.Body>
