@@ -11,7 +11,8 @@ import ProblemReport from './problemReport';
 import { useHistory,useParams } from 'react-router-dom';
 import SaveIcon from '@material-ui/icons/Save';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import Item from './Item';
+// import Item from './Item';
+import ReplayIcon from '@material-ui/icons/Replay';
 // roomERef.current.value =id.substr(0,10);
 function Datastudy({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
   const folder = "datastudy";
@@ -51,7 +52,6 @@ function Datastudy({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
     T9:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
     dataId:'',
   });
-
   const [room, setRoom] = useState({});
   const {id}=useParams(); 
 
@@ -85,8 +85,8 @@ function Datastudy({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
         f3: (p) => { setRoom(p) }, 
         f4: (host) => { setroomName(""); roomNameReset(); setEntering(false)}
         }          
-        const stoproomSync =fireSync.roomUser(folder,id,cf1);
-        //  return ()=>{stoproomSync();}
+        const stoproomSync = fireSync.roomUser(folder,id,cf1);
+         return ()=>{stoproomSync();}
       }
     
     else if(id.length===12){console.log('입장2','id',id,id.length,data.dataId,data,report);  
@@ -105,50 +105,49 @@ function Datastudy({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
    
    //일반접속
   useEffect(() => { 
-      fireSync.onAuth((e) => { 
-      if(!e&&!roomName){ return}
-      const cf = {
-        f1: (p) => { setdata(p) },  f2: () => { setdata({}) },
-        f3: (p) => { setRoom(p) },  f4: () => { setRoom({}) },
-      }
+      fireSync.onAuth((e) => {  console.log('시작','e',e,'report',report,'id',id,id.length)
+        if(!e&&!roomName){ return}
+        if(data.dataId){ if(data.dataId.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){setUserClass(true)} }
+        const cf = {
+          f1: (p) => { setdata(p) },  f2: () => { setdata({}) },
+          f3: (p) => { setRoom(p) },  f4: () => { setRoom({}) },
+        }
 
-        if (e && report===false && !id) {   console.log('로그인하고 리포트false')
+        if (e && report===false && id.length<10) {   console.log('로그인하고 리포트false','room',room)
           setRoomUid(e.uid.substr(0, roomSubstr));
           setUserUID(e.uid);
-         const stopDataSync = fireSync.dataSync(folder, roomName, cf);
-         const stoproomSync = fireSync.roomSync(folder, roomUid, cf);
-         if(data.dataId.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){setUserClass(true)}
-          return ()=>{stopDataSync();stoproomSync();}
-        }        
-        else if(e && !roomName && !report){   console.log('로그인하고  룸네임 없고 리포트false',id,report)
-        setRoomUid(e.uid.substr(0, roomSubstr));
-        setUserUID(e.uid);
-          const stopdataSyncB =  fireSync.dataSyncB(folder, roomName, cf);
-         const stoproomSync = fireSync.roomSync(folder, roomUid, cf);
-         return ()=>{stopdataSyncB();stoproomSync();}
-        }        
-        else  if(e && roomName && report){ console.log(data,e,roomName,report)
+          const stopDataSync = fireSync.dataSync(folder, roomName, cf);
+          const stoproomSync = fireSync.roomSync(folder, roomUid, cf);
           if(data.dataId){ if(data.dataId.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){setUserClass(true)} }
-        //   console.log('리포트 트루',roomName,data.dataId,data,report,id,user,'userClass',userClass,data.T1.t1);
-        //   const cf = { f1: (p) => { setdata(p);setroomName(roomName) }, f2: () => { setdata({}) } }
-        //       if(report){  
-                 
-        //         const roomId = roomName.substr(0,6)+'REPORT';
-        //         const stopdataSync = fireSync.reportSync2(folder,roomId,roomName,cf);     
-        //         return ()=>{stopdataSync();}
-        //       }
-                // const roomId = id.length===12 ?id.substr(0,6)+'REPORT': user.uid.substr(0,6)+'REPORT' ;
-                  // const value = data.length>0 ? data.dataId :  id.substr(0,10)
-                  // if(!data.dataId){return}
-                  // else if(user.uid===undefined||data.dataId.substr(0,6) !== user.uid.substr(0,roomSubstr)){setReportInput(true);}           
-      }
-      else {return}
+          return ()=>{stopDataSync();stoproomSync();}
+        }       
+        else  if(e && report){ console.log('로그인 레포트',data,e,roomName,report)
+          setRoomUid(e.uid.substr(0, roomSubstr));
+          setUserUID(e.uid);
+          const stopDataSync = fireSync.dataSync(folder, roomName, cf);
+          const stoproomSync = fireSync.roomSync(folder, roomUid, cf);
+          if(data.dataId){ if(data.dataId.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){setUserClass(true)} }
+          return ()=>{stopDataSync();stoproomSync();}
+        } 
+        // else if(e && !roomName && !report){   console.log('로그인하고  룸네임 없고 리포트false',id,report,'room',room)
+        // setRoomUid(e.uid.substr(0, roomSubstr));
+        // setUserUID(e.uid);
+        // setroomName('');
+        //   const stopdataSync =  fireSync.dataSync(folder, roomName, cf);
+        //  const stoproomSync = fireSync.roomSync(folder, roomUid, cf);
+        //  return ()=>{stopdataSync();stoproomSync();}
+        // }        
+        
+        // else  if(e && roomName && !report){ console.log(data,e,roomName,report)
+        //   if(data.dataId){ if(data.dataId.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){setUserClass(true)} }
+        // }
+        else {return}
     }) 
   }, [roomName,fireSync,report,roomUid,user,userInfo]);
 
   //수업자료와 공지사항 싱크
   useEffect(() => {    
-    if(roomName&&!report){ 
+    if(roomName&&!report){       
       const stopvideoSync = fireSync.videoSync(folder,roomName,'See',(p)=>{setVideo(p); })
       const stopvideoSync2 = fireSync.videoSync(folder,roomName,'Tok',(p)=>{setNotice(p);})
         return ()=>{stopvideoSync(); stopvideoSync2(); }
@@ -211,6 +210,15 @@ function Datastudy({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
       T7:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
       T8:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
       T9:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
+      T1t1:'', T1t2:'', T1t3:'', T1t4:'', T1t5:'', T1t6:'', T1t7:'', T1t8:'', T1t9:'',
+      T2t1:'', T2t2:'', T2t3:'', T2t4:'', T2t5:'', T2t6:'', T2t7:'', T2t8:'', T2t9:'',
+      T3t1:'', T3t2:'', T3t3:'', T3t4:'', T3t5:'', T3t6:'', T3t7:'', T3t8:'', T3t9:'',
+      T4t1:'', T4t2:'', T4t3:'', T4t4:'', T4t5:'', T4t6:'', T4t7:'', T4t8:'', T4t9:'',
+      T6t1:'', T6t2:'', T6t3:'', T6t4:'', T6t5:'', T6t6:'', T6t7:'', T6t8:'', T6t9:'',
+      T7t1:'', T7t2:'', T7t3:'', T7t4:'', T7t5:'', T7t6:'', T7t7:'', T7t8:'', T7t9:'',
+      T8t1:'', T8t2:'', T8t3:'', T8t4:'', T8t5:'', T8t6:'', T8t7:'', T8t8:'', T8t9:'',
+      T9t1:'', T9t2:'', T9t3:'', T9t4:'', T9t5:'', T9t6:'', T9t7:'', T9t8:'', T9t9:'', 
+     
       dataId:newRoom,
       userId:user.uid,
       text1:'', text2:'',text3:'',text4:'',text5:'',text6:'',text7: '',text8: '',  text9: '',
@@ -231,7 +239,7 @@ function Datastudy({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
       imageUrl:cube,
       inputValue:cube,
       inputLabel:'내용을 입력해주세요.',
-      inputPlaceholder: '코드입력시: <iframe width="100%" src="주소" /> / 링크입력시:<a href="링크" target="_blank">제목</a>',
+      inputPlaceholder: '코드입력시: <iframe width="100%" src="주소" /> \n 링크입력시:<a href="링크" target="_blank">제목</a>',
       showCancelButton: true
     })    
     if (text) {
@@ -251,44 +259,32 @@ function Datastudy({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
       imageUrl:cube,
     })  
   }
+
+  
   // 리포트 큐브입력 모달
   const fireAreaReport = async(T,t)=>{ 
-    
-    // e.preventDefault();
     if(!roomName){return}
-    if (user.uid!==undefined){ 
-    if(user.uid.substr(0,6)===roomName.substr(0,6)){
-    let cubeData = '';
-    // if(!report){cubeData = fireSync.cubeSync(folder, roomName, T, t);}
-    cubeData = fireSync.cubeReportSync(folder, roomName, T, t);
-    const cube = cubeData ||'';
-    const { value: text } = await Swal.fire({
-      html:cube, width:'80%',
-      input: 'textarea',
-      inputPlaceholder: '이곳에 자료를 입력해주세요.',
-      inputAttributes: {'aria-label': 'Type your message here'},
-      showCancelButton: true
-    })
-  
-    if(report){
-    if (text&&user.uid!==undefined) {  
-      if(user.uid.substr(0,6)===roomName.substr(0,6)){
-      Swal.fire(text); const data = {[t]:text};
-    fireProblem.cubeReportDataUp(folder, roomName, T, data);
-      }else{return}
-    }}}
-  }else{
-    let cubeData = '';
-    // if(!report){cubeData = fireSync.cubeSync(folder, roomName, T, t);}
-    cubeData = fireSync.cubeReportSync(folder, roomName, T, t);
-    const cube = cubeData ||'';
-    Swal.fire({
-      html:cube, width:'80%',      
-    })
+    if(!userClass){  
+      let cubeData = fireSync.cubeReportSync(folder, roomName, T, t);
+      const cube = cubeData ||'';
+      Swal.fire({html:cube, width:'80%'})
+    }else{
+      let cubeData = fireSync.cubeReportSync(folder, roomName, T, t);
+      const cube = cubeData ||'';
+      const { value: text } = await Swal.fire({
+        html:cube, width:'80%',
+        input: 'textarea',
+        inputPlaceholder: '이곳에 자료를 입력해주세요.',
+        inputAttributes: {'aria-label': 'Type your message here'},
+        showCancelButton: true
+      }) 
+      if (text) {
+        Swal.fire(text); 
+        const data = {[t]:text};
+        fireProblem.cubeReportDataUp(folder, roomName, T, data);
+      }
+    }
   }
-  }
-
-// 입장카운팅
 
 
   //데이터 리셋
@@ -303,23 +299,38 @@ function Datastudy({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
    T7t1.current.value=''; T7t2.current.value=''; T7t3.current.value=''; T7t4.current.value=''; T7t5.current.value=''; T7t6.current.value=''; T7t7.current.value=''; T7t8.current.value=''; T7t9.current.value='';
    T8t1.current.value=''; T8t2.current.value=''; T8t3.current.value=''; T8t4.current.value=''; T8t5.current.value=''; T8t6.current.value=''; T8t7.current.value=''; T8t8.current.value=''; T8t9.current.value='';
    T9t1.current.value=''; T9t2.current.value=''; T9t3.current.value=''; T9t4.current.value=''; T9t5.current.value=''; T9t6.current.value=''; T9t7.current.value=''; T9t8.current.value=''; T9t9.current.value='';
-   
-  }
+   }
+
+   //데이터 초기화
+   const dataRefresh = ()=>{
+    //  dataReset();
+     const reData = {
+      T1t1:'', T1t2:'', T1t3:'', T1t4:'', T1t5:'', T1t6:'', T1t7:'', T1t8:'', T1t9:'',
+      T2t1:'', T2t2:'', T2t3:'', T2t4:'', T2t5:'', T2t6:'', T2t7:'', T2t8:'', T2t9:'',
+      T3t1:'', T3t2:'', T3t3:'', T3t4:'', T3t5:'', T3t6:'', T3t7:'', T3t8:'', T3t9:'',
+      T4t1:'', T4t2:'', T4t3:'', T4t4:'', T4t5:'', T4t6:'', T4t7:'', T4t8:'', T4t9:'',
+      T6t1:'', T6t2:'', T6t3:'', T6t4:'', T6t5:'', T6t6:'', T6t7:'', T6t8:'', T6t9:'',
+      T7t1:'', T7t2:'', T7t3:'', T7t4:'', T7t5:'', T7t6:'', T7t7:'', T7t8:'', T7t9:'',
+      T8t1:'', T8t2:'', T8t3:'', T8t4:'', T8t5:'', T8t6:'', T8t7:'', T8t8:'', T8t9:'',
+      T9t1:'', T9t2:'', T9t3:'', T9t4:'', T9t5:'', T9t6:'', T9t7:'', T9t8:'', T9t9:'', 
+      text1:'', text2:'',text3:'',text4:'',text5:'',text6:'',text7: '',text8: '',  text9: '',
+     }
+     fireProblem.dataUp(folder, roomName, reData);
+   }
 
 
       // 관리자 방입장
       const adminEnter = (e) => {
-        // dataReset();
-        // setEntering(true);  
+        dataReset();
+        setEntering(true);  
         const textRoom = e.currentTarget.textContent;
         const roomMap = Object.keys(room);
         const roomNumber = roomMap[textRoom]
         const roomname = roomUid +roomNumber;
         setroomName(roomname);
-        setLinkCopy('https://samtool.netlify.app/#/'+folder+'/'+roomname);  
         
-
-        roomERef.current.value =roomname;   
+        setLinkCopy('https://samtool.netlify.app/#/'+folder+'/'+roomname);  
+                roomERef.current.value =roomname;   
         setReport(false); 
         setDoor('퇴장');    
         const cf2 = {
@@ -330,23 +341,25 @@ function Datastudy({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
         }
       fireSync.dataSync(folder,roomname, cf2);
       fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
+      console.log(data)
       }
-      
-    // input roomName 초기화
+
+      // input roomName 초기화
     const roomNameReset=() => {   
       fireSync.videoSync(folder,roomName,'See',(p)=>{setVideo(p); },1);
       fireSync.videoSync(folder,roomName,'Tok',(p)=>{setNotice(p);},1);      
       const cf = {  f1: (p) => { setdata({}) }, f2: () => { setdata({}) },
                     f3: (p) => { setRoom({}) }, f4: () => { setRoom({}) },
       }
-      const cf2 = () => { setdata({});setRoom({});setroomName("");  }
+      const cf2 = () => { setdata({});setroomName("");setRoom({}); }
       fireSync.roomUser(folder,roomUid,cf2,1);        
       fireSync.dataSync(folder, roomName, cf,1);
       fireSync.cubeSync(folder, roomName, 'T1','t1',1);    
       history.push('/datastudy/:id');
       setDoor('입장'); dataReset(); setdata({}); setroomName("");
-      setRoomUid(''); setReport(false); setSee(true); setRoom({});
+      setRoomUid(''); setReport(false); setSee(true); 
       setNotice(''); setVideo(''); 
+      // setRoom({});
       roomERef.current.value='';  
       setdata({
         T1:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
@@ -358,8 +371,7 @@ function Datastudy({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
         T7:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
         T8:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
         T9:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
-      });
-        
+      });        
       if(user.uid){
         if(user.uid.substr(0,roomSubstr)===roomName.substr(0,roomSubstr)){
           fireSync.cubeUp(folder,roomName, {host:'퇴장',enterMan:0});
@@ -424,10 +436,10 @@ function Datastudy({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
     return;
   }
 // 방입장
-  const enterRoom = () => { 
+  const enterRoom = () => {  console.log('entering입장', data)
     const roomvalue = roomERef.current.value || "";
     const enterRoomId =  roomERef.current.value.substr(0,roomSubstr)||"";
-    if(entering){  
+    if(entering){   console.log('entering퇴장', data)
       if(!report){
       setEntering(false); roomNameReset(); manMinus();
       setroomName("");setDoor('입장');   
@@ -440,32 +452,20 @@ function Datastudy({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
       setroomName("");setDoor('입장');  
     }
   }
-
     if(roomvalue.length !== 10){ return;}
     if(roomvalue.length === 10&&!entering){ 
         const cf1 = { 
             f1: ()=>{setroomName(roomvalue); setRoomUid(enterRoomId);setDoor('퇴장');setReport(false);
-            setEntering(true);  setSee(false)},      
+            setEntering(true);  
+            setSee(false)
+          },      
             f2: (p) => { setdata({...data,...p}) },     
             f3: (p) => { setRoom(p) }, 
             f4: (host) => { setroomName(""); roomNameReset(); setEntering(false)}
           }          
        fireSync.roomUser(folder,roomvalue,cf1);
-        // const cf2 = { 
-        //     f1: (p) => { setdata(p) },
-        //     f2: () => { setdata({}) },
-        //     f3: (p) => { setRoom(p) },
-        //     f4: () => { setRoom({}) },
-        //   }
-        // fireSync.dataSync(folder,roomvalue, cf2);
-
-        // if(!report){
-        // let num = ++data['enterMan']||0 ;
-        // fireSync.cubeUp(folder,roomName, {enterMan:num});
-        // }
-
-         }   
-      }
+      }   
+    }
   
 
 // notice 저장 - 공지 보내기
@@ -483,15 +483,25 @@ function Datastudy({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
     else{
     const roomUid =  user.uid.substr(0,roomSubstr);
     const roomId = roomUid+'REPORT';
+    fireProblem.reportSave(folder, roomId, roomName, data).then(()=>{Swal.fire('저장완료')})
+   }
+  }
+
     // const value = {
     //   text1: text1.current.value || '', text2: text2.current.value || '', text3: text3.current.value || '', text4: text4.current.value || '', dataId: roomName ||'',
-    //   text5: text5.current.value || '', text6: text6.current.value || '', text7: text7.current.value || '', text8: text8.current.value || '', text9: text9.current.value || '',  
+    //   text5: text5.current.value || '', text6: text6.current.value || '', text7: text7.current.value || '', text8: text8.current.value || '', text9: text9.current.value || '',       
+    //   T1t1: T1t1.current.value || '', T1t2: T1t2.current.value || '', T1t3: T1t3.current.value || '', T1t4: T1t4.current.value || '', T1t5: T1t5.current.value || '', T1t6: T1t6.current.value || '', T1t7: T1t7.current.value || '', T1t8: T1t8.current.value || '', T1t9: T1t9.current.value || '',
+    //   T2t1: T2t1.current.value || '', T2t2: T2t2.current.value || '', T2t3: T2t3.current.value || '', T2t4: T2t4.current.value || '', T2t5: T2t5.current.value || '', T2t6: T2t6.current.value || '', T2t7: T2t7.current.value || '', T2t8: T2t8.current.value || '', T2t9: T2t9.current.value || '',
+    //   T3t1: T3t1.current.value || '', T3t2: T3t2.current.value || '', T3t3: T3t3.current.value || '', T3t4: T3t4.current.value || '', T3t5: T3t5.current.value || '', T3t6: T3t6.current.value || '', T3t7: T3t7.current.value || '', T3t8: T3t8.current.value || '', T3t9: T3t9.current.value || '',
+    //   T4t1: T4t1.current.value || '', T4t2: T4t2.current.value || '', T4t3: T4t3.current.value || '', T4t4: T4t4.current.value || '', T4t5: T4t5.current.value || '', T4t6: T4t6.current.value || '', T4t7: T4t7.current.value || '', T4t8: T4t8.current.value || '', T4t9: T4t9.current.value || '',
+    //   T6t1: T6t1.current.value || '', T6t2: T6t2.current.value || '', T6t3: T6t3.current.value || '', T6t4: T6t4.current.value || '', T6t5: T6t5.current.value || '', T6t6: T6t6.current.value || '', T6t7: T6t7.current.value || '', T6t8: T6t8.current.value || '', T6t9: T6t9.current.value || '',
+    //   T7t1: T7t1.current.value || '', T7t2: T7t2.current.value || '', T7t3: T7t3.current.value || '', T7t4: T7t4.current.value || '', T7t5: T7t5.current.value || '', T7t6: T7t6.current.value || '', T7t7: T7t7.current.value || '', T7t8: T7t8.current.value || '', T7t9: T7t9.current.value || '',
+    //   T8t1: T8t1.current.value || '', T8t2: T8t2.current.value || '', T8t3: T8t3.current.value || '', T8t4: T8t4.current.value || '', T8t5: T8t5.current.value || '', T8t6: T8t6.current.value || '', T8t7: T8t7.current.value || '', T8t8: T8t8.current.value || '', T8t9: T8t9.current.value || '',
+    //   T9t1: T9t1.current.value || '', T9t2: T9t2.current.value || '', T9t3: T9t3.current.value || '', T9t4: T9t4.current.value || '', T9t5: T9t5.current.value || '', T9t6: T9t6.current.value || '', T9t7: T9t7.current.value || '', T9t8: T9t8.current.value || '', T9t9: T9t9.current.value || '', 
     //   }
-      fireProblem.reportSave(folder, roomId, roomName, data).then(()=>{Swal.fire('저장완료')})
-    }
+     
 
 
-      }
   //problem 글 데이터 저장, 방개수 6개 이하일때만 데이터 저장
   const onSubmit = () => {   
     if(!roomName && !report){  return  }
@@ -502,9 +512,7 @@ function Datastudy({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
           }    
         fireProblem.dataUp(folder, roomName, data);
       }  
-
   }
-
 // 큐브 데이터 저장
 const onSubmit2 = (e,p) => { 
   if(!roomName && !report){ return}
@@ -516,34 +524,31 @@ const onSubmit2 = (e,p) => {
   }
 }
   // 큐브 리포트 가운데 input 저장
-  const onSubmit3 = () => { console.log('hi',report)
-    if (!user||data.dataId.substr(0,roomSubstr) !== user.uid.substr(0,roomSubstr)) { return }else{ console.log('hihihi',roomName)
-    // const roomUid =  user.uid.substr(0,roomSubstr);
-    // const roomId = roomUid+'REPORT';
-    const data = {dataId:roomName || '',
+  const onSubmit3 = () => {
+    // if (!user||data.dataId.substr(0,roomSubstr) !== user.uid.substr(0,roomSubstr)) { return }else{ console.log('hihihi',roomName)
+    const roomUid =  user.uid.substr(0,roomSubstr);
+    const roomId = roomUid+'REPORT';
+    const value = {dataId:roomName || '',
     text1: text1.current.value || '', text2: text2.current.value || '', text3: text3.current.value || '', text4: text4.current.value || '',
     text5: text5.current.value || '', text6: text6.current.value || '', text7: text7.current.value || '', text8: text8.current.value || '', text9: text9.current.value || '',  
     }
-      // fireSync.cubeReportUp(folder, roomId, roomName, value);
-      fireProblem.cubeReportUp(folder, roomName, data);
-  }
-  }
+      fireSync.cubeReportUp(folder, roomId, roomName, value);
+      // fireProblem.cubeReportUp(folder, roomName,roomId, data);
+  // } 
+}
 
 // 큐브 리포트 테두리 input 저장
-const onSubmit4 = (e,p) => {  console.log('hello')
-if (!user||data.dataId.substr(0,roomSubstr) !== user.uid.substr(0,roomSubstr)) { return }else{
+const onSubmit4 = (e,p) => { 
   const roomUid =   user.uid.substr(0,roomSubstr);
   const roomId = roomUid+'REPORT';
   const  evalue = e.current.value ||'';
-    const value = {[p]:evalue}
-    fireSync.reportUp(folder, roomId, roomName, value);
-}
+  const data = {[p]:evalue}
+  fireSync.reportUp(folder, roomId, roomName, data);
 }
 
     
     // 아이템 삭제
-  const dataDel = () => {
-  
+  const dataDel = () => {  
     if(!report){
     if(!roomName||!user||data.dataId.substr(0,roomSubstr) !== user.uid.substr(0,roomSubstr)){return}
     }
@@ -576,6 +581,7 @@ if (!user||data.dataId.substr(0,roomSubstr) !== user.uid.substr(0,roomSubstr)) {
       }});
     }
   }  
+
 //titleRef.current.classList.add("noticeFly");
   return (
     <div className="datastudy" >     
@@ -632,6 +638,13 @@ if (!user||data.dataId.substr(0,roomSubstr) !== user.uid.substr(0,roomSubstr)) {
           <IconButton size="small" component="span" onClick={reportSave} style={{color:"var(--Bcolor)",flex:"auto",minWidth:"60px"}}>
          <Tooltip arrow title="저장">
                 <SaveIcon /> 
+          </Tooltip>
+          </IconButton>
+          }
+          {level>0 && !report &&
+          <IconButton size="small" component="span" onClick={dataRefresh} style={{color:"var(--Bcolor)",flex:"auto",minWidth:"60px"}}>
+         <Tooltip arrow title="초기화">
+                <ReplayIcon /> 
           </Tooltip>
           </IconButton>
           }

@@ -33,7 +33,7 @@ const rows = Object.values(data2).map((e,i) => {
      <DataGrid  scrollbarSize={10} className="row"  rows={rows} columns={columns} pageSize={10} 
      autoHeight rowHeight={25} headerHeight={25}  disableColumnMenu 
      onRowSelected={(p)=>{ setdata({...p.data}); setroomName(p.data.dataId);
-  setLinkCopy('http://localhost:3000/'+folder+'/'+p.data.dataId+'re');  }}
+  setLinkCopy('https://samtool.netlify.app/#/'+folder+'/'+p.data.dataId+'re');  }}
      onRowClick={()=>{selectRow();}} />
     </div>
   );

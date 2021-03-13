@@ -47,13 +47,12 @@ roomUser2(folder,roomvalue,cf,off) {
 
  
 // 일반 룸 이름 가져오기
-async roomUser(folder,roomvalue,cf,off) {
+ roomUser(folder,roomvalue,cf,off) {
   const enterRoomId =  roomvalue.substr(0,roomSubstr);
   const roomNum = roomvalue.substr(roomSubstr);
   const ref = fireInit.database().ref(`${folder}`);
   const ref2 = fireInit.database().ref(`${folder}/${enterRoomId}`);
   const ref3 = fireInit.database().ref(`${folder}/${enterRoomId}/${roomNum}`);
-
   ref.on('value', (p) => { 
     const data = p.val();
     if(!data){return}
@@ -71,13 +70,13 @@ async roomUser(folder,roomvalue,cf,off) {
         if(!data.host||data.host!=="입장"){ cf.f4(); ref.off(); ref2.off(); ref3.off();  return}
         else{ cf.f1();cf.f2(data);cf.f3(data);}
         // cf(data.host);
-      })
-    
+      })    
     }
   })
   if(off){ref.off();ref2.off();ref3.off();}
-    return ()=>{ref.off();ref2.off();ref3.off();}
+  return ()=>{ref.off();ref2.off();ref3.off();}
  }
+ 
 
  // 데이터분석 큐브 리포트 룸 이름 가져오기
  roomUser3(folder,roomvalue,cf,off) {
@@ -122,12 +121,13 @@ async roomUser(folder,roomvalue,cf,off) {
       data ? cf.f1(data) : cf.f2();
     });
     const ref2 = fireInit.database().ref(`${folder}/${roomUid}`);
+    
     ref2.on('value', (p) => {
       const data = p.val();
       data ? cf.f3(data) : cf.f4();
     });   
     
-    if(off){ref1.off(); ref1.off();}
+    if(off){ref1.off(); ref2.off();}
     
     return () => {ref1.off(); ref2.off()}
 
@@ -240,13 +240,11 @@ cubeReportSync(folder, roomName, T, t, off) {
     const roomUid = roomName.substr(0,roomSubstr);
     const roomNum = roomName.substr(roomSubstr);
     if(!roomUid||!roomNum){return}
-    fireInit.database().ref(`${folder}/${roomUid}/${roomNum}`)
-      .update(data)
+    fireInit.database().ref(`${folder}/${roomUid}/${roomNum}`).update(data)
   }
-
     // 큐브 테두리 리포트 데이터 저장
-    reportUp(folder, roomId, roomName, data) {
-      fireInit.database().ref(`${folder}/${roomId}/${roomName}`).update(data)
+   reportUp(folder, roomId, roomName, data) {
+    fireInit.database().ref(`${folder}/${roomId}/${roomName}`).update(data)
     }
 
     // 큐브 리포트 저장
