@@ -638,12 +638,13 @@ const onSubmit4 = (e,p) => {
              <VoiceChatIcon fontSize='small' />
           </button>
           </Tooltip>
-
+          {level>0 && 
          <Tooltip arrow  title="저장자료 보기">
           <button style={{width:'30px'}} onClick={moveModal}> 
             <MenuSharp />
           </button> 
           </Tooltip>
+          }   
         </div>        
       </div>
 

@@ -230,7 +230,7 @@ return;
     const roomname = roomUid +roomNumber;
     setroomName(roomname);
 
-    setLinkCopy('https://samtool.netlify.app/#/'+folder+'/'+roomUid +room);  
+    setLinkCopy('https://samtool.netlify.app/#/'+folder+'/'+roomname);  
     roomERef.current.value =roomname; 
   setReport(false); 
   setDoor('퇴장');       
@@ -504,11 +504,13 @@ const submit = (e) => {
              <VoiceChatIcon fontSize='small' />
           </button>          
           </Tooltip>
+          {level>0 && 
          <Tooltip arrow  title="저장자료 보기">
           <button style={{width:'30px'}} onClick={moveModal}> 
             <MenuSharp />
           </button> 
           </Tooltip>
+        }
         </div>   
 
       </div>
