@@ -72,7 +72,7 @@ const [reports, setReports] = useState(report)
       :
       <Card.Header style={{display:'flex',justifyContent:"space-between" ,padding:'5px'}} >
         {level>0 && !reports && <IconButton style={{width:'20px', height:'15px'}} > <DeleteForever onClick={itemDel} style={{color:'white'}} /></IconButton> }
-        {level>0 && !reports && 
+        {!reports && 
         <DropdownButton as={ButtonGroup} variant={item.color} title="구분" size="sm" >
           <div className="cardSelect">
             <div>
