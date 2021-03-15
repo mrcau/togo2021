@@ -2,14 +2,14 @@ import './problemReport.css';
 import React, { memo, useEffect, useState } from 'react';
 import { DataGrid } from '@material-ui/data-grid';
 
-function ProblemReport({ setLinkCopy, fireProblem, fireSync,user,folder,roomName,setroomName,
-  setReport,moveModal2,userInfo, setItems,enterRoom,setDoor,roomNameHide,setEntering}) {
+function ProblemReport({ setLinkCopy, fireSync,user,folder,roomName,setroomName,enterRoom,
+  setReport,moveModal2,userInfo, setItems,setDoor,roomNameHide,setEntering}) {
 const [data2, setData2] = useState({})
 //데이터싱크 
 useEffect(() => {
   //글목록 가져오기
     if(!user){return}
-    const cf = { f1:(p)=> {setData2(p) }, f2:()=> {setData2({}) } }   
+    const cf = { f1:(p)=> {setData2(p); }, f2:()=> {setData2({}) } }   
     const roomId = user.uid.substr(0,6)+'REPORT'
     fireSync.reportSync(folder,roomId,cf);     
     //  return ()=>{setData2({})}
@@ -32,7 +32,7 @@ const rows = Object.values(data2).map((e,i) => {
      포스툴
      <DataGrid  scrollbarSize={10} className="row"  rows={rows} columns={columns} pageSize={10} 
      autoHeight rowHeight={25} headerHeight={25}  disableColumnMenu 
-     onRowSelected={(p)=>{  console.log(p,p.data,'리포트는?');
+     onRowSelected={(p)=>{  console.log('roomName',roomName,p.data,'리포트는?');
     //  delete p.data.id; delete p.data.title;
      setItems(p.data); setroomName(p.data.roomName);enterRoom();setReport(true);
   setLinkCopy('https://samtool.netlify.app/#/'+folder+'/'+p.data.roomName+'re');  }}

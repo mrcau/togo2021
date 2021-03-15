@@ -79,25 +79,26 @@ roomUser2(folder,roomvalue,cf,off) {
  
 
  // 데이터분석 큐브 리포트 룸 이름 가져오기
- roomUser3(folder,roomvalue,cf,off) {
+ roomUser3(folder,roomvalue,cf,off) { console.log('hi im user3')
  const enterRoomId =  roomvalue.substr(0,roomSubstr)+'REPORT';
  const roomNum = roomvalue.substr(0,10);
+ console.log('hi im user3',enterRoomId,roomNum);
  const ref = fireInit.database().ref(`${folder}`);
  const ref2 = fireInit.database().ref(`${folder}/${enterRoomId}`);
  const ref3 = fireInit.database().ref(`${folder}/${enterRoomId}/${roomNum}`);
- ref.on('value', (p) => { 
+ ref.on('value', (p) => { console.log('ref')
    const data = p.val();
    if(!data){return}
    const dataKey = Object.keys(data);
    if(dataKey.indexOf(enterRoomId)<0){ ref.off();  return }
  })
- ref2.on('value', (p) => { 
+ ref2.on('value', (p) => { console.log('ref2',p)
    const data = p.val();
    if(!data){ return}
    const dataKey = Object.keys(data); 
    if(dataKey.indexOf(roomNum)<0){ ref2.off(); return }else{
 
-     ref3.on('value', (p) => { console.log(p);
+     ref3.on('value', (p) => { console.log('ref3',p);
      const data = p.val();
         if(!data){ cf.f4(); ref.off(); ref2.off(); ref3.off();  return}
         else{cf.f1();cf.f2(data);cf.f3(data);}
@@ -108,6 +109,7 @@ roomUser2(folder,roomvalue,cf,off) {
    ref.off();ref2.off();ref3.off();}
    return ()=>{ref.off();ref2.off();ref3.off();}
 }
+
 
   // 데이터 씽크
   dataSync(folder, roomName, cf,off) {

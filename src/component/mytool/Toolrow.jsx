@@ -45,7 +45,7 @@ function  Toolrow ({fireSync,item,level, user}) {
   return (
     <div className="toolrow">
 
-<Card bg={item.color} text={'white'} style={{ width: '12rem',height:'7rem' }} className="mb-2" >
+<Card bg={item.color} text={'white'} style={{ width: '12rem',height:'105px' }} className="mb-2" >
       
       <Card.Header style={{display:'flex',justifyContent:"space-between" ,padding:'5px'}} >
          <IconButton style={{width:'20px', height:'15px'}} > <DeleteForever onClick={itemDel} style={{color:'white'}} /></IconButton> 
@@ -85,7 +85,8 @@ function  Toolrow ({fireSync,item,level, user}) {
       </Card.Header>      
 
       <div className="cardTitle">
-        <Card.Body style={{padding:"8px",height:"55px",overflowY:"auto" }}>
+        <Card.Body style={{padding:"8px",overflowY:"auto" }}>
+        <Card.Title style={{fontSize:"14px",fontWeight:"900",lineHeight:"14px"}} > {item.title||''}  </Card.Title> 
           <Card.Text style={{fontSize:"12px",lineHeight:"14px",padding:"0" }}> {item.text||''} </Card.Text>
         </Card.Body>
       </div>

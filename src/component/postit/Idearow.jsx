@@ -7,15 +7,16 @@ import { ThumbUp } from '@material-ui/icons';
 import { Card, DropdownButton,Dropdown,ButtonGroup } from 'react-bootstrap';
 import {  DeleteForever, } from '@material-ui/icons';
 import VisibilityIcon from '@material-ui/icons/Visibility';
-function  Idearow ({item,fireIdea,level,roomName}) {
+function  Idearow ({item,fireIdea,level,roomName,report}) {
   const folder = "postit";
   const Swal = require('sweetalert2');
   // const [video, setVideo] = useState('');
   const [Switch, setSwitch] = useState(true);
   // const [color, setColor] = useState('');
-
+const [reports, setReports] = useState(report)
   let counter = item.progress;
   const plus = () => {
+    if(report){return}
     Switch &&counter++;
     if(roomName){
     fireIdea.itemUp2(folder,roomName,item.dataId,counter)
@@ -25,6 +26,7 @@ function  Idearow ({item,fireIdea,level,roomName}) {
     setSwitch(!Switch);
   }
   const minus = () => {
+    if(report){return}
     counter>0&&counter--;
     if(roomName){
     fireIdea.itemUp2(folder,roomName,item.dataId,counter)
@@ -34,6 +36,7 @@ function  Idearow ({item,fireIdea,level,roomName}) {
     setSwitch(!Switch);
   }
    const itemDel = () => {
+     if(report){return}
      if(!roomName){
       Swal.fire({ 
         title: '내정보를 삭제하겠습니까?',
@@ -68,7 +71,8 @@ function  Idearow ({item,fireIdea,level,roomName}) {
       ? <Card.Header style={{fontSize:"large",fontWeight:"900",color:"black"}}>룸ID</Card.Header>
       :
       <Card.Header style={{display:'flex',justifyContent:"space-between" ,padding:'5px'}} >
-        {level>0 && <IconButton style={{width:'20px', height:'15px'}} > <DeleteForever onClick={itemDel} style={{color:'white'}} /></IconButton> }
+        {level>0 && !reports && <IconButton style={{width:'20px', height:'15px'}} > <DeleteForever onClick={itemDel} style={{color:'white'}} /></IconButton> }
+        {level>0 && !reports && 
         <DropdownButton as={ButtonGroup} variant={item.color} title="구분" size="sm" >
           <div className="cardSelect">
             <div>
@@ -84,6 +88,7 @@ function  Idearow ({item,fireIdea,level,roomName}) {
             <Dropdown.Item as="button" onClick={()=>changeColor('dark')} style={{color:"#32383e",textAlign:"center", fontSize:"18px",padding:"0 2px"}}>❼</Dropdown.Item>
           </div>
         </DropdownButton>
+      }
         { item.text2 &&
           <IconButton style={{width:'30px', height:'20px',transform:"translateX(-10px)"}} >
           <VisibilityIcon style={{color:'white'}} size="small" onClick={fire} /> 

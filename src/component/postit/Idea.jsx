@@ -71,7 +71,7 @@ function Idea({ fireIdea, fireSync, user, userInfo ,setlogoName}) {
       return ()=>{stoproomSync();}
     }
     
-    else if(id.length===12){
+    else if(id.length===12){ console.log('hi',id)
       const enterRoomId =  id.substr(0,roomSubstr)||"";
       const cf = { 
       f1: ()=>{setroomName(id.substr(0,10)); setRoomUid(enterRoomId);setDoor('퇴장');setReport(true); setReportInput(true);  
@@ -102,13 +102,14 @@ useEffect(() => {
     if(data.dataId){ if(data.dataId.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){setUserClass(true)} }
     return ()=>{stopDataSync();stoproomSync();}
     }       
-    else  if(e && report){ console.log('로그인 레포트',data,e,roomName,report)
-    setRoomUid(e.uid.substr(0, roomSubstr));
-    setUserUID(e.uid);
-    const stopDataSync = fireSync.dataSync(folder, roomName, cf);
-    const stoproomSync = fireSync.roomSync(folder, roomUid, cf);
-    if(data.dataId){ if(data.dataId.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){setUserClass(true)} }
-    return ()=>{stopDataSync();stoproomSync();}
+    else  if(e && report){ console.log('로그인 레포트',items,roomName,report,items.roomName);
+    // setItems(items);
+    // setRoomUid(e.uid.substr(0, roomSubstr));
+    // setUserUID(e.uid);
+    // const stopDataSync = fireSync.dataSync(folder, roomName, cf);
+    // const stoproomSync = fireSync.roomSync(folder, roomUid, cf);
+    if(items.roomName){ if(items.roomName.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){setUserClass(true); setItems(items); setReport(true)} }
+    // return ()=>{stopDataSync();stoproomSync();}
     } 
     else {return}
   })
@@ -150,6 +151,7 @@ return;
     
     //오른쪽 모달 핸들링
     const moveModal = () => {
+      roomNameReset2();setEntering(false);
       drawerRef.current.classList.add("moveDrawer");
       backRef.current.classList.remove("backNone");    
       setrightModal(true);
@@ -260,10 +262,12 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
       setReport(false); setSee(true); setRoom({});
       setNotice('');setVideo('');        
       roomERef.current.value=''; 
+      if(!report){
       if(user.uid){
         if(user.uid.substr(0,roomSubstr)===roomName.substr(0,roomSubstr)){
           fireSync.cubeUp(folder,roomName, {host:'퇴장',enterMan:0});
         }}
+      }
     }  
 
     // 토론방 삭제시 데이터 리셋 entering 제거
@@ -368,18 +372,21 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
       }});
       }  
 
-      if(report&&roomName.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){  console.log('치지마')
+      if(report&&items.roomName.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){  console.log('치지마',user.uid.substr(0,roomSubstr))
       Swal.fire({ 
         title: '토론방을 삭제하겠습니까?',
-        text:"삭제될 토론방 : "+roomName,
+        text:"삭제될 토론방 : "+items.roomName,
         icon:'warning',
         showCancelButton: true})
       .then((result) => { if(result.isConfirmed){ 
         const roomUid =   user.uid.substr(0,roomSubstr);
         const roomId = roomUid+'REPORT';
-        fireIdea.reportDel(folder,roomId,roomName);   
-      Swal.fire('삭제되었습니다.');
-      roomNameReset2();
+        fireIdea.reportDel(folder,roomId,items.roomName);   
+        Swal.fire('삭제되었습니다.');
+        roomNameReset();
+        setEntering(false); 
+        manMinus();
+        setroomName("");setDoor('입장'); 
       }});
     }
     
@@ -528,7 +535,7 @@ const submit = (e) => {
         <div className="idea-items">
         {
           Object.keys(items).map((e) => {
-            return <Idearow key={e} item={items[e]} roomName={roomName} fireIdea={fireIdea} level={level} setColor={setColor} color={color} />
+            return <Idearow key={e} item={items[e]} roomName={roomName} fireIdea={fireIdea} level={level} setColor={setColor} color={color} report={report} />
           })
         }
         </div>
