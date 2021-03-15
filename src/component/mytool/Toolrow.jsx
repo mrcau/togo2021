@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-target-blank */
 import React, { memo, useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
@@ -8,6 +9,8 @@ import {  DeleteForever, } from '@material-ui/icons';
 import { IconButton } from '@material-ui/core';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
+import LinkIcon from '@material-ui/icons/Link';
+import {  Link, useHistory } from 'react-router-dom';
 
 function  Toolrow ({fireSync,item,level, user}) {
   const folder = "mytool";
@@ -76,18 +79,20 @@ function  Toolrow ({fireSync,item,level, user}) {
           </IconButton>
         
 
-        <IconButton style={{width:'20px', height:'15px'}} >
+        {/* <IconButton style={{width:'20px', height:'15px'}} >
           <Badge badgeContent={item.progress} color="secondary"   
             anchorOrigin={{vertical: 'top', horizontal: 'right', }}> 
           <ThumbUp style={{color:'white'}} size="small" onClick={Switch?plus:minus} />
           </Badge>
-        </IconButton>
+        </IconButton> */}
+           <a href={item.title} target="_blank">
+               <LinkIcon />
+           </a>
       </Card.Header>      
-
       <div className="cardTitle">
         <Card.Body style={{padding:"8px",overflowY:"auto" }}>
-        <Card.Title style={{fontSize:"14px",fontWeight:"900",lineHeight:"14px"}} > {item.title||''}  </Card.Title> 
-          <Card.Text style={{fontSize:"12px",lineHeight:"14px",padding:"0" }}> {item.text||''} </Card.Text>
+        {/* <Card.Title style={{fontSize:"14px",fontWeight:"900",lineHeight:"14px"}} > {item.title||''}  </Card.Title>  */}
+          <Card.Text style={{fontSize:"12px",lineHeight:"14px",padding:"0", whiteSpace:"pre-wrap" }}> {item.text||''} </Card.Text>
         </Card.Body>
       </div>
      </Card>

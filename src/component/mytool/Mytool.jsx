@@ -75,11 +75,11 @@ function Mytool({fireIdea,fireApp, fireSync,user, userInfo, setlogoName }) {
       </div>
       <div className="mytool-input">
         <form onSubmit={submit} className="mytool-form">
-          <input type="text" ref={titleRef} className="inputTitle" placeholder="제목"/>
+          <input type="text" ref={titleRef} className="inputTitle" placeholder="링크"/>
           <button className="btnadd" style={{ outline: "none", border: "none" }} >
             <span className="rocket" ref={rocketRef}  >🚀</span>  추가</button>
-          <textarea className="textarea" ref={textRef} cols="30" rows="2" placeholder="설명을 적어주세요." />
-          <textarea className="textarea" ref={textRef2} cols="30" rows="4" 
+          <textarea className="textarea" ref={textRef} cols="30" rows="3" placeholder="설명을 적어주세요." />
+          <textarea className="textarea" ref={textRef2} cols="30" rows="3" 
           style={{borderTop: 'dashed 1px'}} placeholder="소스코드를 입력해주세요." />
         </form>
       </div>

@@ -49,6 +49,9 @@
   display: none;
 }
 /* 여기까지 서랍 */
+a:link { color: white; text-decoration: none;}
+a:visited { color: white; text-decoration: none;}
+a:hover { color: white; text-decoration: underline;}
 
 /* 위쪽서랍열고닫기 */
 .drawerTop{
