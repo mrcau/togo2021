@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-target-blank */
 import React, { memo, useState } from 'react';
 import Swal from 'sweetalert2';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
@@ -8,6 +9,7 @@ import {  DeleteForever, } from '@material-ui/icons';
 import { IconButton } from '@material-ui/core';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
+import LinkIcon from '@material-ui/icons/Link';
 
 function  Toolrow ({fireIdea,item,fireApp,level, user}) {
   const folder = "Opentool";
@@ -47,7 +49,7 @@ function  Toolrow ({fireIdea,item,fireApp,level, user}) {
   return (
     <div className="toolrow">
 
-<Card bg={item.color} text={'white'} style={{ width: '12rem',height:'7rem' }} className="mb-2" >
+<Card bg={item.color} text={'white'} style={{ width: '15rem',height:'7rem' }} className="mb-2" >
       
       <Card.Header style={{display:'flex',justifyContent:"space-between" ,padding:'5px'}} >
         {user.uid===item.uid && <IconButton style={{width:'20px', height:'15px'}} > <DeleteForever onClick={itemDel} style={{color:'white'}} /></IconButton> }
@@ -76,6 +78,11 @@ function  Toolrow ({fireIdea,item,fireApp,level, user}) {
           <VisibilityIcon style={{color:'white'}} size="small" onClick={fire} /> 
           </IconButton>
         
+          <IconButton style={{width:'30px', height:'20px'}} >
+           <a className="iconLink" href={item.title} target="_blank">
+               <LinkIcon />
+           </a>
+      </IconButton>
 
         <IconButton style={{width:'20px', height:'15px'}} >
           <Badge badgeContent={item.progress} color="secondary"   

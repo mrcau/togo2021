@@ -18,7 +18,7 @@ const history = useHistory();
   return (
     <div className="leftMenu">
 
-      <button className="btnLogout" onClick={() => history.push('/price')} style={{marginBottom:"10px"}} > 업그레이드 </button>
+      {/* <button className="btnLogout" onClick={() => history.push('/price')} style={{marginBottom:"10px"}} > 업그레이드 </button> */}
       {photo 
       ? <div className="imgBg" style={{ backgroundImage: `url("${photo}")` }} />
       : <Avatar style={{ width: '120px', height: '120px' }} />}

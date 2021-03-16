@@ -67,10 +67,17 @@ roomUser(folder,roomUid,cf) {
     const roomNum = roomName.substr(roomSubstr);
     fireInit.database().ref(`${folder}/${roomUid}/${roomNum}`).remove();
   }
+  // 데이터 삭제
+  dataDel2(folder, roomName,dataId) {
+    const roomUid = roomName.substr(0,roomSubstr);
+    const roomNum = roomName.substr(roomSubstr);
+    fireInit.database().ref(`${folder}/${roomUid}/${roomNum}`).remove();
+  }
     // 리포트데이터 삭제
     reportDel(folder, uid, dataId) { console.log(folder,uid, dataId)
       fireInit.database().ref(`${folder}/${uid}/${dataId}`).remove();
     }
+   
     // 내방 삭제
     myIdeaDel(folder, uid) { console.log(folder,uid)
       fireInit.database().ref(`${folder}/${uid}`).remove();

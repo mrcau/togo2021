@@ -482,14 +482,14 @@ const submit = (e) => {
           }
           
           {level>0 && 
-         <IconButton size="small"  onClick={reportSave} style={{color:"var(--Bcolor)",flex:"auto",minWidth:"40px",padding:"0"}}>
+         <IconButton size="small"  onClick={reportSave} style={{color:"var(--Bcolor)",flex:"auto",width:'30px', height:'25px',padding:"0"}}>
          <Tooltip arrow placement="top"  title="저장">
                 <SaveIcon /> 
           </Tooltip>
           </IconButton>
           }
           {level>0 && !report &&
-          <IconButton size="small" component="span" onClick={dataRefresh} style={{color:"var(--Bcolor)",flex:"auto",minWidth:"60px"}}>
+          <IconButton size="small" component="span" onClick={dataRefresh} style={{color:"var(--Bcolor)",flex:"auto",width:'30px', height:'25px'}}>
          <Tooltip arrow placement="top"  title="초기화">
                 <ReplayIcon /> 
           </Tooltip>

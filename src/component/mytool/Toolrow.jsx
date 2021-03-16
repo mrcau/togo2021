@@ -50,7 +50,7 @@ function  Toolrow ({fireSync,item,level, user}) {
 
 <Card bg={item.color} text={'white'} style={{ width: '12rem',height:'105px' }} className="mb-2" >
       
-      <Card.Header style={{display:'flex',justifyContent:"space-between" ,padding:'5px'}} >
+      <Card.Header style={{display:'flex',justifyContent:"space-between" ,padding:'1px'}} >
          <IconButton style={{width:'20px', height:'15px'}} > <DeleteForever onClick={itemDel} style={{color:'white'}} /></IconButton> 
         {/* {user.uid===item.uid && */}
         <DropdownButton as={ButtonGroup} variant={item.color} title="구분" size="sm" >
@@ -85,12 +85,14 @@ function  Toolrow ({fireSync,item,level, user}) {
           <ThumbUp style={{color:'white'}} size="small" onClick={Switch?plus:minus} />
           </Badge>
         </IconButton> */}
-           <a href={item.title} target="_blank">
+        <IconButton style={{width:'30px', height:'20px'}} >
+           <a className="iconLink" href={item.title} target="_blank">
                <LinkIcon />
            </a>
+      </IconButton>
       </Card.Header>      
       <div className="cardTitle">
-        <Card.Body style={{padding:"8px",overflowY:"auto" }}>
+        <Card.Body style={{padding:"8px",height:"65px",overflowY:"auto" }}>
         {/* <Card.Title style={{fontSize:"14px",fontWeight:"900",lineHeight:"14px"}} > {item.title||''}  </Card.Title>  */}
           <Card.Text style={{fontSize:"12px",lineHeight:"14px",padding:"0", whiteSpace:"pre-wrap" }}> {item.text||''} </Card.Text>
         </Card.Body>
