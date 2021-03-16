@@ -103,13 +103,7 @@ useEffect(() => {
     return ()=>{stopDataSync();stoproomSync();}
     }       
     else  if(e && report){ console.log('로그인 레포트',items,roomName,report,items.roomName);
-    // setItems(items);
-    // setRoomUid(e.uid.substr(0, roomSubstr));
-    // setUserUID(e.uid);
-    // const stopDataSync = fireSync.dataSync(folder, roomName, cf);
-    // const stoproomSync = fireSync.roomSync(folder, roomUid, cf);
     if(items.roomName){ if(items.roomName.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){setUserClass(true); setItems(items); setReport(true)} }
-    // return ()=>{stopDataSync();stoproomSync();}
     } 
     else {return}
   })
@@ -506,13 +500,13 @@ const submit = (e) => {
         </div>
 
         <div className="voicechat"  >             
-         <Tooltip arrow  title="회의자료 보기">
+         <Tooltip arrow  placement="top" title="회의자료 보기">
           <button style={{width:'30px'}}  onClick={fire}>
              <VoiceChatIcon fontSize='small' />
           </button>          
           </Tooltip>
           {level>0 && 
-         <Tooltip arrow  title="저장자료 보기">
+         <Tooltip arrow  placement="top" title="저장자료 보기">
           <button style={{width:'30px'}} onClick={moveModal}> 
             <MenuSharp />
           </button> 

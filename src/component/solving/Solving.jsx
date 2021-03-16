@@ -13,9 +13,11 @@ import SaveIcon from '@material-ui/icons/Save';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Solvingrow from './Solvingrow';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import ReplayIcon from '@material-ui/icons/Replay';
 
 function Solving({ fireIdea, fireSync, user, userInfo ,setlogoName }) {
   const folder = "solving";
+  const {id}=useParams();
   const roomSubstr = 6;
   const Swal = require('sweetalert2');
   const level = userInfo.level || 0;
@@ -25,19 +27,19 @@ function Solving({ fireIdea, fireSync, user, userInfo ,setlogoName }) {
   const history = useHistory();
   const [data, setdata] = useState({});
   const [room, setRoom] = useState({});
-  const {id}=useParams();
   const [reportId, setReportId] = useState(id||'') ;
   const [roomName, setroomName] = useState('');
   const [roomUid, setRoomUid] = useState('');
   const [video, setVideo] = useState('');
   const [notice, setNotice] = useState('');
   const [entering, setEntering] = useState(false);
+  const [see, setSee] = useState(true)
   const [rightModal,setrightModal] = useState(false);
   const drawerRef = useRef();
-  const [see, setSee] = useState(true)
   const [linkCopy, setLinkCopy] = useState('');
   const backRef = useRef();
   const [reportInput, setReportInput] = useState(false);
+  const [userClass, setUserClass] = useState(false)
   //입장중
   const [door, setDoor] = useState('입장')
   const [report, setReport] = useState(false);
@@ -49,21 +51,6 @@ function Solving({ fireIdea, fireSync, user, userInfo ,setlogoName }) {
   const [color, setColor] = useState('primary');
   setlogoName(' 게시툴');
 
-   //링크접속
-  //  useEffect(() => {     
-  //   if(id.length===10){  setroomName(id);
-  //     const cf = (host) => {  
-  //       if(host==='입장'){ setroomName(id);enterRoom(); roomERef.current.value=id;}
-  //       else if(host==='퇴장'){ setroomName(""); roomNameReset(); setEntering(false);} 
-  //     }
-  //     fireSync.roomUser(folder,id,cf)
-  //   }
-  //   if(id.length===12){setroomName(id.substr(0,10));setReport(true); 
-  //     const cf = () => {roomERef.current.value=id.substr(0,10); setReportId(id);
-  //                    setroomName(id.substr(0,10));setReport(true); enterRoom();} 
-  //     fireSync.roomUser2(folder,id.substr(0,10),cf); 
-  //   }
-  //  },[fireSync,roomName])
   //링크접속
   useEffect(() => {     
     if(id.length===10){ 
@@ -74,51 +61,46 @@ function Solving({ fireIdea, fireSync, user, userInfo ,setlogoName }) {
       f2: (p) => { setItems(p) },     
       f3: (p) => { setRoom(p) }, 
       f4: (host) => { setroomName(""); roomNameReset(); setEntering(false)}
-    }          
- fireSync.roomUser(folder,id,cf1);
+    }        
+    const stoproomSync = fireSync.roomUser(folder,id,cf1);
+    return ()=>{stoproomSync();}
     }
-    if(id.length===12){console.log('입장2'); setroomName(id.substr(0,10));setReport(true); 
-      const cf = () => {roomERef.current.value=id.substr(0,10); setReportId(id);
-                     setroomName(id.substr(0,10));setReport(true); enterRoom();roomERef.current.value =id.substr(0,10);} 
-      fireSync.roomUser2(folder,id.substr(0,10),cf); 
-    }
-   },[fireSync,roomName])
+
+    else if(id.length===12){ console.log('hi',id)
+    const enterRoomId =  id.substr(0,roomSubstr)||"";
+    const cf = { 
+    f1: ()=>{setroomName(id.substr(0,10)); setRoomUid(enterRoomId);setDoor('퇴장');setReport(true); setReportInput(true);  
+    setEntering(true);  setSee(false);roomERef.current.value ='';},      
+    f2: (p) => { setItems(p) },     
+    f3: (p) => { setRoom(p) }, 
+    }                      
+    const stoproomSync =fireSync.roomUser3(folder,id,cf); 
+     return ()=>{stoproomSync();}
+  }
+ },[fireSync,roomName])
 
    //일반접속
   useEffect(() => { 
     fireSync.onAuth((e) => {
       if(!e&&!roomName){ return}
+    if(data.dataId){ if(data.dataId.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){setUserClass(true)} }
       const cf = {
         f1: (p) => { setItems(p) },  f2: () => { setItems({}) },
         f3: (p) => { setRoom(p) },   f4: () => { setRoom({}) },
       }
 
-      if (e && report===false && !id) { 
+      if (e && report===false && id.length<10) {   console.log('로그인하고 리포트false','room',room)
          setRoomUid(e.uid.substr(0, roomSubstr));
          setUserUID(e.uid);
           const stopDataSync = fireSync.dataSync(folder, roomName, cf);
           const stoproomSync = fireSync.roomSync(folder, roomUid, cf);
+          if(data.dataId){ if(data.dataId.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){setUserClass(true)} }
           return ()=>{stopDataSync();stoproomSync();}
-      }
-      else if(e && !roomName&& !report){  
-          setRoomUid(e.uid.substr(0, roomSubstr));
-          setUserUID(e.uid);
-           const stopitemSync = fireSync.itemSync(folder,user.uid, cf);        
-           const stoproomSync = fireSync.roomSync(folder, roomUid, cf);
-           return ()=>{stopitemSync();stoproomSync();}
-      }
-      else if(e && roomName && !report){ console.log('리포트 트루',report,roomName);
-      const cf = { f1: (p) => { setItems(p);setroomName(roomName) }, f2: () => { setItems({}) } }
-        if(report){console.log('리포트 트루2',report)
-          const roomId = id.length===12 ?id.substr(0,6)+'REPORT': user.uid.substr(0,6)+'REPORT' ;
-          const value = items.length>0 ? items.roomName :  id.substr(0,10)
-          const stopdataSync = fireSync.reportSync2(folder,roomId,value,cf);   
-          if(!items.roomName){return}
-          else if(user.uid===undefined||items.roomName.substr(0,6) !== user.uid.substr(0,roomSubstr)){setReportInput(true);}           
-          return ()=>{stopdataSync();}
-         }
-    }
-    else {return}
+      }  
+      else  if(e && report){ console.log('로그인 레포트',items,roomName,report,items.roomName);
+      if(items.roomName){ if(items.roomName.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){setUserClass(true); setItems(items); setReport(true)} }
+      } 
+      else {return}
     })
   }, [roomName,fireSync,report,roomUid,user,userInfo]);
   
@@ -155,6 +137,7 @@ return;
   
     //오른쪽 모달 핸들링
     const moveModal = () => {
+      roomNameReset2();setEntering(false);
       drawerRef.current.classList.add("moveDrawer");
       backRef.current.classList.remove("backNone");    
       setrightModal(true);
@@ -202,14 +185,36 @@ return;
     fireIdea.roomGetSave(folder, newRoom, dataId, data);
   }
 
+  //데이터 초기화
+  const dataRefresh = ()=>{
+    if(!roomName||!user||items.roomName.substr(0,roomSubstr) !== user.uid.substr(0,roomSubstr)){return}     
+    if(Object.entries(items).length<1){ return}
+    let entry = Object.entries(items)||[];
+    // const itemUid = entry[0][1].uid||'';
+    if(!report && items.roomName.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){ console.log('뻥',roomName)
+      Swal.fire({ 
+        title: '전체 내용을 삭제하겠습니까?',
+        icon:'warning',
+        showCancelButton: true})
+      .then((result) => { if(result.isConfirmed){ 
+        const data = { roomName : roomName,  host:'입장' }
+        fireIdea.itemRefresh(folder, roomName, data);
+        Swal.fire('삭제되었습니다.');
+       
+      }});
+      }  
+ }
   // 관리자 방입장
   const adminEnter = (e) => {  
-  setEntering(true);  
-  const room = e.currentTarget.textContent;
-    const roomname = roomUid +room; 
-    setroomName(roomUid +room);
+    setEntering(true);
+    const textRoom = e.currentTarget.textContent;
+    const roomMap = Object.keys(room);
+    const roomNumber = roomMap[textRoom]
+    const roomname = roomUid +roomNumber;
+    setroomName(roomname);
+
+    setLinkCopy('https://samtool.netlify.app/#/'+folder+'/'+roomname);  
     roomERef.current.value =roomname; 
-  setLinkCopy('https://samtool.netlify.app/#/'+folder+'/'+roomUid +room);  
   setReport(false); 
   setDoor('퇴장');   
        const cf2 = {
@@ -336,41 +341,81 @@ const submit = (e) => {
   }
 }
 
-    // 아이템 삭제
-    const dataDel = () => { 
-      if(!report){
-      if(!roomName||!user||items.roomName.substr(0,roomSubstr) !== user.uid.substr(0,roomSubstr)){return}
-      }
+// 아이템 삭제
+const dataDel = () => {  
+  if(!report){
+  if(!roomName||!user||items.roomName.substr(0,roomSubstr) !== user.uid.substr(0,roomSubstr)){return}
+  }
+  if(Object.entries(items).length<1){ return}
+  let entry = Object.entries(items)||[];
+  const itemUid = entry[0][1].uid||'';
+  if(!report && items.roomName.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){ console.log('뻥',roomName)
+    Swal.fire({ 
+      title: '토론방을 삭제하겠습니까?',
+      text:"삭제될 토론방 : "+roomName,
+      icon:'warning',
+      showCancelButton: true})
+    .then((result) => { if(result.isConfirmed){ 
+    fireIdea.dataDel(folder,roomName); 
+      Swal.fire('삭제되었습니다.');
+      roomNameReset2();
+    }});
+    }  
 
-      if(Object.entries(items).length<1){ return}
-      let entry = Object.entries(items)||[];
-      const itemUid = entry[0][1].uid||'';
-      // const itemUid2 = entry[0][1].uid||'';
-      if(!roomName&&itemUid && itemUid === user.uid){ 
-        Swal.fire({ 
-          title: '내정보를 삭제하겠습니까?',
-          icon:'warning',
-          showCancelButton: true})
-        .then((result) => { if(result.isConfirmed){ 
-        fireIdea.myIdeaDel(folder,user.uid); 
-        Swal.fire('삭제되었습니다.');
-        roomNameReset2();
-        }});
-      }  
-        if(roomName!==roomERef.current.value||roomERef.current.value==='') { return }      
-        if(itemUid === user.uid){  
-        Swal.fire({ 
-          title: '토론방을 삭제하겠습니까?',
-          text:"삭제될 토론방 : "+roomName,
-          icon:'warning',
-          showCancelButton: true})
-        .then((result) => { if(result.isConfirmed){
-          fireIdea.dataDel(folder,roomName);   
-        Swal.fire('삭제되었습니다.');
-        roomNameReset2();        
-        }});
-      }      
-    } 
+    if(report&&items.roomName.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){  console.log('치지마',user.uid.substr(0,roomSubstr))
+    Swal.fire({ 
+      title: '토론방을 삭제하겠습니까?',
+      text:"삭제될 토론방 : "+items.roomName,
+      icon:'warning',
+      showCancelButton: true})
+    .then((result) => { if(result.isConfirmed){ 
+      const roomUid =   user.uid.substr(0,roomSubstr);
+      const roomId = roomUid+'REPORT';
+      fireIdea.reportDel(folder,roomId,items.roomName);   
+      Swal.fire('삭제되었습니다.');
+      roomNameReset();
+      setEntering(false); 
+      manMinus();
+      setroomName("");setDoor('입장'); 
+    }});
+  }
+  
+} 
+    // 아이템 삭제
+    // const dataDel = () => { 
+    //   if(!report){
+    //   if(!roomName||!user||items.roomName.substr(0,roomSubstr) !== user.uid.substr(0,roomSubstr)){return}
+    //   }
+
+    //   if(Object.entries(items).length<1){ return}
+    //   let entry = Object.entries(items)||[];
+    //   const itemUid = entry[0][1].uid||'';
+    //   // const itemUid2 = entry[0][1].uid||'';
+    //   if(!roomName&&itemUid && itemUid === user.uid){ 
+    //     Swal.fire({ 
+    //       title: '내정보를 삭제하겠습니까?',
+    //       icon:'warning',
+    //       showCancelButton: true})
+    //     .then((result) => { if(result.isConfirmed){ 
+    //     fireIdea.myIdeaDel(folder,user.uid); 
+    //     Swal.fire('삭제되었습니다.');
+    //     roomNameReset2();
+    //     }});
+    //   }  
+    //     if(roomName!==roomERef.current.value||roomERef.current.value==='') { return }      
+    //     if(itemUid === user.uid){  
+    //     Swal.fire({ 
+    //       title: '토론방을 삭제하겠습니까?',
+    //       text:"삭제될 토론방 : "+roomName,
+    //       icon:'warning',
+    //       showCancelButton: true})
+    //     .then((result) => { if(result.isConfirmed){
+    //       fireIdea.dataDel(folder,roomName);   
+    //     Swal.fire('삭제되었습니다.');
+    //     roomNameReset2();        
+    //     }});
+    //   }      
+    // } 
 
   return (
     <div className="solving" >     
@@ -399,22 +444,21 @@ const submit = (e) => {
           <div> <button className="enterBtn" onClick={createRoom} style={{fontSize:'12px'}}>개설</button> </div>
           </Tooltip>
           <div className="enterNumber" style={{fontSize:'small'}}>
-            {see && room && Object.keys(room).map((e) => e.length>3 &&
-              <button key={e} className="btnRoom" onClick={adminEnter} >{e}</button>) 
+            {see && room && Object.keys(room).map((e,i) => e.length>3 &&
+              <button key={e} className="btnRoom" onClick={adminEnter} >{i}</button>) 
             }
           </div>
         </div>
       }
       <div className="s-header" style={{display:'flex'}}>
         <div className="enterWrap" >
-       <button className="enterBtn" onClick={enterRoom} style={{fontSize:'12px'}} >{door}</button>
-        
+          <button className="enterBtn" onClick={enterRoom} style={{fontSize:'12px'}} >{door}</button>        
           <input type="text" className="enterInput roomnum" placeholder="방번호" style={{width:'85px'}} ref={roomERef} />
         </div>
 
         <div style={{width:"100%", display:'flex'}}>
         {level>0 && 
-         <Tooltip arrow title="룸링크 복사">
+         <Tooltip arrow  placement="top" title="룸링크 복사">
          <IconButton size="small" component="span" onClick={()=> { if(roomName){Swal.fire({ title: '링크가 복사되었습니다.',text:linkCopy,icon:'warning'});}}}
              style={{color:"var(--Bcolor)"}}>
                <CopyToClipboard text={linkCopy}>               
@@ -424,25 +468,32 @@ const submit = (e) => {
           </Tooltip>
           }
           
-        {level>0 && entering &&        
-         <IconButton size="small" onClick={submit} style={{flex:'auto',color:"var(--Bcolor)",minWidth:"40px",padding:"0"}} > 
-         <Tooltip arrow title="페이지 추가">
+        {level>0 && entering && !report &&       
+         <IconButton size="small" onClick={submit} style={{flex:'auto',color:"var(--Bcolor)",width:'30px', height:'25px'}} > 
+         <Tooltip arrow  placement="top" title="페이지 추가">
           <AddCircleOutlineIcon  />  
           </Tooltip>
         </IconButton>
         }
 
-          {level>0 && 
-         <IconButton size="small"  onClick={reportSave} style={{color:"var(--Bcolor)",flex:"auto",minWidth:"40px",padding:"0"}}>
-         <Tooltip arrow title="저장">
+          {level>0 && !report &&
+         <IconButton size="small"  onClick={reportSave} style={{color:"var(--Bcolor)",flex:"auto",width:'30px', height:'25px'}}>
+         <Tooltip arrow placement="top"  title="저장">
                 <SaveIcon /> 
           </Tooltip>
           </IconButton>
           }
+          {level>0 && !report &&
+          <IconButton size="small" component="span" onClick={dataRefresh} style={{color:"var(--Bcolor)",flex:"auto",width:'30px', height:'25px'}}>
+         <Tooltip arrow placement="top"  title="초기화">
+                <ReplayIcon /> 
+          </Tooltip>
+          </IconButton>
+          } 
 
         {level>0 && 
-         <Tooltip arrow title="삭제">
-          <IconButton size="small" component="span" onClick={dataDel} style={{color:"var(--Bcolor)",padding:"0"}}>
+         <Tooltip arrow  placement="top" title="삭제">
+          <IconButton size="small" component="span" onClick={dataDel} style={{color:"var(--Bcolor)",padding:"0",marginLeft:"auto"}}>
                 <DeleteForever />  
           </IconButton>
           </Tooltip>
@@ -450,12 +501,12 @@ const submit = (e) => {
         </div>
 
         <div className="voicechat"  >             
-         <Tooltip arrow  title="회의자료 보기">
+         <Tooltip arrow  placement="top" title="회의자료 보기">
           <button style={{width:'30px'}}  onClick={fire}>
              <VoiceChatIcon fontSize='small' />
           </button>          
           </Tooltip>
-         <Tooltip arrow  title="저장자료 보기">
+         <Tooltip arrow  placement="top" title="저장자료 보기">
           <button style={{width:'30px'}} onClick={moveModal}> 
             <MenuSharp />
           </button> 

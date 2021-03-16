@@ -32,8 +32,7 @@ const rows = Object.values(data2).map((e,i) => {
      포스툴
      <DataGrid  scrollbarSize={10} className="row"  rows={rows} columns={columns} pageSize={10} 
      autoHeight rowHeight={25} headerHeight={25}  disableColumnMenu 
-     onRowSelected={(p)=>{  console.log('roomName',roomName,p.data,'리포트는?');
-    //  delete p.data.id; delete p.data.title;
+     onRowSelected={(p)=>{ 
      setItems(p.data); setroomName(p.data.roomName);enterRoom();setReport(true);
   setLinkCopy('https://samtool.netlify.app/#/'+folder+'/'+p.data.roomName+'re');  }}
      onRowClick={()=>{selectRow();}} />
