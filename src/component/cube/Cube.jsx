@@ -25,7 +25,8 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
   const backRef = useRef();
   const history = useHistory();
   const Pen = '•'
-  const Pen2 = '👁️‍🗨️'
+  const Pen2 = '👁'
+  const Pen3 = '✔️'
   
 
   // data 변수 선언
@@ -41,7 +42,7 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
   const T9t1=useRef(); const T9t2=useRef(); const T9t3=useRef(); const T9t4=useRef(); const T9t5=useRef(); const T9t6=useRef(); const T9t7=useRef(); const T9t8=useRef(); const T9t9=useRef();
 
   const [data, setdata] = useState({     
-    T1:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
+    T1:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:'',t11:'',t22:'',t33:'',t44:'',t66:'',t77:'',t88:'',t99:''},
     T2:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
     T3:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
     T4:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
@@ -189,7 +190,7 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
     const newRoom = roomUid + num;
     setroomName(newRoom);
     const data = {      
-      T1:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
+      T1:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:'',t11:'',t22:'',t33:'',t44:'',t66:'',t77:'',t88:'',t99:''},
       T2:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
       T3:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
       T4:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
@@ -247,7 +248,34 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
       imageUrl:cube,
     })  
   }
-
+  // 큐브입력 모달3
+  const fireArea3 = async(T,t)=>{ console.log(report,reportId.length,userClass)
+    if(!roomName||report){return}
+    const cubeData = fireSync.cubeSync(folder, roomName, T, t);
+    const cube = cubeData ||'';
+    const { value: text } = await Swal.fire({
+      input: 'url',
+      imageUrl:cube,
+      inputValue:cube,
+      inputLabel:'링크를 입력해주세요.',
+      showCancelButton: true
+    })    
+    if (text) {
+      if(!entering){return};
+      // Swal.fire(text); 
+      const data = {[t]:text};
+      fireProblem.cubeDataUp(folder, roomName, T, data);
+    window.open(`${text}`, '_blank');
+  }
+  }
+  // 큐브입력 모달4
+  const fireArea4 = async(T,t)=>{ 
+    if(!roomName||report){return}
+    const cubeData = fireSync.cubeSync(folder, roomName, T, t);
+    const cube = cubeData ||'';
+    // document.location.href=`${cube}`;    
+    window.open(`${cube}`, '_blank');
+  }
   
   // 리포트 큐브입력 모달
   const fireAreaReport = async(T,t)=>{ 
@@ -350,7 +378,7 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
         // setRoom({});
         roomERef.current.value='';  
         setdata({
-          T1:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
+          T1:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:'',t11:'',t22:'',t33:'',t44:'',t66:'',t77:'',t88:'',t99:''},
           T2:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
           T3:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
           T4:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
@@ -392,8 +420,8 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
     // setReportInput(false);
     // roomERef.current.value='';  
     setdata({
-      T1:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
-    T2:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
+      T1:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:'',t11:'',t22:'',t33:'',t44:'',t66:'',t77:'',t88:'',t99:''},
+      T2:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
     T3:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
     T4:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
     T5:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
@@ -665,8 +693,10 @@ const onSubmit4 = (e,p) => {
             {/* <Item item={'item item1'}  Tt={'T1t1'} roomName={roomName} report={report} reportId={reportId} fireArea={fireArea} fireAreaReport={fireAreaReport} onSubmit2={onSubmit2} onSubmit4={onSubmit4} data={data} reportInput={reportInput}/> */}
             <div className="item item1"> <div style={{display:'flex'}}>
                                         {roomName&&data.T1.t1===''&&<button className="eye" onClick={()=>{if(!report&&reportId.length<11){fireArea('T1','t1')}else{fireAreaReport('T1','t1')}}} >{Pen}</button>}
-                                        {roomName&&data.T1.t1!==''&&<button className="eye" onClick={()=>{if(!report&&reportId.length<11){fireArea2('T1','t1')}else{fireAreaReport('T1','t1')}}} >{Pen2}</button>}
-                                        {roomName&&userClass&&<button className="eye" onClick={()=>{if(!report&&reportId.length<11){fireArea('T1','t1')}else{fireAreaReport('T1','t1')}}} >{Pen}</button>}
+                                        {roomName&&data.T1.t1!==''&&<button className="eye" onClick={()=>{if(!report&&reportId.length<11&&!userClass){fireArea2('T1','t1')}else if(!report&&reportId.length<11&&userClass){fireArea('T1','t1')}else{fireAreaReport('T1','t1')}}} >{Pen2}</button>}
+                                        {roomName&&data.T1.t11!==''&&<button className="eye" onClick={()=>{if(!report&&reportId.length<11&&!userClass){fireArea4('T1','t11')}else if(!report&&reportId.length<11&&userClass){fireArea3('T1','t11')}else{fireAreaReport('T1','t11')}}} >{Pen3}</button>}
+                                        {roomName&&data.T1.t11===''&&<button className="eye" onClick={()=>{if(!report&&reportId.length<11){fireArea2('T1','t11')}else{fireAreaReport('T1','t11')}}} >{Pen}</button>}
+                                        {/* {roomName&&userClass&&<button className="eye" onClick={()=>{if(!report&&reportId.length<11){fireArea('T1','t1')}else{fireAreaReport('T1','t1')}}} >{Pen}</button>} */}
                                         </div>
             <textarea cols="10" rows="1" className="itemArea btnArea" ref={T1t1} onChange={()=>{if(!report){onSubmit2(T1t1,'T1t1')}else{onSubmit4(T1t1,'T1t1')}}} value={data.T1t1}  disabled={reportInput}  /></div>
             <div className="item item2"><div style={{display:'flex'}}>
