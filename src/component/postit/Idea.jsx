@@ -536,7 +536,7 @@ const submit = (e) => {
         {/* {entering && */}
         <div className="idea-input">
           <form onSubmit={submit} className="idea-form">
-            <input type="text" ref={titleRef2} className="inputTitle" placeholder="제목"/>
+            <input type="text" ref={titleRef2} className="inputTitle" placeholder="제목 / 이름"/>
             <button className="btnadd" style={{ outline: "none", border: "none" }} >
               <span className="rocket" ref={rocketRef}  >🚀</span>  추가</button>
             <textarea className="textarea" ref={textRef} cols="30" rows="2" placeholder="내용" />
