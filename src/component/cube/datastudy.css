@@ -268,10 +268,21 @@ position:absolute !important; left: 10px !important;}
 .itemArea.area5{font-weight: 900;}
 .itemArea{
   width:100%; height:100%;resize: none;
-  vertical-align:middle;
   color: var(--Acolor);
   padding: 3px;
   outline: none;
+  
+}
+.area1, .area2, .area3, .area4,.area6,.area7,.area8,.area9,.area {  
+  font-size: 14px;  font-weight: 900;
+
+}
+.area5{
+  color:white;
+  background-color: var(--Acolor);
+  font-size: 16px;
+  line-height: 16px;
+  font-weight: 900;
 }
 /* .item:hover { background: rgba(0, 0, 255, 0.2);}
 .item:active { background: rgba(255, 0, 0, 0.5);} */

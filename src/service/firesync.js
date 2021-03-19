@@ -22,6 +22,7 @@ class firesync {
     if(!uid){ref.off();}    
     return ()=>ref.off();
   }
+  
 
  
  // 리포트 룸 이름 가져오기

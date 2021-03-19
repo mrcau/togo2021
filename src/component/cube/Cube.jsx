@@ -26,7 +26,7 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
   const history = useHistory();
   const Pen = '•'
   const Pen2 = '👁'
-  const Pen3 = '✔️'
+  const Pen3 = '👁'
   
 
   // data 변수 선언
@@ -124,8 +124,8 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
       else  if(e && report){ console.log('로그인 레포트',data,e,roomName,report)
         setRoomUid(e.uid.substr(0, roomSubstr));
         setUserUID(e.uid);
-        const stopDataSync = fireSync.dataSync(folder, roomName, cf);
-        const stoproomSync = fireSync.roomSync(folder, roomUid, cf);
+        const stopDataSync = fireSync.dataSyncB(folder, roomName, cf);
+        const stoproomSync = fireSync.roomSync(folder, roomName, cf);
         if(data.dataId){ if(data.dataId.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){setUserClass(true)} }
         return ()=>{stopDataSync();stoproomSync();}
       } 
@@ -573,6 +573,7 @@ const onSubmit4 = (e,p) => {
   const roomId = roomUid+'REPORT';
   const  evalue = e.current.value ||'';
     const value = {[p]:evalue}
+    console.log(folder, roomId, roomName, value);
     fireSync.reportUp(folder, roomId, roomName, value);
 // }
 }
@@ -1206,7 +1207,7 @@ const onSubmit4 = (e,p) => {
                                         {roomName&&data.T9.t99!==''&&<button className="eye" onClick={()=>{if(!report&&reportId.length<11&&!userClass){fireArea4('T9','t99')}else if(!report&&reportId.length<11&&userClass){fireArea3('T9','t99')}else{fireAreaReport2('T9','t99')}}} >{Pen3}</button>}
                                         {roomName&&data.T9.t99===''&&<button className="eye" onClick={()=>{if(!report&&reportId.length<11){fireArea3('T9','t99')}else{fireAreaReport2('T9','t99')}}} >{Pen}</button>}
                                         </div>
-            <textarea cols="10" rows="1" className="itemArea btnArea" ref={T9t9} onChange={()=>{if(report){onSubmit2(T9t9,'T9t9')}else{onSubmit4(T9t9,'T9t9')}}} value={data.T9t9} disabled={reportInput} /></div>
+            <textarea cols="10" rows="1" className="itemArea btnArea" ref={T9t9} onChange={()=>{if(report){onSubmit4(T9t9,'T9t9')}else{onSubmit2(T9t9,'T9t9')}}} value={data.T9t9} disabled={reportInput} /></div>
           
           </div>
         </div>

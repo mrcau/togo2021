@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Itemrow from './Itemrow';
-import './todo.css';
+import './workout.css';
 import { DropdownButton,Dropdown,ButtonGroup } from 'react-bootstrap';
 
-function Todo({ fireTodo, user, userName, setlogoName }) {
+function Workout({ fireTodo, user, userName, setlogoName }) {
 
-  const folder = "todo"
+  const folder = "workout"
   const today = new Date().toLocaleDateString();
   const textRef = useRef();
   const titleRef = useRef();
@@ -13,7 +13,7 @@ function Todo({ fireTodo, user, userName, setlogoName }) {
   const [items, setItems] = useState({});
   const [color, setColor] = useState('secondary')
   const [todoCount, setTodoCount] = useState(0);
-  setlogoName(' ToDo');
+  setlogoName(' Workout');
 
   // 데이터 보여주기 싱크
   useEffect(() => {    
@@ -61,8 +61,8 @@ function Todo({ fireTodo, user, userName, setlogoName }) {
   }
 
   return (
-    <div className="todo">
-      <div className="todo-items">
+    <div className="workout">
+      <div className="workout-items">
         {
           Object.keys(items).map((e) => {
             return <Itemrow key={e} item={items[e]} fireTodo={fireTodo} />
@@ -70,8 +70,8 @@ function Todo({ fireTodo, user, userName, setlogoName }) {
           // <Itemrow  key={uid} item={items} items={items}/> 
         }
       </div>
-      <div className="todo-input">
-        <form onSubmit={submit} className="todo-form">
+      <div className="workout-input">
+        <form onSubmit={submit} className="workout-form">
           <DropdownButton as={ButtonGroup} variant={color} title="구분" size="sm" >
           <div className="cardSelect">
             <div>
@@ -99,4 +99,4 @@ function Todo({ fireTodo, user, userName, setlogoName }) {
   );
 }
 
-export default Todo;
+export default Workout;
