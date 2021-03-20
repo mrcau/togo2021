@@ -13,7 +13,7 @@ function Todo({ fireTodo, user, userName, setlogoName }) {
   const [items, setItems] = useState({});
   const [color, setColor] = useState('secondary')
   const [todoCount, setTodoCount] = useState(0);
-  setlogoName('ToDo');
+  setlogoName(' ToDo');
 
   // 데이터 보여주기 싱크
   useEffect(() => {    

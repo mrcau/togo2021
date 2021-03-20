@@ -21,6 +21,7 @@ import Startup from './component/startup/Startup';
 import Idea from './component/postit/Idea';
 import steering from './component/togo/steering.png';
 import Cube from './component/cube/Cube';
+import Workout from './component/workout/Workout';
 
 function App({ fireApp,fireLogin,fireSync, fireTodo, fireIdea, fireOpentool,fireProblem}) {
   const history = useHistory();
@@ -130,6 +131,10 @@ function App({ fireApp,fireLogin,fireSync, fireTodo, fireIdea, fireOpentool,fire
           </Route>
           <Route path='/todo'>
             <Todo fireTodo={fireTodo} user={user} userName={userName} setlogoName={setlogoName} />
+          </Route>
+          
+          <Route path='/workout'>
+            <Workout fireTodo={fireTodo} user={user} userName={userName} setlogoName={setlogoName} />
           </Route>
           <Route path='/mytool'> 
             <Mytool fireApp={fireApp}fireSync={fireSync} user={user} userInfo={userInfo} setlogoName={setlogoName} />
