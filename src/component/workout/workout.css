@@ -38,7 +38,7 @@
   border: none;
   outline: none;
   border-top: var(--Acolor) 1px solid;
-  background: var(--Acolor);
+  background: var(--Bcolor);
 }
 .workout .textarea {
   grid-column: 1/5;

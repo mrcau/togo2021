@@ -49,22 +49,26 @@ flex:auto; font-size: small;}
   background: var(--Ccolor);
 }
 
-.solving .s-items{ 
-  flex:  auto;
-  display: grid;
+.solving .s-itemsv{ 
+  /* flex:  auto; */
+  /* display: flex; */
+  /* display: grid; */
   gap: 5px;
+  /* background: violet; */
   /* grid-template-columns: 1fr 1fr; */
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  /* grid-template-columns: repeat(auto-fit, minmax(500px, 1fr)); */
   /* grid-template-rows: repeat(auto-fill, 70px); */
   padding: 10px;
   overflow-y:auto ;
   flex: auto;
+  display: flex;
 }
 .solving .s-item{
-  display: flex;
-   flex-direction: column;
-  background: none ;
-  border: none !important;
+  flex:1;
+  min-width:300px ;
+   /* flex-direction: column; */
+  /* background: red ; */
+  border: none ;
   /* background: var(--Bcolor); */
 }
 .solving .s-itemTitle{

@@ -33,9 +33,9 @@ const history = useHistory();
           <button className="btnLogout" onClick={logout} > LOGOUT </button>
           <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/mypage"><div className="icon">나의 페이지 </div></Link> </div>
           <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/todo"><div className="icon"> 나의 할일들 </div></Link></div>
-          {level>0 &&
+          {/* {level>0 &&
           <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/workout"><div className="icon"> 나의 운동일지 </div></Link></div>
-          }
+          } */}
           {level>0 &&
           <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/mytool"><div className="icon"> 나의 툴박스 </div></Link></div>
           }

@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import { BrowserRouter, HashRouter } from 'react-router-dom';
+import { HashRouter } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import firebaseApp from './service/firebase';
 import firelogin from './service/firelogin';
@@ -11,7 +11,6 @@ import fireidea from './service/fireidea';
 import fireopentool from './service/fireopentool';
 import fireproblem from './service/fireproblem';
 import firesync from './service/firesync';
-
 
 const fireApp = new firebaseApp();
 const fireLogin = new firelogin();

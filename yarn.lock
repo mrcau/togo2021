@@ -1231,6 +1231,25 @@
     enabled "2.0.x"
     kuler "^2.0.0"
 
+"@emmetio/abbreviation@^2.2.1":
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@emmetio/abbreviation/-/abbreviation-2.2.1.tgz#d9458fe1f09fe042f019c48aa681165ba613a48d"
+  integrity sha512-uUNwNgbH0JPlrdXhy8VQbNPLLG7abMvOaLVMblx22i68Rl9r+2N235ALgIYFUty1yXC9DkVw6xMbz/D4QVARcQ==
+  dependencies:
+    "@emmetio/scanner" "^1.0.0"
+
+"@emmetio/css-abbreviation@^2.1.2":
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/@emmetio/css-abbreviation/-/css-abbreviation-2.1.2.tgz#4a5d96f2576dd827a2c1a060374ffa8a5408cc1c"
+  integrity sha512-CvYTzJltVpLqJaCZ1Qn97LVAKsl2Uwl2fzir1EX/WuMY3xWxgc3BWRCheL6k65km6GyDrLVl6RhrrNb/pxOiAQ==
+  dependencies:
+    "@emmetio/scanner" "^1.0.0"
+
+"@emmetio/scanner@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@emmetio/scanner/-/scanner-1.0.0.tgz#065b2af6233fe7474d44823e3deb89724af42b5f"
+  integrity sha512-8HqW8EVqjnCmWXVpqAOZf+EGESdkR27odcMMMGefgKXtar00SoYNSryGv//TELI4T3QFsECo78p+0lmalk/CFA==
+
 "@emotion/hash@^0.8.0":
   version "0.8.0"
   resolved "https://registry.yarnpkg.com/@emotion/hash/-/hash-0.8.0.tgz#bbbff68978fefdbe68ccb533bc8cbe1d1afb5413"
@@ -6529,6 +6548,14 @@ emittery@^0.7.1:
   version "0.7.2"
   resolved "https://registry.yarnpkg.com/emittery/-/emittery-0.7.2.tgz#25595908e13af0f5674ab419396e2fb394cdfa82"
   integrity sha512-A8OG5SR/ij3SsJdWDJdkkSYUjQdCUx6APQXem0SaEePBSRg4eymGYwBkKo1Y6DU+af/Jn2dBQqDBvjnr9Vi8nQ==
+
+emmet@^2.3.2:
+  version "2.3.2"
+  resolved "https://registry.yarnpkg.com/emmet/-/emmet-2.3.2.tgz#3f855ab240f17e5d5feead0fb04f2f83c5d8dede"
+  integrity sha512-PRHGy5RfLp7+WBgoNq0QYtjSbbG1g28PtnN8McPhlEMoPwZWBDftVIz4vDNUNvQFSBtekuYZxB7J0vLgodZxFw==
+  dependencies:
+    "@emmetio/abbreviation" "^2.2.1"
+    "@emmetio/css-abbreviation" "^2.1.2"
 
 emoji-regex@^7.0.1:
   version "7.0.3"

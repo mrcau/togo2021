@@ -7,15 +7,17 @@ import { ThumbUp } from '@material-ui/icons';
 import { Card, DropdownButton,Dropdown,ButtonGroup } from 'react-bootstrap';
 import {  DeleteForever, } from '@material-ui/icons';
 import VisibilityIcon from '@material-ui/icons/Visibility';
+import expand, { extract } from 'emmet';
 
 function  Solvingrow ({item,roomERef,fireIdea,level,roomName,reportInput,report}) {
+
   const folder = "solving";
   const Swal = require('sweetalert2');
-  // const [video, setVideo] = useState('');
   const [Switch, setSwitch] = useState(true);
-  // const [color, setColor] = useState('');
-const textRef = useRef();
-const titleRef = useRef();
+  const textRef = useRef();
+  const titleRef = useRef();
+  // let emmetText = '';
+
 
   let counter = item.progress;
   const plus = () => {
@@ -65,9 +67,8 @@ const titleRef = useRef();
       fireIdea.itemColorUp(folder,item.uid,item.dataId,p);
       }
   }
-  const fire = () => {Swal.fire({html:item.text2, width:'90%'})}
 
-  const onSubmit = () => { 
+  const onSubmit = (e) => { 
     // if (roomName!==roomERef.current.value||roomERef.current.value==='') { return }
     const data = {
       dataId: item.dataId,
@@ -75,17 +76,28 @@ const titleRef = useRef();
       title: titleRef.current.value || '',
       text: textRef.current.value || '',      
     }    
-
     if(roomName){ 
       fireIdea.itemUpdate2(folder, roomName, item.dataId, data)
       }
     else{console.log('룸없음');fireIdea.itemUpdate(folder,data); }
   }
+  
+  const onSubmit2 = (e)=>{
+    if(e.key==='Tab'){
+      e.preventDefault();
+      const source = textRef.current.value;
+      const data1 = extract(source, source.length);  
+      const emmetText = expand(data1.abbreviation);
+      textRef.current.value = item.text + emmetText;      
+    }
+  }
+  const fire = () => {Swal.fire({html:item.text, width:'90%'})}
+
 
   return ( 
-    <div className="solvingrow" style={{flex:'auto'}} > {item.color && 
+    <div className="solvingrow" style={{flex:'1'}} > {item.color && 
      <Card bg={item.color} text={'white'} style={{ width: '100%',height:'100%' }} className="mb-2" >
-      <Card.Header style={{display:'flex',justifyContent:"space-between" ,padding:'5px'}} >
+      <Card.Header style={{display:'flex',padding:'5px'}} >
         {level>0 && <IconButton style={{width:'20px', height:'15px'}} > <DeleteForever onClick={itemDel} style={{color:'white'}} /></IconButton> }
         <DropdownButton as={ButtonGroup} variant={item.color} title="구분" size="sm"  disabled={reportInput} >
           <div className="cardSelect">
@@ -102,8 +114,14 @@ const titleRef = useRef();
             <Dropdown.Item as="button" onClick={()=>changeColor('dark')} style={{color:"#32383e",textAlign:"center", fontSize:"18px",padding:"0 2px"}}>❼</Dropdown.Item>
           </div>
         </DropdownButton>
+        { item.text &&
+
+          <IconButton style={{width:'30px', height:'20px'}} >
+          <VisibilityIcon style={{color:'white'}} size="small" onClick={fire} /> 
+          </IconButton>
+        }
         <input type="text" className="solvingInput"  ref={titleRef} onChange={onSubmit} value={item.title||''}  disabled={reportInput} />
-        {report&&
+        {!report&&
         <IconButton style={{width:'20px', height:'15px'}} >
           <Badge badgeContent={item.progress} color="secondary"   
             anchorOrigin={{vertical: 'top', horizontal: 'right', }}> 
@@ -114,7 +132,7 @@ const titleRef = useRef();
       </Card.Header>
       
         <Card.Body style={{display:'flex',flexDirection:'column',padding:'5px'}}>    
-          <textarea  className="solvingArea"  ref={textRef} onChange={onSubmit} value={item.text||''}  disabled={reportInput}  />
+          <textarea  className="solvingArea"  ref={textRef} onChange={onSubmit} onKeyDown={onSubmit2} onKeyPress={()=>{console.log('hello')}} value={item.text||''}  disabled={reportInput}  />
         </Card.Body>
      </Card>  }
     </div>
