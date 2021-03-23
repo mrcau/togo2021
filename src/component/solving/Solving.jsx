@@ -49,7 +49,7 @@ function Solving({ fireIdea, fireSync, user, userInfo ,setlogoName }) {
   const [items, setItems] = useState({});
   const today = new Date().toLocaleDateString();
   const [color, setColor] = useState('primary');
-  setlogoName(' 게시툴');
+  setlogoName(' 코딩툴');
 
 
   //링크접속

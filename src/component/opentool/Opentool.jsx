@@ -29,13 +29,13 @@ function Opentool({ fireIdea,fireApp, user, userInfo,setlogoName }) {
   }, [fireApp]);
 
   //DB에 글 데이터 저장
-  const submit = (e) => {
+  const submit = (e) => { console.log(userInfo.level)
     e.preventDefault();
     if(e.currentTarget == null){return;}
     const title = titleRef.current.value;
     const text = textRef.current.value;
     const text2 = textRef2.current.value;
-    if(!title || !text || !text2){ Swal.fire({title:'빈칸을 모두 채워주세요.',icon:'warning'}) }
+    if(!userInfo.level){ Swal.fire({title:'로그인을 해주세요.',icon:'warning'})  }else if(!title || !text || !text2){ Swal.fire({title:'빈칸을 모두 채워주세요.',icon:'warning'}) }
     if (userInfo && title && text && text2) {
       rocketOn();
       const dataId = Date.now();
@@ -65,7 +65,7 @@ function Opentool({ fireIdea,fireApp, user, userInfo,setlogoName }) {
       clearTimeout(rocketOn);
     }, 1000);
   }
-
+  console.log(items)
   return (
     <div className="mytool">
       <div className="mytool-items">
@@ -75,7 +75,7 @@ function Opentool({ fireIdea,fireApp, user, userInfo,setlogoName }) {
           })
         }
       </div>
-      {userInfo.level>0 &&
+      {/* {userInfo.level>0 && */}
       <div className="mytool-input">
         <form onSubmit={submit} className="mytool-form">
           <input type="text" ref={titleRef} className="inputTitle" placeholder="링크"/>
@@ -86,7 +86,7 @@ function Opentool({ fireIdea,fireApp, user, userInfo,setlogoName }) {
           style={{borderTop: 'dashed 1px'}} placeholder="소스코드를 입력해주세요." />
         </form>
       </div>
-      }
+      {/* } */}
 
     </div>
   );

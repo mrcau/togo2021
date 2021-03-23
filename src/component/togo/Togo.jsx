@@ -46,7 +46,7 @@ const history = useHistory();
             <Card.Text>
             아이디어를 시각·촉각으로 느낄 수 . 
             </Card.Text> */}
-            <button className="btn1 card1">게시툴</button>
+            <button className="btn1 card1">코딩툴</button>
 
           </Card.Body>
         </Card>

@@ -45,7 +45,6 @@ function LoginModal({ fireApp, setuser,moveModal4,registerTF, setRegisterTF, use
       Swal.fire({title: '저장하겠습니까?',html: "이름: "+name+", 이메일: "+ email +", 비밀번호: " + pass,
        showCancelButton: true, confirmButtonText: `확인`,}).then((result) => {
         if(result.isConfirmed){
-          Swal.fire({title:nameRegisterRef.current.value+'님 회원가입 완료!'})
           fireApp.createUser(info, cf);
          }
        })
