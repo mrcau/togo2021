@@ -4,7 +4,7 @@ import "firebase/database";
 import "firebase/storage";
 
 const roomSubstr = 6;
-const roomNumer = 6;
+const roomNumer = 7;
 
 class fireproblem {  
 //  룸 개수 가져오기
@@ -26,7 +26,7 @@ roomGet(folder,roomUid) {
   }
  
   //룸 개수계산해서 룸 생성하기
-  roomGetSave(folder,newRoom, data){ console.log('roomGetSave')
+  roomGetSave(folder,newRoom,level, data){ console.log('roomGetSave')
   const roomUid = newRoom.substr(0,roomSubstr);
   const Uid = newRoom.substr(roomSubstr);
   let roomGetNum = 0; 
@@ -35,9 +35,18 @@ roomGet(folder,roomUid) {
       if(data){ roomGetNum = Object.keys(data).length;}
     })
   
-  if(roomGetNum < roomNumer){
+  if(roomGetNum < level){
   fireInit.database().ref(`${folder}/${roomUid}/${Uid}`).set(data)
   }else{return}  
+}
+
+roomSortNum(folder,roomUid){
+  let roomGetNum = 0; 
+    const ref = fireInit.database().ref(`${folder}/${roomUid}`);
+    ref.on('value',(p)=>{const data = p.val();
+      if(data){ roomGetNum = Object.keys(data).length;}
+    })
+  return roomGetNum
 }
 
 

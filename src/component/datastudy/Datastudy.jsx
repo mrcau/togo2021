@@ -11,7 +11,6 @@ import ProblemReport from './problemReport';
 import { useHistory,useParams } from 'react-router-dom';
 import SaveIcon from '@material-ui/icons/Save';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-// import Item from './Item';
 import ReplayIcon from '@material-ui/icons/Replay';
 // roomERef.current.value =id.substr(0,10);
 function Datastudy({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
@@ -27,6 +26,7 @@ function Datastudy({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
   const history = useHistory();
   const Pen = '•'
   const Pen2 = '👁️‍🗨️'
+  const Pen3 = '👁'
   
   // data 변수 선언
   const text1 = useRef(); const text2 = useRef(); const text3 = useRef(); const text4 = useRef(); const text5 = useRef();
@@ -73,8 +73,7 @@ function Datastudy({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
   // const [cube, setCube] = useState('');
   setlogoName(' 데이터분석');
 
- 
-   //링크접속
+    //링크접속
    useEffect(() => {     
     if(id.length===10){   console.log('입장1','id',id,id.length,data.dataId,data,report,id,user,'userClass',userClass);
         const enterRoomId =  id.substr(0,roomSubstr)||"";
@@ -195,11 +194,28 @@ function Datastudy({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
     }
   }
   
+  const fireTextarea = async(e,p)=>{ 
+    // e.preventDefault();
+  if(!roomName){ return}
+  if(report&&!userClass){return}
+  const { value: text } = await Swal.fire({
+      input: 'text',
+      inputLabel: '제목',
+      inputValue:data[p],
+      inputPlaceholder: '제목을 입력해주세요.',
+      // inputAttributes: {'aria-label': 'Type your message here'},
+      showCancelButton: true
+    })
+    if (text) {
+      // Swal.fire(text)
+     if(!report){onSubmit2(text,p)}else if(report&&userClass){onSubmit4(text,p)}else{return}
+    }
+  }
   // 방생성
   const createRoom = () => {
     const num = Date.now().toString().substr(9);
     const newRoom = roomUid + num;
-    setroomName(newRoom);
+    // setroomName(newRoom);
     const data = {      
       T1:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},
       T2:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:''},

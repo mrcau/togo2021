@@ -123,6 +123,7 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
       else  if(e && report){ console.log('로그인 레포트',data,e,roomName,report)
         setRoomUid(e.uid.substr(0, roomSubstr));
         setUserUID(e.uid);
+        
         const stopDataSync = fireSync.dataSyncB(folder, roomName, cf);
         const stoproomSync = fireSync.roomSync(folder, roomName, cf);
         if(data.dataId){ if(data.dataId.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){setUserClass(true)} }
@@ -203,9 +204,11 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
   
   // 방생성
   const createRoom = () => {
-    const num = Date.now().toString().substr(9);
-    const newRoom = roomUid + num;
-    setroomName(newRoom);
+    const sortNum = fireProblem.roomSortNum(folder,roomUid)
+    const num = Date.now().toString().substr(10);
+    const roomsortNum = sortNum+num
+    const newRoom = roomUid + roomsortNum;
+    console.log(newRoom)
     const data = {      
       T1:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:'',t11:'',t22:'',t33:'',t44:'',t66:'',t77:'',t88:'',t99:''},
       T2:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:'',t11:'',t22:'',t33:'',t44:'',t66:'',t77:'',t88:'',t99:''},
@@ -231,7 +234,7 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
       enterMan:0,
       host:'입장'
     } 
-    fireProblem.roomGetSave(folder, newRoom, data)
+    fireProblem.roomGetSave(folder, newRoom,level, data)
   }
 
   // 큐브입력 모달
@@ -731,10 +734,9 @@ const onSubmit4 = (e,p) => {
         <div className="enterTitle" >{notice}</div>  
       </div>
       
-      <div className="mandarat">
+      {/* <div className="mandarat">
         <div className="box">
           <div className="items items1">
-            {/* <Item item={'item item1'}  Tt={'T1t1'} roomName={roomName} report={report} reportId={reportId} fireArea={fireArea} fireAreaReport={fireAreaReport} onSubmit2={onSubmit2} onSubmit4={onSubmit4} data={data} reportInput={reportInput}/> */}
             <div className="item item1"> <div style={{display:'flex'}}>
                                         {roomName&&data.T1.t1===''&&<button className="eye" onClick={()=>{if(!report&&reportId.length<11){fireArea('T1','t1')}else{fireAreaReport('T1','t1')}}} >{Pen}</button>}
                                         {roomName&&data.T1.t1!==''&&<button className="eye" onClick={()=>{if(!report&&reportId.length<11){fireArea('T1','t1')}else{fireAreaReport('T1','t1')}}} >{Pen2}</button>}
@@ -1227,7 +1229,7 @@ const onSubmit4 = (e,p) => {
           
           </div>
         </div>
-      </div>
+      </div> */}
       </div>
   );
 }
