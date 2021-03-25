@@ -734,7 +734,7 @@ const onSubmit4 = (e,p) => {
         <div className="enterTitle" >{notice}</div>  
       </div>
       
-      {/* <div className="mandarat">
+      <div className="mandarat">
         <div className="box">
           <div className="items items1">
             <div className="item item1"> <div style={{display:'flex'}}>
@@ -1229,7 +1229,7 @@ const onSubmit4 = (e,p) => {
           
           </div>
         </div>
-      </div> */}
+      </div>
       </div>
   );
 }
