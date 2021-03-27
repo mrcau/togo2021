@@ -1,5 +1,5 @@
 import { Badge, IconButton, Switch,Tooltip } from '@material-ui/core';
-import {  DeleteForever,   MenuSharp, ThumbUp,InsertEmoticon } from '@material-ui/icons';
+import {  DeleteForever,   MenuSharp, PhotoCamera,InsertEmoticon } from '@material-ui/icons';
 import React, { memo, useEffect,  useRef, useState } from 'react';
 import AddCommentIcon from '@material-ui/icons/AddComment';
 import YouTubeIcon from '@material-ui/icons/YouTube';
@@ -14,6 +14,7 @@ import ProblemReport from './problemReport';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import SaveIcon from '@material-ui/icons/Save';
 import ReplayIcon from '@material-ui/icons/Replay';
+import mime from 'mime-types';
 
 function Idea({ fireIdea, fireSync, user, userInfo ,setlogoName}) {
   const folder = "postit";
@@ -34,6 +35,7 @@ function Idea({ fireIdea, fireSync, user, userInfo ,setlogoName}) {
   const [entering, setEntering] = useState(false);
   const [see, setSee] = useState(true)
   const [reportId, setReportId] = useState(id||'') ;
+  const [photoData, setPhotoData] = useState('');
   //입장중
   const [door, setDoor] = useState('입장')
   const [userUID, setUserUID] = useState('');
@@ -396,7 +398,7 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
 
 const submit = (e) => {
   e.preventDefault();
-  if(!roomName&&!user.uid){return;}
+  if(!roomName){return;}
   const title = titleRef2.current.value;
   const text = textRef.current.value;
   const text2 = textRef2.current.value;
@@ -413,14 +415,24 @@ const submit = (e) => {
       text2: text2,
       today: today,
       progress: 0,
-      color : 'secondary'
+      color : 'secondary',
+      photoData
     }
     if(roomName){fireIdea.itemSave2(folder, roomName, dataId, data)}
-    else{fireIdea.itemSave(folder,data); }
+    // else{fireIdea.itemSave(folder,data); }
     titleRef2.current.value = '';
     textRef.current.value = '';
     textRef2.current.value = '';
+    setPhotoData('');
   }
+}
+
+const upLoad = (e) => { console.log('uplod')
+  const imgDataId = Date.now();
+  const file = e.target.files[0];
+  const metaData = { contentType: mime.lookup(file.name) } ||''
+  fireIdea.imgUpload( imgDataId, file, metaData, (e) => setPhotoData(e));
+  
 }
 
   return (
@@ -537,6 +549,21 @@ const submit = (e) => {
         <div className="idea-input">
           <form onSubmit={submit} className="idea-form">
             <input type="text" ref={titleRef2} className="inputTitle" placeholder="제목 / 이름"/>
+
+          {roomName && 
+            <input accept="image/*" style={{ display: 'none' }} id="imgData" type="file" onChange={upLoad} />
+          }
+          {photoData&&
+            <label htmlFor="imgData" style={{background:"gray", height:"25px",margin:"0"}}> 
+              <IconButton size="small" component="span" style={{background:"white", height:"22px"}}> <PhotoCamera /> </IconButton>
+            </label>
+          }
+          
+          {!photoData&&
+            <label htmlFor="imgData" style={{background:"white", height:"25px",margin:"0"}}> 
+              <IconButton size="small" component="span" style={{background:"white", height:"22px"}}> <PhotoCamera /> </IconButton>
+            </label>
+          }
             <button className="btnadd" style={{ outline: "none", border: "none" }} >
               <span className="rocket" ref={rocketRef}  >🚀</span>  추가</button>
             <textarea className="textarea" ref={textRef} cols="30" rows="2" placeholder="내용" />

@@ -125,18 +125,6 @@ manUp(folder, roomName, data) {
     ref.update(data)
 }
 
-// manUpdate 업데이트
-// manPlus(folder, roomName, data) {
-//   const roomUid = roomName.substr(0,roomSubstr);
-//   const roomNum = roomName.substr(roomSubstr);
-//   const ref = fireInit.database().ref(`${folder}/${roomUid}/${roomNum}`);
-//   ref.on('value',(p)=>{
-//     const data = p.val();
-//     if(data.enterMan)
-//   })
-//     ref.update(data)
-// }
-
 // TODO글  저장 
 itemRefresh(folder,roomName, data) {
   const roomUid = roomName.substr(0,roomSubstr);
@@ -198,6 +186,19 @@ itemUp2(folder,roomName, dataId, counter) {
   const roomNum = roomName.substr(roomSubstr);
   fireInit.database().ref(`${folder}/${roomUid}/${roomNum}/${dataId}`).update({ progress: counter })
 }
+
+  // 프로필사진 자료저장
+  async imgUpload(imgDataId,file, metaData, cf) { console.log('ideaIMG','imgDataId',imgDataId)
+    try {
+      const e = await fireInit.storage().ref(`imgData/${imgDataId}`).put(file, metaData)
+      const downloadUrl = await e.ref.getDownloadURL();
+      cf(downloadUrl);
+    }
+    catch (error) {
+      console.log(error)
+    }
+  }
+
 // 룸네임 없으면 컬러 업데이트
 itemColorUp(folder, uid, dataId, color) {
   fireInit.database().ref(`${folder}/${uid}/${dataId}`)
@@ -210,6 +211,6 @@ itemColorUp2(folder, roomName, dataId, color) {
   fireInit.database().ref(`${folder}/${roomUid}/${roomNum}/${dataId}`).update({ color: color })
 }
 }
-
+//
 
 export default fireidea

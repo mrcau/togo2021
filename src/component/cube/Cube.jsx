@@ -154,7 +154,7 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
     
     //오른쪽 모달 핸들링
     const moveModal = () => {
-      setrightModal(true);setReport(true);setEntering(false);      
+      setrightModal(true);roomNameReset3();setEntering(false); setroomName("");
       drawerRef.current.classList.add("moveDrawer");
       backRef.current.classList.remove("backNone");    
     }
@@ -476,6 +476,34 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
       T9:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:'',t11:'',t22:'',t33:'',t44:'',t66:'',t77:'',t88:'',t99:''},
       });
   }  
+
+  
+   // 리포트 목록 모달창 클릭시 실행
+   const roomNameReset3=() => { 
+    history.push('/cube/:id');
+    setDoor('입장'); 
+    dataReset(); 
+    setdata({});
+    setroomName("");
+    setRoomUid('');
+    setReport(true);
+    setSee(true); 
+    setNotice('');
+    setVideo('');
+    roomERef.current.value='';  
+    setdata({
+      T1:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:'',t11:'',t22:'',t33:'',t44:'',t66:'',t77:'',t88:'',t99:''},
+      T2:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:'',t11:'',t22:'',t33:'',t44:'',t66:'',t77:'',t88:'',t99:''},
+      T3:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:'',t11:'',t22:'',t33:'',t44:'',t66:'',t77:'',t88:'',t99:''},
+      T4:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:'',t11:'',t22:'',t33:'',t44:'',t66:'',t77:'',t88:'',t99:''},
+      T5:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:'',t11:'',t22:'',t33:'',t44:'',t66:'',t77:'',t88:'',t99:''},
+      T6:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:'',t11:'',t22:'',t33:'',t44:'',t66:'',t77:'',t88:'',t99:''},
+      T7:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:'',t11:'',t22:'',t33:'',t44:'',t66:'',t77:'',t88:'',t99:''},
+      T8:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:'',t11:'',t22:'',t33:'',t44:'',t66:'',t77:'',t88:'',t99:''},
+      T9:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:'',t11:'',t22:'',t33:'',t44:'',t66:'',t77:'',t88:'',t99:''},
+      });
+  }  
+
   // roomName.substr(0,6) 방입장
 
   const roomNameHide = ()=>{roomERef.current.value=''; }
