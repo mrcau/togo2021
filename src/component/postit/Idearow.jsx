@@ -63,7 +63,7 @@ const [reports, setReports] = useState(report)
       fireIdea.itemColorUp(folder,item.uid,item.dataId,p);
       }
   }
-  const fire = () => {Swal.fire({html:item.text2, width:'90%'})}
+  const fire = () => {Swal.fire({html:item.text2,imageUrl:item.photoData, width:'90%'})}
   return (
     <div className="idearow" >  {item.color && 
      <Card bg={item.color} text={'white'} style={{ width: '12rem',height:'10rem' }} className="mb-2" >

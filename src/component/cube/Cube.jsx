@@ -154,7 +154,7 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
     
     //오른쪽 모달 핸들링
     const moveModal = () => {
-      setrightModal(true);setReport(true);setEntering(false);      
+      setrightModal(true);roomNameReset3();setEntering(false); setroomName("");
       drawerRef.current.classList.add("moveDrawer");
       backRef.current.classList.remove("backNone");    
     }
@@ -446,20 +446,19 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
     const cf = {  f1: (p) => { setdata({}) }, f2: () => { setdata({}) },
                   f3: (p) => { setRoom({}) }, f4: () => { setRoom({}) },
     }
-    const cf2 = () => { setdata({});setRoom({});  }
+    const cf2 = () => { setdata({});setRoom({});  setroomName(""); history.push('/cube/:id');}
     // fireSync.roomUser(folder,roomUid,cf2,1);        
     fireSync.roomUser3(folder,roomUid,cf2,1);        
     fireSync.dataSync(folder, roomName, cf,1);
     fireSync.cubeSync(folder, roomName, 'T1','t1',1);    
-    history.push('/cube/:id');
+    
     setDoor('입장'); 
     dataReset(); 
     setdata({});
-    setroomName("");
+   
     setRoomUid('');
     setReport(false);
     setSee(true); 
-    // setRoom({});
     setNotice('');
     setVideo('');
     // setReportInput(false);
@@ -476,6 +475,34 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
       T9:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:'',t11:'',t22:'',t33:'',t44:'',t66:'',t77:'',t88:'',t99:''},
       });
   }  
+
+  
+   // 리포트 목록 모달창 클릭시 실행
+   const roomNameReset3=() => { 
+    history.push('/cube/:id');
+    setDoor('입장'); 
+    dataReset(); 
+    setdata({});
+    setroomName("");
+    setRoomUid('');
+    setReport(true);
+    setSee(true); 
+    setNotice('');
+    setVideo('');
+    roomERef.current.value='';  
+    setdata({
+      T1:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:'',t11:'',t22:'',t33:'',t44:'',t66:'',t77:'',t88:'',t99:''},
+      T2:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:'',t11:'',t22:'',t33:'',t44:'',t66:'',t77:'',t88:'',t99:''},
+      T3:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:'',t11:'',t22:'',t33:'',t44:'',t66:'',t77:'',t88:'',t99:''},
+      T4:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:'',t11:'',t22:'',t33:'',t44:'',t66:'',t77:'',t88:'',t99:''},
+      T5:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:'',t11:'',t22:'',t33:'',t44:'',t66:'',t77:'',t88:'',t99:''},
+      T6:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:'',t11:'',t22:'',t33:'',t44:'',t66:'',t77:'',t88:'',t99:''},
+      T7:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:'',t11:'',t22:'',t33:'',t44:'',t66:'',t77:'',t88:'',t99:''},
+      T8:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:'',t11:'',t22:'',t33:'',t44:'',t66:'',t77:'',t88:'',t99:''},
+      T9:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:'',t11:'',t22:'',t33:'',t44:'',t66:'',t77:'',t88:'',t99:''},
+      });
+  }  
+
   // roomName.substr(0,6) 방입장
 
   const roomNameHide = ()=>{roomERef.current.value=''; }
@@ -623,8 +650,10 @@ const onSubmit4 = (e,p) => {
       .then((result) => { if(result.isConfirmed){ 
         const roomUid =   user.uid.substr(0,roomSubstr);
         const roomId = roomUid+'REPORT';
-        const cf = ()=>{setroomName(""); roomNameReset(); setEntering(false); manMinus(); setDoor('입장'); }
+        const cf = ()=>{setroomName(""); roomNameReset2(); setEntering(false); manMinus(); setDoor('입장'); }
       fireProblem.reportDel2(folder,roomId,roomName,cf);   
+
+      fireSync.reportSync(folder,roomId,cf,1); 
       Swal.fire('삭제되었습니다.');
       }});
     }
@@ -636,7 +665,7 @@ const onSubmit4 = (e,p) => {
     <div className="drawer" ref={drawerRef}>
     {rightModal && 
      <ProblemReport setLinkCopy={setLinkCopy} fireSync={fireSync} fireProblem={fireProblem} user={user} folder={folder} setroomName={setroomName} roomRowReset={roomRowReset}
-      roomName={roomName} setReport={setReport} roomNameHide={roomNameHide} userInfo={userInfo} 
+      roomName={roomName} setReport={setReport} roomNameHide={roomNameHide} userInfo={userInfo}
       moveModal2={moveModal2} report={report} setdata={setdata} setDoor={setDoor} setEntering={setEntering}  /> 
     }
     </div>

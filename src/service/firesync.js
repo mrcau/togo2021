@@ -162,14 +162,14 @@ roomUser2(folder,roomvalue,cf,off) {
 
 
   //전체 보고서 테이블 싱크
-async reportSync(folder,roomId, cf,off) {
+ reportSync(folder,roomId, cf,off) {
     if (!roomId) { return }
     // const roomId = roomName.substr(0,6)+'REPORT'
     const ref1 = fireInit.database().ref(`${folder}/${roomId}`);
     ref1.on('value', (p) => {
       const data = p.val()||{};
       const Data = Object.values(data);
-      data ? cf.f1(Data) : cf.f2();
+      if(cf.f1 && data){ cf.f1(Data)}else{cf.f2();}
     });
     if(off){ref1.off();}    
   return ()=>ref1.off();
@@ -246,7 +246,7 @@ cubeReportSync(folder, roomName, T, t, off) {
     fireInit.database().ref(`${folder}/${roomUid}/${roomNum}`).update(data)
   }
     // 큐브 테두리 리포트 데이터 저장
-   reportUp(folder, roomId, roomName, data) {
+   reportUp(folder, roomId, roomName, data) { console.log('hihihi',folder, roomId, roomName, data)
     fireInit.database().ref(`${folder}/${roomId}/${roomName}`).update(data)
     }
 
