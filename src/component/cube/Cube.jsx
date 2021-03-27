@@ -1,5 +1,5 @@
 import { Badge, IconButton,Tooltip } from '@material-ui/core';
-import {  DeleteForever,   MenuSharp, ThumbUp,InsertEmoticon } from '@material-ui/icons';
+import {  DeleteForever,   MenuSharp, InsertEmoticon } from '@material-ui/icons';
 import React, { memo, useEffect,  useRef, useState } from 'react';
 import LinkIcon from '@material-ui/icons/Link';
 import AddCommentIcon from '@material-ui/icons/AddComment';
@@ -15,6 +15,7 @@ import ReplayIcon from '@material-ui/icons/Replay';
 
 function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
   const folder = "cube";
+  setlogoName(' 큐브툴');
   const roomSubstr = 6;
   const Swal = require('sweetalert2');
   const level = userInfo.level || 0;
@@ -71,11 +72,10 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
   const [report, setReport] = useState(false);
   const [userUID, setUserUID] = useState('');
   // const [cube, setCube] = useState('');
-  setlogoName(' 큐브툴');
 
    //링크접속
-   useEffect(() => {     
-    if(id.length===10){
+   useEffect(() => {    
+    if(id.length===10){  console.log('id.length===10')
         const enterRoomId =  id.substr(0,roomSubstr)||"";
         const cf1 = { 
         f1: ()=>{setroomName(id); setRoomUid(enterRoomId);setDoor('퇴장');setReport(false);    
@@ -88,7 +88,7 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
          return ()=>{stoproomSync();}
       }
     
-    else if(id.length===12){
+    else if(id.length===12){console.log('id.length===12')
         const enterRoomId =  id.substr(0,roomSubstr)||"";
         const cf = { 
         f1: ()=>{setroomName(id.substr(0,10)); setRoomUid(enterRoomId);setDoor('퇴장');setReport(true); setReportInput(true);  
@@ -104,7 +104,7 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
    
    //일반접속
    useEffect(() => { 
-    fireSync.onAuth((e) => {  console.log('시작','e',e,'report',report,'id',id,id.length)
+    fireSync.onAuth((e) => {  
       if(!e&&!roomName){ return}
       if(data.dataId){ if(data.dataId.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){setUserClass(true)} }
       const cf = {
@@ -122,14 +122,12 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
       }       
       else  if(e && report){ console.log('로그인 레포트',data,e,roomName,report)
         setRoomUid(e.uid.substr(0, roomSubstr));
-        setUserUID(e.uid);
-        
+        setUserUID(e.uid);        
         const stopDataSync = fireSync.dataSyncB(folder, roomName, cf);
         const stoproomSync = fireSync.roomSync(folder, roomName, cf);
         if(data.dataId){ if(data.dataId.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){setUserClass(true)} }
         return ()=>{stopDataSync();stoproomSync();}
-      } 
-     
+      }      
       else {return}
   }) 
 }, [roomName,fireSync,report,roomUid,user,userInfo]);
@@ -156,9 +154,9 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
     
     //오른쪽 모달 핸들링
     const moveModal = () => {
+      setrightModal(true);setReport(true);setEntering(false);      
       drawerRef.current.classList.add("moveDrawer");
       backRef.current.classList.remove("backNone");    
-      setrightModal(true);
     }
     const moveModal2 = () => {
       drawerRef.current.classList.remove("moveDrawer");
@@ -384,7 +382,7 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
 
 
  // 관리자 방입장
-      const adminEnter = (e) => {
+      const adminEnter = (e) => { 
         dataReset();
         setEntering(true);  
         const textRoom = e.currentTarget.textContent;
@@ -461,7 +459,7 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
     setRoomUid('');
     setReport(false);
     setSee(true); 
-    setRoom({});
+    // setRoom({});
     setNotice('');
     setVideo('');
     // setReportInput(false);
@@ -516,7 +514,7 @@ if(entering){   console.log('entering퇴장', data)
 }
 }
 if(roomvalue.length !== 10){ return;}
-if(roomvalue.length === 10&&!entering){ 
+if(roomvalue.length === 10&&!entering&&!report){ 
     const cf1 = { 
         f1: ()=>{setroomName(roomvalue); setRoomUid(enterRoomId);setDoor('퇴장');setReport(false);
         setEntering(true);  
@@ -705,8 +703,6 @@ const onSubmit4 = (e,p) => {
           </IconButton>
           </Tooltip>
            }
-          {/* </div> */}
-        {/* </div>     */}
         <div className="voicechat">             
          <Tooltip arrow placement="top" title="회의자료 보기">
           <button style={{width:'30px'}}  onClick={fire}>

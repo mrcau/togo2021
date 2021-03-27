@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Toolrow from './Toolrow';
 import Swal from 'sweetalert2';
+import './opentool.css';
 
 function Opentool({ fireIdea,fireApp, user, userInfo,setlogoName }) {
 
@@ -67,8 +68,8 @@ function Opentool({ fireIdea,fireApp, user, userInfo,setlogoName }) {
   }
   console.log(items)
   return (
-    <div className="mytool">
-      <div className="mytool-items">
+    <div className="opentool">
+      <div className="opentool-items">
         {
           Object.keys(items).map((e) => {
             return <Toolrow key={e} user={user} fireIdea={fireIdea} item={items[e]} fireApp={fireApp} level={level} />
@@ -76,12 +77,12 @@ function Opentool({ fireIdea,fireApp, user, userInfo,setlogoName }) {
         }
       </div>
       {/* {userInfo.level>0 && */}
-      <div className="mytool-input">
-        <form onSubmit={submit} className="mytool-form">
-          <input type="text" ref={titleRef} className="inputTitle" placeholder="링크"/>
+      <div className="opentool-input">
+        <form onSubmit={submit} className="opentool-form">
+          <input type="text" ref={titleRef} className="inputTitle" placeholder="공유자료 링크"/>
           <button className="btnadd" style={{ outline: "none", border: "none" }} >
             <span className="rocket" ref={rocketRef}  >🚀</span>  추가</button>
-          <textarea className="textarea" ref={textRef} cols="30" rows="3" placeholder="설명을 적어주세요." />
+          <textarea className="textarea" ref={textRef} cols="30" rows="3" placeholder="공유자료 설명" />
           <textarea className="textarea" ref={textRef2} cols="30" rows="3" 
           style={{borderTop: 'dashed 1px'}} placeholder="소스코드를 입력해주세요." />
         </form>
