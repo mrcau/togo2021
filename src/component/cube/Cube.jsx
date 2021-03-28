@@ -241,11 +241,11 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
     const cubeData = fireSync.cubeSync(folder, roomName, T, t);
     const cube = cubeData ||'';
     const { value: text } = await Swal.fire({
-      input: 'textarea',
+      input: 'textarea', height:'400px',
       html:cube, width:'80%',
       imageUrl:cube,
       inputValue:cube,
-      inputLabel:'내용을 입력해주세요.',
+      inputLabel:'❤️ 👉 ✔️ ❌ 🔹 ⚜️',
       inputPlaceholder: '코드입력시: <iframe width="100%" src="주소" /> \n 링크입력시:<a href="링크" target="_blank">제목</a>',
       showCancelButton: true
     })    
