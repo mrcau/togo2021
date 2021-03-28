@@ -23,10 +23,12 @@
 }
 .mytool-items {
   flex:  auto;
+  height: 100px; 
   display: grid;
-  gap: 40px;
-  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-  grid-template-rows: repeat(auto-fill, 70px);
+  row-gap: 5px;
+  /* gap: 40px; */
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  /* grid-template-rows: repeat(auto-fill, 70px); */
   padding: 10px;
   padding-right: 30px;
   overflow-y:auto ;
@@ -34,7 +36,7 @@
 }
 .mytool-form{
   display: grid;
-  grid-template-columns: 1fr 70px;
+  grid-template-columns: 50px 1fr 50px 1fr 70px;
   border: none;
   outline: none;
   border-top: var(--Acolor) 1px solid;
@@ -79,7 +81,7 @@
   border-bottom: 1px dashed var(--Acolor);
 }
 .mytool .textarea {
-  grid-column: 1/3;
+  grid-column: 1/6;
   max-width: 100%;
   min-width: 100%;
   outline: none;

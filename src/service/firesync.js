@@ -257,15 +257,15 @@ cubeReportSync(folder, roomName, T, t, off) {
 
 
  // mytool  저장 
- toolSave(folder,uid, data) {
-  fireInit.database().ref(`${folder}/${uid}/${data.dataId}`).set(data)
+ toolSave(folder,uid,selectFolder,data) {
+  fireInit.database().ref(`${folder}/${uid}/${selectFolder}/${data.dataId}`).set(data)
     .then(() => console.log('글 저장성공'))
     .catch((e) => console.log('저장실패'))
 }
 
 // mytool 씽크
-toolSync(folder,uid, cf) {
-  const ref = fireInit.database().ref(`${folder}/${uid}`);
+toolSync(folder,uid,selectFolder, cf) {
+  const ref = fireInit.database().ref(`${folder}/${uid}/${selectFolder}`);
   ref.on('value', (p) => {
     const data = p.val();
     data ? cf.f1(data) : cf.f2();

@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import './mytool.css';
 import Toolrow from './Toolrow';
 import Swal from 'sweetalert2';
+import { DropdownButton,Dropdown,ButtonGroup } from 'react-bootstrap';
 
 function Mytool({fireIdea,fireApp, fireSync,user, userInfo, setlogoName }) {
   const today = new Date().toLocaleDateString();
@@ -9,22 +10,26 @@ function Mytool({fireIdea,fireApp, fireSync,user, userInfo, setlogoName }) {
   const textRef2 = useRef();
   const titleRef = useRef();
   const rocketRef = useRef();
+  const newFolder = useRef();
   const [items, setItems] = useState({});
   const folder = "mytool"
   const Swal = require('sweetalert2');
   const level = userInfo.level || 0;
+  const [folderBox, setfolderBox] = useState(['기본','학교'])
+  const [selectFolder, setselectFolder] = useState('기본')
+
   setlogoName(' My ToolBox');
   // 데이터 보여주기 싱크
   useEffect(() => {    
     fireSync.onAuth((e) => {
     const cf = { f1: (p)=>{setItems(p)}, f2: ()=>{setItems({})}  }
    if(user){ 
-      const stopDataSync =fireSync.toolSync(folder,user.uid, cf);
+      const stopDataSync =fireSync.toolSync(folder,user.uid,selectFolder, cf);
       return ()=>{stopDataSync();}
     }else{console.log('no-User')}
   
     })
-  }, [fireSync,user]);
+  }, [fireSync,user,selectFolder]);
 
   //DB에 글 데이터 저장
   const submit = (e) => {
@@ -46,9 +51,10 @@ function Mytool({fireIdea,fireApp, fireSync,user, userInfo, setlogoName }) {
         text2: text2,
         today: today,
         progress: 0,
-        color : 'secondary'
+        color : 'secondary',
+        selectFolder
       }
-      fireSync.toolSave(folder,user.uid,data);      
+      fireSync.toolSave(folder,user.uid,selectFolder,data);      
       titleRef.current.value = '';
       textRef.current.value = '';
       textRef2.current.value = '';
@@ -63,7 +69,11 @@ function Mytool({fireIdea,fireApp, fireSync,user, userInfo, setlogoName }) {
       clearTimeout(rocketOn);
     }, 1000);
   }
-
+  const AddNewFolder = () => {
+    const folderName = newFolder.current.value || "";
+    setfolderBox([...folderBox,folderName]);
+    newFolder.current.value = '';
+  }
   return (
     <div className="mytool">
       <div className="mytool-items">
@@ -75,9 +85,20 @@ function Mytool({fireIdea,fireApp, fireSync,user, userInfo, setlogoName }) {
       </div>
       <div className="mytool-input">
         <form onSubmit={submit} className="mytool-form">
+        <DropdownButton as={ButtonGroup} variant="dark" title={selectFolder} size="sm"  >
+          <div className="cardSelect">
+            {
+            Object.values(folderBox).map((e,i) => {
+              return <Dropdown.Item as="button" type="button"  onClick={()=>{setselectFolder(e)}} style={{textAlign:"center", fontSize:"12px",padding:"0",fontWeight:"900"}}>{e}</Dropdown.Item>
+            })
+            }
+          </div>
+        </DropdownButton>
+          <input type="text" ref={newFolder} className="inputTitle" placeholder="새폴더"/>
+          <button type="button" className="btnadd" style={{ outline: "none", border: "none" }} onClick={AddNewFolder}>추가</button>
           <input type="text" ref={titleRef} className="inputTitle" placeholder="링크"/>
           <button className="btnadd" style={{ outline: "none", border: "none" }} >
-            <span className="rocket" ref={rocketRef}  >🚀</span>  추가</button>
+            <span className="rocket" ref={rocketRef}  >🚀</span>  저장</button>
           <textarea className="textarea" ref={textRef} cols="30" rows="3" placeholder="설명을 적어주세요." />
           <textarea className="textarea" ref={textRef2} cols="30" rows="3" 
           style={{borderTop: 'dashed 1px'}} placeholder="소스코드를 입력해주세요." />

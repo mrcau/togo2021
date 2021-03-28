@@ -17,6 +17,7 @@ import ReplayIcon from '@material-ui/icons/Replay';
 import mime from 'mime-types';
 import FolderIcon from '@material-ui/icons/Folder';
 import FolderSpecialIcon from '@material-ui/icons/FolderSpecial';
+
 function Idea({ fireIdea, fireSync, user, userInfo ,setlogoName}) {
   const folder = "postit";
   const {id}=useParams();

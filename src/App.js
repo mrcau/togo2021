@@ -114,7 +114,8 @@ function App({ fireApp,fireLogin,fireSync, fireTodo, fireIdea, fireOpentool,fire
         {/* 탑메뉴 */}
         <div className="rightMenu" style={{textAlign:"right",paddingRight:"10px",lineHeight:"20px"}}>
           {uid ? <Tooltip arrow placement="left"  title="나의 툴 보기">
-          <Chip size="small" avatar={<Avatar src={photo}/>} label={userInfo.name||''} as="button"  onClick={moveModal3}/>
+          <Chip size="small" avatar={<Avatar src={photo}/>} label="MyTool" as="button"  onClick={moveModal3}/>
+          {/* <Chip size="small" avatar={<Avatar src={photo}/>} label={userInfo.name||''} as="button"  onClick={moveModal3}/> */}
           </Tooltip> 
             : <IconButton size="small" component="span" onClick={moveModal3} 
             style={{color:"var(--Bcolor)"}}> Login </IconButton>
@@ -133,9 +134,9 @@ function App({ fireApp,fireLogin,fireSync, fireTodo, fireIdea, fireOpentool,fire
             <Todo fireTodo={fireTodo} user={user} userName={userName} setlogoName={setlogoName} />
           </Route>
           
-          {/* <Route path='/workout'>
+          <Route path='/workout'>
             <Workout fireTodo={fireTodo} user={user} userName={userName} setlogoName={setlogoName} />
-          </Route> */}
+          </Route>
           <Route path='/mytool'> 
             <Mytool fireApp={fireApp}fireSync={fireSync} user={user} userInfo={userInfo} setlogoName={setlogoName} />
           </Route>
