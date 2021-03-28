@@ -15,7 +15,8 @@ import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import SaveIcon from '@material-ui/icons/Save';
 import ReplayIcon from '@material-ui/icons/Replay';
 import mime from 'mime-types';
-
+import FolderIcon from '@material-ui/icons/Folder';
+import FolderSpecialIcon from '@material-ui/icons/FolderSpecial';
 function Idea({ fireIdea, fireSync, user, userInfo ,setlogoName}) {
   const folder = "postit";
   const {id}=useParams();
@@ -554,14 +555,14 @@ const upLoad = (e) => { console.log('uplod')
             <input accept="image/*" style={{ display: 'none' }} id="imgData" type="file" onChange={upLoad} />
           }
           {photoData&&
-            <label htmlFor="imgData" style={{background:"gray", height:"25px",margin:"0"}}> 
-              <IconButton size="small" component="span" style={{background:"white", height:"22px"}}> <PhotoCamera /> </IconButton>
+            <label htmlFor="imgData" style={{background:"white", height:"25px",margin:"0"}}> 
+              <IconButton size="small" component="span" style={{background:"white", height:"22px"}}> <FolderSpecialIcon /> </IconButton>
             </label>
           }
           
           {!photoData&&
             <label htmlFor="imgData" style={{background:"white", height:"25px",margin:"0"}}> 
-              <IconButton size="small" component="span" style={{background:"white", height:"22px"}}> <PhotoCamera /> </IconButton>
+              <IconButton size="small" component="span" style={{background:"white", height:"22px"}}> <FolderIcon /> </IconButton>
             </label>
           }
             <button className="btnadd" style={{ outline: "none", border: "none" }} >
