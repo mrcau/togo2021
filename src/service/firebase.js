@@ -205,6 +205,10 @@ roomUser(folder,roomUid,cf) {
     reportDel(folder, uid, dataId) {
       fireInit.database().ref(`${folder}/${uid}/${dataId}`).remove();
     }
+    // toolbox 폴더 삭제
+    folderDel(folder, uid, selectFolder) { 
+      fireInit.database().ref(`${folder}/${uid}/${'toolBox'}/${selectFolder}`).remove();
+    }
 
  
 

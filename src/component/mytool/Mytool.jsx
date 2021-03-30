@@ -15,13 +15,14 @@ function Mytool({fireIdea,fireApp, fireSync,user, userInfo, setlogoName }) {
   const folder = "mytool"
   const Swal = require('sweetalert2');
   const level = userInfo.level || 0;
-  const [folderBox, setfolderBox] = useState(['기본','학교'])
+  
+  const [folderBox, setfolderBox] = useState([])
   const [selectFolder, setselectFolder] = useState('기본')
-
   setlogoName(' My ToolBox');
   // 데이터 보여주기 싱크
   useEffect(() => {    
     fireSync.onAuth((e) => {
+      fireApp.authSync('auth',e.uid,(p)=>setfolderBox(p.toolBox))
     const cf = { f1: (p)=>{setItems(p)}, f2: ()=>{setItems({})}  }
    if(user){ 
       const stopDataSync =fireSync.toolSync(folder,user.uid,selectFolder, cf);
@@ -29,8 +30,7 @@ function Mytool({fireIdea,fireApp, fireSync,user, userInfo, setlogoName }) {
     }else{console.log('no-User')}
   
     })
-  }, [fireSync,user,selectFolder]);
-
+  }, [fireSync,user,selectFolder,userInfo.toolBox]);
   //DB에 글 데이터 저장
   const submit = (e) => {
     e.preventDefault();
@@ -69,11 +69,25 @@ function Mytool({fireIdea,fireApp, fireSync,user, userInfo, setlogoName }) {
       clearTimeout(rocketOn);
     }, 1000);
   }
-  const AddNewFolder = () => {
-    const folderName = newFolder.current.value || "";
-    setfolderBox([...folderBox,folderName]);
+  
+  const deleteFolder = () =>{
+    if(selectFolder==='기본'){return}
+    fireApp.folderDel('auth',user.uid,selectFolder);
     newFolder.current.value = '';
+    setselectFolder('기본')
   }
+
+
+  const AddNewFolder = () => {
+    if(newFolder.current.value===''){return}else{
+      const folderName = newFolder.current.value || "";
+      setfolderBox({...folderBox,folderName});
+      const folder = {...folderBox,[folderName]:folderName}
+      newFolder.current.value = '';
+      fireApp.profileUp('auth',user.uid,{toolBox:folder});
+    }  
+  }
+
   return (
     <div className="mytool">
       <div className="mytool-items">
@@ -85,7 +99,7 @@ function Mytool({fireIdea,fireApp, fireSync,user, userInfo, setlogoName }) {
       </div>
       <div className="mytool-input">
         <form onSubmit={submit} className="mytool-form">
-        <DropdownButton as={ButtonGroup} variant="dark" title={selectFolder} size="sm"  >
+        <DropdownButton as={ButtonGroup} variant="primary" title={selectFolder} size="sm" style={{width:"50px"}} >
           <div className="cardSelect">
             {
             Object.values(folderBox).map((e,i) => {
@@ -95,6 +109,7 @@ function Mytool({fireIdea,fireApp, fireSync,user, userInfo, setlogoName }) {
           </div>
         </DropdownButton>
           <input type="text" ref={newFolder} className="inputTitle" placeholder="새폴더"/>
+          <button type="button" className="btnadd" style={{ outline: "none", border: "none",background:"var(--Dcolor)" }} onClick={deleteFolder}>삭제</button>
           <button type="button" className="btnadd" style={{ outline: "none", border: "none" }} onClick={AddNewFolder}>추가</button>
           <input type="text" ref={titleRef} className="inputTitle" placeholder="링크"/>
           <button className="btnadd" style={{ outline: "none", border: "none" }} >

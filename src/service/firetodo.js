@@ -5,7 +5,10 @@ import "firebase/storage";
 
 
 class firetodo {
- 
+ //회원정보 SYNC
+ async onAuth(cf) {
+  fireInit.auth().onAuthStateChanged(e => cf(e));
+}  
   // TODO글  저장 
   itemSave(folder, data) {
     fireInit.database().ref(`${folder}/${data.uid}/${data.dataId}`).set(data)
@@ -54,7 +57,28 @@ class firetodo {
       .update({ progress: counter })
   }
 
-
+  //Auth 테이블 싱크 for left menu
+  authSync(auth, uid,cf) {
+    if (!auth) { return }
+    const ref = fireInit.database().ref(`${auth}/${uid}`);
+    ref.on('value', (p) => {
+      const data = p.val();
+      if(data===null){return } 
+      else{  
+        cf(data)
+      }
+     });
+  }
+// mytool 씽크
+toolSync(folder,uid,selectFolder, cf) {
+  const ref = fireInit.database().ref(`${folder}/${uid}/${selectFolder}`);
+  ref.on('value', (p) => {
+    const data = p.val();
+    data ? cf.f1(data) : cf.f2();
+  })
+  
+  return ()=>ref.off();
+}
 }
 
 export default firetodo;
