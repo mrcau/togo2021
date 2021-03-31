@@ -36,11 +36,22 @@
 }
 .mytool-form{
   display: grid;
-  grid-template-columns: 50px 1fr 50px 50px 2fr 70px;
+  grid-template-columns:  1fr 38px 38px 50px ;
   border: none;
   outline: none;
   border-top: var(--Acolor) 1px solid;
   background: var(--Acolor);
+}
+.mytool .textarea {
+  grid-column: 1/5;
+  max-width: 100%;
+  min-width: 100%;
+  outline: none;
+  text-align: left;
+  border: none;
+  padding: 5px;
+  resize:none;
+  line-height: 16px;
 }
 .mytool-form ::-webkit-scrollbar {
   width: 4px;
@@ -73,6 +84,7 @@
   margin: 0;
 }
 .mytool .inputTitle {
+  grid-column: 1/5;
   width: 100%;
   font-size: 1rem;
   padding: 2px;
@@ -80,17 +92,7 @@
   border: none;
   border-bottom: 1px dashed var(--Acolor);
 }
-.mytool .textarea {
-  grid-column: 1/7;
-  max-width: 100%;
-  min-width: 100%;
-  outline: none;
-  text-align: left;
-  border: none;
-  padding: 5px;
-  resize:none;
-  line-height: 16px;
-}
+
 .mytool-input{
   border: solid 1px var(--Acolor);
 }

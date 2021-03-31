@@ -274,8 +274,8 @@ toolSync(folder,uid,selectFolder, cf) {
   return ()=>ref.off();
 }
 // 룸네임 없으면 컬러 업데이트
-itemColorUp(folder, uid,dataId, color) {
-fireInit.database().ref(`${folder}/${uid}/${dataId}`)
+itemColorUp(folder, uid,selectFolder,dataId, color) {
+fireInit.database().ref(`${folder}/${uid}/${selectFolder}/${dataId}`)
   .update({ color: color })
 }
  // mytool 업데이트
@@ -284,8 +284,12 @@ fireInit.database().ref(`${folder}/${uid}/${dataId}`)
     .update({ progress: counter })
 }
 // mytool 삭제
-opentoolDel(folder,uid,dataId) {
-  fireInit.database().ref(`${folder}/${uid}/${dataId}`).remove();
+opentoolDel(folder,uid,selectFolder,dataId) {
+  fireInit.database().ref(`${folder}/${uid}/${selectFolder}/${dataId}`).remove();
+}
+// mytool 삭제
+toolDataDel(folder,uid,selectFolder,dataId) {
+  fireInit.database().ref(`${folder}/${uid}/${selectFolder}`).remove();
 }
 
 

@@ -89,7 +89,7 @@ function App({ fireApp,fireLogin,fireSync, fireTodo, fireIdea, fireOpentool,fire
       <div className="drawerbackLeft backNoneLeft" ref={backRef} onClick={moveModal2}></div>
       {/* 위쪽메뉴 */}
       <div className="drawerTop " ref={drawerTopRef}>
-        {uid ? <Mytoolbox fireTodo={fireTodo} user={user} userName={userName} />
+        {uid ? <Mytoolbox userInfo={userInfo} fireTodo={fireTodo} user={user} userName={userName} fireSync={fireSync} />
            : <LoginModal fireApp={fireApp} setuser={setuser} moveModal4={moveModal4} user={user} userInfo={userInfo}  registerTF={registerTF} setRegisterTF={setRegisterTF} /> }
       </div>
       <div className="drawerbackTop backNonTop" ref={backTopRef} onClick={moveModal4}></div>
@@ -114,7 +114,7 @@ function App({ fireApp,fireLogin,fireSync, fireTodo, fireIdea, fireOpentool,fire
         {/* 탑메뉴 */}
         <div className="rightMenu" style={{textAlign:"right",paddingRight:"10px",lineHeight:"20px"}}>
           {uid ? <Tooltip arrow placement="left"  title="나의 툴 보기">
-          <Chip size="small" avatar={<Avatar src={photo}/>} label="MyTool" as="button"  onClick={moveModal3}/>
+          <Chip size="small" avatar={<Avatar src={photo}/>} label="ToolBox" as="button"  onClick={moveModal3}/>
           {/* <Chip size="small" avatar={<Avatar src={photo}/>} label={userInfo.name||''} as="button"  onClick={moveModal3}/> */}
           </Tooltip> 
             : <IconButton size="small" component="span" onClick={moveModal3} 

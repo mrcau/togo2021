@@ -12,7 +12,7 @@ import FileCopyIcon from '@material-ui/icons/FileCopy';
 import LinkIcon from '@material-ui/icons/Link';
 import {  Link, useHistory } from 'react-router-dom';
 
-function  Toolrow ({fireSync,item,level, user}) {
+function  Toolrow ({fireSync,item,level, user,selectFolder}) {
   const folder = "mytool";
   const Swal = require('sweetalert2');
   const fire = () => {Swal.fire({html:item.text2, width:'90%'})}
@@ -25,7 +25,8 @@ function  Toolrow ({fireSync,item,level, user}) {
           title: '데이터를 삭제하겠습니까?',
           icon:'warning',
           showCancelButton: true})
-        .then((result) => {fireSync.opentoolDel(folder,user.uid,item.dataId)});
+        .then((result) => {
+          if(result.isConfirmed){fireSync.opentoolDel(folder,user.uid,selectFolder,item.dataId)}});
       }      
 
   const plus = () => {
@@ -41,7 +42,7 @@ function  Toolrow ({fireSync,item,level, user}) {
   }
 
   const changeColor = (p)=>{
-    fireSync.itemColorUp(folder,user.uid,item.dataId,p);
+    fireSync.itemColorUp(folder,user.uid,selectFolder,item.dataId,p);
   }
 
 
@@ -69,14 +70,18 @@ function  Toolrow ({fireSync,item,level, user}) {
           </div>
         </DropdownButton>
         {/* } */}
+        {item.text2 && 
           <IconButton style={{width:'30px', height:'20px'}} >
             <CopyToClipboard text={item.text2}>
               <FileCopyIcon style={{color:'white'}} size="small"  /> 
             </CopyToClipboard>
           </IconButton>
+        }
+        {item.text2 && 
           <IconButton style={{width:'30px', height:'20px'}} >
           <VisibilityIcon style={{color:'white'}} size="small" onClick={fire} /> 
           </IconButton>
+        }
         
 
         {/* <IconButton style={{width:'20px', height:'15px'}} >
@@ -85,12 +90,15 @@ function  Toolrow ({fireSync,item,level, user}) {
           <ThumbUp style={{color:'white'}} size="small" onClick={Switch?plus:minus} />
           </Badge>
         </IconButton> */}
+        {item.text2 && 
         <IconButton style={{width:'30px', height:'20px'}} >
            <a className="iconLink" href={item.title} target="_blank">
                <LinkIcon />
            </a>
-      </IconButton>
-      </Card.Header>      
+        </IconButton>
+        }
+        
+        </Card.Header>      
       <div className="cardTitle">
         <Card.Body style={{padding:"8px",height:"65px",overflowY:"auto" }}>
         {/* <Card.Title style={{fontSize:"14px",fontWeight:"900",lineHeight:"14px"}} > {item.title||''}  </Card.Title>  */}

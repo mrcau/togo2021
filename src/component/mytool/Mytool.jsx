@@ -38,8 +38,8 @@ function Mytool({fireIdea,fireApp, fireSync,user, userInfo, setlogoName }) {
     const text = textRef.current.value;
     const text2 = textRef2.current.value;
     const title = titleRef.current.value;
-    if(!title || !text || !text2){ Swal.fire({title:'빈칸을 모두 채워주세요.',icon:'warning'}) }
-    if (userInfo && title && text && text2) {
+    if( !text ){ Swal.fire({title:'제목을 입력해 주세요.',icon:'warning'}) }
+    if (userInfo && text) {
       rocketOn();
       const dataId = Date.now();
       const data = {
@@ -72,9 +72,18 @@ function Mytool({fireIdea,fireApp, fireSync,user, userInfo, setlogoName }) {
   
   const deleteFolder = () =>{
     if(selectFolder==='기본'){return}
-    fireApp.folderDel('auth',user.uid,selectFolder);
     newFolder.current.value = '';
+
+    Swal.fire({ 
+      title: selectFolder + ' 폴더와 자료가 모두 삭제됩니다.',
+      icon:'warning',
+      showCancelButton: true})
+    .then((result) => { if(result.isConfirmed){ 
+      fireApp.folderDel('auth',user.uid,selectFolder);
+      fireApp.toolDataDel('mytool',user.uid,selectFolder);
     setselectFolder('기본')
+  }});
+    
   }
 
 
@@ -84,7 +93,17 @@ function Mytool({fireIdea,fireApp, fireSync,user, userInfo, setlogoName }) {
       setfolderBox({...folderBox,folderName});
       const folder = {...folderBox,[folderName]:folderName}
       newFolder.current.value = '';
-      fireApp.profileUp('auth',user.uid,{toolBox:folder});
+
+      Swal.fire({ 
+        title: folderName + ' 폴더가 추가됩니다.',
+        icon:'warning',
+        showCancelButton: true})
+      .then((result) => { if(result.isConfirmed){       
+        fireApp.profileUp('auth',user.uid,{toolBox:folder});
+      setselectFolder(folderName)
+    }});
+
+
     }  
   }
 
@@ -93,13 +112,14 @@ function Mytool({fireIdea,fireApp, fireSync,user, userInfo, setlogoName }) {
       <div className="mytool-items">
         {
           Object.keys(items).map((e) => {
-            return <Toolrow key={e} item={items[e]} fireSync={fireSync} level={level} user={user} userInfo={userInfo} />
+            return <Toolrow key={e} item={items[e]} fireSync={fireSync} level={level} user={user} userInfo={userInfo} selectFolder={selectFolder} />
           })
         }
       </div>
       <div className="mytool-input">
         <form onSubmit={submit} className="mytool-form">
-        <DropdownButton as={ButtonGroup} variant="primary" title={selectFolder} size="sm" style={{width:"50px"}} >
+        <div style={{display:"flex"}}>
+        <DropdownButton as={ButtonGroup} variant="primary" title={selectFolder} size="sm" style={{flex:"1"}} >
           <div className="cardSelect">
             {
             Object.values(folderBox).map((e,i) => {
@@ -108,14 +128,15 @@ function Mytool({fireIdea,fireApp, fireSync,user, userInfo, setlogoName }) {
             }
           </div>
         </DropdownButton>
-          <input type="text" ref={newFolder} className="inputTitle" placeholder="새폴더"/>
-          <button type="button" className="btnadd" style={{ outline: "none", border: "none",background:"var(--Dcolor)" }} onClick={deleteFolder}>삭제</button>
+        <input type="text" ref={newFolder} className="inputTitle" style={{flex:"2",minWidth:"50px"}} placeholder="새폴더"/>
+        </div>      
           <button type="button" className="btnadd" style={{ outline: "none", border: "none" }} onClick={AddNewFolder}>추가</button>
-          <input type="text" ref={titleRef} className="inputTitle" placeholder="링크"/>
-          <button className="btnadd" style={{ outline: "none", border: "none" }} >
-            <span className="rocket" ref={rocketRef}  >🚀</span>  저장</button>
-          <textarea className="textarea" ref={textRef} cols="30" rows="3" placeholder="설명을 적어주세요." />
-          <textarea className="textarea" ref={textRef2} cols="30" rows="3" 
+          <button type="button" className="btnadd" style={{ outline: "none", border: "none",background:"var(--Dcolor)" }} onClick={deleteFolder}>삭제</button>
+          <button className="btnadd" style={{ outline: "none", border: "none"  }} ><span className="rocket" ref={rocketRef}>🚀</span>저장</button>
+          {/* <textarea className="textarea" ref={textRef} cols="30" rows="2" placeholder="제목을 입력해 주세요." /> */}
+          <input type="text" ref={textRef} className="inputTitle" placeholder="제목" />
+          <input type="text" ref={titleRef} className="inputTitle" style={{textAlign:"left"}} placeholder="링크를 입력해주세요."/>
+          <textarea className="textarea" ref={textRef2} cols="30" rows="2" 
           style={{borderTop: 'dashed 1px'}} placeholder="소스코드를 입력해주세요." />
         </form>
       </div>
