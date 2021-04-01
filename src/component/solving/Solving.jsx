@@ -529,7 +529,7 @@ const dataDel = () => {
       <div className="s-itemsv">
         {/* <div className="s-item"> */}
         {
-          Object.keys(items).map((e) => { console.log(e); if(e.length>10){
+          Object.keys(items).map((e) => { if(e.length>10){
             return <div className="s-item" > 
              <Solvingrow roomERef={roomERef} key={e} reportInput={reportInput} report={report} item={items[e]} roomName={roomName} fireIdea={fireIdea} level={level} setColor={setColor} color={color} />
              </div>

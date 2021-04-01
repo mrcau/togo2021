@@ -82,14 +82,20 @@ function  Solvingrow ({item,roomERef,fireIdea,level,roomName,reportInput,report}
     else{console.log('룸없음');fireIdea.itemUpdate(folder,data); }
   }
   
+
   const onSubmit2 = (e)=>{
     if(e.key==='Tab'){
       e.preventDefault();
       const source = textRef.current.value;
-      const data1 = extract(source, source.length);  
+      const data1 = extract(source, e.target.selectionStart);  
+      if(!data1){return}else{
       const emmetText = expand(data1.abbreviation);
-      textRef.current.value = item.text + emmetText;      
+      const sliceText = source.slice(data1.start,data1.end)
+      const changeText = textRef.current.value.replace(sliceText,emmetText)
+      textRef.current.value = changeText;      
+      
     }
+  }
   }
   const fire = () => {Swal.fire({html:item.text, width:'90%'})}
 
@@ -132,7 +138,7 @@ function  Solvingrow ({item,roomERef,fireIdea,level,roomName,reportInput,report}
       </Card.Header>
       
         <Card.Body style={{display:'flex',flexDirection:'column',padding:'5px'}}>    
-          <textarea  className="solvingArea"  ref={textRef} onChange={onSubmit} onKeyDown={onSubmit2} onKeyPress={()=>{console.log('hello')}} value={item.text||''}  disabled={reportInput}  />
+          <textarea  className="solvingArea"  ref={textRef} onChange={onSubmit} onKeyDown={onSubmit2} value={item.text||''}  disabled={reportInput}  />
         </Card.Body>
      </Card>  }
     </div>

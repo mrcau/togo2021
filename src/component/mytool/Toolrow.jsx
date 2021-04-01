@@ -90,14 +90,14 @@ function  Toolrow ({fireSync,item,level, user,selectFolder}) {
           <ThumbUp style={{color:'white'}} size="small" onClick={Switch?plus:minus} />
           </Badge>
         </IconButton> */}
-        {item.text2 && 
+        {item.title && 
         <IconButton style={{width:'30px', height:'20px'}} >
            <a className="iconLink" href={item.title} target="_blank">
                <LinkIcon />
            </a>
         </IconButton>
         }
-        
+
         </Card.Header>      
       <div className="cardTitle">
         <Card.Body style={{padding:"8px",height:"65px",overflowY:"auto" }}>
