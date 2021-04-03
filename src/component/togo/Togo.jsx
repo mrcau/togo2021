@@ -26,7 +26,7 @@ const history = useHistory();
                  
         </Jumbotron>  */}
         <div className="jumbo"> <div className="mainlogo"/>  </div>
-        <h2 style={{fontWeight:"900",color:"var(--Acolor)"}} > 온라인 쌍방향 협업도구</h2>
+        <h2 style={{fontWeight:"900",color:"var(--Acolor)",textAlign:"center"}} > 온라인 쌍방향 협업도구</h2>
         <div className="togoMain1">  
 
         <Card  className="mainCard1" onClick={() =>{history.push('/postit/:id');}} >
@@ -87,7 +87,7 @@ const history = useHistory();
         <Card className="mainCard"  onClick={() =>{history.push('/problem/:id');}} >
           <Card.Img variant="top" src={problem} className="cardImg"  />
           <Card.Body>
-            <Card.Title style={{fontWeight:"900"}}>문제찾기</Card.Title>
+            <Card.Title style={{fontWeight:"900",textAlign:"center"}}>문제찾기</Card.Title>
             <Card.Text>
             다양한 관점의 관찰과 공감을 통해 문제 상황을 인식하고 해결의 <br/> 실마리를 찾을 수 있습니다. 
             </Card.Text>
@@ -98,7 +98,7 @@ const history = useHistory();
         <Card className="mainCard"  onClick={() =>{history.push('/datastudy/:id');}}>
           <Card.Img variant="top"  src={anlysis} className="cardImg"  />
           <Card.Body>
-            <Card.Title style={{fontWeight:"900"}}>데이터분석</Card.Title>
+            <Card.Title style={{fontWeight:"900",textAlign:"center"}}>데이터분석</Card.Title>
             <Card.Text>
             데이터 수집/분석은 문제해결을<br/> 위한 최적의 판단을 내리는 과학적 근거가 됩니다.
             </Card.Text>
@@ -110,7 +110,7 @@ const history = useHistory();
         <Card  className="mainCard" onClick={() =>{history.push('/scamper/:id');}}>
           <Card.Img variant="top" src={idea}  className="cardImg"  />
           <Card.Body>
-            <Card.Title style={{fontWeight:"900"}}>아이디어</Card.Title>
+            <Card.Title style={{fontWeight:"900",textAlign:"center"}}>아이디어</Card.Title>
             <Card.Text>
             유연한 사고를 이끌어 내는 창의적 발상법을 통해 다양한 아이디어를 생각할 수 있습니다.
             </Card.Text>
@@ -131,7 +131,7 @@ const history = useHistory();
         <Card  className="mainCard"onClick={() =>{history.push('/startup/:id');}} >
           <Card.Img variant="top" src={rocket}  className="cardImg" />
           <Card.Body>
-            <Card.Title style={{fontWeight:"900"}}>스타트업</Card.Title>
+            <Card.Title style={{fontWeight:"900",textAlign:"center"}}>스타트업</Card.Title>
             <Card.Text>
             문제해결을 위해 '새로움'을 만들고 '도전'하는 '기업가정신'으로 혁신적인 사업을 창출합니다.
             </Card.Text>

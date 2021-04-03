@@ -97,7 +97,7 @@ function  Solvingrow ({item,roomERef,fireIdea,level,roomName,reportInput,report}
     }
   }
   }
-  const fire = () => {Swal.fire({html:item.text, width:'90%'})}
+  const fire = () => {Swal.fire({html:item.text, width:'90%',showConfirmButton: false})}
 
 
   return ( 

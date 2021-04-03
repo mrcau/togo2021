@@ -254,6 +254,7 @@ position:absolute !important; left: 10px !important;}
   color:white;
   border: none;
   outline: none;
+  text-align: center;
 }
 .item5 { 
   background: #ffffff;
@@ -271,6 +272,7 @@ position:absolute !important; left: 10px !important;}
   color: var(--Acolor);
   padding: 3px;
   outline: none;
+  text-align: center !important;
   
 }
 .area1, .area2, .area3, .area4,.area6,.area7,.area8,.area9,.area {  

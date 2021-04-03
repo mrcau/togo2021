@@ -14,6 +14,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Solvingrow from './Solvingrow';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import ReplayIcon from '@material-ui/icons/Replay';
+import VisibilityIcon from '@material-ui/icons/Visibility';
 
 function Solving({ fireIdea, fireSync, user, userInfo ,setlogoName }) {
   const folder = "solving";
@@ -150,19 +151,50 @@ return;
     }
 
   //모달창3
-  const fire = () => {Swal.fire({html:video, width:'90%'})}
+  const fire = () => {if(!video){return}
+    Swal.fire({html:video, width:'90%',showConfirmButton: false})
+  }
+  
+  //참고링크Emmet
+      // 
+  const firelink = () => {Swal.fire({
+    html:`<style>
+    .btnWrap{display:flex;justify-content:space-evenly; flex-wrap:wrap;
+    margin:0 0 10px 0;
+    }
+    .btnz { width:100px;background: #2778c4 ;border-radius:8px;
+    line-height:80px ; cursor:pointer; padding: 3px 0;  }
+    .ahref{color:white;  font-weight:900; }
+    .btinz:hover{ background:yellow; }
+    </style>
+    <div class='btnWrap'>
+    <a class="ahref" href="https://jsbin.com/" target="_blank">
+    <div class="btnz"><h4>JSbin </div></a>
+    <a  class="ahref" href="https://codesandbox.io/" target="_blank">
+    <div class="btnz"><h4>Sandbox</div></a>
+    <a  class="ahref" href="https://codepen.io/" target="_blank">
+    <div class="btnz"><h4>codepen </div></a>
+    <a class="ahref" href="https://code.visualstudio.com/" target="_blank">
+    <div class="btnz"><h4>VScode </div></a>
+    </div>
+    <iframe src="https://docs.emmet.io/cheat-sheet/" width="100%" height="500px"/>`, 
+    width:'90%',showConfirmButton: false})}
+  
   // 자료입력 모달
-  const fireInsert = async(e)=>{
+  const fireInsert = async(e)=>{ 
     e.preventDefault();
     const { value: text } = await Swal.fire({
       input: 'textarea',
+      width:'80%',
+      // eslint-disable-next-line no-use-before-define
+      inputValue: video||'',
       inputLabel: '참고자료',
-      inputPlaceholder: '이곳에 자료를 입력해주세요.',
-      inputAttributes: {'aria-label': 'Type your message here'},
-      showCancelButton: true
+      // inputPlaceholder: '이곳에 자료를 입력해주세요.',
+      // inputAttributes: {'aria-label': 'Type your message here'},
+      // showCancelButton: true
     })
     if (text) {
-      Swal.fire(text)
+      Swal.fire({html:text, width:'80%',})
     fireIdea.videoSave(folder, user.uid,'See', text);
     }
   }
@@ -476,6 +508,12 @@ const dataDel = () => {
           </Tooltip>
         </IconButton>
         }
+
+        <IconButton size="small"  onClick={firelink} style={{color:"var(--Bcolor)",flex:"auto",width:'30px', height:'25px'}}>
+         <Tooltip arrow  placement="top" title="참고링크">
+             <VisibilityIcon fontSize='small' />
+         </Tooltip>
+        </IconButton>
 
           {level>0 && !report &&
          <IconButton size="small"  onClick={reportSave} style={{color:"var(--Bcolor)",flex:"auto",width:'30px', height:'25px'}}>

@@ -6,7 +6,7 @@
   --Ecolor : linear-gradient(to right, #8e9eab 0%, #eef2f3  51%, #8e9eab  100%);
   margin: 0;
   padding: 0;
-  text-align: center;
+  /* text-align: center; */
   box-sizing: border-box;
   font-size: 14px;
 }
@@ -93,6 +93,7 @@
 }
 .btnmenu{ width: 80px; padding: 0 40px 0 0;}
 .headerT{
+  text-align: center;
   flex:1; padding: 0;}
 
 .steering{
@@ -118,6 +119,7 @@ footer {
   font-weight: 900;
   color: var(--Bcolor);
   background: var(--Acolor);
+  text-align: center;
   padding: 5px;
 }
 .link{

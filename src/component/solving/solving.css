@@ -193,7 +193,9 @@ flex:auto; font-size: small;}
 }
 
 
-.enterInput{  width: 60px; outline: none; border: none;}
+.enterInput{  width: 60px; 
+  text-align: center;
+  outline: none; border: none;}
 /* .noticeTitle{ width: 40px; background: var(--Acolor);} */
 
 .videoModal{
