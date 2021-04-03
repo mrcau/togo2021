@@ -16,7 +16,8 @@ import SaveIcon from '@material-ui/icons/Save';
 import ReplayIcon from '@material-ui/icons/Replay';
 import mime from 'mime-types';
 import FolderIcon from '@material-ui/icons/Folder';
-import FolderSpecialIcon from '@material-ui/icons/FolderSpecial';
+import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate';
+import CollectionsIcon from '@material-ui/icons/Collections';
 
 function Idea({ fireIdea, fireSync, user, userInfo ,setlogoName}) {
   const folder = "postit";
@@ -163,16 +164,19 @@ return;
 
 
   //모달창3
-  const fire = () => {Swal.fire({html:video, width:'90%'})}
+  const fire = () => {if(!video){return}
+  Swal.fire({html:video, width:'90%',showConfirmButton: false})}
   // 자료입력 모달
   const fireInsert = async(e)=>{
     e.preventDefault();
     const { value: text } = await Swal.fire({
       input: 'textarea',
+      width:'80%',
+      inputValue: video||'',
       inputLabel: '참고자료',
-      inputPlaceholder: '이곳에 자료를 입력해주세요.',
-      inputAttributes: {'aria-label': 'Type your message here'},
-      showCancelButton: true
+      // inputPlaceholder: '이곳에 자료를 입력해주세요.',
+      // inputAttributes: {'aria-label': 'Type your message here'},
+      // showCancelButton: false
     })
     if (text) {
       Swal.fire(text)
@@ -557,13 +561,13 @@ const upLoad = (e) => { console.log('uplod')
           }
           {photoData&&
             <label htmlFor="imgData" style={{background:"white", height:"25px",margin:"0"}}> 
-              <IconButton size="small" component="span" style={{background:"white", height:"22px"}}> <FolderSpecialIcon /> </IconButton>
+              <IconButton size="small" component="span" style={{background:"white", height:"22px"}}> <CollectionsIcon /> </IconButton>
             </label>
           }
           
           {!photoData&&
             <label htmlFor="imgData" style={{background:"white", height:"25px",margin:"0"}}> 
-              <IconButton size="small" component="span" style={{background:"white", height:"22px"}}> <FolderIcon /> </IconButton>
+              <IconButton size="small" component="span" style={{background:"white", height:"22px"}}> <AddPhotoAlternateIcon /> </IconButton>
             </label>
           }
             <button className="btnadd" style={{ outline: "none", border: "none" }} >

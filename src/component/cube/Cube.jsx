@@ -165,19 +165,25 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
     }
   
   //모달창3
-  const fire = () => {Swal.fire({html:video, width:'90%'})}
+  const fire = () => {if(!video){return}
+  Swal.fire({html:video, width:'90%',showConfirmButton: false})
+}
+
   // 자료입력 모달
   const fireInsert = async(e)=>{
     e.preventDefault();
     const { value: text } = await Swal.fire({
       input: 'textarea',
+      width:'80%',
+      // eslint-disable-next-line no-use-before-define
+      inputValue: video||'',
       inputLabel: '참고자료',
-      inputPlaceholder: '이곳에 자료를 입력해주세요.',
-      inputAttributes: {'aria-label': 'Type your message here'},
-      showCancelButton: true
+      // inputPlaceholder: '이곳에 자료를 입력해주세요.',
+      // inputAttributes: {'aria-label': 'Type your message here'},
+      // showCancelButton: true
     })
     if (text) {
-      Swal.fire(text)
+      Swal.fire({html:text, width:'80%',})
     fireProblem.videoSave(folder, user.uid,'See', text);
     }
   }

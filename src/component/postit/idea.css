@@ -169,7 +169,9 @@ flex:auto; font-size: small;}
 .nowRoom{padding: 0 10px;}
 .enterTitle{  flex: auto; font-size: small; 
   width: 100%; overflow-x: auto; transition: all 300ms;
-  animation: noticeFly 1000ms;}
+  animation: noticeFly 1000ms;
+  text-align: center;
+}
 .enterInput{  width: 60px; outline: none; border: none;}
 /* .noticeTitle{ width: 40px; background: var(--Acolor);} */
 
@@ -278,6 +280,7 @@ position:absolute !important; left: 10px !important;}
   outline: none;
   border: none;
   border-bottom: 1px dashed var(--Acolor);
+  text-align: center;
 }
 .idea .textarea {
   grid-column: 1/4;
