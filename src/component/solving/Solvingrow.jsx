@@ -82,18 +82,22 @@ function  Solvingrow ({item,roomERef,fireIdea,level,roomName,reportInput,report}
     else{console.log('룸없음');fireIdea.itemUpdate(folder,data); }
   }
   
-
+// selectionStart : 현재 커서 위치, replace : 기존 태그slicetext를 emmettext로 교체
+// function replaceAt (input, index1,index2, word){
+//   return input.substr(index1, index2) + word + input.substr(index+word.length);
+// }
   const onSubmit2 = (e)=>{
     if(e.key==='Tab'){
       e.preventDefault();
-      const source = textRef.current.value;
-      const data1 = extract(source, e.target.selectionStart);  
+      const source = textRef.current.value; console.log(e.target.selectionStart)
+      const data1 = extract(source, e.target.selectionStart);  console.log(data1,e.target.selectionStart)
       if(!data1){return}else{
       const emmetText = expand(data1.abbreviation);
-      const sliceText = source.slice(data1.start,data1.end)
-      const changeText = textRef.current.value.replace(sliceText,emmetText)
-      textRef.current.value = changeText;      
-      
+      // const sliceText = source.slice(data1.start,data1.end)
+      // const changeText = textRef.current.value.replace(sliceText,emmetText)
+      // textRef.current.value = changeText;         
+      textRef.current.value = source.substr(0,data1.start)+emmetText+source.substr(data1.end);         
+
     }
   }
   }
