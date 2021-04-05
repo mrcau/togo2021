@@ -91,6 +91,7 @@
   outline: none;
   border: none;
   border-bottom: 1px dashed var(--Acolor);
+  text-align: center;
 }
 
 .mytool-input{

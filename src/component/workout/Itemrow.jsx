@@ -42,7 +42,7 @@ function  Itemrow ({item,fireTodo,todayId}) {
           </div>
         </Card.Header>      
 
-        <div className="cardTitle">
+        <div className="cardTitle" style={{textAlign:"center"}}>
           <Card.Body style={{padding:"8px",height:"80px",overflowY:"auto"}}>
             {
               Object.values(itemSet).map((e,i) => { 

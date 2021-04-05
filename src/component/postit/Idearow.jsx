@@ -103,7 +103,7 @@ const [reports, setReports] = useState(report)
       </Card.Header>
       }
 
-      <div className="cardTitle">
+      <div className="cardTitle" style={{textAlign:"center"}}>
         <Card.Body style={{padding:"8px",height:"100px",overflowY:"auto" }}>
         {item.roomUid
           ? <Card.Title style={{fontSize:"16px",fontWeight:"900",color:"black"}} > {item.roomName} </Card.Title>

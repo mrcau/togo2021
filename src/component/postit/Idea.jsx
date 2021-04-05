@@ -572,7 +572,7 @@ const upLoad = (e) => { console.log('uplod')
           }
             <button className="btnadd" style={{ outline: "none", border: "none" }} >
               <span className="rocket" ref={rocketRef}  >🚀</span>  추가</button>
-            <textarea className="textarea" ref={textRef} cols="30" rows="2" placeholder="내용" />
+            <textarea className="textarea" ref={textRef} cols="30" rows="2" placeholder="이름/내용" />
             <textarea className="textarea" ref={textRef2} cols="30" rows="2" 
             style={{borderTop: 'dashed 1px'}} placeholder="소스코드" />
           </form>
