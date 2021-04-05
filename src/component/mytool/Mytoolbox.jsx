@@ -40,7 +40,7 @@ function Mytoolbox({ fireTodo, user, userName,userInfo,  fireSync}) {
           })
         }
       </div>
-        <div className='mytool-header' style={{height:"30px",background:"var(--Acolor)"}}>
+        <div className='mytool-header' style={{height:"30px",background:"var(--Acolor)",textAlign:"center"}}>
         <DropdownButton as={ButtonGroup} variant="primary" title={selectFolder} size="sm" style={{height:"30px",width:"140px"}} >
           <div className="cardSelect">
             {

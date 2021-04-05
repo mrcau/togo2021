@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-target-blank */
 import './idearow.css';
 import React, { memo, useState } from 'react';
 import Swal from 'sweetalert2';
@@ -7,6 +8,8 @@ import { ThumbUp } from '@material-ui/icons';
 import { Card, DropdownButton,Dropdown,ButtonGroup } from 'react-bootstrap';
 import {  DeleteForever, } from '@material-ui/icons';
 import VisibilityIcon from '@material-ui/icons/Visibility';
+import LinkIcon from '@material-ui/icons/Link';
+
 function  Idearow ({item,fireIdea,level,roomName,report}) {
   const folder = "postit";
   const Swal = require('sweetalert2');
@@ -66,7 +69,7 @@ const [reports, setReports] = useState(report)
   const fire = () => {Swal.fire({html:item.text2,imageUrl:item.photoData, width:'90%'})}
   return (
     <div className="idearow" >  {item.color && 
-     <Card bg={item.color} text={'white'} style={{ width: '12rem',height:'10rem' }} className="mb-2" >
+     <Card bg={item.color} text={'white'} style={{ width: '12rem',height:'110px'}} className="mb-2" >
       {item.roomUid 
       ? <Card.Header style={{fontSize:"large",fontWeight:"900",color:"black"}}>룸ID</Card.Header>
       :
@@ -90,9 +93,16 @@ const [reports, setReports] = useState(report)
         </DropdownButton>
       }
         { item.text2 || item.photoData ?
-          <IconButton style={{width:'30px', height:'20px',transform:"translateX(-10px)"}} >
+          <IconButton style={{width:'30px', height:'20px'}} >
           <VisibilityIcon style={{color:'white'}} size="small" onClick={fire} /> 
           </IconButton> : <p/>
+        }
+        {item.title && 
+        <IconButton style={{width:'30px', height:'20px'}} >
+           <a className="iconLink" href={item.title} target="_blank">
+               <LinkIcon />
+           </a>
+        </IconButton>
         }
         <IconButton style={{width:'20px', height:'15px'}} >
           <Badge badgeContent={item.progress} color="secondary"   
@@ -103,13 +113,13 @@ const [reports, setReports] = useState(report)
       </Card.Header>
       }
 
-      <div className="cardTitle">
+      <div className="cardTitle" style={{textAlign:"center"}}>
         <Card.Body style={{padding:"8px",height:"100px",overflowY:"auto" }}>
-        {item.roomUid
+        {/* {item.roomUid
           ? <Card.Title style={{fontSize:"16px",fontWeight:"900",color:"black"}} > {item.roomName} </Card.Title>
           : <Card.Title style={{fontSize:"16px",fontWeight:"900",lineHeight:"16px"}} > {item.title}  </Card.Title> 
-        }
-          <Card.Text style={{fontSize:"12px",lineHeight:"14px" }}> {item.text||''} </Card.Text>
+        } */}
+          <Card.Text style={{fontSize:"12px",lineHeight:"14px", whiteSpace:"pre-wrap" }}> {item.text||''} </Card.Text>
         </Card.Body>
       </div>
      </Card>}

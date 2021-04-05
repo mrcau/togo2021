@@ -245,7 +245,7 @@ position:absolute !important; left: 10px !important;}
 
 .idea-form{
   display: grid;
-  grid-template-columns: 1fr 50px 70px;
+  grid-template-columns: 1fr 30px 60px;
   border: none;
   outline: none;
   border-top: var(--Acolor) 1px solid;
@@ -280,18 +280,21 @@ position:absolute !important; left: 10px !important;}
   outline: none;
   border: none;
   border-bottom: 1px dashed var(--Acolor);
-  text-align: center;
+  /* text-align: center; */
 }
 .idea .textarea {
   grid-column: 1/4;
   max-width: 100%;
   min-width: 100%;
   outline: none;
-  text-align: left;
+  /* text-align: left; */
   border: none;
   padding: 5px;
   resize:none;
   line-height: 16px;
+}
+.titleText{
+  text-align: center;
 }
 .idea-input, .s-item{
   border: solid 1px var(--Acolor);

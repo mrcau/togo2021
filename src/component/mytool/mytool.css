@@ -36,7 +36,7 @@
 }
 .mytool-form{
   display: grid;
-  grid-template-columns:  1fr 38px 38px 50px ;
+  grid-template-columns:  1fr    60px ;
   border: none;
   outline: none;
   border-top: var(--Acolor) 1px solid;
@@ -91,6 +91,8 @@
   outline: none;
   border: none;
   border-bottom: 1px dashed var(--Acolor);
+  /* text-align: center; */
+  line-height: 12px;
 }
 
 .mytool-input{
