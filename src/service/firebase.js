@@ -84,10 +84,10 @@ openFolderUp(folder,toolbox, data) {
   fireInit.database().ref(`${folder}/${toolbox}`).update(data);
 }
   // OpenTool 씽크
-  opentoolSync(folder, cf) {console.log('opentoolSync',folder,cf)
+  opentoolSync(folder, cf) {
     const ref = fireInit.database().ref(`${folder}`);
     ref.on('value', (p) => {
-      const data = p.val(); console.log('opentoolSync',data)
+      const data = p.val(); 
       data ? cf.f1(data) : cf.f2();
     })
     
@@ -97,9 +97,9 @@ openFolderUp(folder,toolbox, data) {
 openFolderSync(folder, cf) {
   const ref = fireInit.database().ref(`${folder}/toolbox`);
   ref.on('value', (p) => {
-    const data = p.val(); console.log('openFolderSync',data)
+    const data = p.val(); 
     if(data===null){return } 
-    else{  console.log(data)
+    else{ 
       cf(data)
     }
    });

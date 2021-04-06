@@ -48,7 +48,7 @@ function Opentool({ fireSync, fireApp, user, userInfo,setlogoName }) {
   
     // })
   }, [user,selectFolder,fireApp]);
-console.log(items,folderBox,folder)
+console.log(items.toolbox)
   //DB에 글 데이터 저장
   const submit = (e) => { console.log(userInfo.level)
     e.preventDefault();
@@ -142,13 +142,13 @@ console.log(items,folderBox,folder)
           style={{borderTop: 'dashed 1px'}} placeholder="소스코드를 입력해주세요." /> */}
             <div style={{display:"flex"}}>
             <DropdownButton as={ButtonGroup} variant="primary" title={selectFolder} size="sm" style={{flex:"1"}} >
-          {/* <div className="cardSelect">
+          <div className="cardSelect">
             {
-            Object.values(folderBox).map((e,i) => {
+            items && Object.values(items.toolbox).map((e,i) => {
               return <Dropdown.Item as="button" type="button"  onClick={()=>{setselectFolder(e)}} style={{textAlign:"center", fontSize:"12px",padding:"0",fontWeight:"900"}}>{e}</Dropdown.Item>
             })
             }
-          </div> */}
+          </div>
         </DropdownButton>
          <div style={{display:"flex",background:"white"}}>
           {level>0 && 
