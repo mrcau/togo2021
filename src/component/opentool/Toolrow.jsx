@@ -11,7 +11,7 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import LinkIcon from '@material-ui/icons/Link';
 
-function  Toolrow ({fireIdea,item,fireApp,level, user}) {
+function  Toolrow ({item,fireApp,level, user}) {
   const folder = "Opentool";
   const Swal = require('sweetalert2');
   // const [video, setVideo] = useState('');

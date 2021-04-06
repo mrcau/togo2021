@@ -21,6 +21,7 @@ function Mytoolbox({ fireTodo, user, userName,userInfo,  fireSync}) {
   // }, [fireTodo,user]);
   useEffect(() => {    
     fireSync.onAuth((e) => {
+      if(!e.uid){return}
       fireTodo.authSync('auth',e.uid,(p)=>setfolderBox(p.toolBox))
     const cf = { f1: (p)=>{setItems(p)}, f2: ()=>{setItems({})}  }
    if(user){ 
