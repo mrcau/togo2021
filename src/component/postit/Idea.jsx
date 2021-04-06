@@ -18,6 +18,7 @@ import mime from 'mime-types';
 import FolderIcon from '@material-ui/icons/Folder';
 import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate';
 import CollectionsIcon from '@material-ui/icons/Collections';
+import html2canvas from 'html2canvas';
 
 function Idea({ fireIdea, fireSync, user, userInfo ,setlogoName}) {
   const folder = "postit";
@@ -162,10 +163,20 @@ return;
     }
 
 
+    // Swal.fire({ 
+    //   title: '전체 내용을 삭제하겠습니까?',
+    //   icon:'warning',
+    //   showCancelButton: true})
+    // .then((result) => { if(result.isConfirmed){ 
+    //   const data = { roomName : roomName,  host:'입장' }
+    //   fireIdea.itemRefresh(folder, roomName, data);
+    //   Swal.fire('삭제되었습니다.');     
+    // }});
 
   //모달창3
   const fire = () => {if(!video){return}
-  Swal.fire({html:video, width:'90%',showConfirmButton: false})}
+  Swal.fire({html:video, width:'90%',showConfirmButton: false})
+}
   // 자료입력 모달
   const fireInsert = async(e)=>{
     e.preventDefault();
@@ -405,12 +416,11 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
 const submit = (e) => {
   e.preventDefault();
   if(!roomName){return;}
-  const title = titleRef2.current.value ||'';//Link
-  const text = textRef.current.value; //내용
-  let text2 = textRef2.current.value; //Content
-  if(title&&!text2){text2 = `<iframe src=${title} width="90%" height="500px"/>`}
-  if(!text){ Swal.fire({title:'내용을 입력해주세요.',icon:'warning'}) }
-  if (userInfo && text ) { console.log('title',title,'text',text,'text2',text2)
+  const title = titleRef2.current.value;
+  const text = textRef.current.value;
+  const text2 = textRef2.current.value;
+  if(!title || !text){ Swal.fire({title:'제목과 내용을 입력해주세요.',icon:'warning'}) }
+  if (userInfo && title && text ) {
     rocketOn();
     const dataId = Date.now();
     const data = {
@@ -555,32 +565,27 @@ const upLoad = (e) => { console.log('uplod')
         {/* {entering && */}
         <div className="idea-input">
           <form onSubmit={submit} className="idea-form">
-            <input type="url" ref={titleRef2} className="inputTitle" placeholder="  Link"/>
+            <input type="text" ref={titleRef2} className="inputTitle" placeholder="참고링크"/>
 
           {roomName && 
-          <input accept="image/*" style={{ display: 'none' }} id="imgData" type="file" onChange={upLoad} />
-        }
+            <input accept="image/*" style={{ display: 'none' }} id="imgData" type="file" onChange={upLoad} />
+          }
           {photoData&&
-          <label htmlFor="imgData" style={{background:"white", height:"25px",margin:"0"}}> 
+            <label htmlFor="imgData" style={{background:"white", height:"25px",margin:"0"}}> 
               <IconButton size="small" component="span" style={{background:"white", height:"22px"}}> <CollectionsIcon /> </IconButton>
             </label>
           }
           
           {!photoData&&
-          <Tooltip arrow  placement="top" title="사진첨부"> 
-          <label htmlFor="imgData" style={{background:"white", height:"25px",margin:"0"}}> 
+            <label htmlFor="imgData" style={{background:"white", height:"25px",margin:"0"}}> 
               <IconButton size="small" component="span" style={{background:"white", height:"22px"}}> <AddPhotoAlternateIcon /> </IconButton>
             </label>
-          </Tooltip>
           }
-          <Tooltip arrow  placement="top" title="내용저장"> 
             <button className="btnadd" style={{ outline: "none", border: "none" }} >
-              <span className="rocket" ref={rocketRef}  >🚀</span>  저장</button>
-          </Tooltip>
-
-            <textarea className="textarea titleText" ref={textRef} cols="30" rows="2" placeholder="이름/내용" />
+              <span className="rocket" ref={rocketRef}  >🚀</span>  추가</button>
+            <textarea className="idea textarea" ref={textRef} cols="30" rows="2" placeholder="이름/내용" />
             <textarea className="textarea" ref={textRef2} cols="30" rows="2" 
-            style={{borderTop: 'dashed 1px'}} placeholder=" Content" />
+            style={{borderTop: 'dashed 1px'}} placeholder="소스코드" />
           </form>
         </div>    
          {/* }     */}

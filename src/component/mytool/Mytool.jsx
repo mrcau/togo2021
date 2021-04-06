@@ -138,13 +138,13 @@ function Mytool({fireIdea,fireApp, fireSync,user, userInfo, setlogoName }) {
         <div style={{display:"flex",background:"white"}}>
           {level>0 && 
          <Tooltip arrow  placement="top" title="폴더삭제">
-          <IconButton size="small" component="span" onClick={deleteFolder} style={{color:"var(--Acolor)",padding:"0"}}>
+          <IconButton size="small" component="span" onClick={deleteFolder} style={{color:"var(--Acolor)",padding:"0 5px 0 0"}}>
                 <DeleteForever />  
           </IconButton>
           </Tooltip>
         }
         {level>0 &&       
-         <IconButton size="small" component="span" onClick={AddNewFolder} style={{color:"var(--Acolor)",padding:"0"}} > 
+         <IconButton size="small" component="span" onClick={AddNewFolder} style={{color:"var(--Acolor)",padding:"0 0 0 5px"}} > 
          <Tooltip arrow  placement="top" title="폴더 추가">
           <AddCircleOutlineIcon  />  
           </Tooltip>
@@ -169,9 +169,8 @@ function Mytool({fireIdea,fireApp, fireSync,user, userInfo, setlogoName }) {
           {/* <button className="btnadd" style={{ outline: "none", border: "none"  }} ><span className="rocket" ref={rocketRef}>🚀</span>저장</button> */}
           {/* <textarea className="textarea" ref={textRef} cols="30" rows="2" placeholder="제목을 입력해 주세요." /> */}
           <textarea type="text" cols="30" rows="2"  ref={textRef} className="inputTitle"  style={{textAlign:"center",resize:"none"}} placeholder="내용" />
-          <input type="text" ref={titleRef} className="inputTitle" placeholder="  Link"/>
-          <textarea className="textarea" ref={textRef2} cols="30" rows="2" 
-          style={{borderTop: 'dashed 1px'}} placeholder=" Content" />
+          <input type="url" ref={titleRef} className="inputTitle" placeholder="  Link"/>
+          <textarea className="textarea" ref={textRef2} cols="30" rows="2" placeholder=" Content" />
         </form>
       </div>
 

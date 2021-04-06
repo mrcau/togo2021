@@ -283,6 +283,11 @@ fireInit.database().ref(`${folder}/${uid}/${selectFolder}/${dataId}`)
   fireInit.database().ref(`${folder}/${uid}/${dataId}`)
     .update({ progress: counter })
 }
+ // mytool 업데이트
+ toolTextEdit(folder,uid,selectFolder, dataId, txt) {
+  fireInit.database().ref(`${folder}/${uid}/${selectFolder}/${dataId}`)
+    .update({ text: txt })
+}
 // mytool 삭제
 opentoolDel(folder,uid,selectFolder,dataId) {
   fireInit.database().ref(`${folder}/${uid}/${selectFolder}/${dataId}`).remove();

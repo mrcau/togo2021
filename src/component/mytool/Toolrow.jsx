@@ -46,6 +46,20 @@ function  Toolrow ({fireSync,item,level, user,selectFolder}) {
   }
 
 
+  const editText = async()=>{ 
+    // e.preventDefault();
+  if(user.uid != item.uid){return}
+  const { value: text } = await Swal.fire({
+      input: 'textarea',
+      inputValue:item.text,
+      showCancelButton: true
+    })
+    if (text) {
+      // Swal.fire(text)
+      fireSync.toolTextEdit(folder,user.uid,selectFolder,item.dataId,text);
+    }
+  }
+
   return (
     <div className="toolrow">
 
@@ -83,13 +97,6 @@ function  Toolrow ({fireSync,item,level, user,selectFolder}) {
           </IconButton>
         }
         
-
-        {/* <IconButton style={{width:'20px', height:'15px'}} >
-          <Badge badgeContent={item.progress} color="secondary"   
-            anchorOrigin={{vertical: 'top', horizontal: 'right', }}> 
-          <ThumbUp style={{color:'white'}} size="small" onClick={Switch?plus:minus} />
-          </Badge>
-        </IconButton> */}
         {item.title && 
         <IconButton style={{width:'30px', height:'20px'}} >
            <a className="iconLink" href={item.title} target="_blank">
@@ -102,7 +109,7 @@ function  Toolrow ({fireSync,item,level, user,selectFolder}) {
       <div className="cardTitle" style={{textAlign:"center"}}>
         <Card.Body style={{padding:"8px",height:"65px",overflowY:"auto" }}>
         {/* <Card.Title style={{fontSize:"14px",fontWeight:"900",lineHeight:"14px"}} > {item.title||''}  </Card.Title>  */}
-          <Card.Text style={{fontSize:"12px",lineHeight:"14px",padding:"0", whiteSpace:"pre-wrap" }}> {item.text||''} </Card.Text>
+          <Card.Text style={{fontSize:"12px",lineHeight:"14px",padding:"0", whiteSpace:"pre-wrap" }} onClick={editText} > {item.text||''} </Card.Text>
         </Card.Body>
       </div>
      </Card>
