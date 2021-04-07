@@ -71,7 +71,7 @@ const [reports, setReports] = useState(report)
     <div className="idearow" >  {item.color && 
      <Card bg={item.color} text={'white'} style={{ width: '12rem',height:'110px'}} className="mb-2" >
       {item.roomUid 
-      ? <Card.Header style={{fontSize:"large",fontWeight:"900",color:"black"}}>룸ID</Card.Header>
+      ? <Card.Header style={{fontSize:"large",fontWeight:"900",color:"black",textAlign:"center"}}>룸ID</Card.Header>
       :
       <Card.Header style={{display:'flex',justifyContent:"space-between" ,padding:'5px'}} >
         {level>0 && !reports && <IconButton style={{width:'20px', height:'15px'}} > <DeleteForever onClick={itemDel} style={{color:'white'}} /></IconButton> }
@@ -115,10 +115,10 @@ const [reports, setReports] = useState(report)
 
       <div className="cardTitle" style={{textAlign:"center"}}>
         <Card.Body style={{padding:"8px",height:"100px",overflowY:"auto" }}>
-        {/* {item.roomUid
-          ? <Card.Title style={{fontSize:"16px",fontWeight:"900",color:"black"}} > {item.roomName} </Card.Title>
-          : <Card.Title style={{fontSize:"16px",fontWeight:"900",lineHeight:"16px"}} > {item.title}  </Card.Title> 
-        } */}
+        {item.roomUid &&
+           <Card.Title style={{fontSize:"16px",fontWeight:"900",color:"black"}} > {item.roomName} </Card.Title>
+          // : <Card.Title style={{fontSize:"16px",fontWeight:"900",lineHeight:"16px"}} > {item.title}  </Card.Title> 
+        }
           <Card.Text style={{fontSize:"12px",lineHeight:"14px", whiteSpace:"pre-wrap" }}> {item.text||''} </Card.Text>
         </Card.Body>
       </div>

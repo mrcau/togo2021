@@ -165,7 +165,15 @@ return;
 
   //모달창3
   const fire = () => {if(!video){return}
-  Swal.fire({html:video, width:'90%',showConfirmButton: false})}
+  Swal.fire({
+    html:video, width:'90%'
+    // ,showConfirmButton: false
+  }).then((result)=>{
+    if(result.isConfirmed){
+      Swal.fire('ok')
+    }
+  })
+}
   // 자료입력 모달
   const fireInsert = async(e)=>{
     e.preventDefault();
@@ -174,12 +182,10 @@ return;
       width:'80%',
       inputValue: video||'',
       inputLabel: '참고자료',
-      // inputPlaceholder: '이곳에 자료를 입력해주세요.',
-      // inputAttributes: {'aria-label': 'Type your message here'},
       // showCancelButton: false
     })
     if (text) {
-      Swal.fire(text)
+      Swal.fire({html:text,width:'90%'})
     fireIdea.videoSave(folder, user.uid,'See', text);
     }
   }
