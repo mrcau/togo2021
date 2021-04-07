@@ -39,7 +39,7 @@ function Opentool({ fireSync, fireApp, user, userInfo,setlogoName }) {
     const title = titleRef.current.value;
     const text = textRef.current.value;
     const text2 = textRef2.current.value;
-    if(!text){ Swal.fire({title:'제목을 모두 채워주세요.',icon:'warning'}) }
+    if(!text){ Swal.fire({title:'내용을 입력해주세요.',icon:'warning'}) }
     if (userInfo && text ) { console.log(text)
       rocketOn();
       const dataId = Date.now();
@@ -113,15 +113,16 @@ function Opentool({ fireSync, fireApp, user, userInfo,setlogoName }) {
       
       <div className="opentool-input">
           {userInfo && userInfo.level>5 &&
-          <div>
-          <input type="url" ref={titleRef} className="inputTitle" placeholder="  Link"/>
-          <textarea className="textarea" ref={textRef2} cols="30" rows="2" placeholder=" Content" />
-          <textarea  className="inputTitle"  ref={textRef}  cols="30" rows="2"   style={{textAlign:"center",resize:"none"}} placeholder="내용" />
+          <div style={{display:"flex",flexDirection:"column"}}>
+            <input type="url" ref={titleRef} className="inputTitle" placeholder="  Link"/> 
+            <textarea ref={textRef2} cols="30" rows="2" className="inputTitle" placeholder="  Content" />
+            <textarea ref={textRef}  cols="30" rows="2"   className="inputTitle" placeholder="내용" style={{textAlign:"center",border:"1px"}} />
           </div>
           }
 
-        <form onSubmit={submit} className="opentool-form">
-        <div style={{display:"flex"}}>
+        {/* <form onSubmit={submit} className="opentool-form"> */}
+        <div style={{width:"100%",height:"1px", background:"black"}} /> 
+        <div style={{display:"flex",background:"var(--Acolor)",border:"1px"}}>
           <DropdownButton as={ButtonGroup} variant="primary" title={selectFolder} size="sm" style={{flex:"1"}} >
             <div className="cardSelect">
             {
@@ -131,37 +132,36 @@ function Opentool({ fireSync, fireApp, user, userInfo,setlogoName }) {
             }
             </div>
           </DropdownButton>
-         <div style={{display:"flex",background:"white"}}>
-          {level>0 && 
-         <Tooltip arrow  placement="top" title="폴더삭제">
-          <IconButton size="small" component="span" onClick={deleteFolder} style={{color:"var(--Acolor)",padding:"0 5px 0 0"}}>
+          {level>5 && 
+           <div style={{display:"flex",background:"white"}}>
+             <Tooltip arrow  placement="top" title="폴더삭제">
+              <IconButton size="small" component="span" onClick={deleteFolder} style={{color:"var(--Acolor)",padding:"0 5px 0 0"}}>
                 <DeleteForever />  
-          </IconButton>
-          </Tooltip>
-        }
-        {level>0 &&       
-         <IconButton size="small" component="span" onClick={AddNewFolder} style={{color:"var(--Acolor)",padding:"0 0 0 5px"}} > 
-         <Tooltip arrow  placement="top" title="폴더 추가">
-          <AddCircleOutlineIcon  />  
-          </Tooltip>
-        </IconButton>
-        }
-        </div>
-        {userInfo && userInfo.level>5 &&
-        <input type="text" ref={newFolder} className="inputTitle" style={{flex:"2",minWidth:"50px"}} placeholder="새폴더"/>
-        }
-        </div>  
-        {userInfo && userInfo.level>5 &&
-          <Tooltip arrow  placement="top" title="내용저장"> 
-          <IconButton size="small" component="span" onClick={submit} style={{color:"var(--Bcolor)",padding:"0"}}>
-          <span className="rocket" ref={rocketRef}>🚀</span>
-          <span style={{cursor:"pointer",fontWeight:"900"}}>저장</span> 
-          </IconButton>
-          </Tooltip> 
+              </IconButton>
+             </Tooltip>
+             
+            <Tooltip arrow  placement="top" title="폴더 추가">
+              <IconButton size="small" component="span" onClick={AddNewFolder} style={{color:"var(--Acolor)",padding:"0 0 0 5px"}} > 
+                <AddCircleOutlineIcon  />  
+              </IconButton>
+            </Tooltip>
+           </div>
           }
-          
-         
-          </form>
+
+          {userInfo && userInfo.level>5 &&
+           <input type="text" ref={newFolder} className="inputTitle" style={{flex:"1",minWidth:"50px",border:"1px"}} placeholder="새폴더"/>
+          }
+
+          {userInfo && userInfo.level>5 &&
+            <Tooltip arrow  placement="top" title="내용저장"> 
+              <IconButton size="small" component="span" onClick={submit} style={{color:"var(--Bcolor)",padding:"0 5px"}}>
+                <span className="rocket" ref={rocketRef}>🚀</span>
+                <span style={{cursor:"pointer",fontWeight:"900"}}>저장</span> 
+              </IconButton>
+            </Tooltip> 
+          }                  
+        </div>           
+          {/* </form> */}
       </div>
        
        

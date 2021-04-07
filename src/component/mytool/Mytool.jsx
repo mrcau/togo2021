@@ -124,7 +124,7 @@ function Mytool({fireIdea,fireApp, fireSync,user, userInfo, setlogoName }) {
         <DropdownButton as={ButtonGroup} variant="primary" title={selectFolder} size="sm" style={{flex:"1"}} >
           <div className="cardSelect">
             {
-            Object.values(folderBox).map((e,i) => {
+            folderBox && Object.values(folderBox).map((e,i) => {
               return <Dropdown.Item as="button" type="button"  onClick={()=>{setselectFolder(e)}} style={{textAlign:"center", fontSize:"12px",padding:"0",fontWeight:"900"}}>{e}</Dropdown.Item>
             })
             }
