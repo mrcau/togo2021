@@ -11,7 +11,7 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import LinkIcon from '@material-ui/icons/Link';
 
-function  Toolrow ({fireIdea,item,fireApp,level, user}) {
+function  Toolrow ({item,fireApp,level, user}) {
   const folder = "Opentool";
   const Swal = require('sweetalert2');
   // const [video, setVideo] = useState('');
@@ -69,20 +69,26 @@ function  Toolrow ({fireIdea,item,fireApp,level, user}) {
             <Dropdown.Item as="button" onClick={()=>changeColor('dark')} style={{color:"#32383e",textAlign:"center", fontSize:"18px",padding:"0 2px"}}>❼</Dropdown.Item>
           </div>
         </DropdownButton>}
+        {item.text2 && 
           <IconButton style={{width:'30px', height:'20px'}} >
             <CopyToClipboard text={item.text2}>
               <FileCopyIcon style={{color:'white'}} size="small"  /> 
             </CopyToClipboard>
           </IconButton>
-          <IconButton style={{width:'30px', height:'20px'}} >
+        }
+        {item.text2 && 
+        <IconButton style={{width:'30px', height:'20px'}} >
           <VisibilityIcon style={{color:'white'}} size="small" onClick={fire} /> 
           </IconButton>
+        }
         
+        {item.title && 
           <IconButton style={{width:'30px', height:'20px'}} >
            <a className="iconLink" href={item.title} target="_blank">
                <LinkIcon />
            </a>
       </IconButton>
+        }
 
         <IconButton style={{width:'20px', height:'15px'}} >
           <Badge badgeContent={item.progress} color="secondary"   
@@ -93,13 +99,13 @@ function  Toolrow ({fireIdea,item,fireApp,level, user}) {
       </Card.Header>
       
 
-      <div className="cardTitle">
+      <div className="cardTitle" style={{textAlign:"center"}}>
         <Card.Body style={{padding:"8px",height:"55px",overflowY:"auto" }}>
         {/* {item.roomUid
           ? <Card.Title style={{fontSize:"16px",fontWeight:"900",color:"black"}} > {item.roomName} </Card.Title>
           : <Card.Title style={{fontSize:"16px",fontWeight:"900",lineHeight:"5px"}} > {item.title}  </Card.Title> 
         } */}
-          <Card.Text style={{fontSize:"12px",lineHeight:"14px",padding:"0" }}> {item.text||''} </Card.Text>
+          <Card.Text style={{fontSize:"12px",lineHeight:"14px",padding:"0", whiteSpace:"pre-wrap"  }}> {item.text||''} </Card.Text>
         </Card.Body>
       </div>
      </Card>

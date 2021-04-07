@@ -58,21 +58,7 @@ class firebaseApp {
       console.log(error)
     }
   }
-  // OpenTool  저장 
-  opentoolSave(folder, data) {
-    fireInit.database().ref(`${folder}/${data.dataId}`).set(data)
-      .then(() => console.log('글 저장성공'))
-      .catch((e) => console.log(e))
-  }
 
-  // OpenTool 씽크
-  opentoolSync(folder, cf) {
-    const ref = fireInit.database().ref(`${folder}`);
-    ref.on('value', (p) => {
-      const data = p.val();
-      data ? cf.f1(data) : cf.f2();
-    })
-  }
   // 룸네임 없으면 컬러 업데이트
 itemColorUp(folder, dataId, color) {
   fireInit.database().ref(`${folder}/${dataId}`)
@@ -87,6 +73,46 @@ itemColorUp(folder, dataId, color) {
   opentoolDel(folder,dataId) {
     fireInit.database().ref(`${folder}/${dataId}`).remove();
   }
+  // OpenTool  저장 
+  opentoolSave(folder, data) {
+    fireInit.database().ref(`${folder}/${data.dataId}`).set(data)
+      .then(() => console.log('글 저장성공'))
+      .catch((e) => console.log(e))
+  }
+  // openFolder 업데이트
+openFolderUp(folder,toolbox, data) {
+  fireInit.database().ref(`${folder}/${toolbox}`).update(data);
+}
+
+  // openFolder 업데이트
+openfolderDel(folder,toolbox, data) {
+    fireInit.database().ref(`${folder}/${toolbox}`).set(data);
+  }
+  
+  // OpenTool 씽크
+  opentoolSync(folder, cf) {
+    const ref = fireInit.database().ref(`${folder}`);
+    ref.on('value', (p) => {
+      const data = p.val(); 
+      data ? cf.f1(data) : cf.f2();
+    })
+    
+    return () => {ref.off()}
+  }
+// openFolder 싱크
+openFolderSync(folder, cf) {
+  const ref = fireInit.database().ref(`${folder}/toolbox`);
+  ref.on('value', (p) => {
+    const data = p.val(); 
+    if(data===null){return } 
+    else{ 
+      cf(data)
+    }
+   });
+   
+   return () => {ref.off()}
+}
+
 
   // TODO글  저장 
   itemSave(folder, data) {
@@ -214,6 +240,7 @@ roomUser(folder,roomUid,cf) {
       fireInit.database().ref(`${folder}/${uid}/${selectFolder}`).remove();
     }
 
+
  
 
   // 보고서 저장
@@ -266,6 +293,8 @@ profileUp(folder, uid,data) {
   fireInit.database().ref(`${folder}/${uid}`).update(data);
   fireInit.auth().currentUser.updateProfile(data);
 }
+
+
 // 데이터 삭제 auth/${e.user.uid}
 authDel(folder, uid) {
   fireInit.database().ref(`${folder}/${uid}`).remove();
