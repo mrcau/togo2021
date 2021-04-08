@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/iframe-has-title */
 import { Badge, IconButton, Switch,Tooltip } from '@material-ui/core';
 import {  DeleteForever,   MenuSharp, PhotoCamera,InsertEmoticon } from '@material-ui/icons';
 import React, { memo, useEffect,  useRef, useState } from 'react';
@@ -18,6 +19,8 @@ import mime from 'mime-types';
 import FolderIcon from '@material-ui/icons/Folder';
 import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate';
 import CollectionsIcon from '@material-ui/icons/Collections';
+import html2canvas from 'html2canvas';
+import { useScreenshot, createFileName } from "use-react-screenshot";
 
 function Idea({ fireIdea, fireSync, user, userInfo ,setlogoName}) {
   const folder = "postit";
@@ -162,18 +165,38 @@ return;
     }
 
 
+const captureRef = useRef()
+  const [image, takeScreenShot] = useScreenshot({
+    type: "image/jpeg",
+    quality: 1.0
+  });
 
+  const download = (image, { name = "img", extension = "jpg" } = {}) => {
+    const a = document.createElement("a");
+    a.href = image;
+    a.download = createFileName(extension, name);
+    a.click();
+  };
+
+  const downloadScreenshot = () => {document.getElementById('divToPrint')&&takeScreenShot(document.getElementById('divToPrint')).then(download);}
+//   window.addEventListener("keydown", (e) => console.log(e))
   //모달창3
   const fire = () => {if(!video){return}
-  Swal.fire({
-    html:video, width:'90%'
-    // ,showConfirmButton: false
-  }).then((result)=>{
-    if(result.isConfirmed){
-      Swal.fire('ok')
+  Swal.fire({  html:`<div id="divToPrint" width="100%">${video}`,width:"90%" })
+  .then((result)=>{
+    if(result.isConfirmed){       
+      downloadScreenshot()
+      // html2canvas(document.getElementById('divToPrint')).then(function(canvas) {
+      //   var imgageData = canvas.toDataURL("image/png");
+      //   var newData = imgageData.replace(/^data:image\/png/, "data:application/octet-stream");
+      //   const a = document.createElement("a");
+      //   a.href = imgageData;
+      //   a.download = createFileName("png", "imgimg");
+      //   a.click();
+      // });
+          }
+      })
     }
-  })
-}
   // 자료입력 모달
   const fireInsert = async(e)=>{
     e.preventDefault();
@@ -447,7 +470,6 @@ const upLoad = (e) => { console.log('uplod')
   fireIdea.imgUpload( imgDataId, file, metaData, (e) => setPhotoData(e));
   
 }
-
   return (
     <div className="idea" >       
     <div className="drawer" ref={drawerRef}>
@@ -457,6 +479,9 @@ const upLoad = (e) => { console.log('uplod')
       moveModal2={moveModal2} report={report} setItems={setItems} setDoor={setDoor} setEntering={setEntering}  /> 
     }
     </div> 
+    {/* <div className="drawerScreen" id="screenCap" >
+      {video}
+    </div> */}
     <div className="drawerback backNone" ref={backRef} onClick={moveModal2} style={{zIndex:"1"}}></div>
     {level>0 && 
         <form className="adimBar">
@@ -550,7 +575,7 @@ const upLoad = (e) => { console.log('uplod')
       </div>
 
 {/* 여기부터 todo스타일 */}
-      <div className="ideas">
+      <div className="ideas" >
         <div className="idea-items">
         {
           Object.keys(items).map((e) => {

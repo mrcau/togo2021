@@ -11,6 +11,7 @@
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
+    "base-64": "^1.0.0",
     "bootstrap": "^4.6.0",
     "emmet": "^2.3.4",
     "firebase": "^8.2.3",
@@ -24,8 +25,10 @@
     "react-dom": "^17.0.1",
     "react-hook-form": "^6.15.1",
     "react-router-dom": "^5.2.0",
+    "react-screen-capture": "^1.0.0",
     "react-scripts": "4.0.1",
     "sweetalert2": "^10.14.0",
+    "use-react-screenshot": "^1.0.2",
     "web-vitals": "^0.2.4"
   },
   "scripts": {
