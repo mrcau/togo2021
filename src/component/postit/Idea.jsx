@@ -19,6 +19,10 @@ import FolderIcon from '@material-ui/icons/Folder';
 import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate';
 import CollectionsIcon from '@material-ui/icons/Collections';
 
+// import html2canvas from 'html2canvas';
+// import { useScreenshot } from 'use-react-screenshot'
+import { useScreenshot } from "use-screenshot-hook";
+
 function Idea({ fireIdea, fireSync, user, userInfo ,setlogoName}) {
   const folder = "postit";
   const {id}=useParams();
@@ -161,19 +165,34 @@ return;
       setrightModal(true);
     }
 
+  // 공지사항모달창3
 
-
-  //모달창3
-  const fire = () => {if(!video){return}
-  Swal.fire({
-    html:video, width:'90%'
-    // ,showConfirmButton: false
-  }).then((result)=>{
-    if(result.isConfirmed){
-      Swal.fire('ok')
-    }
-  })
-}
+  const screenRef = useRef();
+  // const screenRef = createRef(null)
+    // const [image, takeScreenShot] = useScreenshot({
+    //   type: "image/jpeg",
+    //   quality: 1.0
+    // });
+    // const getImage = () => takeScreenshot(screenRef.current)
+    // const download = (image, { name = "img", extension = "jpg" } = {}) => {
+    //    const a = document.createElement("a");
+    //    a.href = image;
+    //    a.download = createFileName(extension, name);
+    //    a.click();
+    // };
+    // const downloadScreenshot = () => takeScreenShot(screenRef.current).then(download);
+    const { image, takeScreenshot } = useScreenshot();
+    const fire = () => {if(!video){return}
+    Swal.fire({html:`<div ref={${screenRef}}>${video}</div>`})
+        .then((result)=>{
+            if(result.isConfirmed){
+              takeScreenshot()
+              {image && console.log(image)}
+              
+                  // Swal.fire(img) downloadScreenshot();
+                }
+              })
+            }
   // 자료입력 모달
   const fireInsert = async(e)=>{
     e.preventDefault();

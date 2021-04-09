@@ -24,8 +24,11 @@
     "react-dom": "^17.0.1",
     "react-hook-form": "^6.15.1",
     "react-router-dom": "^5.2.0",
+    "react-screen-capture": "^1.0.0",
     "react-scripts": "4.0.1",
     "sweetalert2": "^10.14.0",
+    "use-react-screenshot": "^1.0.2",
+    "use-screenshot-hook": "^1.0.2",
     "web-vitals": "^0.2.4"
   },
   "scripts": {
