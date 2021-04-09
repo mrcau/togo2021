@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/iframe-has-title */
 import { Badge, IconButton, Switch,Tooltip } from '@material-ui/core';
-import {  DeleteForever,   MenuSharp, PhotoCamera,InsertEmoticon } from '@material-ui/icons';
+import {  DeleteForever,   MenuSharp, InsertEmoticon } from '@material-ui/icons';
 import React, { memo, useEffect,  useRef, useState } from 'react';
 import AddCommentIcon from '@material-ui/icons/AddComment';
 import YouTubeIcon from '@material-ui/icons/YouTube';
@@ -12,15 +12,12 @@ import { useHistory, useParams } from 'react-router-dom';
 import Idearow from './Idearow';
 import LinkIcon from '@material-ui/icons/Link';
 import ProblemReport from './problemReport';
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import SaveIcon from '@material-ui/icons/Save';
 import ReplayIcon from '@material-ui/icons/Replay';
 import mime from 'mime-types';
-import FolderIcon from '@material-ui/icons/Folder';
 import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate';
 import CollectionsIcon from '@material-ui/icons/Collections';
-import html2canvas from 'html2canvas';
-import { useScreenshot, createFileName } from "use-react-screenshot";
+import domtoimage from 'dom-to-image';
 
 function Idea({ fireIdea, fireSync, user, userInfo ,setlogoName}) {
   const folder = "postit";
@@ -40,7 +37,6 @@ function Idea({ fireIdea, fireSync, user, userInfo ,setlogoName}) {
   const [notice, setNotice] = useState('');
   const [entering, setEntering] = useState(false);
   const [see, setSee] = useState(true)
-  const [reportId, setReportId] = useState(id||'') ;
   const [photoData, setPhotoData] = useState('');
   //입장중
   const [door, setDoor] = useState('입장')
@@ -164,43 +160,26 @@ return;
       setrightModal(true);
     }
 
-
-const captureRef = useRef()
-  const [image, takeScreenShot] = useScreenshot({
-    type: "image/jpeg",
-    quality: 1.0
-  });
-
-  const download = (image, { name = "img", extension = "jpg" } = {}) => {
-    const a = document.createElement("a");
-    a.href = image;
-    a.download = createFileName(extension, name);
-    a.click();
-  };
-
+   
   const downloadScreenshot = async() => {
-    document.getElementById('divToPrint')&&takeScreenShot(document.getElementById('divToPrint'))
-    .then(download);
+    domtoimage.toJpeg(document.getElementById('divToPrint'), { quality: 0.95 })
+    .then(function (dataUrl) {
+        var link = document.createElement('a');
+        link.download = 'saveIMG.jpeg';
+        link.href = dataUrl;
+        link.click();
+    });
   }
-//   window.addEventListener("keydown", (e) => console.log(e))
-  //모달창3
-  const fire = () => {if(!video){return}
-  Swal.fire({  html:`<div id="divToPrint" style="width:90%;height:500px;bacground:blue">${video}`,width:'90%'})
-  .then((result)=>{
-    if(result.isConfirmed){ 
-      downloadScreenshot()
-      
-      // html2canvas(document.getElementById('divToPrint')).then(function(canvas) {
-      //   var imgageData = canvas.toDataURL("image/png");
-      //   var newData = imgageData.replace(/^data:image\/png/, "data:application/octet-stream");
-      //   const a = document.createElement("a");
-      //   a.href = imgageData;
-      //   a.download = createFileName("png", "imgimg");
-      //   a.click();
-      // });
-          }
-      })
+  
+    
+  // 화면캡쳐 모달창3
+  const fire = () => {
+    if(!video){return}
+    Swal.fire({  html:`<div id="divToPrint" >${video}`,width:'90%',
+    confirmButtonText: '캡쳐 및 저장', showCancelButton: true,})
+    .then((result)=>{if(result.isConfirmed){downloadScreenshot()}})  
     }
+
   // 자료입력 모달
   const fireInsert = async(e)=>{
     e.preventDefault();
