@@ -6,6 +6,9 @@ import { DropdownButton,Dropdown,ButtonGroup } from 'react-bootstrap';
 import { IconButton, Tooltip } from '@material-ui/core';
 import {  DeleteForever } from '@material-ui/icons';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import Button from '@material-ui/core/Button';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 
 function Opentool({ fireSync, fireApp, user, userInfo,setlogoName }) {
 
@@ -21,6 +24,11 @@ function Opentool({ fireSync, fireApp, user, userInfo,setlogoName }) {
   const level = userInfo.level || 0;
   const [folderBox, setfolderBox] = useState([])
   const [selectFolder, setselectFolder] = useState('기본')
+  const [anchorEl, setAnchorEl] = useState('');
+
+  const handleClick = (e) => { setAnchorEl(e.currentTarget); };
+  const handleClose = () => { setAnchorEl(null); };
+
 
   setlogoName(' 공유툴');
 
@@ -123,7 +131,8 @@ function Opentool({ fireSync, fireApp, user, userInfo,setlogoName }) {
         {/* <form onSubmit={submit} className="opentool-form"> */}
         <div style={{width:"100%",height:"1px", background:"black"}} /> 
         <div style={{display:"flex",background:"var(--Acolor)",border:"1px"}}>
-          <DropdownButton as={ButtonGroup} variant="primary" title={selectFolder} size="sm" style={{flex:"1"}} >
+          
+          {/* <DropdownButton as={ButtonGroup} variant="primary" title={selectFolder} size="sm"  style={{flex:"1"}} >
             <div className="cardSelect">
             {
             folderBox && Object.values(folderBox).map((e,i) => {
@@ -131,7 +140,21 @@ function Opentool({ fireSync, fireApp, user, userInfo,setlogoName }) {
             })
             }
             </div>
-          </DropdownButton>
+          </DropdownButton> */}
+          
+          <div style={{flex:"1"}}>
+           <Button aria-controls="simple-menu" aria-haspopup="true" variant="contained" color="primary"  onClick={handleClick}>
+             Open Menu
+           </Button>
+           <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'center',}} 
+            transformOrigin={{vertical:'top',horizontal:'center', }}  elevation={0}  >
+              <MenuItem onClick={handleClose}>Profile</MenuItem>
+              <MenuItem onClick={handleClose}>My account</MenuItem>
+              <MenuItem onClick={handleClose}>Logout</MenuItem>
+           </Menu>
+          </div>
+
           {level>5 && 
            <div style={{display:"flex",background:"white"}}>
              <Tooltip arrow  placement="top" title="폴더삭제">

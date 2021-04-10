@@ -9,7 +9,7 @@ import {  DeleteForever, } from '@material-ui/icons';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import expand, { extract } from 'emmet';
 
-function  Solvingrow ({item,roomERef,fireIdea,level,roomName,reportInput,report}) {
+function  Solvingrow ({item,roomAdmin,fireIdea,level,roomName,reportInput,report}) {
 
   const folder = "solving";
   const Swal = require('sweetalert2');
@@ -108,7 +108,7 @@ function  Solvingrow ({item,roomERef,fireIdea,level,roomName,reportInput,report}
     <div className="solvingrow" style={{flex:'1'}} > {item.color && 
      <Card bg={item.color} text={'white'} style={{ width: '100%',height:'100%' }} className="mb-2" >
       <Card.Header style={{display:'flex',padding:'5px'}} >
-        {level>0 && <IconButton style={{width:'20px', height:'15px'}} > <DeleteForever onClick={itemDel} style={{color:'white'}} /></IconButton> }
+        {roomAdmin && <IconButton style={{width:'20px', height:'15px'}} > <DeleteForever onClick={itemDel} style={{color:'white'}} /></IconButton> }
         <DropdownButton as={ButtonGroup} variant={item.color} title="구분" size="sm"  disabled={reportInput} >
           <div className="cardSelect">
             <div>

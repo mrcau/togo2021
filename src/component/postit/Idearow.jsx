@@ -10,7 +10,7 @@ import {  DeleteForever, } from '@material-ui/icons';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import LinkIcon from '@material-ui/icons/Link';
 
-function  Idearow ({item,fireIdea,level,roomName,report}) {
+function  Idearow ({roomAdmin, item,fireIdea,level,roomName,report}) {
   const folder = "postit";
   const Swal = require('sweetalert2');
   // const [video, setVideo] = useState('');
@@ -74,7 +74,7 @@ const [reports, setReports] = useState(report)
       ? <Card.Header style={{fontSize:"large",fontWeight:"900",color:"black",textAlign:"center"}}>룸ID</Card.Header>
       :
       <Card.Header style={{display:'flex',justifyContent:"space-between" ,padding:'5px'}} >
-        {level>0 && !reports && <IconButton style={{width:'20px', height:'15px'}} > <DeleteForever onClick={itemDel} style={{color:'white'}} /></IconButton> }
+        {roomAdmin && !reports && <IconButton style={{width:'20px', height:'15px'}} > <DeleteForever onClick={itemDel} style={{color:'white'}} /></IconButton> }
         {!reports && 
         <DropdownButton as={ButtonGroup} variant={item.color} title="구분" size="sm" >
           <div className="cardSelect">

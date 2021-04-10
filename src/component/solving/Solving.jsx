@@ -41,6 +41,7 @@ function Solving({ fireIdea, fireSync, user, userInfo ,setlogoName }) {
   const backRef = useRef();
   const [reportInput, setReportInput] = useState(false);
   const [userClass, setUserClass] = useState(false)
+  const [roomAdmin, setroomAdmin] = useState(false)
   //입장중
   const [door, setDoor] = useState('입장')
   const [report, setReport] = useState(false);
@@ -51,8 +52,7 @@ function Solving({ fireIdea, fireSync, user, userInfo ,setlogoName }) {
   const today = new Date().toLocaleDateString();
   const [color, setColor] = useState('primary');
   setlogoName(' 코딩툴');
-
-
+  
   //링크접속
   useEffect(() => {     
     if(id.length===10){ 
@@ -85,7 +85,14 @@ function Solving({ fireIdea, fireSync, user, userInfo ,setlogoName }) {
   useEffect(() => { 
     fireSync.onAuth((e) => {
       if(!e&&!roomName){ return}
-    if(data.dataId){ if(data.dataId.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){setUserClass(true)} }
+      if(data.dataId){ if(data.dataId.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){setUserClass(true)} }
+      
+      if(roomName){ 
+        if(roomName.substr(0,6) === user.uid.substr(0,6)){setroomAdmin(true)} 
+        }else if(!roomName&&level>0){
+          setroomAdmin(true)
+        }
+        
       const cf = {
         f1: (p) => { setItems(p) },  f2: () => { setItems({}) },
         f3: (p) => { setRoom(p) },   f4: () => { setRoom({}) },
@@ -215,7 +222,7 @@ return;
       title:'',text:'',
       host:'입장'
     }
-    fireIdea.roomGetSave(folder, newRoom, dataId, data);
+    fireIdea.roomGetSave2(folder, newRoom, dataId, data,level);
   }
 
   //데이터 초기화
@@ -369,7 +376,7 @@ const submit = (e) => {
       progress: 0,
       color : 'secondary'
     }
-    if(roomName){fireIdea.itemSave2(folder, roomName, dataId, data)}
+    if(roomName){fireIdea.itemSave3(folder, roomName, dataId, data,level)}
     else{fireIdea.itemSave(folder,data); }
   }
 }
@@ -414,41 +421,6 @@ const dataDel = () => {
   }
   
 } 
-    // 아이템 삭제
-    // const dataDel = () => { 
-    //   if(!report){
-    //   if(!roomName||!user||items.roomName.substr(0,roomSubstr) !== user.uid.substr(0,roomSubstr)){return}
-    //   }
-
-    //   if(Object.entries(items).length<1){ return}
-    //   let entry = Object.entries(items)||[];
-    //   const itemUid = entry[0][1].uid||'';
-    //   // const itemUid2 = entry[0][1].uid||'';
-    //   if(!roomName&&itemUid && itemUid === user.uid){ 
-    //     Swal.fire({ 
-    //       title: '내정보를 삭제하겠습니까?',
-    //       icon:'warning',
-    //       showCancelButton: true})
-    //     .then((result) => { if(result.isConfirmed){ 
-    //     fireIdea.myIdeaDel(folder,user.uid); 
-    //     Swal.fire('삭제되었습니다.');
-    //     roomNameReset2();
-    //     }});
-    //   }  
-    //     if(roomName!==roomERef.current.value||roomERef.current.value==='') { return }      
-    //     if(itemUid === user.uid){  
-    //     Swal.fire({ 
-    //       title: '토론방을 삭제하겠습니까?',
-    //       text:"삭제될 토론방 : "+roomName,
-    //       icon:'warning',
-    //       showCancelButton: true})
-    //     .then((result) => { if(result.isConfirmed){
-    //       fireIdea.dataDel(folder,roomName);   
-    //     Swal.fire('삭제되었습니다.');
-    //     roomNameReset2();        
-    //     }});
-    //   }      
-    // } 
 
   return (
     <div className="solving" >     
@@ -460,7 +432,7 @@ const dataDel = () => {
     }
     </div>
     <div className="drawerback backNone" ref={backRef} onClick={moveModal2} style={{zIndex:"1"}}></div>
-      {level>0 && 
+      {roomAdmin &&
         <form className="adimBar">
          <Tooltip arrow placement="left" title="메시지 전송">
           <button className="enterBtn"  onClick={noticeUp}><AddCommentIcon/></button> 
@@ -471,7 +443,8 @@ const dataDel = () => {
           </Tooltip>
         </form>
       }
-      {level>0 &&
+
+      {roomAdmin && 
         <div className="adimBar">
          <Tooltip arrow placement="left" title="새로운 룸 생성">
           <div> <button className="enterBtn" onClick={createRoom} style={{fontSize:'12px'}}>개설</button> </div>
@@ -490,7 +463,7 @@ const dataDel = () => {
         </div>
 
         <div style={{width:"100%", display:'flex'}}>
-        {level>0 && 
+        {roomAdmin && 
          <Tooltip arrow  placement="top" title="룸링크 복사">
          <IconButton size="small" component="span" onClick={()=> { if(roomName){Swal.fire({ title: '링크가 복사되었습니다.',text:linkCopy,icon:'warning'});}}}
              style={{color:"var(--Bcolor)"}}>
@@ -501,7 +474,7 @@ const dataDel = () => {
           </Tooltip>
           }
           
-        {level>0 && entering && !report &&       
+        {roomAdmin && entering && !report &&       
          <IconButton size="small" onClick={submit} style={{flex:'auto',color:"var(--Bcolor)",width:'30px', height:'25px'}} > 
          <Tooltip arrow  placement="top" title="페이지 추가">
           <AddCircleOutlineIcon  />  
@@ -522,7 +495,7 @@ const dataDel = () => {
           </Tooltip>
           </IconButton>
           }
-          {level>0 && !report &&
+          {roomAdmin && !report &&
           <IconButton size="small" component="span" onClick={dataRefresh} style={{color:"var(--Bcolor)",flex:"auto",width:'30px', height:'25px'}}>
          <Tooltip arrow placement="top"  title="초기화">
                 <ReplayIcon /> 
@@ -530,7 +503,7 @@ const dataDel = () => {
           </IconButton>
           } 
 
-        {level>0 && 
+        {roomAdmin && 
          <Tooltip arrow  placement="top" title="삭제">
           <IconButton size="small" component="span" onClick={dataDel} style={{color:"var(--Bcolor)",padding:"0",marginLeft:"auto"}}>
                 <DeleteForever />  
@@ -569,7 +542,7 @@ const dataDel = () => {
         {
           Object.keys(items).map((e) => { if(e.length>10){
             return <div className="s-item" > 
-             <Solvingrow roomERef={roomERef} key={e} reportInput={reportInput} report={report} item={items[e]} roomName={roomName} fireIdea={fireIdea} level={level} setColor={setColor} color={color} />
+             <Solvingrow roomAdmin={roomAdmin} roomERef={roomERef} key={e} reportInput={reportInput} report={report} item={items[e]} roomName={roomName} fireIdea={fireIdea} level={level} setColor={setColor} color={color} />
              </div>
           }
           })

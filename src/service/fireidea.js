@@ -9,7 +9,7 @@ const roomNumer = 10;
 class fireidea {  
 
   //룸 개수계산해서 룸 생성하기
-roomGetSave(folder,newRoom, dataId,data){ console.log('roomGetSave')
+roomGetSave(folder,newRoom, dataId,data){ console.log('roomGetSave111')
   const roomUid = newRoom.substr(0,roomSubstr);
   const Uid = newRoom.substr(roomSubstr);
   let roomGetNum = 0; 
@@ -17,10 +17,26 @@ roomGetSave(folder,newRoom, dataId,data){ console.log('roomGetSave')
     ref.on('value',(p)=>{const data = p.val();
       if(data){ roomGetNum = Object.keys(data).length;}
     })
-  
-    if(roomGetNum < roomNumer){
+      if(roomGetNum < roomNumer){
       fireInit.database().ref(`${folder}/${roomUid}/${Uid}/${dataId}`).set(data)
     }else{return}  
+}
+
+//회원별 레벨에 따라 룸 개수계산해서 룸 생성하기
+roomGetSave2(folder,newRoom, dataId,data,level){  
+const roomUid = newRoom.substr(0,roomSubstr);
+const Uid = newRoom.substr(roomSubstr);
+let roomGetNum = 0; 
+  const ref = fireInit.database().ref(`${folder}/${roomUid}`);
+  ref.on('value',(p)=>{const data = p.val(); 
+    // 데이터 중에서 'tok','see'를 제외한 순수 룸을 찾아 배열로 반환 found
+    const data2 = Object.keys(data)
+    const found = data2.filter(e => e.length > 3);
+    if(data){ roomGetNum = found.length;}
+  })
+    if(roomGetNum <= level){  console.log(roomGetNum,level)
+    fireInit.database().ref(`${folder}/${roomUid}/${Uid}/${dataId}`).set(data)
+  }else{return}  
 }
 //  룸 개수 가져오기
 roomGet(folder,roomUid) {
@@ -138,13 +154,33 @@ itemSave(folder, data) {
     .catch((e) => console.log(e))
 }
 
-// 로그인 TODO글  저장 
+// 로그인 페이지 추가  
 itemSave2(folder,roomName, dataId, data) {
   const roomUid = roomName.substr(0,roomSubstr);
   const roomNum = roomName.substr(roomSubstr);
+  
   fireInit.database().ref(`${folder}/${roomUid}/${roomNum}/${dataId}`).set(data)
     .then(() => console.log('글 저장성공'))
     .catch((e) => console.log(e))
+}  
+
+// 코딩툴 페이지 추가  레벨1 기준 페이지 2개까지 가능
+itemSave3(folder,roomName, dataId, data,level) {
+  const roomUid = roomName.substr(0,roomSubstr);
+  const roomNum = roomName.substr(roomSubstr);
+
+  let roomGetNum = 0; 
+  const ref = fireInit.database().ref(`${folder}/${roomUid}/${roomNum}`);
+  ref.on('value',(p)=>{const data = p.val();
+    if(data){ roomGetNum = Object.keys(data).length; }
+  })
+
+    if(roomGetNum <= level+2){ console.log(roomGetNum)
+      fireInit.database().ref(`${folder}/${roomUid}/${roomNum}/${dataId}`).set(data)
+    .then(() => console.log('글 저장성공'))
+    .catch((e) => console.log(e))
+    }else{return}  
+
 }  
 
 // 룸네임 없으면  저장 

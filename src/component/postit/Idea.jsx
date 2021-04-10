@@ -43,6 +43,7 @@ function Idea({ fireIdea, fireSync, user, userInfo ,setlogoName}) {
   const [userUID, setUserUID] = useState('');
 
   //itemrow  
+  const [roomAdmin, setroomAdmin] = useState(false)
   const [userClass, setUserClass] = useState(false)
   const textRef = useRef();
   const textRef2 = useRef();
@@ -93,7 +94,15 @@ useEffect(() => {
   fireSync.onAuth((e) => {
     if(!e&&!roomName){ return}
     if(data.dataId){ if(data.dataId.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){setUserClass(true)} }
-      const cf = {
+      
+    
+    if(roomName){ 
+      if(roomName.substr(0,6) === user.uid.substr(0,6)){setroomAdmin(true)} 
+      }else if(!roomName&&level>0){
+        setroomAdmin(true)
+      }
+    
+    const cf = {
       f1: (p) => { setItems(p) },  f2: () => { setItems({}) },
       f3: (p) => { setRoom(p) },   f4: () => { setRoom({}) },
     }
@@ -103,8 +112,11 @@ useEffect(() => {
     setUserUID(e.uid);
     const stopDataSync = fireSync.dataSync(folder, roomName, cf);
     const stoproomSync = fireSync.roomSync(folder, roomUid, cf);
-    if(data.dataId){ if(data.dataId.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){setUserClass(true)} }
-    return ()=>{stopDataSync();stoproomSync();}
+    if(data.dataId){ 
+        if(data.dataId.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){setUserClass(true)} 
+
+      }
+      return ()=>{stopDataSync();stoproomSync();}
     }       
     else  if(e && report){ console.log('로그인 레포트',items,roomName,report,items.roomName);
     if(items.roomName){ if(items.roomName.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){setUserClass(true); setItems(items); setReport(true)} }
@@ -197,10 +209,10 @@ return;
   }
 
   // 방생성
-  const createRoom = () => {
+  const createRoom = () => { 
     const num = Date.now().toString().substr(9);
     const newRoom = roomUid + num;
-    setroomName(newRoom);
+
     const dataId = Date.now();
     const data = {
       dataId: dataId,      
@@ -214,7 +226,7 @@ return;
       text:'',
       host:'입장'
     }
-    fireIdea.roomGetSave(folder, newRoom, dataId, data);
+    fireIdea.roomGetSave2(folder, newRoom, dataId, data,level);
   }
   
   //데이터 초기화
@@ -466,7 +478,7 @@ const upLoad = (e) => { console.log('uplod')
       {video}
     </div> */}
     <div className="drawerback backNone" ref={backRef} onClick={moveModal2} style={{zIndex:"1"}}></div>
-    {level>0 && 
+    {roomAdmin && 
         <form className="adimBar">
          <Tooltip arrow placement="left" title="메시지 전송">
           <button className="enterBtn"  onClick={noticeUp}><AddCommentIcon/></button> 
@@ -477,7 +489,7 @@ const upLoad = (e) => { console.log('uplod')
           </Tooltip>
         </form>
       }
-      {level>0 &&
+      {roomAdmin &&
         <div className="adimBar">
          <Tooltip arrow placement="left" title="새로운 룸 생성">
           <div> <button className="enterBtn" onClick={createRoom} style={{fontSize:'12px'}}>개설</button> </div>
@@ -497,7 +509,7 @@ const upLoad = (e) => { console.log('uplod')
         </div>
 
         <div style={{width:"100%", display:'flex'}}>
-        {level>0 && 
+        {roomAdmin && 
          <Tooltip arrow placement="top" title="룸링크 복사">
          <IconButton size="small" component="span" onClick={()=> { if(roomName){Swal.fire({ title: '링크가 복사되었습니다.',text:linkCopy,icon:'warning'});}}}
              style={{color:"var(--Bcolor)"}}>
@@ -508,14 +520,14 @@ const upLoad = (e) => { console.log('uplod')
           </Tooltip>
           }
           
-          {level>0 && 
+          {roomAdmin && 
          <IconButton size="small"  onClick={reportSave} style={{color:"var(--Bcolor)",flex:"auto",width:'30px', height:'25px',padding:"0"}}>
          <Tooltip arrow placement="top"  title="저장">
                 <SaveIcon /> 
           </Tooltip>
           </IconButton>
           }
-          {level>0 && !report &&
+          {roomAdmin && !report &&
           <IconButton size="small" component="span" onClick={dataRefresh} style={{color:"var(--Bcolor)",flex:"auto",width:'30px', height:'25px'}}>
          <Tooltip arrow placement="top"  title="초기화">
                 <ReplayIcon /> 
@@ -523,7 +535,7 @@ const upLoad = (e) => { console.log('uplod')
           </IconButton>
           } 
 
-        {level>0 && 
+        {roomAdmin && 
          <Tooltip arrow  placement="top" title="룸삭제">
           <IconButton size="small" component="span" onClick={dataDel} style={{color:"var(--Bcolor)",padding:"0"}}>
                 <DeleteForever />  
@@ -562,7 +574,7 @@ const upLoad = (e) => { console.log('uplod')
         <div className="idea-items">
         {
           Object.keys(items).map((e) => {
-            return <Idearow key={e} item={items[e]} roomName={roomName} fireIdea={fireIdea} level={level} setColor={setColor} color={color} report={report} />
+            return <Idearow key={e}  roomAdmin={roomAdmin} item={items[e]} roomName={roomName} fireIdea={fireIdea} level={level} setColor={setColor} color={color} report={report} />
           })
         }
         </div>

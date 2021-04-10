@@ -56,6 +56,7 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
   const [room, setRoom] = useState({});
   const {id}=useParams(); 
 
+  const [roomAdmin, setroomAdmin] = useState(false)
   const [userClass, setUserClass] = useState(false)
   const [reportId, setReportId] = useState(id||'') ;
   const [roomName, setroomName] = useState('');
@@ -107,6 +108,13 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
     fireSync.onAuth((e) => {  
       if(!e&&!roomName){ return}
       if(data.dataId){ if(data.dataId.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){setUserClass(true)} }
+      
+      if(roomName){ 
+        if(roomName.substr(0,6) === user.uid.substr(0,6)){setroomAdmin(true)} 
+        }else if(!roomName&&level>0){
+          setroomAdmin(true)
+        }
+        
       const cf = {
         f1: (p) => { setdata(p) },  f2: () => { setdata({}) },
         f3: (p) => { setRoom(p) },  f4: () => { setRoom({}) },
@@ -212,7 +220,6 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
     const num = Date.now().toString().substr(10);
     const roomsortNum = sortNum+num
     const newRoom = roomUid + roomsortNum;
-    console.log(newRoom)
     const data = {      
       T1:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:'',t11:'',t22:'',t33:'',t44:'',t66:'',t77:'',t88:'',t99:''},
       T2:{t1:'',t2:'',t3:'',t4:'',t6:'',t7:'',t8:'',t9:'',t11:'',t22:'',t33:'',t44:'',t66:'',t77:'',t88:'',t99:''},
@@ -677,7 +684,7 @@ const onSubmit4 = (e,p) => {
     </div>
     <div className="drawerback backNone" ref={backRef} onClick={moveModal2}></div>
        
-      {level>0 && 
+      {roomAdmin && 
       
         <form className="adimBar">
         <Tooltip arrow placement="left" title="메시지 전송">
@@ -689,7 +696,7 @@ const onSubmit4 = (e,p) => {
           </Tooltip>
         </form>
       }
-      {level>0 &&
+      {roomAdmin &&
         <div className="adimBar">
          <Tooltip arrow placement="left" title="새로운 룸 생성">
           <div> <button className="enterBtn" onClick={createRoom} style={{fontSize:'12px'}}>개설</button> </div>
@@ -707,7 +714,7 @@ const onSubmit4 = (e,p) => {
         
           <input type="text" className="enterInput roomnum" placeholder="방번호" style={{width:'85px'}} ref={roomERef} />
         </div>
-        {level>0 && 
+        {roomAdmin && 
          <Tooltip arrow placement="top" title="룸링크 복사">
          <IconButton size="small" component="span" onClick={()=> { if(roomName){Swal.fire({ title: '링크가 복사되었습니다.',text:linkCopy,icon:'warning'});}}}
              style={{color:"var(--Bcolor)"}}>
@@ -717,21 +724,21 @@ const onSubmit4 = (e,p) => {
           </IconButton>
           </Tooltip>
           }
-          {level>0 && 
+          {roomAdmin && 
           <IconButton size="small" component="span" onClick={reportSave} style={{color:"var(--Bcolor)",flex:"auto",minWidth:"60px"}}>
          <Tooltip arrow placement="top" title="저장">
                 <SaveIcon /> 
           </Tooltip>
           </IconButton>
           }
-          {level>0 && !report &&
+          {roomAdmin && !report &&
           <IconButton size="small" component="span" onClick={dataRefresh} style={{color:"var(--Bcolor)",flex:"auto",minWidth:"60px"}}>
          <Tooltip arrow placement="top" title="초기화">
                 <ReplayIcon /> 
           </Tooltip>
           </IconButton>
           }
-          {level>0 && 
+          {roomAdmin && 
          <Tooltip arrow placement="top" title="삭제">
          <IconButton size="small" component="span" onClick={dataDel} style={{color:"var(--Bcolor)"}}>
                 <DeleteForever /> 

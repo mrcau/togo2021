@@ -20,7 +20,7 @@ function Mytoolbox({ fireTodo, user, userName,userInfo,  fireSync}) {
   //     user ? fireTodo.itemSync(folder,user.uid, cf):console.log('no-User');
   // }, [fireTodo,user]);
   useEffect(() => {    
-    fireSync.onAuth((e) => {console.log(e)
+    fireSync.onAuth((e) => {
       if(!e){return}
       fireTodo.authSync('auth',e.uid,(p)=>{p.toolBox && setfolderBox(p.toolBox)})
     const cf = { f1: (p)=>{setItems(p)}, f2: ()=>{setItems({})}  }
