@@ -25,6 +25,26 @@ roomGet(folder,roomUid) {
       .catch((e) => console.log(e))         
   }
  
+//회원별 레벨에 따라 룸 개수계산해서 룸 생성하기
+roomGetSave2(folder,newRoom, data,level){  
+  const roomUid = newRoom.substr(0,roomSubstr);
+  const Uid = newRoom.substr(roomSubstr);
+  let roomGetNum = 0; 
+    const ref = fireInit.database().ref(`${folder}/${roomUid}`);
+    ref.on('value',(p)=>{const data = p.val(); 
+      if(!data){return}
+      // 데이터 중에서 'tok','see'를 제외한 순수 룸을 찾아 배열로 반환 found
+      const data2 = Object.keys(data)||[]
+      const found = data2.filter(e => e.length > 3)||0;
+      if(data){ roomGetNum = found.length;}
+    })
+      if(roomGetNum <= level){  console.log(roomGetNum,level)
+      fireInit.database().ref(`${folder}/${roomUid}/${Uid}`).set(data)
+    }else{return}  
+  }
+
+
+
   //룸 개수계산해서 룸 생성하기
   roomGetSave(folder,newRoom,level, data){ 
   const roomUid = newRoom.substr(0,roomSubstr);
@@ -42,6 +62,8 @@ roomGet(folder,roomUid) {
   fireInit.database().ref(`${folder}/${roomUid}/${Uid}`).set(data)
   }else{return}  
 }
+
+
 
 roomSortNum(folder,roomUid){
   let roomGetNum = 0; 

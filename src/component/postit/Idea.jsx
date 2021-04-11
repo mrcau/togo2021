@@ -79,8 +79,8 @@ function Idea({ fireIdea, fireSync, user, userInfo ,setlogoName}) {
     else if(id.length===12){ console.log('hi',id)
       const enterRoomId =  id.substr(0,roomSubstr)||"";
       const cf = { 
-      f1: ()=>{setroomName(id.substr(0,10)); setRoomUid(enterRoomId);setDoor('퇴장');setReport(true); setReportInput(true);  
-      setEntering(true);  setSee(false);roomERef.current.value ='';},      
+      f1: ()=>{setroomName(id.substr(0,10)); setRoomUid(enterRoomId);setDoor('퇴장');
+      setReport(true); setReportInput(true);setEntering(true);  setSee(false);roomERef.current.value ='';},      
       f2: (p) => { setItems(p) },     
       f3: (p) => { setRoom(p) }, 
       }                      
@@ -93,30 +93,20 @@ function Idea({ fireIdea, fireSync, user, userInfo ,setlogoName}) {
 useEffect(() => { 
   fireSync.onAuth((e) => {
     if(!e&&!roomName){ return}
-    if(data.dataId){ if(data.dataId.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){setUserClass(true)} }
-      
-    
+    if(data.dataId){ if(data.dataId.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){setUserClass(true)} }          
     if(roomName){ 
       if(roomName.substr(0,6) === user.uid.substr(0,6)){setroomAdmin(true)} 
-      }else if(!roomName&&level>0){
-        setroomAdmin(true)
-      }
-    
-    const cf = {
-      f1: (p) => { setItems(p) },  f2: () => { setItems({}) },
-      f3: (p) => { setRoom(p) },   f4: () => { setRoom({}) },
-    }
-
+      }else if(!roomName&&level>0){ setroomAdmin(true) }    
+    const cf = {  f1: (p) => { setItems(p) },  f2: () => { setItems({}) },
+                  f3: (p) => { setRoom(p) },   f4: () => { setRoom({}) },
+               }
     if (e && report===false && id.length<10) {   console.log('로그인하고 리포트false','room',room)
     setRoomUid(e.uid.substr(0, roomSubstr));
     setUserUID(e.uid);
     const stopDataSync = fireSync.dataSync(folder, roomName, cf);
     const stoproomSync = fireSync.roomSync(folder, roomUid, cf);
-    if(data.dataId){ 
-        if(data.dataId.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){setUserClass(true)} 
-
-      }
-      return ()=>{stopDataSync();stoproomSync();}
+    if(data.dataId){ if(data.dataId.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){setUserClass(true)}  }
+      return ()=>{stopDataSync();stoproomSync();}    
     }       
     else  if(e && report){ console.log('로그인 레포트',items,roomName,report,items.roomName);
     if(items.roomName){ if(items.roomName.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){setUserClass(true); setItems(items); setReport(true)} }
@@ -131,8 +121,7 @@ useEffect(() => {
       const stopvideoSync = fireSync.videoSync(folder,roomName,'See',(p)=>{setVideo(p); })
       const stopvideoSync2 = fireSync.videoSync(folder,roomName,'Tok',(p)=>{setNotice(p);})
         return ()=>{stopvideoSync(); stopvideoSync2(); }
-    }
-     
+    }     
   },[fireSync,roomName,report]);    
 
 
@@ -212,7 +201,6 @@ return;
   const createRoom = () => { 
     const num = Date.now().toString().substr(9);
     const newRoom = roomUid + num;
-
     const dataId = Date.now();
     const data = {
       dataId: dataId,      
@@ -398,7 +386,7 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
       }});
       }  
 
-      if(report&&items.roomName.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){  console.log('치지마',user.uid.substr(0,roomSubstr))
+      if(report&&items.roomName.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){ 
       Swal.fire({ 
         title: '토론방을 삭제하겠습니까?',
         text:"삭제될 토론방 : "+items.roomName,
@@ -501,10 +489,10 @@ const upLoad = (e) => { console.log('uplod')
           </div>
         </div>
       }
+
       <div className="s-header" style={{display:'flex'}}>
         <div className="enterWrap" >
-       <button className="enterBtn" onClick={enterRoom} style={{fontSize:'12px'}} >{door}</button>
-        
+          <button className="enterBtn" onClick={enterRoom} style={{fontSize:'12px'}} >{door}</button>
           <input type="text" className="enterInput roomnum" placeholder="방번호" style={{width:'85px'}} ref={roomERef} />
         </div>
 

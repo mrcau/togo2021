@@ -23,7 +23,7 @@ function Opentool({ fireSync, fireApp, user, userInfo,setlogoName }) {
   const Swal = require('sweetalert2');
   const level = userInfo.level || 0;
   const [folderBox, setfolderBox] = useState([])
-  const [selectFolder, setselectFolder] = useState('기본')
+  const [selectFolder, setselectFolder] = useState('📁 기본')
   const [anchorEl, setAnchorEl] = useState('');
 
   const handleClick = (e) => { setAnchorEl(e.currentTarget); };
@@ -144,14 +144,17 @@ function Opentool({ fireSync, fireApp, user, userInfo,setlogoName }) {
           
           <div style={{flex:"1"}}>
            <Button aria-controls="simple-menu" aria-haspopup="true" variant="contained" color="primary"  onClick={handleClick}>
-             Open Menu
+            {selectFolder}
            </Button>
-           <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}
+           <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose} 
             anchorOrigin={{ vertical: 'bottom', horizontal: 'center',}} 
-            transformOrigin={{vertical:'top',horizontal:'center', }}  elevation={0}  >
-              <MenuItem onClick={handleClose}>Profile</MenuItem>
-              <MenuItem onClick={handleClose}>My account</MenuItem>
-              <MenuItem onClick={handleClose}>Logout</MenuItem>
+            transformOrigin={{vertical:'top',horizontal:'center' }}  
+            elevation={0} PaperProps={{ style: { width: '30%'} }} >
+              {
+            folderBox && Object.values(folderBox).map((e,i) => {
+            return  <MenuItem as="button" type="button"  onClick={()=>{setselectFolder(e);handleClose()}} style={{textAlign:"center", fontSize:"16px"}}>{e}</MenuItem>
+            })
+            }
            </Menu>
           </div>
 

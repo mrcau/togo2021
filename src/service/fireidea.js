@@ -29,6 +29,7 @@ const Uid = newRoom.substr(roomSubstr);
 let roomGetNum = 0; 
   const ref = fireInit.database().ref(`${folder}/${roomUid}`);
   ref.on('value',(p)=>{const data = p.val(); 
+    if(!data){return}
     // 데이터 중에서 'tok','see'를 제외한 순수 룸을 찾아 배열로 반환 found
     const data2 = Object.keys(data)
     const found = data2.filter(e => e.length > 3);
