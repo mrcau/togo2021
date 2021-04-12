@@ -12,7 +12,6 @@ useEffect(() => {
     const cf = { f1:(p)=> {setData2(p); }, f2:()=> {setData2({}) } }   
     const roomId = user.uid.substr(0,6)+'REPORT'
     fireSync.reportSync(folder,roomId,cf);     
-    //  return ()=>{setData2({})}
  }, [folder,roomName,user,userInfo,fireSync]);
 
 const columns = [
