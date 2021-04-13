@@ -97,7 +97,7 @@ useEffect(() => {
   fireSync.onAuth((e) => { console.log('data',data,user)
     if(!e&&!roomName){ return}
     if(data.userId){ if(data.userId === user.uid){setUserClass(true)} }          
-    if(roomName){ 
+    if(roomName && e){ 
       if(roomName.substr(0,6) === user.uid.substr(0,6)){setroomAdmin(true);} }
       else if(!roomName&&level>0){ setroomAdmin(true) }    
     const cf = {  f1: (p) => { setdata(p) },  f2: () => { setdata({}) },
@@ -108,7 +108,7 @@ useEffect(() => {
     setUserUID(e.uid);
     const stopDataSync = fireSync.dataSync(folder, roomName, cf);
     const stoproomSync = fireSync.roomSync(folder, roomUid, cf);
-    if(data.userId){ if(data.dataId.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){setUserClass(true)}  }
+    if(data.userId){ if(data.userId.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){setUserClass(true)}  }
     return ()=>{stopDataSync();stoproomSync(); }
     }       
     else  if(e && report){ console.log('로그인 레포트',data,roomName,report,data.roomName);

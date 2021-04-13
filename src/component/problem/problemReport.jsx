@@ -2,7 +2,7 @@ import './problemReport.css';
 import React, { memo, useEffect, useState } from 'react';
 import { DataGrid } from '@material-ui/data-grid';
 
-function ProblemReport({ setLinkCopy,enterRoom, fireSync,user,folder,roomName,setroomName,
+function ProblemReport({ fireProblem,setLinkCopy,enterRoom, fireSync,user,folder,roomName,setroomName,
   setReport,moveModal2,userInfo, setdata,setEntering,setDoor,roomNameHide}) {
 const [data2, setData2] = useState({})
 //데이터싱크 
@@ -10,9 +10,9 @@ useEffect(() => { console.log('hello')
   //글목록 가져오기
     if(!user){return}
     const cf = { f1:(p)=> {setData2(p) }, f2:()=> {setData2({}) } }
-    const roomId = roomName.substr(0,6)+'REPORT'
+    const roomId = user.uid.substr(0,6)+'REPORT'
     fireSync.reportSync(folder,roomId,cf);
- }, [folder,roomName,user,userInfo,fireSync]);
+ }, [folder,roomName,fireProblem,user,userInfo,fireSync]);
 
 const columns = [
   { field: 'id', headerName: '번호', width: '65px' },

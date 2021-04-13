@@ -109,8 +109,7 @@ useEffect(() => {
       return ()=>{stopDataSync();stoproomSync();}    
     }       
     else  if(e && report){ console.log('로그인 레포트',items,roomName,report,items.roomName);
-    if(items.roomName){ 
-      if(items.roomName.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){setUserClass(true); setItems(items); setReport(true)} }
+    if(items.roomName){ if(items.roomName.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){setUserClass(true); setItems(items); setReport(true)} }
     } 
     else {return}
   })
@@ -166,9 +165,8 @@ return;
   const downloadScreenshot = async() => {
     domtoimage.toJpeg(document.getElementById('divToPrint'), { quality: 0.95 })
     .then(function (dataUrl) {
-        const fileId = Date.now();
         var link = document.createElement('a');
-        link.download = '보고서'+ fileId ;
+        link.download = 'saveIMG.jpeg';
         link.href = dataUrl;
         link.click();
     });
@@ -337,7 +335,7 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
           f3: (p) => { setRoom(p) }, 
           f4: (host) => { setroomName(""); roomNameReset(); setEntering(false)}
         }          
- fireSync.roomUser(folder,roomvalue,cf1).then(()=>{ manStart(roomvalue); })
+ fireSync.roomUser(folder,roomvalue,cf1)
         }
       }
 
@@ -459,7 +457,7 @@ const upLoad = (e) => { console.log('uplod')
     <div className="idea" >       
     <div className="drawer" ref={drawerRef}>
     {rightModal && 
-     <ProblemReport  setLinkCopy={setLinkCopy} fireSync={fireSync} user={user} folder={folder} setroomName={setroomName} roomRowReset={roomRowReset}
+     <ProblemReport setLinkCopy={setLinkCopy} fireSync={fireSync} user={user} folder={folder} setroomName={setroomName} roomRowReset={roomRowReset}
       roomName={roomName} setReport={setReport} roomNameHide={roomNameHide} userInfo={userInfo} enterRoom={enterRoom}
       moveModal2={moveModal2} report={report} setItems={setItems} setDoor={setDoor} setEntering={setEntering}  /> 
     }
