@@ -335,7 +335,7 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
           f3: (p) => { setRoom(p) }, 
           f4: (host) => { setroomName(""); roomNameReset(); setEntering(false)}
         }          
- fireSync.roomUser(folder,roomvalue,cf1).then(()=>{ manStart(roomvalue); })
+ fireSync.roomUser(folder,roomvalue,cf1)
         }
       }
 
