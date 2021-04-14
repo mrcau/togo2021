@@ -92,62 +92,33 @@ function Problem({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
      },[fireSync,roomName])
 
 
-   //데이터싱크 
-  // useEffect(() => {
-  //   if(id.length===10){roomERef.current.value=id; enterRoom();}
-  //   fireSync.onAuth((e) => {
-  //     const cf = {  f1: (p) => { setdata(p) },   f2: () => { setdata({}) },
-  //                   f3: (p) => { setRoom(p) },   f4: () => { setRoom({}) },
-  //                 }
-  //     if (e && report===false){setRoomUid(e.uid.substr(0, roomSubstr)); setUserUID(e.uid);
-  //                              const stopDataSync = fireSync.dataSync(folder, roomName, cf);
-  //                              const stoproomSync = fireSync.roomSync(folder, roomUid, cf);
-  //                              return ()=>{stopDataSync();stoproomSync();} }
-  //       else if(e && !roomName){const stopdataSyncB =  fireSync.dataSyncB(folder, roomName, cf);
-  //                              const stoproomSync = fireSync.roomSync(folder, roomUid, cf);
-  //                              return ()=>{stopdataSyncB();stoproomSync();} }
-  //     else { if(!e&&!roomName){  return }
-  //      const cf = { f1: (p) => { setdata(p) },     f2: () => { setdata({}) },
-  //                   f3: (p) => { setRoom(p) },     f4: () => { setRoom({}) },
-  //                 }
-  //      if(report && roomName){
-  //        const stopdataSyncB =  fireSync.dataSyncB(folder, roomName, cf);
-  //        const stoproomSync = fireSync.roomSync(folder, roomUid, cf);
-  //        return ()=>{stopdataSyncB();stoproomSync();}  }
-  //     }
-  //   }) 
-  // }, [roomName,fireSync,report,roomUid,user,userInfo]);
-  
-//일반접속
+     //일반접속
 useEffect(() => { 
-  fireSync.onAuth((e) => { console.log(data,user)
+  fireSync.onAuth((e) => { console.log('data',data,user)
     if(!e&&!roomName){ return}
-    // if(data.dataId){ if(data.dataId.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){setUserClass(true)} }          
-      if(roomName){ if(roomName.substr(0,6) === user.uid.substr(0,6)){setroomAdmin(true);setUserClass(true)} }
+    if(data.userId){ if(data.userId === user.uid){setUserClass(true)} }          
+    if(roomName && e){ 
+      if(roomName.substr(0,6) === user.uid.substr(0,6)){setroomAdmin(true);} }
       else if(!roomName&&level>0){ setroomAdmin(true) }    
     const cf = {  f1: (p) => { setdata(p) },  f2: () => { setdata({}) },
                   f3: (p) => { setRoom(p) },   f4: () => { setRoom({}) },
                }
     if (e && report===false && id.length<10) {   console.log(data,user)
-      // if(data.dataId){ if(data.dataId.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){setUserClass(true)} }          
-      if(roomName && roomName.length>5){ if(roomName.substr(0,6) === user.uid.substr(0,6)){setroomAdmin(true);setUserClass(true)} }
-      else if(level>0 && roomName.length<5){ setroomAdmin(true) }    
-
     setRoomUid(e.uid.substr(0, roomSubstr));
     setUserUID(e.uid);
     const stopDataSync = fireSync.dataSync(folder, roomName, cf);
     const stoproomSync = fireSync.roomSync(folder, roomUid, cf);
-    if(data.dataId){  console.log(data,user)
-      // if(data.dataId.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){setUserClass(true)}  
-    }
-      return ()=>{stopDataSync();stoproomSync();}    
+    if(data.userId){ if(data.userId.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){setUserClass(true)}  }
+    return ()=>{stopDataSync();stoproomSync(); }
     }       
     else  if(e && report){ console.log('로그인 레포트',data,roomName,report,data.roomName);
     if(data.roomName){ 
-      if(data.roomName.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){setUserClass(true); setdata(data); setReport(true);setroomAdmin(true)} }
+      if(data.roomName.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){setUserClass(true); setdata(data); setReport(true);} 
+    }
     } 
     else {return}
-  })
+  }
+  )
 }, [roomName,fireSync,report,roomUid,user,userInfo]);
 
 

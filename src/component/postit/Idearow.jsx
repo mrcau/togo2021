@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-no-target-blank */
-import './idearow.css';
+// import './idearow.css';
 import React, { memo, useState } from 'react';
 import Swal from 'sweetalert2';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
@@ -116,7 +116,7 @@ const [reports, setReports] = useState(report)
       <div className="cardTitle" style={{textAlign:"center"}}>
         <Card.Body style={{padding:"8px",height:"100px",overflowY:"auto" }}>
         {item.roomUid &&
-           <Card.Title style={{fontSize:"16px",fontWeight:"900",color:"black"}} > {item.roomName} </Card.Title>
+           <Card.Title style={{fontSize:"16px",fontWeight:"900",color:"black"}} > {item.text} </Card.Title>
           // : <Card.Title style={{fontSize:"16px",fontWeight:"900",lineHeight:"16px"}} > {item.title}  </Card.Title> 
         }
           <Card.Text style={{fontSize:"12px",lineHeight:"14px", whiteSpace:"pre-wrap" }}> {item.text||''} </Card.Text>

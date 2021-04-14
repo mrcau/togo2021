@@ -185,10 +185,10 @@ return;
   const fireInsert = async(e)=>{
     e.preventDefault();
     const { value: text } = await Swal.fire({
-      input: 'textarea',
-      width:'80%',
+      input: 'textarea', 
+      width:'80%', height:'500px',
       inputValue: video||'',
-      inputLabel: '참고자료',
+      title: '참고자료',
       // showCancelButton: false
     })
     if (text) {
@@ -211,7 +211,8 @@ return;
       color : 'Light',
       userId : user.uid,
       roomUid : num,
-      text:'',
+      text:'제목',
+      text2:'',
       host:'입장'
     }
     fireIdea.roomGetSave2(folder, newRoom, dataId, data,level);
