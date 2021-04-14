@@ -23,7 +23,7 @@ const columns = [
 const selectRow = () => { setReport(true); moveModal2(); roomNameHide();setDoor('퇴장');setEntering(true);}
   // roomRowReset();  
 const rows = Object.values(data2).map((e,i) => { 
-  return({ id: i, title: Object.values(e)[1].title, ...e}) 
+  return({ id: i, title: Object.values(e)[0].text, ...e}) 
   })
 
   return (

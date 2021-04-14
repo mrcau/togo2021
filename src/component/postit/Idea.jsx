@@ -18,6 +18,8 @@ import mime from 'mime-types';
 import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate';
 import CollectionsIcon from '@material-ui/icons/Collections';
 import domtoimage from 'dom-to-image';
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import FileCopyIcon from '@material-ui/icons/FileCopy';
 
 function Idea({ fireIdea, fireSync, user, userInfo ,setlogoName}) {
   const folder = "postit";
@@ -41,7 +43,7 @@ function Idea({ fireIdea, fireSync, user, userInfo ,setlogoName}) {
   //입장중
   const [door, setDoor] = useState('입장')
   const [userUID, setUserUID] = useState('');
-
+  const [ipAPI, setipAPI] = useState('')
   //itemrow  
   const [roomAdmin, setroomAdmin] = useState(false)
   const [userClass, setUserClass] = useState(false)
@@ -94,7 +96,7 @@ useEffect(() => {
   fireSync.onAuth((e) => {
     if(!e&&!roomName){ return}
     if(data.dataId){ if(data.dataId.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){setUserClass(true)} }          
-    if(roomName){ 
+    if(roomName&&e){ 
       if(roomName.substr(0,6) === user.uid.substr(0,6)){setroomAdmin(true)} 
       }else if(!roomName&&level>0){ setroomAdmin(true) }    
     const cf = {  f1: (p) => { setItems(p) },  f2: () => { setItems({}) },
@@ -124,7 +126,18 @@ useEffect(() => {
     }     
   },[fireSync,roomName,report]);    
 
+  useEffect(()=>{    
+  const ipip = '//api.ipify.org?format=json'
+  fetch(ipip).then(response => response.json()).then(computer => setipAPI(computer.ip)).catch(() => {
+    Swal.insertQueueStep({
+      icon: 'error',
+      title: 'Unable to get your public IP'
+    })
+  })
 
+  },[])
+
+console.log(ipAPI)
 //   // 입장자 카운팅
 const manMinus = () => {
   let num = 0;
@@ -185,10 +198,10 @@ return;
   const fireInsert = async(e)=>{
     e.preventDefault();
     const { value: text } = await Swal.fire({
-      input: 'textarea',
-      width:'80%',
+      input: 'textarea', 
+      width:'80%', height:'500px',
       inputValue: video||'',
-      inputLabel: '참고자료',
+      title: '참고자료',
       // showCancelButton: false
     })
     if (text) {
@@ -208,10 +221,11 @@ return;
       name: userInfo.name||'',
       roomName : newRoom,
       title: '룸 ID',
-      color : 'Light',
+      color : 'dark',
       userId : user.uid,
       roomUid : num,
-      text:'',
+      text:newRoom,
+      text2:'',
       host:'입장'
     }
     fireIdea.roomGetSave2(folder, newRoom, dataId, data,level);
@@ -349,10 +363,10 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
   }
 
     //리포트 저장
-    const reportSave = () => {
+    const reportSave = () => { console.log(items,Object.values(items)[0])
       // if (roomName!==roomERef.current.value||roomERef.current.value===''||report) { return }
       if(!roomName||!user||items.roomName.substr(0,roomSubstr) !== user.uid.substr(0,roomSubstr)){return}    
-      if (!Object.values(items)[3]){Swal.fire('내용을 입력해주세요.'); return}
+      if (!Object.values(items)[0]){Swal.fire('내용을 입력해주세요.'); return}
       else{   
       // fireIdea.reportSave(folder, roomId, roomName, value).then(()=>{Swal.fire('저장완료')})
           Swal.fire({ title: '내용을 저장하겠습니까?', icon:'warning', showCancelButton: true})
@@ -414,6 +428,7 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
     }, 500);
   }
 
+
 const submit = (e) => {
   e.preventDefault();
   if(!roomName){return;}
@@ -423,28 +438,55 @@ const submit = (e) => {
   if(title&&!text2){text2 = `<iframe src=${title} width="90%" height="500px"/>`}
   if(!text){ Swal.fire({title:'내용을 입력해주세요.',icon:'warning'}) }
   if (userInfo && text ) { console.log('title',title,'text',text,'text2',text2)
-    rocketOn();
-    const dataId = Date.now();
-    const data = {
-      uid: user.uid||'',
-      dataId: dataId,
-      name: userInfo.name||'',
-      title: title,
-      text: text,
-      text2: text2,
-      today: today,
-      progress: 0,
-      color : 'secondary',
-      photoData
+          const dataId = Date.now();
+          const data = {
+            uid: user.uid||'',
+            dataId: dataId,
+            name: userInfo.name||'',
+            title: title,
+            text: text,
+            text2: text2,
+            today: today,
+            progress: 0,
+            color : 'secondary',
+            ip : ipAPI,
+            photoData
+          }
+          fireIdea.itemSave2(folder, roomName, dataId, data)
+          titleRef2.current.value = '';
+          textRef.current.value = '';
+          textRef2.current.value = '';
+          setPhotoData(''); 
+      }
     }
-    if(roomName){fireIdea.itemSave2(folder, roomName, dataId, data)}
-    // else{fireIdea.itemSave(folder,data); }
-    titleRef2.current.value = '';
-    textRef.current.value = '';
-    textRef2.current.value = '';
-    setPhotoData('');
-  }
-}
+
+
+
+  // Swal.fire({title:'내용을 저장하겠습니까?.',icon:'warning'}).then((result)=>{
+  //   if(result.isConfirmed){ 
+  //     // rocketOn();
+  //     const dataId = Date.now();
+  //     const data = {
+  //       uid: user.uid||'',
+  //       dataId: dataId,
+  //       name: userInfo.name||'',
+  //       title: title,
+  //       text: text,
+  //       text2: text2,
+  //       today: today,
+  //       progress: 0,
+  //       color : 'secondary',
+  //       photoData
+  //     }
+  //     if(roomName){fireIdea.itemSave2(folder, roomName, dataId, data)}
+  //     // else{fireIdea.itemSave(folder,data); }
+  //     titleRef2.current.value = '';
+  //     textRef.current.value = '';
+  //     textRef2.current.value = '';
+  //     setPhotoData('');
+  //     }
+  // })
+
 
 const upLoad = (e) => { console.log('uplod')
   const imgDataId = Date.now();
@@ -562,39 +604,47 @@ const upLoad = (e) => { console.log('uplod')
         <div className="idea-items">
         {
           Object.keys(items).map((e) => {
-            return <Idearow key={e}  roomAdmin={roomAdmin} item={items[e]} roomName={roomName} fireIdea={fireIdea} level={level} setColor={setColor} color={color} report={report} />
+            return <Idearow key={e} ipAPI={ipAPI} user={user} fireSync={fireSync} roomAdmin={roomAdmin} item={items[e]} roomName={roomName} fireIdea={fireIdea} level={level} setColor={setColor} color={color} report={report} />
           })
         }
         </div>
         {/* {entering && */}
         <div className="idea-input">
           <form onSubmit={submit} className="idea-form">
-            <input type="url" ref={titleRef2} className="inputTitle" placeholder="  Link"/>
+            {/* <input type="url" ref={titleRef2} className="inputTitle" placeholder="  Link"/> */}
 
-          {roomName && 
-          <input accept="image/*" style={{ display: 'none' }} id="imgData" type="file" onChange={upLoad} />
-        }
-          {photoData&&
-          <label htmlFor="imgData" style={{background:"white", height:"25px",margin:"0"}}> 
-              <IconButton size="small" component="span" style={{background:"white", height:"22px"}}> <CollectionsIcon /> </IconButton>
-            </label>
-          }
+            <Tooltip arrow  placement="top" title="내용저장"> 
+            <button className="btnadd" style={{ outline: "none", border: "none" }} >
+            <LinkIcon /> 링크첨부</button>
+          </Tooltip>
           
+          <Tooltip arrow  placement="top" title="내용저장"> 
+            <button className="btnadd" style={{ outline: "none", border: "none" }} >
+              <FileCopyIcon/> 내용첨부</button>
+          </Tooltip>
+          {roomName && <input accept="image/*" style={{ display: 'none' }} id="imgData" type="file" onChange={upLoad} /> }
           {!photoData&&
           <Tooltip arrow  placement="top" title="사진첨부"> 
-          <label htmlFor="imgData" style={{background:"white", height:"25px",margin:"0"}}> 
-              <IconButton size="small" component="span" style={{background:"white", height:"22px"}}> <AddPhotoAlternateIcon /> </IconButton>
+          <label htmlFor="imgData" style={{ height:"25px",margin:"0",textAlign:"center",color:"white"}}> 
+              <IconButton size="small" component="span" style={{height:"22px",color:"white"}}> <AddPhotoAlternateIcon />사진첨부 </IconButton>
             </label>
           </Tooltip>
           }
+
+          {/* {photoData&&
+          <label htmlFor="imgData" style={{background:"white", height:"25px",margin:"0"}}> 
+              <IconButton size="small" component="span" style={{background:"white", height:"22px"}}> <CollectionsIcon /> </IconButton>
+            </label>
+          }           */}
+         
           <Tooltip arrow  placement="top" title="내용저장"> 
             <button className="btnadd" style={{ outline: "none", border: "none" }} >
               <span className="rocket" ref={rocketRef}  >🚀</span>  저장</button>
           </Tooltip>
 
-            <textarea className="textarea titleText" ref={textRef} cols="30" rows="2" placeholder="이름/내용" />
-            <textarea className="textarea" ref={textRef2} cols="30" rows="2" 
-            style={{borderTop: 'dashed 1px'}} placeholder=" Content" />
+            <textarea className="textarea titleText" ref={textRef} cols="30" rows="4" placeholder="이름/내용" />
+            {/* <textarea className="textarea" ref={textRef2} cols="30" rows="2" 
+            style={{borderTop: 'dashed 1px'}} placeholder=" Content" /> */}
           </form>
         </div>    
          {/* }     */}

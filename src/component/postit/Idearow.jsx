@@ -10,7 +10,7 @@ import {  DeleteForever, } from '@material-ui/icons';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import LinkIcon from '@material-ui/icons/Link';
 
-function  Idearow ({roomAdmin, item,fireIdea,level,roomName,report}) {
+function  Idearow ({roomAdmin,ipAPI,fireSync, user,item,fireIdea,level,roomName,report}) {
   const folder = "postit";
   const Swal = require('sweetalert2');
   // const [video, setVideo] = useState('');
@@ -67,14 +67,33 @@ const [reports, setReports] = useState(report)
       }
   }
   const fire = () => {Swal.fire({html:item.text2,imageUrl:item.photoData, width:'90%'})}
+
+  const editText = async()=>{ 
+    // e.preventDefault();
+    console.log(ipAPI,user.uid,item.uid)
+  if(user.uid === item.uid || ipAPI === item.ip){
+  const { value: text } = await Swal.fire({
+      input: 'textarea',
+      inputValue:item.text,
+      showCancelButton: true
+    })
+    if (text) {
+      // Swal.fire(text)
+      fireSync.ideaTextEdit(folder,roomName,item.dataId,text);
+    }
+  }
+  }
+
+
   return (
     <div className="idearow" >  {item.color && 
      <Card bg={item.color} text={'white'} style={{ width: '12rem',height:'110px'}} className="mb-2" >
       {item.roomUid 
-      ? <Card.Header style={{fontSize:"large",fontWeight:"900",color:"black",textAlign:"center"}}>룸ID</Card.Header>
+      ? <Card.Header style={{fontSize:"large",fontWeight:"900",textAlign:"center"}}>방제목</Card.Header>
       :
       <Card.Header style={{display:'flex',justifyContent:"space-between" ,padding:'5px'}} >
-        {roomAdmin && !reports && <IconButton style={{width:'20px', height:'15px'}} > <DeleteForever onClick={itemDel} style={{color:'white'}} /></IconButton> }
+        {roomAdmin && !reports ? <IconButton style={{width:'20px', height:'15px'}} > <DeleteForever onClick={itemDel} style={{color:'white'}} /></IconButton> 
+        :ipAPI === item.ip && !reports && <IconButton style={{width:'20px', height:'15px'}} > <DeleteForever onClick={itemDel} style={{color:'white'}} /></IconButton> }
         {!reports && 
         <DropdownButton as={ButtonGroup} variant={item.color} title="구분" size="sm" >
           <div className="cardSelect">
@@ -113,13 +132,13 @@ const [reports, setReports] = useState(report)
       </Card.Header>
       }
 
+
       <div className="cardTitle" style={{textAlign:"center"}}>
         <Card.Body style={{padding:"8px",height:"100px",overflowY:"auto" }}>
-        {item.roomUid &&
-           <Card.Title style={{fontSize:"16px",fontWeight:"900",color:"black"}} > {item.roomName} </Card.Title>
-          // : <Card.Title style={{fontSize:"16px",fontWeight:"900",lineHeight:"16px"}} > {item.title}  </Card.Title> 
-        }
-          <Card.Text style={{fontSize:"12px",lineHeight:"14px", whiteSpace:"pre-wrap" }}> {item.text||''} </Card.Text>
+        {/* {item.roomUid &&  */}
+           <Card.Title style={{fontSize:"16px",fontWeight:"900"}}  onClick={editText} > {item.text} </Card.Title>
+        {/* } */}
+          <Card.Text style={{fontSize:"12px",lineHeight:"14px", whiteSpace:"pre-wrap" }}  onClick={editText} > {item.ip && 'IP : '+ item.ip.substr(8)} </Card.Text>
         </Card.Body>
       </div>
      </Card>}

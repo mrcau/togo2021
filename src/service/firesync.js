@@ -297,7 +297,13 @@ toolDataDel(folder,uid,selectFolder,dataId) {
   fireInit.database().ref(`${folder}/${uid}/${selectFolder}`).remove();
 }
 
-
+ // mytool 업데이트
+ ideaTextEdit(folder,roomName, dataId, txt) {
+   const roomUid = roomName.substr(0,6);
+   const roomNum = roomName.substr(6);
+  fireInit.database().ref(`${folder}/${roomUid}/${roomNum}/${dataId}`)
+    .update({ text: txt })
+}
 
 }
 export default firesync
