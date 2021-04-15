@@ -63,7 +63,7 @@ function Idea({ fireIdea, fireSync, user, userInfo ,setlogoName}) {
   const [items, setItems] = useState({});
   const today = new Date().toLocaleDateString();
   const [color, setColor] = useState('primary');
-  setlogoName(' 포스툴');
+  setlogoName(' 게시툴');
   
    //링크접속
    useEffect(() => {     
@@ -139,7 +139,6 @@ useEffect(() => {
 
   },[])
 
-console.log(ipAPI)
 //   // 입장자 카운팅
 const manMinus = () => {
   let num = 0;
@@ -217,7 +216,7 @@ return;
     const { value: text } = await Swal.fire({
       input: 'url', 
       inputValue: addLink ,
-      title: '첨부링크를 입력해주세요.',
+      title: '링크를 입력해주세요.',
       showCancelButton: true
     })
     if (text) {
@@ -232,7 +231,7 @@ return;
       const { value: text } = await Swal.fire({
         input: 'textarea', 
         inputValue: addCon ,
-        title: '추가내용을 입력해주세요.',
+        title: '내용을 입력해주세요.',
         showCancelButton: false
       })
       if (text) {
@@ -461,7 +460,7 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
 
 
 const submit = (e) => {
-  e.preventDefault();
+  // e.preventDefault();
   if(!roomName){return;}
   // const title = titleRef2.current.value ||'';//Link
   const text = textRef.current.value; //내용
@@ -485,7 +484,7 @@ const submit = (e) => {
           }
           fireIdea.itemSave2(folder, roomName, dataId, data)
           textRef.current.value = '';
-          setPhotoData(''); 
+          setPhotoData(''); rocketOn();
           setAddLink(''); setAddCon('')
       }
     }
@@ -521,9 +520,10 @@ const submit = (e) => {
 const upLoad = (e) => { console.log('uplod')
   const imgDataId = Date.now();
   const file = e.target.files[0];
+  
   const metaData = { contentType: mime.lookup(file.name) } ||''
   fireIdea.imgUpload( imgDataId, file, metaData, (e) => setPhotoData(e));
-  
+  console.log(file.name,file,metaData)
 }
   return (
     <div className="idea" >       
@@ -666,7 +666,7 @@ const upLoad = (e) => { console.log('uplod')
           }           */}
          
           <Tooltip arrow  placement="top" title="내용저장"> 
-            <button className="btnadd" style={{ outline: "none", border: "none" }} onClick={submit} >
+            <button className="btnadd" style={{ outline: "none", border: "none" }} onClick={()=>{submit();}} >
               <span className="rocket" ref={rocketRef}  >🚀</span>  저장</button>
           </Tooltip>
 

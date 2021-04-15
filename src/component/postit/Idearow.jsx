@@ -92,9 +92,11 @@ const [reports, setReports] = useState(report)
       ? <Card.Header style={{fontSize:"large",fontWeight:"900",textAlign:"center"}}>방제목</Card.Header>
       :
       <Card.Header style={{display:'flex',justifyContent:"space-between" ,padding:'5px'}} >
-        {roomAdmin && !reports ? <IconButton style={{width:'20px', height:'15px'}} > <DeleteForever onClick={itemDel} style={{color:'white'}} /></IconButton> 
+
+        {roomAdmin && !reports ? <IconButton style={{width:'20px', height:'15px'}} > <DeleteForever onClick={itemDel} style={{color:'white'}} /></IconButton>   
         :ipAPI === item.ip && !reports && <IconButton style={{width:'20px', height:'15px'}} > <DeleteForever onClick={itemDel} style={{color:'white'}} /></IconButton> }
-        {!reports && 
+
+        {!reports && roomAdmin ?
         <DropdownButton as={ButtonGroup} variant={item.color} title="구분" size="sm" >
           <div className="cardSelect">
             <div>
@@ -110,7 +112,23 @@ const [reports, setReports] = useState(report)
             <Dropdown.Item as="button" onClick={()=>changeColor('dark')} style={{color:"#32383e",textAlign:"center", fontSize:"18px",padding:"0 2px"}}>❼</Dropdown.Item>
           </div>
         </DropdownButton>
+        :ipAPI === item.ip && !reports && <DropdownButton as={ButtonGroup} variant={item.color} title="구분" size="sm" >
+        <div className="cardSelect">
+          <div>
+          <Dropdown.Item as="button" onClick={()=>changeColor('danger')} style={{color:"#d53343",textAlign:"center", fontSize:"18px",padding:"0 2px"}}>❶</Dropdown.Item>
+          </div>
+          <div>
+          <Dropdown.Item as="button" onClick={()=>changeColor('warning')} style={{color:"#f7bb07",textAlign:"center", fontSize:"18px",padding:"0 "}}>❷</Dropdown.Item>
+          </div>
+          <Dropdown.Item as="button" onClick={()=>changeColor('success')} style={{color:"#27a243",textAlign:"center", fontSize:"18px",padding:"0 "}}>❸</Dropdown.Item>
+          <Dropdown.Item as="button" onClick={()=>changeColor('primary')} style={{color:"#0077f7",textAlign:"center", fontSize:"18px",padding:"0 "}}>❹</Dropdown.Item>
+          <Dropdown.Item as="button" onClick={()=>changeColor('info')} style={{color:"#17a2b8",textAlign:"center", fontSize:"18px",padding:"0 "}}>❺</Dropdown.Item>
+          <Dropdown.Item as="button" onClick={()=>changeColor('secondary')} style={{color:"#697179",textAlign:"center", fontSize:"18px",padding:"0 "}}>❻</Dropdown.Item>
+          <Dropdown.Item as="button" onClick={()=>changeColor('dark')} style={{color:"#32383e",textAlign:"center", fontSize:"18px",padding:"0 2px"}}>❼</Dropdown.Item>
+        </div>
+      </DropdownButton>
       }
+      
         { item.text2 || item.photoData ?
           <IconButton style={{width:'30px', height:'20px'}} >
           <VisibilityIcon style={{color:'white'}} size="small" onClick={fire} /> 
