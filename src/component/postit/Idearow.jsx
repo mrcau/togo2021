@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-no-target-blank */
-// import './idearow.css';
+import './idearow.css';
 import React, { memo, useState } from 'react';
 import Swal from 'sweetalert2';
 import { CopyToClipboard } from 'react-copy-to-clipboard';

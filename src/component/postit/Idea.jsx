@@ -40,6 +40,8 @@ function Idea({ fireIdea, fireSync, user, userInfo ,setlogoName}) {
   const [entering, setEntering] = useState(false);
   const [see, setSee] = useState(true)
   const [photoData, setPhotoData] = useState('');
+  const [addLink, setAddLink] = useState('')
+  const [addCon, setAddCon] = useState('')
   //입장중
   const [door, setDoor] = useState('입장')
   const [userUID, setUserUID] = useState('');
@@ -209,6 +211,35 @@ return;
     fireIdea.videoSave(folder, user.uid,'See', text);
     }
   }
+   // 링크입력 모달
+   const linkInsert = async(e)=>{
+    e.preventDefault();
+    const { value: text } = await Swal.fire({
+      input: 'url', 
+      inputValue: addLink ,
+      title: '첨부링크를 입력해주세요.',
+      showCancelButton: true
+    })
+    if (text) {
+    setAddLink(text)
+    console.log(addLink)
+    }
+  }
+
+     // 링크입력 모달
+     const contentInsert = async(e)=>{
+      e.preventDefault();
+      const { value: text } = await Swal.fire({
+        input: 'textarea', 
+        inputValue: addCon ,
+        title: '추가내용을 입력해주세요.',
+        showCancelButton: false
+      })
+      if (text) {
+      setAddCon(text)
+      console.log(addCon)
+      }
+    }
 
   // 방생성
   const createRoom = () => { 
@@ -366,7 +397,7 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
     const reportSave = () => { console.log(items,Object.values(items)[0])
       // if (roomName!==roomERef.current.value||roomERef.current.value===''||report) { return }
       if(!roomName||!user||items.roomName.substr(0,roomSubstr) !== user.uid.substr(0,roomSubstr)){return}    
-      if (!Object.values(items)[0]){Swal.fire('내용을 입력해주세요.'); return}
+      if (!Object.values(items)[0]){Swal.fire('제목을 입력해주세요.'); return}
       else{   
       // fireIdea.reportSave(folder, roomId, roomName, value).then(()=>{Swal.fire('저장완료')})
           Swal.fire({ title: '내용을 저장하겠습니까?', icon:'warning', showCancelButton: true})
@@ -432,18 +463,18 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
 const submit = (e) => {
   e.preventDefault();
   if(!roomName){return;}
-  const title = titleRef2.current.value ||'';//Link
+  // const title = titleRef2.current.value ||'';//Link
   const text = textRef.current.value; //내용
-  let text2 = textRef2.current.value; //Content
-  if(title&&!text2){text2 = `<iframe src=${title} width="90%" height="500px"/>`}
+  let text2 = addCon; //Content
+  if(roomAdmin&&addLink&&!addCon){text2 = `<iframe src=${addLink} width="90%" height="500px"/>`}
   if(!text){ Swal.fire({title:'내용을 입력해주세요.',icon:'warning'}) }
-  if (userInfo && text ) { console.log('title',title,'text',text,'text2',text2)
+  if (userInfo && text ) { 
           const dataId = Date.now();
           const data = {
             uid: user.uid||'',
             dataId: dataId,
             name: userInfo.name||'',
-            title: title,
+            title: addLink,
             text: text,
             text2: text2,
             today: today,
@@ -453,10 +484,9 @@ const submit = (e) => {
             photoData
           }
           fireIdea.itemSave2(folder, roomName, dataId, data)
-          titleRef2.current.value = '';
           textRef.current.value = '';
-          textRef2.current.value = '';
           setPhotoData(''); 
+          setAddLink(''); setAddCon('')
       }
     }
 
@@ -610,42 +640,40 @@ const upLoad = (e) => { console.log('uplod')
         </div>
         {/* {entering && */}
         <div className="idea-input">
-          <form onSubmit={submit} className="idea-form">
+          <div onSubmit={submit} className="idea-form">
             {/* <input type="url" ref={titleRef2} className="inputTitle" placeholder="  Link"/> */}
 
             <Tooltip arrow  placement="top" title="내용저장"> 
-            <button className="btnadd" style={{ outline: "none", border: "none" }} >
-            <LinkIcon /> 링크첨부</button>
+            <button className="btnadd" style={{ outline: "none", border: "none" }} onClick={linkInsert} >
+            <LinkIcon /> {addLink?'첨부됨!':'링크추가'}</button>
           </Tooltip>
           
           <Tooltip arrow  placement="top" title="내용저장"> 
-            <button className="btnadd" style={{ outline: "none", border: "none" }} >
-              <FileCopyIcon/> 내용첨부</button>
+            <button className="btnadd" style={{ outline: "none", border: "none" }} onClick={contentInsert}>
+              <VisibilityIcon/> {addCon?'첨부됨!':'내용추가'}</button>
           </Tooltip>
           {roomName && <input accept="image/*" style={{ display: 'none' }} id="imgData" type="file" onChange={upLoad} /> }
-          {!photoData&&
           <Tooltip arrow  placement="top" title="사진첨부"> 
           <label htmlFor="imgData" style={{ height:"25px",margin:"0",textAlign:"center",color:"white"}}> 
-              <IconButton size="small" component="span" style={{height:"22px",color:"white"}}> <AddPhotoAlternateIcon />사진첨부 </IconButton>
+              <IconButton  className="btnadd" size="small" component="span" style={{height:"22px",color:"white"}}> <AddPhotoAlternateIcon />  {photoData?'추가됨!':'사진추가'}</IconButton>
             </label>
           </Tooltip>
-          }
 
           {/* {photoData&&
           <label htmlFor="imgData" style={{background:"white", height:"25px",margin:"0"}}> 
-              <IconButton size="small" component="span" style={{background:"white", height:"22px"}}> <CollectionsIcon /> </IconButton>
+              <IconButton size="small" component="span" style={{background:"white", height:"22px"}}> <CollectionsIcon /> 추가됨</IconButton>
             </label>
           }           */}
          
           <Tooltip arrow  placement="top" title="내용저장"> 
-            <button className="btnadd" style={{ outline: "none", border: "none" }} >
+            <button className="btnadd" style={{ outline: "none", border: "none" }} onClick={submit} >
               <span className="rocket" ref={rocketRef}  >🚀</span>  저장</button>
           </Tooltip>
 
-            <textarea className="textarea titleText" ref={textRef} cols="30" rows="4" placeholder="이름/내용" />
+            <input type="text"className="textarea titleText" ref={textRef} cols="20" rows="4"  minlength="4" maxlength="20" size="10" style={{height:"80px",fontSize:"20px"}} placeholder="내용을 입력해주세요." />
             {/* <textarea className="textarea" ref={textRef2} cols="30" rows="2" 
             style={{borderTop: 'dashed 1px'}} placeholder=" Content" /> */}
-          </form>
+          </div>
         </div>    
          {/* }     */}
         </div>

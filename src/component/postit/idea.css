@@ -256,7 +256,7 @@ position:absolute !important; left: 10px !important;}
 
 .idea-form{
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 60px;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   border: none;
   outline: none;
   border-top: var(--Acolor) 1px solid;
@@ -310,7 +310,12 @@ position:absolute !important; left: 10px !important;}
 .idea-input, .s-item{
   border: solid 1px var(--Acolor);
 }
-
+.btnadd:hover{
+  background: var(--Dcolor);
+}
+.btnadd:active{
+  background: var(--Acolor);
+}
 @keyframes skyon {
   to {
     transform: translateY(-300px) translateX(-180px) rotate(-130deg) scale(5);
