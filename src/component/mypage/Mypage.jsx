@@ -35,18 +35,21 @@ function Mypage({fireApp,user,userInfo}) {
       <div className="mypageTop"><div className="logo"/>My page</div>
 
       <form className="mypageForm" onSubmit={profileUp}>
-      <VpnKey style={{fontSize:"40px"}}  /> 
-      <span className="mypageIcon" >{uid.substr(0,6)}</span>
-      <MailOutline style={{fontSize:"40px"}} />  
-      <span className="mypageIcon" >{userEmail}</span>
-      <InsertEmoticon style={{fontSize:"40px"}} /> 
-      <input className="mypageInput" name="name" defaultValue={userName} placeholder="name" ref={nameRef} />
-      <InsertEmoticon style={{fontSize:"40px"}}/> 
-        <input className="mypageInput job" name="job" ref={jobRef}  defaultValue={job}  />
-        <span style={{textAlign:"right",fontSize:"20px"}} >교사인 경우 학교이름을 적어주세요.</span>
+        <div> <VpnKey style={{fontSize:"40px"}}  /> <span className="mypageTitle" >Key</span> </div>
+              <span className="mypageIcon" >{uid.substr(0,6)}</span>
+        <div> <MailOutline style={{fontSize:"40px"}} />  <span className="mypageTitle" >e-mail</span> </div>
+              <span className="mypageIcon" >{userEmail}</span>
+        <div> <MailOutline style={{fontSize:"40px"}} />  <span className="mypageTitle" >Level</span> </div>
+              <span className="mypageIcon" >{userInfo.level}</span>
+        <div> <InsertEmoticon style={{fontSize:"40px"}} /> <span className="mypageTitle" >Name</span> </div>
+              <input className="mypageInput" name="name" defaultValue={userName} placeholder="name" ref={nameRef} />
+        <div> <InsertEmoticon style={{fontSize:"40px"}}/> <span className="mypageTitle" >Shool</span> </div>
+              <input className="mypageInput job" name="job" ref={jobRef}  defaultValue={job}  />
+              <span style={{textAlign:"right",fontSize:"20px"}} >교사인 경우 학교이름을 적어주세요.</span>
+
         <button type="submit" style={{fontSize:"30px", marginTop:"30px",borderRadius:"5px"}}>
-          업데이트
-          </button>
+         업데이트
+        </button>
       </form>
 
     </div>

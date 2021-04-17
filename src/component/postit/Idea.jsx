@@ -225,7 +225,7 @@ return;
     }
   }
 
-     // 링크입력 모달
+     // 내용추가입력 모달
      const contentInsert = async(e)=>{
       e.preventDefault();
       const { value: text } = await Swal.fire({
@@ -643,15 +643,16 @@ const upLoad = (e) => { console.log('uplod')
           <div onSubmit={submit} className="idea-form">
             {/* <input type="url" ref={titleRef2} className="inputTitle" placeholder="  Link"/> */}
 
-            <Tooltip arrow  placement="top" title="내용저장"> 
+          <Tooltip arrow  placement="top" title="링크첨부"> 
             <button className="btnadd" style={{ outline: "none", border: "none" }} onClick={linkInsert} >
             <LinkIcon  /> {addLink?'첨부됨!':'링크추가'}</button>
           </Tooltip>
           
-          <Tooltip arrow  placement="top" title="내용저장"> 
+          <Tooltip arrow  placement="top" title="추가내용 첨부"> 
             <button className="btnadd" style={{ outline: "none", border: "none" }} onClick={contentInsert}>
               <VisibilityIcon/> {addCon?'첨부됨!':'내용추가'}</button>
           </Tooltip>
+          
           {roomName && <input accept="image/*" style={{ display: 'none' }} id="imgData" type="file" onChange={upLoad} /> }
           <Tooltip arrow className="btnadd" placement="top" title="사진첨부"> 
           <label htmlFor="imgData" style={{ height:"25px",margin:"0",textAlign:"center"}}> 

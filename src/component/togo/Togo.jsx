@@ -11,19 +11,56 @@ import rocket from './rocket.png';
 import postit from './post-it.png';
 import caht from './chat.png';
 import cube from './cube.png';
+import users from './users.png';
+import myinfo from './myinfo.png';
+import workout from './workout.png';
 import mainLogo from './mainLogo.png';
 
 import Opentoolbox from '../opentool/Opentoolbox';
 
 
-function Togo({ fireApp, user, userInfo, setlogoName }) {
+function Togo({ fireApp, user, userInfo, setlogoName, photo }) {
   setlogoName('');
   const history = useHistory()  ;
   console.log()
   return (
     <div className="togo" style={{paddingBottom:"10px"}}>      
         <div className="jumbo"> <div className="mainlogo"/>  </div>
-        {/* <h2 style={{fontWeight:"900",color:"var(--Acolor)",textAlign:"center"}} > 온라인 쌍방향 협업도구</h2> */}
+        {user &&  <div className="ppp" >나의 메뉴</div> }
+        {user && 
+        <div className="togoMain1">  
+            <Card  className="mainCard1" onClick={() =>{history.push('/mypage');}} >          
+              <Card.Img variant="top" src={myinfo}  className="cardImg1"  />
+              <Card.Body>
+                <button className="btn1 card1" >MyPage</button>
+              </Card.Body>
+            </Card>
+            
+            <Card  className="mainCard1" onClick={() =>{history.push('/mytool');}} >
+              <Card.Img variant="top" src={photo}  className="cardImg1"  />
+              <Card.Body>
+                <button className="btn1 card1" >ToolBox</button>
+              </Card.Body>
+            </Card>
+
+            {userInfo&&userInfo.level>9&&
+            <Card  className="mainCard1" onClick={() =>{history.push('/workout');}} >
+              <Card.Img variant="top" src={workout}  className="cardImg1"  />
+              <Card.Body>
+                <button className="btn1 card1" >Health</button>
+              </Card.Body>
+            </Card>
+            }
+             {userInfo&&userInfo.level>9&&
+            <Card  className="mainCard1" onClick={() =>{history.push('/atable');}} >
+              <Card.Img variant="top" src={users}  className="cardImg1"  />
+              <Card.Body>
+                <button className="btn1 card1" >Users</button>
+              </Card.Body>
+            </Card>
+            }
+        </div>
+        }
 
         <div className="ppp" >실시간 쌍방향 협업도구</div>
         <div className="togoMain1">  

@@ -125,7 +125,7 @@ function App({ fireApp,fireLogin,fireSync, fireTodo, fireIdea, fireOpentool,fire
       <main>
         <Switch>
           <Route exact path='/'>
-            <Togo setlogoName={setlogoName} fireApp={fireApp} user={user} userInfo={userInfo}/>
+            <Togo setlogoName={setlogoName} fireApp={fireApp} user={user} userInfo={userInfo} photo={photo}/>
           </Route>
           <Route path='/mypage'> 
             <Mypage fireApp={fireApp} user={user} userInfo={userInfo} setlogoName={setlogoName} />
