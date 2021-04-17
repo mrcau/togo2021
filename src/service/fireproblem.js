@@ -38,7 +38,7 @@ roomGetSave2(folder,newRoom, data,level){
       const found = data2.filter(e => e.length > 3)||0;
       if(data){ roomGetNum = found.length;}
     })
-      if(roomGetNum <= level){  console.log(roomGetNum,level)
+      if(roomGetNum < level){  console.log(roomGetNum,level)
       fireInit.database().ref(`${folder}/${roomUid}/${Uid}`).set(data)
     }else{return}  
   }
@@ -58,7 +58,7 @@ roomGetSave2(folder,newRoom, data,level){
       if(data){ roomGetNum = found.length;}
     })
   
-  if(roomGetNum <= level){
+  if(roomGetNum < level){
   fireInit.database().ref(`${folder}/${roomUid}/${Uid}`).set(data)
   }else{return}  
 }

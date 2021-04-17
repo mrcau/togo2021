@@ -11,7 +11,7 @@
   justify-content: center;
   align-items: center;
   padding: 0;  
-  margin-bottom: 20px;
+  margin-bottom: 0;
 }
 .togoTop{
   display: flex;
@@ -137,6 +137,14 @@
 .btn1.card1{
   height: auto !important;
   width: 100%;
+}
+.cardImg0{
+  width:6rem !important ;
+  height:5rem;
+  margin:auto;
+  /* filter: grayscale(70%); */
+  transition: all 200ms;
+  transform: translateY(5px);
 }
 .cardImg1{
   width: 5rem !important;

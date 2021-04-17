@@ -35,7 +35,7 @@ let roomGetNum = 0;
     const found = data2.filter(e => e.length > 3);
     if(data){ roomGetNum = found.length;}
   })
-    if(roomGetNum <= level){  console.log(roomGetNum,level)
+    if(roomGetNum < level){  console.log(roomGetNum,level)
     fireInit.database().ref(`${folder}/${roomUid}/${Uid}/${dataId}`).set(data)
   }else{return}  
 }
@@ -176,7 +176,7 @@ itemSave3(folder,roomName, dataId, data,level) {
     if(data){ roomGetNum = Object.keys(data).length; }
   })
 
-    if(roomGetNum <= level+2){ console.log(roomGetNum)
+    if(roomGetNum < level){ console.log(roomGetNum)
       fireInit.database().ref(`${folder}/${roomUid}/${roomNum}/${dataId}`).set(data)
     .then(() => console.log('글 저장성공'))
     .catch((e) => console.log(e))

@@ -99,6 +99,11 @@
   border: solid 1px var(--Acolor);
 }
 
+.mytool .titleText{
+  height: 80px;
+  font-size: 20px;
+  text-align: center;
+}
 @keyframes skyon {
   to {
     transform: translateY(-300px) translateX(-180px) rotate(-130deg) scale(5);

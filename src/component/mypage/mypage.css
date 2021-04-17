@@ -11,7 +11,6 @@
   margin: auto;
 }
 .mypageInput{
-  margin-bottom: 30px;
   border-top: none;
   background: none;
   border-right: none;
@@ -21,20 +20,31 @@
   font-size: 25px;
   outline: none;
 }
-.mypageInput.job{
-  margin-bottom: 10px;
+.mypageList{
+  margin: 20px 0 0 0 !important;
+}
+.mypageTitle{
+  font-size: large;
+  font-weight: 900;
+  border: none;
+  width: 50%;
+}
 
+.jobdropDown{
+  font-size: large;
+  font-weight: 900;
+  border: none;
+  width: 50%;
+  margin: 0 30px;
 }
 .mypagejob{
   background: white;
-  margin-bottom: 5px;
   border: 1px solid;
   border-top: none;
   border-right: none;
   border-left: none;
   text-align: left;
   padding-left: 5px;
-  margin-bottom: 0;  
   font-size: 25px;
 }
 
@@ -42,7 +52,6 @@
   display: flex;
   justify-content: center;
   padding: 10px;
-  margin-top: 10px;
   font-size: 4.5vw;
   font-weight: 900;
   color: var(--Acolor);
@@ -54,8 +63,8 @@
   max-height: 80px;
   background: url("./programmer.png") center/cover no-repeat;
 }
-.mypageIcon{
-  font-size: 30px;
+.mypageIcon, .mypageInput{
+  font-size: 20px;
   text-align: left;
-  margin-bottom: 30px;
+  margin:0 30px;
 }
