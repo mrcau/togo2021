@@ -61,9 +61,20 @@
 }
 .btnLogout{
   /* padding:0 10px !important; */
+  margin: auto ;
   height:25px;
   width:90% !important;
   border-radius: 3px;
+}
+.menuTitle{
+  height:25px;
+  background: var(--Acolor);
+  width:90% ;
+  border-radius: 3px;
+  color: white;
+  text-align: center;
+  margin: auto;
+  line-height: 25px;
 }
 
 .dropItem{

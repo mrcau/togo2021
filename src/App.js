@@ -104,11 +104,11 @@ function App({ fireApp,fireLogin,fireSync, fireTodo, fireIdea, fireOpentool,fire
         </IconButton>
         {/* /타이틀 */}
         <div className="headerT" onClick={()=>setlogoName('')}>
-        <Tooltip arrow placement="left"  title="홈으로 이동">
-          <Link className="link" to='/'> 
-          <img src={steering} className="steering" alt="logo"/> 
-          <span style={{fontSize:'large',color:'white'}}>{logoName}</span>  
-          </Link>
+          <Tooltip arrow placement="left"  title="홈으로 이동">
+            <Link className="link" to='/' > 
+            <img src={steering} className="steering" alt="logo"/> 
+            <span style={{fontSize:'large',color:'white',padding:'3px',margin:"5px 0"}}>{logoName}</span>  
+            </Link>
           </Tooltip> 
         </div> 
         {/* 탑메뉴 */}
@@ -120,7 +120,7 @@ function App({ fireApp,fireLogin,fireSync, fireTodo, fireIdea, fireOpentool,fire
             : <IconButton size="small" component="span" onClick={moveModal3} 
             style={{color:"var(--Bcolor)"}}> Login </IconButton>
           }
-          </div>        
+        </div>        
       </header>
       <main>
         <Switch>

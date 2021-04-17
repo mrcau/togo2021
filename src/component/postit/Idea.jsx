@@ -104,7 +104,7 @@ useEffect(() => {
     const cf = {  f1: (p) => { setItems(p) },  f2: () => { setItems({}) },
                   f3: (p) => { setRoom(p) },   f4: () => { setRoom({}) },
                }
-    if (e && report===false && id.length<10) {   console.log('로그인하고 리포트false','room',room)
+    if (e && report===false && id.length<10) {   console.log('로그인하고 리포트false!')
     setRoomUid(e.uid.substr(0, roomSubstr));
     setUserUID(e.uid);
     const stopDataSync = fireSync.dataSync(folder, roomName, cf);
@@ -112,7 +112,7 @@ useEffect(() => {
     if(data.dataId){ if(data.dataId.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){setUserClass(true)}  }
       return ()=>{stopDataSync();stoproomSync();}    
     }       
-    else  if(e && report){ console.log('로그인 레포트',items,roomName,report,items.roomName);
+    else  if(e && report){ console.log('로그인 레포트');
     if(items.roomName){ if(items.roomName.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){setUserClass(true); setItems(items); setReport(true)} }
     } 
     else {return}
@@ -645,7 +645,7 @@ const upLoad = (e) => { console.log('uplod')
 
             <Tooltip arrow  placement="top" title="내용저장"> 
             <button className="btnadd" style={{ outline: "none", border: "none" }} onClick={linkInsert} >
-            <LinkIcon /> {addLink?'첨부됨!':'링크추가'}</button>
+            <LinkIcon  /> {addLink?'첨부됨!':'링크추가'}</button>
           </Tooltip>
           
           <Tooltip arrow  placement="top" title="내용저장"> 
@@ -653,9 +653,10 @@ const upLoad = (e) => { console.log('uplod')
               <VisibilityIcon/> {addCon?'첨부됨!':'내용추가'}</button>
           </Tooltip>
           {roomName && <input accept="image/*" style={{ display: 'none' }} id="imgData" type="file" onChange={upLoad} /> }
-          <Tooltip arrow  placement="top" title="사진첨부"> 
-          <label htmlFor="imgData" style={{ height:"25px",margin:"0",textAlign:"center",color:"white"}}> 
-              <IconButton  className="btnadd" size="small" component="span" style={{height:"22px",color:"white"}}> <AddPhotoAlternateIcon />  {photoData?'추가됨!':'사진추가'}</IconButton>
+          <Tooltip arrow className="btnadd" placement="top" title="사진첨부"> 
+          <label htmlFor="imgData" style={{ height:"25px",margin:"0",textAlign:"center"}}> 
+              <IconButton  className="btnadd" size="small" component="span" style={{height:"22px",color:"var(--Bcolor)"}}> <AddPhotoAlternateIcon />
+                {photoData?'추가됨!':'사진추가'}</IconButton>
             </label>
           </Tooltip>
 
@@ -666,11 +667,13 @@ const upLoad = (e) => { console.log('uplod')
           }           */}
          
           <Tooltip arrow  placement="top" title="내용저장"> 
-            <button className="btnadd" style={{ outline: "none", border: "none" }} onClick={()=>{submit();}} >
-              <span className="rocket" ref={rocketRef}  >🚀</span>  저장</button>
+            <button className="btnadd" style={{ outline: "none", border: "none",color:"white",fontSize:'16px' }} onClick={()=>{submit();}} >
+              <span className="rocket" ref={rocketRef} style={{fontSize:"16px"}} >🚀</span>  저장</button>
           </Tooltip>
 
-            <input type="text"className="textarea titleText" ref={textRef} cols="20" rows="4"  minlength="4" maxlength="20" size="10" style={{height:"80px",fontSize:"20px"}} placeholder="내용을 입력해주세요." />
+            <input type="text"className="textarea titleText" ref={textRef} cols="20" rows="4"  minlength="4" size="10" style={{height:"80px",fontSize:"20px"}} placeholder="제목/내용을 입력해주세요."
+            // maxlength="20" 
+            />
             {/* <textarea className="textarea" ref={textRef2} cols="30" rows="2" 
             style={{borderTop: 'dashed 1px'}} placeholder=" Content" /> */}
           </div>

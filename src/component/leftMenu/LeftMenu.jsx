@@ -29,8 +29,8 @@ const history = useHistory();
         <IconButton size="small" component="span"> <PhotoCamera /> </IconButton>
       </label>
       {user.uid && 
-        <div style={{width:'100%'}}>
-          <button className="btnLogout" onClick={logout} > LOGOUT </button>
+        <div style={{width:'100%',padding:"0"}}>
+          <button className="btnLogout" onClick={logout} style={{marginLeft:"10px"}} > LOGOUT </button>
           <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/mypage"><div className="icon">MyPage </div></Link> </div>
           <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/mytool"><div className="icon">ToolBox </div></Link></div>
           {/* <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/todo"><div className="icon"> 나의 할일들 </div></Link></div> */}
@@ -47,22 +47,27 @@ const history = useHistory();
       }
       <hr style={{width:'90%',border:'dashed 1px gray'}} />    
       <div style={{width:'100%',padding:"0"}}>
-        <button className="btnLogout"  > 협업도구 </button>
-        <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/postit/:id"><div className="icon">포스툴</div></Link> </div>
-        <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/solving/:id"><div className="icon">게시툴</div></Link></div>
+        <div className="menuTitle"  > 협업도구 </div>
+        <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/postit/:id"><div className="icon">게시툴</div></Link> </div>
+        {userInfo&&userInfo.level>9&&
+        <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/solving/:id"><div className="icon">코딩툴</div></Link></div>
+        }
+        {userInfo&&userInfo.level>9&&
         <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/cube/:id"><div className="icon">큐브툴</div></Link> </div>
+        }
         <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/opentool"><div className="icon">공유툴</div></Link></div>
       </div>  
 
       <hr style={{width:'90%',border:'dashed 1px gray'}} />    
+      {userInfo&&userInfo.level>9&&
       <div style={{width:'100%',padding:"0"}}>
-        <button className="btnLogout"  > 디자인씽킹 </button>
+        <div className="menuTitle"  > 디자인씽킹 </div>
         <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/problem/:id"><BatteryCharging20/>문제찾기</Link> </div>
         <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/datastudy/:id"><BatteryCharging50/>데이터분석</Link></div>
         <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/scamper/:id"><BatteryCharging80/>아이디어</Link> </div>
         <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/startup/:id">🚀 스타트업</Link></div>
       </div>  
-
+      }
      
 {/* 
         <Accordion  style={{width:'100%'}}>         

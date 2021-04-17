@@ -70,7 +70,6 @@ const [reports, setReports] = useState(report)
 
   const editText = async()=>{ 
     // e.preventDefault();
-    console.log(ipAPI,user.uid,item.uid)
   if(user.uid === item.uid || ipAPI === item.ip){
   const { value: text } = await Swal.fire({
       input: 'textarea',
@@ -86,8 +85,9 @@ const [reports, setReports] = useState(report)
 
 
   return (
-    <div className="idearow" >  {item.color && 
-     <Card bg={item.color} text={'white'} style={{ width: '12rem',height:'110px'}} className="mb-2" >
+    <div className="idearow" > 
+     {item.color && 
+     <Card bg={item.color} text={'white'} style={{ width: '12rem',height:'120px'}} className="mb-2" >
       {item.roomUid 
       ? <Card.Header style={{fontSize:"large",fontWeight:"900",textAlign:"center"}}>방제목</Card.Header>
       :
@@ -128,7 +128,7 @@ const [reports, setReports] = useState(report)
         </div>
       </DropdownButton>
       }
-      
+
         { item.text2 || item.photoData ?
           <IconButton style={{width:'30px', height:'20px'}} >
           <VisibilityIcon style={{color:'white'}} size="small" onClick={fire} /> 
@@ -152,7 +152,7 @@ const [reports, setReports] = useState(report)
 
 
       <div className="cardTitle" style={{textAlign:"center"}}>
-        <Card.Body style={{padding:"8px",height:"100px",overflowY:"auto" }}>
+        <Card.Body style={{padding:"8px",height:"79px",overflowY:"auto" }}>
         {/* {item.roomUid &&  */}
            <Card.Title style={{fontSize:"16px",fontWeight:"900"}}  onClick={editText} > {item.text} </Card.Title>
         {/* } */}
