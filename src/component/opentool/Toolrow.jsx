@@ -45,6 +45,20 @@ function  Toolrow ({item,fireApp,level, user}) {
     fireApp.itemColorUp(folder,item.dataId,p);
   }
 
+  const editText = async()=>{ 
+    // e.preventDefault();
+  if(user.uid === item.uid){
+  const { value: text } = await Swal.fire({
+      input: 'textarea',
+      inputValue:item.text,
+      showCancelButton: true
+    })
+    if (text) {
+      // Swal.fire(text)
+      fireApp.openFolderdataUp(folder,item.dataId,text);  
+    }
+  }
+  }
 
   return (
     <div className="toolrow">
@@ -101,11 +115,8 @@ function  Toolrow ({item,fireApp,level, user}) {
 
       <div className="cardTitle" style={{textAlign:"center"}}>
         <Card.Body style={{padding:"8px",height:"55px",overflowY:"auto" }}>
-        {/* {item.roomUid
-          ? <Card.Title style={{fontSize:"16px",fontWeight:"900",color:"black"}} > {item.roomName} </Card.Title>
-          : <Card.Title style={{fontSize:"16px",fontWeight:"900",lineHeight:"5px"}} > {item.title}  </Card.Title> 
-        } */}
-          <Card.Text style={{fontSize:"12px",lineHeight:"14px",padding:"0", whiteSpace:"pre-wrap"  }}> {item.text||''} </Card.Text>
+          <Card.Title style={{fontSize:"16px",fontWeight:"900"}}  onClick={editText} > {item.text||''} </Card.Title>
+          <Card.Text style={{fontSize:"12px",lineHeight:"6px",padding:"0", whiteSpace:"pre-wrap"  }}> {item.name} </Card.Text>
         </Card.Body>
       </div>
      </Card>

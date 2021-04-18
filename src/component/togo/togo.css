@@ -1,23 +1,19 @@
 .togo{
   display: flex;
   flex-direction: column;
-  
 }
 .jumbo{
-  /* background: #30dbe7; */
-  display: flex;
-  /* flex-flow: column; */
-  height: 100px;
-  justify-content: center;
+  display: flex; 
+   flex-direction: column;
   align-items: center;
-  padding: 0;  
-  margin-bottom: 0;
+  padding: 10px 0 0 0;  
+  margin: auto;
 }
 .togoTop{
   display: flex;
   height: 200px;
   padding: 0;
-  /* padding-left: 20px; */
+  flex: 1;
 }
 .jumbo2{
   display: flex;
@@ -33,18 +29,17 @@
 .jumbo2 .h1{
   font-weight: 900;
   color: var(--Acolor);
-  /* background:rgba(255, 255, 255, 0.5); */
   border-radius: 5px;
   margin-top: 70px;
   text-shadow: 2px 2px 2px white;
 }
 .mainlogo{
-  background: url(./mainLogo.png);
+  background: url(./mainLogo2.png);
   background-size: contain;
   background-repeat: no-repeat;
   background-position-x: center;
-  width:250px;
-  height:80px;
+  width:300px;
+  height:120px;
   /* margin: auto; */
 }
 .togo .pp {
@@ -55,7 +50,6 @@
 }
 .togo .ppp {
   font-size: 1.3rem;
-  /* padding: 20px 0 10px 0; */
   color: var(--Acolor);
   font-weight: 900;
   font-style: italic;
@@ -149,11 +143,13 @@
 .cardImg1{
   width: 5rem !important;
   height:5rem;
-  margin:auto;
+  margin:auto;  
   /* filter: grayscale(70%); */
   transition: all 200ms;
   transform: translateY(5px);
 }
+
+
 .cardImg{
   width: 7rem !important;
   height:7rem;
@@ -164,10 +160,10 @@
 }
 
 .mainCard:hover  .cardImg{
-  transform: scale(1.2) translateY(-10px);
+  transform: scale(1.1) translateY(-5px);
  /* filter: grayscale(0%); */
 }
 .mainCard1:hover  .cardImg1{
-  transform: scale(1.2) translateY(-10px);
+  transform: scale(1.1) translateY(-5px);
  /* filter: grayscale(0%); */
 }

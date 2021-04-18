@@ -5,7 +5,9 @@
   position: relative;
   overflow-y:auto ;
 }
-
+.mytoolInputMenu{
+  display: flex;
+}
 .mytool ::-webkit-scrollbar {
   width: 4px;
 }

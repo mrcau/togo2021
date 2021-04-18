@@ -31,7 +31,7 @@ function Mypage({fireApp,user,userInfo,setlogoName}) {
     const mentor = mentorRef.current.value; 
     console.log(selectjob,inputName,inputjob)
     let level = 0;
-    if(inputName&&selectjob!=='교사'){level = 1}else if(inputName&&inputjob&&selectjob==='교사'){level=2};
+    if(inputName&&selectjob!=='교사'){level = 1}else if(inputName&&inputjob&&selectjob==='교사'){level=2}else if(inputName&&!inputjob&&selectjob==='교사'){level=1};
     if(!inputName){Swal.fire({title:"이름을 입력해 주세요", icon:'warning'})}
     else{
       Swal.fire({ title: '정보를 저장하겠습니까?',  text: selectjob +  ", " + nameRef.current.value + ", " +level +

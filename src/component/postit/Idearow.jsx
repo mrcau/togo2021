@@ -153,9 +153,7 @@ const [reports, setReports] = useState(report)
 
       <div className="cardTitle" style={{textAlign:"center"}}>
         <Card.Body style={{padding:"8px",height:"79px",overflowY:"auto" }}>
-        {/* {item.roomUid &&  */}
-           <Card.Title style={{fontSize:"16px",fontWeight:"900"}}  onClick={editText} > {item.text} </Card.Title>
-        {/* } */}
+          <Card.Title style={{fontSize:"16px",fontWeight:"900"}}  onClick={editText} > {item.text} </Card.Title>
           <Card.Text style={{fontSize:"12px",lineHeight:"14px", whiteSpace:"pre-wrap" }}  onClick={editText} > {item.ip && 'IP : '+ item.ip.substr(8)} </Card.Text>
         </Card.Body>
       </div>

@@ -79,10 +79,15 @@ itemColorUp(folder, dataId, color) {
       .then(() => console.log('글 저장성공'))
       .catch((e) => console.log(e))
   }
+  
   // openFolder 업데이트
 openFolderUp(folder,toolbox, data) {
   fireInit.database().ref(`${folder}/${toolbox}`).update(data);
 }
+  // openFolder 업데이트
+  openFolderdataUp(folder,dataid, data) {
+    fireInit.database().ref(`${folder}/${dataid}`).update(data);
+  }
 
   // openFolder 업데이트
 openfolderDel(folder,toolbox, data) {

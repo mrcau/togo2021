@@ -46,31 +46,31 @@ function Mytool({fireIdea,fireApp, fireSync,user, userInfo, setlogoName }) {
     e.preventDefault();
     if(e.currentTarget == null){return;}
     const text = textRef.current.value; // 내용
-    const title = titleRef.current.value; //Link
-
-    let text2 = textRef2.current.value; // content
-  if(title&&!text2){text2 = `<iframe src=${title} width="90%" height="500px"/>`}
-  
-  if( !text ){ Swal.fire({title:'제목을 입력해 주세요.',icon:'warning'}) }
+    let text2 = addCon; //Content
+  // const title = titleRef.current.value; //Link
+    // let text2 = textRef2.current.value; // content
+    if(addLink&&!addCon){text2 = `<iframe src=${addLink} width="90%" height="500px"/>`}
+    if( !text ){ Swal.fire({title:'내용을 입력해 주세요.',icon:'warning'}) }
     if (userInfo && text) {
       rocketOn();
       const dataId = Date.now();
       const data = {
-        uid: user.uid,
+        uid: user.uid||'',
         dataId: dataId,
-        name: userInfo.name,
-        title: title,
+        name: userInfo.name||'',
+        title: addLink,
         text: text,
         text2: text2,
         today: today,
         progress: 0,
         color : 'secondary',
+        photoData,
         selectFolder
       }
       fireSync.toolSave(folder,user.uid,selectFolder,data);      
-      titleRef.current.value = '';
       textRef.current.value = '';
-      textRef2.current.value = '';
+      setPhotoData(''); rocketOn();
+      setAddLink(''); setAddCon('')
     }
   }
 
@@ -145,13 +145,12 @@ function Mytool({fireIdea,fireApp, fireSync,user, userInfo, setlogoName }) {
       }
     }
 //사진업로드
-    const upLoad = (e) => { console.log('uplod')
+    const upLoad = (e) => { 
     const imgDataId = Date.now();
     const file = e.target.files[0];
     
     const metaData = { contentType: mime.lookup(file.name) } ||''
     fireIdea.imgUpload( imgDataId, file, metaData, (e) => setPhotoData(e));
-    console.log(file.name,file,metaData)
   }
   return (
     <div className="mytool">
@@ -164,7 +163,8 @@ function Mytool({fireIdea,fireApp, fireSync,user, userInfo, setlogoName }) {
       </div>
       <div className="mytool-input">
         <form className="mytool-form">
-        <div style={{display:"flex"}}>
+        <div className="mytoolInputMenu">
+          <div className="folderDorpDown" style={{flex:"auto"}}>
           <DropdownButton as={ButtonGroup} variant="primary" title={selectFolder} size="sm" style={{flex:"1"}} >
            <div className="cardSelect">
              {
@@ -174,7 +174,8 @@ function Mytool({fireIdea,fireApp, fireSync,user, userInfo, setlogoName }) {
              }
            </div>
           </DropdownButton>
-          <div style={{display:"flex",background:"white"}}>
+          </div>
+          <div style={{display:"flex",background:"white",flex:"auto"}}>
             {level>0 && 
            <Tooltip arrow  placement="top" title="폴더삭제">
             <IconButton size="small" component="span" onClick={deleteFolder} style={{color:"var(--Acolor)",padding:"0 5px 0 0"}}>
@@ -182,6 +183,7 @@ function Mytool({fireIdea,fireApp, fireSync,user, userInfo, setlogoName }) {
             </IconButton>
             </Tooltip>
             }
+            <input type="text" ref={newFolder} className="inputTitle" style={{flex:"3",minWidth:"50px"}} placeholder="새폴더"/>
             {level>0 &&       
              <IconButton size="small" component="span" onClick={AddNewFolder} style={{color:"var(--Acolor)",padding:"0 0 0 5px"}} > 
              <Tooltip arrow  placement="top" title="폴더 추가">
@@ -190,7 +192,6 @@ function Mytool({fireIdea,fireApp, fireSync,user, userInfo, setlogoName }) {
             </IconButton>
             }
           </div>
-          <input type="text" ref={newFolder} className="inputTitle" style={{flex:"2",minWidth:"50px"}} placeholder="새폴더"/>
           
           <Tooltip arrow  placement="top" title="링크첨부"> 
             <button className="btnadd" style={{ outline: "none", border: "none" }} onClick={linkInsert} >
@@ -206,7 +207,7 @@ function Mytool({fireIdea,fireApp, fireSync,user, userInfo, setlogoName }) {
           <Tooltip arrow className="btnadd" placement="top" title="사진첨부"> 
           <label htmlFor="imgData" style={{ height:"25px",margin:"0",textAlign:"center"}}> 
               <IconButton  className="btnadd" size="small" component="span" style={{height:"22px",color:"var(--Bcolor)"}}> <AddPhotoAlternateIcon />
-                {photoData?'추가됨!':'사진'}</IconButton>
+              <span style={{width:"30px"}}>  {photoData?'추가됨!':'사진'}</span></IconButton>
             </label>
           </Tooltip>
         
@@ -221,9 +222,6 @@ function Mytool({fireIdea,fireApp, fireSync,user, userInfo, setlogoName }) {
         <input type="text" className="textarea titleText" ref={textRef} cols="20" rows="4"  minlength="4" size="10" placeholder="제목/내용을 입력해주세요."
             // maxlength="20" 
             />
-        {/* <textarea type="text" cols="30" rows="2"  ref={textRef} className="inputTitle"  style={{textAlign:"center",resize:"none"}} placeholder="내용" />
-        <input type="url" ref={titleRef} className="inputTitle" placeholder="  Link"/>
-        <textarea className="textarea" ref={textRef2} cols="30" rows="2" placeholder=" Content" /> */}
         </form>
       </div>
 

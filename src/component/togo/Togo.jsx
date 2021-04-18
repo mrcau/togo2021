@@ -15,7 +15,7 @@ import users from './users.png';
 import myinfo from './myinfo.png';
 import workout from './workout.png';
 import briefcase from './briefcase.png';
-import mainLogo from './mainLogo.png';
+import mainLogo2 from './mainLogo.png';
 
 import Opentoolbox from '../opentool/Opentoolbox';
 
