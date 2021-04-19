@@ -41,7 +41,9 @@ const headCells = [
   { id: 'name', numeric: false, disablePadding: true, label: 'name' },
   { id: 'email', numeric: true, disablePadding: false, label: 'email' },
   { id: 'pass', numeric: true, disablePadding: false, label: 'pass' },
-  { id: 'follow', numeric: true, disablePadding: false, label: 'follow' },
+  { id: 'mentor', numeric: true, disablePadding: false, label: 'mentor' },
+  { id: 'job', numeric: true, disablePadding: false, label: 'job' },
+  { id: 'company', numeric: true, disablePadding: false, label: 'company' },
   { id: 'level', numeric: true, disablePadding: false, label: 'level' },
 ];
 
@@ -160,7 +162,9 @@ const authDel = (uid) => { fireApp.authDel(folder,uid)}
                       </TableCell>
                       <TableCell align="center">{row.email}</TableCell>
                       <TableCell align="center">{row.pass}</TableCell>
-                      <TableCell align="center">{row.follow}</TableCell>
+                      <TableCell align="center">{row.mentor}</TableCell>
+                      <TableCell align="center">{row.job}</TableCell>
+                      <TableCell align="center">{row.company}</TableCell>
                       {/* <TableCell align="center">{row.level}</TableCell> */}
                       <TableCell align="center">
                         <IconButton  size="small" style={{width:'25px'}} onClick={()=>levelUp(row.user)} >

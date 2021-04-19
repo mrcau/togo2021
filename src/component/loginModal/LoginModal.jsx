@@ -58,7 +58,7 @@ function LoginModal({ fireApp, setuser,moveModal4,registerTF, setRegisterTF, use
       {!registerTF &&
         <div className="auth">
           <h4>로그인</h4>
-          <Form onSubmit={emailLogin}>
+          {/* <Form onSubmit={emailLogin}>
             <Form.Group controlId="formBasicEmailLogin" className="formGroup" >
               <Form.Label className="formLabel"><MailOutlineIcon /></Form.Label>
               <Form.Control className="formInput" type="email" ref={emailRef} placeholder="이메일" />
@@ -68,10 +68,14 @@ function LoginModal({ fireApp, setuser,moveModal4,registerTF, setRegisterTF, use
               <Form.Control className="formInput" type="password" ref={passRef} placeholder="패스워드" />
             </Form.Group>
             <Button variant="primary" type="submit"> 로그인</Button>
-          </Form>
+          </Form> */}
           <button className="btnGoogle" style={{ background: "white" }} onClick={googleLogin} >
             <img src={google} alt="googe" width="50px" /> </button>
-          <Button variant="primary"  onClick={() => setRegisterTF(true)} style={{marginTop:"30px"}}> 회원가입</Button>
+          <Button variant="primary"  onClick={googleLogin} style={{marginTop:"30px"}}> 
+          구글계정으로 로그인
+          </Button>
+          <h6 style={{marginTop:"16px"}} >로그인후 Mypage에서 기본정보를 업데이트해주세요.</h6>
+          {/* <Button variant="primary"  onClick={() => setRegisterTF(true)} style={{marginTop:"30px"}}> 회원가입</Button> */}
 
         </div>
       }

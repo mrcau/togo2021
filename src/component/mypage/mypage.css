@@ -4,6 +4,12 @@
   height: 100%;
   font-size: large;
 }
+.basicInfo{
+  background: rgba(1, 1, 1, 0.2);
+  padding: 10px;
+  /* width:50%; */
+  border-radius: 12px;
+}
 .mypageForm{
   display: flex;
   flex-direction: column;
@@ -11,6 +17,7 @@
   margin: auto;
 }
 .mypageInput{
+  width: 90%;
   border-top: none;
   background: none;
   border-right: none;
@@ -34,8 +41,8 @@
   font-size: large;
   font-weight: 900;
   border: none;
-  width: 50%;
-  margin: 0 30px;
+  width: 100px;
+  /* margin: 0 30px; */
 }
 .mypagejob{
   background: white;
@@ -66,5 +73,10 @@
 .mypageIcon, .mypageInput{
   font-size: 20px;
   text-align: left;
-  margin:0 30px;
+  margin:0 20px;
+  font-weight:900;
+  color:var(--Dcolor)
+}
+.job{
+  margin:0 40px;
 }

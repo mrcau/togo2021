@@ -236,7 +236,7 @@ console.log(file.name,file,metaData)
       </div>
       }
 
-    <div style={{display:"flex",background:"var(--Bcolor)"}}>
+    <div style={{display:"flex",background:"var(--Bcolor)",height:"30px"}}>
       {
          folderBox && Object.values(folderBox).map((e,i) => {
            return <Dropdown.Item as="button" type="button"  onClick={()=>{setselectFolder(e)}} 
