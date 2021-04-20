@@ -156,7 +156,7 @@ function App({ fireApp,fireLogin,fireSync, fireTodo, fireIdea, fireOpentool,fire
             <Problem fireSync={fireSync} fireProblem={fireProblem} user={user} userInfo={userInfo} setlogoName={setlogoName} />
           </Route>
           <Route path="/postit/:id"> 
-            <Idea fireSync={fireSync} fireIdea={fireIdea} user={user} userInfo={userInfo} setlogoName={setlogoName} />
+            <Idea fireSync={fireSync} fireProblem={fireProblem} fireIdea={fireIdea} user={user} userInfo={userInfo} setlogoName={setlogoName} />
           </Route>
           <Route path='/datastudy/:id'>           
             <Datastudy fireProblem={fireProblem} fireSync={fireSync} user={user} userInfo={userInfo} setlogoName={setlogoName} />

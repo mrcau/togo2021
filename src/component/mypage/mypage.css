@@ -9,6 +9,7 @@
   padding: 10px;
   /* width:50%; */
   border-radius: 12px;
+  height: 90%;
 }
 .mypageForm{
   display: flex;

@@ -258,6 +258,7 @@ useEffect(() => {
       const cf2 = () => { setdata({});setRoom({});  }
       fireSync.roomUser(folder,roomUid,cf2,1);        
       fireSync.dataSync(folder, roomName, cf,1);
+
       history.push('/problem/:id');  setdata({});     
       dataReset();setroomName("");setDoor('입장'); setRoomUid('');
       setReport(false); setEntering(false); setSee(true); setRoom({});
@@ -302,7 +303,6 @@ useEffect(() => {
     //   }
 
     const roomNameHide = ()=>{roomERef.current.value=''; }
-
     const roomRowReset=() => {
       roomERef.current.value=''; 
       const data = {scamS:'',scamC:'',scamA:'',scamM:'',scamP:'', aTitle:'',bName: '',input3: '',input4:'',input5:'',input6:'', roomName:''}
@@ -452,17 +452,6 @@ useEffect(() => {
     // 아이템 삭제
   const dataDel = () => {
     if(report && data.dataId && data.userId === user.uid){ console.log('리포트 삭제')
-    //   Swal.fire({ 
-    //     title: '내정보를 삭제하겠습니까?',
-    //     text:"삭제될 게시물 : "+data.aTitle,
-    //     icon:'warning',
-    //     showCancelButton: true})
-    //   .then((result) => { if(result.isConfirmed){ Swal.fire('삭제되었습니다.');
-    //   fireProblem.reportDel(folder,user.uid,data.dataId); dataReset();
-    //   }});
-    //   }
-    
-    // if(roomName && report && data.userId === user.uid){      
         Swal.fire({ 
           title: '정보를 삭제하겠습니까?',
           text:"삭제될 게시물 : "+data.aTitle,
@@ -475,8 +464,6 @@ useEffect(() => {
         dataReset();
         }});
       }
-
-      // if(roomName!==roomERef.current.value||roomERef.current.value==='') { return }
       
       if(data.userId === user.uid){  console.log('일반 삭제')
       Swal.fire({ 
@@ -488,8 +475,7 @@ useEffect(() => {
       fireProblem.dataDel(folder,roomName);   
       roomNameReset2();
       }});
-    }
-    
+    }    
   } 
 //  console.log(report)
 //titleRef.current.classList.add("noticeFly");
@@ -591,11 +577,9 @@ useEffect(() => {
           <InsertEmoticon /> 
         </Badge> 
         <div className="enterTitle" >{notice}</div>  
-      </div>
-      
+      </div>      
 
-        <form className="s-items" ref={formRef} >       
-        
+        <form className="s-items" ref={formRef} >         
           <div className="inputBox" >
             <div className="s-itemTitle" style={{width:"100%"}}>5WHY질문</div>
             <textarea cols="30" rows="1" className="problemInput input1" ref={aTitle} style={{padding:"3px",background:"lightpink"}}

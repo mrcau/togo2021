@@ -40,10 +40,10 @@ function stableSort(array, comparator) {
 const headCells = [
   { id: 'name', numeric: false, disablePadding: true, label: 'name' },
   { id: 'email', numeric: true, disablePadding: false, label: 'email' },
-  { id: 'pass', numeric: true, disablePadding: false, label: 'pass' },
-  { id: 'mentor', numeric: true, disablePadding: false, label: 'mentor' },
+  // { id: 'pass', numeric: true, disablePadding: false, label: 'pass' },
   { id: 'job', numeric: true, disablePadding: false, label: 'job' },
   { id: 'company', numeric: true, disablePadding: false, label: 'company' },
+  { id: 'mentor', numeric: true, disablePadding: false, label: 'mentor' },
   { id: 'level', numeric: true, disablePadding: false, label: 'level' },
 ];
 
@@ -93,7 +93,7 @@ EnhancedTableHead.propTypes = {
 const useStyles = makeStyles((theme) => ({
   root: { width: '100%' },
   paper: { width: '100%' },
-  table: { minWidth: 300 },
+  table: { minWidth: 100 },
   visuallyHidden: { border: 0, clip: 'rect(0 0 0 0)', height: 1,
    margin: -1, overflow: 'hidden',  padding: 0, position: 'absolute',  top: 20, width: 1,},
 }));
@@ -103,7 +103,7 @@ function Atable({fireApp,user}) {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [authInfo, setAuthInfo] = useState({})
   const folder = "auth";
   console.log('user',user)
@@ -131,8 +131,11 @@ function Atable({fireApp,user}) {
 }, [fireApp]);
 
 // 레벨업
-const levelUp =(uid) => { fireApp.level(folder,uid,1); }
-const levelDown =(uid) => { fireApp.level(folder,uid,0); }
+const levelUp =(uid,level) => { const num = level+1; fireApp.level(folder,uid,num) }
+const levelDown =(uid,level) => {
+  let num = level;
+   if(level>0){  num = level-1;} 
+   fireApp.level(folder,uid,num); }
 const authDel = (uid) => { fireApp.authDel(folder,uid)}
   return (
     <div className={classes.root}>
@@ -161,17 +164,17 @@ const authDel = (uid) => { fireApp.authDel(folder,uid)}
                         {row.name}
                       </TableCell>
                       <TableCell align="center">{row.email}</TableCell>
-                      <TableCell align="center">{row.pass}</TableCell>
-                      <TableCell align="center">{row.mentor}</TableCell>
+                      {/* <TableCell align="center">{row.pass}</TableCell> */}
                       <TableCell align="center">{row.job}</TableCell>
                       <TableCell align="center">{row.company}</TableCell>
+                      <TableCell align="center">{row.mentor}</TableCell>
                       {/* <TableCell align="center">{row.level}</TableCell> */}
-                      <TableCell align="center">
-                        <IconButton  size="small" style={{width:'25px'}} onClick={()=>levelUp(row.user)} >
+                      <TableCell align="center"  style={{width:'100px'}}>
+                        <IconButton  size="small" style={{width:'25px'}} onClick={()=>levelUp(row.user,row.level)} >
                           < ArrowUpwardIcon fontSize="inherit"/>
                         </IconButton>
                         {row.level}
-                        <IconButton  size="small" style={{width:'25px'}} onClick={()=>levelDown(row.user)} >
+                        <IconButton  size="small" style={{width:'25px'}} onClick={()=>levelDown(row.user,row.level)} >
                           <ArrowDownwardIcon fontSize="inherit"/>
                         </IconButton>
                       </TableCell>
@@ -188,7 +191,7 @@ const authDel = (uid) => { fireApp.authDel(folder,uid)}
           </Table>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[5, 10, 15]}
+          rowsPerPageOptions={[10, 20, 50]}
           component="div"
           count={Object.values(authInfo).length}
           rowsPerPage={rowsPerPage}

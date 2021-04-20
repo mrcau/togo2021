@@ -1,4 +1,4 @@
-import { Badge, IconButton, Switch } from '@material-ui/core';
+import { Badge, IconButton, Switch,Tooltip } from '@material-ui/core';
 import {  DeleteForever,   MenuSharp, ThumbUp,InsertEmoticon  } from '@material-ui/icons';
 import React, { memo, useEffect,  useRef, useState } from 'react';
 import AddCommentIcon from '@material-ui/icons/AddComment';
@@ -8,14 +8,18 @@ import VoiceChatIcon from '@material-ui/icons/VoiceChat';
 import ScamperReport from './ScamperReport';
 import Swal from 'sweetalert2';
 import placeholder from './placeholder';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { useHistory,useParams } from 'react-router-dom';
-import firesync from '../../service/firesync';
+import LinkIcon from '@material-ui/icons/Link';
+import SaveIcon from '@material-ui/icons/Save';
+import ReplayIcon from '@material-ui/icons/Replay';
 
-function Scamper({ fireApp, fireSync, user, userInfo ,setlogoName }) {
+function Scamper({ fireProblem, fireApp, fireSync, user, userInfo ,setlogoName }) {
   const folder = "scamper";
   const roomSubstr = 6;
   const Swal = require('sweetalert2');
   const level = userInfo.level || 0;
+  const today = new Date().toLocaleDateString();
   
   const aTitle = useRef();
   const bName = useRef();
@@ -55,70 +59,91 @@ function Scamper({ fireApp, fireSync, user, userInfo ,setlogoName }) {
   const [door, setDoor] = useState('입장')
   const [report, setReport] = useState(false);
   const [userUID, setUserUID] = useState('');
+  const [reportInput, setReportInput] = useState(false);
+  const [roomAdmin, setroomAdmin] = useState(false)
+  const [userClass, setUserClass] = useState(false)
+  const [linkCopy, setLinkCopy] = useState('');
   setlogoName(' IDEA');
-   //데이터싱크 
-  useEffect(() => {
-    if(id.length===10){roomERef.current.value=id; enterRoom();}
-    fireApp.onAuth((e) => {
-      const cf = {
-        f1: (p) => { setdata(p) },
-        f2: () => { setdata({}) },
-        f3: (p) => { setRoom(p) },
-        f4: () => { setRoom({}) },
-      }
-      if (e && report===false) {
-        console.log('회원+리포트false');
-        setRoomUid(e.uid.substr(0, roomSubstr));
-        setUserUID(e.uid);
-        const stopDataSync = fireSync.dataSync(folder, roomName, cf);
-        const stoproomSync = fireSync.roomSync(folder, roomUid, cf);
-        return ()=>{stopDataSync();stoproomSync();}        
-      }else if(e && !roomName){
-        const stopdataSyncB =  fireSync.dataSyncB(folder, roomName, cf);
-       const stoproomSync = fireSync.roomSync(folder, roomUid, cf);
-       return ()=>{stopdataSyncB();stoproomSync();}
-      }
-      else {   
-        if(!e&&!roomName){return}
-        const cf = {
-          f1: (p) => { setdata(p) },
-          f2: () => { setdata({}) },
-          f3: (p) => { setRoom(p) },
-          f4: () => { setRoom({}) },
-        }
-
-       if(report && roomName){
-        const stopdataSyncB =  fireSync.dataSyncB(folder, roomName, cf);
-        const stoproomSync = fireSync.roomSync(folder, roomUid, cf);
-        return ()=>{stopdataSyncB();stoproomSync();}
-       }
-      }
-    })
-  }, [roomName,fireSync,report,roomUid,fireApp]);
   
-  // 수업자료와 공지사항 싱크
+    //링크접속
+    useEffect(() => {     
+      if(id.length===10){ 
+          const enterRoomId =  id.substr(0,roomSubstr)||"";
+          const cf1 = { 
+          f1: ()=>{setroomName(id); setRoomUid(enterRoomId);setDoor('퇴장');setReport(false);
+          setEntering(true);  setSee(false);roomERef.current.value =id;},      
+          f2: (p) => { setdata(p) },     
+          f3: (p) => { setRoom(p) }, 
+          f4: (host) => { setroomName(""); roomNameReset(); setEntering(false)}
+        }          
+        const stoproomSync = fireSync.roomUser(folder,id,cf1);
+        return ()=>{stoproomSync();}
+      }
+      
+      else if(id.length===12){ console.log('hi',id)
+        const enterRoomId =  id.substr(0,roomSubstr)||"";
+        const cf = { 
+        f1: ()=>{setroomName(id.substr(0,10)); setRoomUid(enterRoomId);setDoor('퇴장');setReport(true); setReportInput(true);  
+        setEntering(true);  setSee(false);roomERef.current.value ='';},      
+        f2: (p) => { setdata(p) },     
+        f3: (p) => { setRoom(p) }, 
+        }                      
+        const stoproomSync =fireSync.roomUser3(folder,id,cf); 
+         return ()=>{stoproomSync();}
+      }
+     },[fireSync,roomName])
+
+
+     //일반접속
+useEffect(() => { 
+  fireSync.onAuth((e) => { console.log('data',data,user)
+    if(!e&&!roomName){ return}
+    if(data.userId){ if(data.userId === user.uid){setUserClass(true)} }          
+    if(roomName && e){ 
+      if(roomName.substr(0,6) === user.uid.substr(0,6)){setroomAdmin(true);} }
+      else if(!roomName&&level>0){ setroomAdmin(true) }    
+    const cf = {  f1: (p) => { setdata(p) },  f2: () => { setdata({}) },
+                  f3: (p) => { setRoom(p) },   f4: () => { setRoom({}) },
+               }
+    if (e && report===false && id.length<10) {   console.log(data,user)
+    setRoomUid(e.uid.substr(0, roomSubstr));
+    setUserUID(e.uid);
+    const stopDataSync = fireSync.dataSync(folder, roomName, cf);
+    const stoproomSync = fireSync.roomSync(folder, roomUid, cf);
+    if(data.userId){ if(data.userId.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){setUserClass(true)}  }
+    return ()=>{stopDataSync();stoproomSync(); }
+    }       
+    else  if(e && report){ console.log('로그인 레포트',data,roomName,report,data.roomName);
+    if(data.roomName){ 
+      if(data.roomName.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){setUserClass(true); setdata(data); setReport(true);} 
+    }
+    } 
+    else {return}
+  }
+  )
+}, [roomName,fireSync,report,roomUid,user,userInfo]);
+
+
+
+
+  //수업자료와 공지사항 싱크
   useEffect(() => {    
     if(roomName&&!report){ 
       const stopvideoSync = fireSync.videoSync(folder,roomName,'See',(p)=>{setVideo(p); })
-      const stopvideoSync2 = fireSync.videoSync(folder,roomName,'Tok',(p)=>{
-        setNotice(p); 
-        // titleRef.current.classList.add("noticeFly");
-        // setTimeout(()=>{titleRef.current.classList.remove("noticeFly")},1000)
-      })
-      return ()=>{stopvideoSync(); stopvideoSync2(); }
-    }
-     
+      const stopvideoSync2 = fireSync.videoSync(folder,roomName,'Tok',(p)=>{setNotice(p); })
+        return ()=>{stopvideoSync(); stopvideoSync2(); }
+    }     
   },[fireSync,roomName,report]);
   
 //입장자 카운팅
-useEffect(() => {
-  if(entering&&roomERef.current.value&&roomName){
-    let num = ++data['enterMan']||0 ;
-    console.log(entering,folder,num,roomName,data['enterMan'])
-    fireSync.cubeUp(folder,roomName, {enterMan:num});
-  }
-  return ()=>{manMinus();}
-},[entering])
+// useEffect(() => {
+//   if(entering&&roomERef.current.value&&roomName){
+//     let num = ++data['enterMan']||0 ;
+//     console.log(entering,folder,num,roomName,data['enterMan'])
+//     fireSync.cubeUp(folder,roomName, {enterMan:num});
+//   }
+//   return ()=>{manMinus();}
+// },[entering])
 
     // 좋아요
     const [Switch0, setSwitch0] = useState(true);
@@ -167,7 +192,11 @@ useEffect(() => {
   
   
   //모달창3
-  const fire = () => {Swal.fire({html:video, width:'90%'})}
+  const fire = () => {
+    if(!video){return}
+    Swal.fire({html:video, width:'90%'})
+  }
+
   // 자료입력 모달
   const fireInsert = async(e)=>{
     e.preventDefault();
@@ -191,126 +220,23 @@ useEffect(() => {
   const createRoom = () => {
     const num = Date.now().toString().substr(9);
     const newRoom = roomUid + num;
-    setroomName(newRoom);
+    const dataId = Date.now();
+    // setroomName(newRoom);
     const data = {scamS:'',scamC:'',scamA:'',scamM:'',scamP:'',scamE:'',scamR:'',aTitle:'',bName: '',input3: '', enterMan:0,
-    input4: '',input5: '',input6: '',  good0:0, good1:0, good2:0, good3:0, good4:0, good5:0, good6:0, good7:0,userId:user.uid}
-    const roomget = fireApp.roomGet(folder,roomUid)
-    roomget < 8 && 
-    fireApp.roomSave(folder, newRoom, data)
+    input4: '',input5: '',input6: '',  good0:0, good1:0, good2:0, good3:0, good4:0, good5:0, good6:0, good7:0,
+    userId:user.uid||'',
+    enterMan:0,
+    dataId: dataId,      
+    uid : user.uid||'',
+    name: userInfo.name||'',
+    roomName : newRoom,
+    roomUid : num,
+    host:'입장'
   }
-    // input roomName 초기화
-    const roomNameReset=() => {
-      fireSync.videoSync(folder,roomName,'See',(p)=>{setVideo(p); },1);
-      fireSync.videoSync(folder,roomName,'Tok',(p)=>{setNotice(p);},1); 
-      const cf = {
-        f1: (p) => { setdata({}) },  f2: () => { setdata({}) },
-        f3: (p) => { setRoom({}) },  f4: () => { setRoom({}) },
-      }
-      const cf2 = () => { setdata({});setRoom({});  }
-      fireSync.roomUser(folder,roomUid,cf2,1);        
-      fireSync.dataSync(folder, roomName, cf,1);
-
-      dataReset(); setroomName("");setDoor('입장'); setRoomUid('');
-      setReport(false); setEntering(false); setSee(true); setRoom({});
-      setNotice('');setVideo('');
-      // history.push('/scamper/:id');
-      roomERef.current.value=''; 
-    }  
-    const roomNameHide = ()=>{roomERef.current.value=''; }
-    const roomRowReset=() => {
-      roomERef.current.value=''; 
-      const data = {scamS:'',scamC:'',scamA:'',scamM:'',scamP:'',scamE:'',scamR:'', aTitle:'',bName: '',input3: '',input4:'',input5:'',input6:'', roomName:''}
-      setdata(data);
-      setDoor('입장'); 
-      // setRoomUid('');
-      // setRoom({});
-      setNotice('');setVideo('');
-    }  
-           
-    //카운터 줄이기
-    const manMinus = () => {
-      let num = 0;
-      if(data['enterMan']>0){ num=--data['enterMan']}else{return}
-      fireSync.cubeUp(folder, roomName,{enterMan:num} );
-      return;
-    }
-  // roomName.substr(0,6) 방입장
-  const enterRoom = () => {
-    const roomvalue = roomERef.current.value || "";
-    const enterRoomId =  roomERef.current.value.substr(0,roomSubstr)||"";
-    if(entering&&roomvalue){roomNameReset(); }else if(entering&&!roomvalue){roomRowReset();}
-    if(roomvalue.length !== 10||!enterRoomId||entering){return;}
-    if(roomvalue.length === 10&&!entering){
-        const cf1=()=>{
-            setroomName(roomvalue);
-            setRoomUid(enterRoomId);
-            setDoor('퇴장');
-            setReport(false);
-            setEntering(true);
-            setSee(false);
-          }          
-       fireApp.roomUser(folder,enterRoomId,cf1);
-        
-        const cf2 = {
-            f1: (p) => { setdata(p) },
-            f2: () => { setdata({}) },
-            f3: (p) => { setRoom(p) },
-            f4: () => { setRoom({}) },
-          }
-        fireApp.dataSync(folder,roomvalue, cf2);
-
-        }
-    }
-
-  // 관리자 방입장
-  const adminEnter = (e) => {
-    // roomNameReset();
-    const room = e.currentTarget.textContent;
-    const roomname = roomUid +room;
-    setroomName(roomUid +room);
-    roomERef.current.value =roomname;     
-    setReport(false); 
-    setSwitch0(true); setSwitch1(true); 
-    setSwitch2(true); setSwitch3(true); 
-    setSwitch4(true); setSwitch5(true); 
-    setSwitch6(true);
-       setEntering(true);
-       setDoor('퇴장');
-       // enterRoom();
+  
+  fireProblem.roomGetSave2(folder, newRoom, data, level)
   }
-
-// notice 저장 - 공지 보내기
-  const noticeUp = (e) => {
-    e.preventDefault();
-    const data = noticeRef.current.value;
-    fireApp.videoSave(folder, user.uid,'Tok', data)
-    noticeRef.current.value='';
-    
-  }
-  //scamper 글 데이터 저장, 방개수 6개 이하일때만 데이터 저장
-  const onSubmit = () => {
-    if (roomName!==roomERef.current.value||roomERef.current.value===''||report) {
-        // setdata({});
-        return }
-    const data = {
-      aTitle: aTitle.current.value || '',
-      bName: bName.current.value || '',
-      input3: input3.current.value || '',
-      input4: input4.current.value || '',
-      input5: input5.current.value || '',
-      input6: input6.current.value || '',
-      scamS: scamperS.current.value || '',
-      scamC: scamperC.current.value || '',
-      scamA: scamperA.current.value || '',
-      scamM: scamperM.current.value || '',
-      scamP: scamperP.current.value || '',
-      scamE: scamperE.current.value || '',
-      scamR: scamperR.current.value || '',
-    }    
-    // const roomUid =  roomERef.current.value.substr(0,roomSubstr)
-    // fireApp.dataUp(folder, roomERef.current.value, data);
-    fireApp.dataUp(folder, roomName, data);
-  }
+  
 
   //데이터 리셋
   const dataReset = () => {         
@@ -329,22 +255,180 @@ useEffect(() => {
     scamperE.current.value = '';
     scamperR.current.value = '';
   }
+    // input roomName 초기화
+    const roomNameReset=() => {
+      fireSync.videoSync(folder,roomName,'See',(p)=>{setVideo(p); },1);
+      fireSync.videoSync(folder,roomName,'Tok',(p)=>{setNotice(p);},1); 
+      const cf = {
+        f1: (p) => { setdata({}) },  f2: () => { setdata({}) },
+        f3: (p) => { setRoom({}) },  f4: () => { setRoom({}) },
+      }
+      const cf2 = () => { setdata({});setRoom({});  }
+      fireSync.roomUser(folder,roomUid,cf2,1);        
+      fireSync.dataSync(folder, roomName, cf,1);
+
+      history.push('/problem/:id');  setdata({});     
+      dataReset(); setroomName("");setDoor('입장'); setRoomUid('');
+      setReport(false); setEntering(false); setSee(true); setRoom({});
+      setNotice('');setVideo('');
+      // history.push('/scamper/:id');
+      roomERef.current.value='';  
+      if(!report){
+        if(user.uid){
+          if(user.uid.substr(0,roomSubstr)===roomName.substr(0,roomSubstr)){
+            fireSync.cubeUp(folder,roomName, {host:'퇴장',enterMan:0});
+          }}
+        }
+    }  
+    
+    const roomNameReset2=() => {
+      fireSync.videoSync(folder,roomName,'See',(p)=>{setVideo(p); },1);
+      fireSync.videoSync(folder,roomName,'Tok',(p)=>{setNotice(p);},1); 
+      const cf = {    
+        f1: (p) => { setdata({}) },  f2: () => { setdata({}) },
+        f3: (p) => {  setRoom({}) }, f4: () => { setRoom({}) },
+        }
+      const cf2 = () => { setdata({});setRoom({});  }
+      fireSync.roomUser(folder,roomUid,cf2,1);        
+      fireSync.dataSync(folder, roomName, cf,1);
+      history.push('/problem/:id');  setdata({});     
+      dataReset();setroomName("");setDoor('입장'); setRoomUid('');
+      setReport(false); setEntering(false); setSee(true); setRoom({});
+      setNotice('');setVideo('');
+      roomERef.current.value=''; 
+
+    }  
+
+    const roomNameHide = ()=>{roomERef.current.value=''; }
+    const roomRowReset=() => {
+      roomERef.current.value=''; 
+      const data = {scamS:'',scamC:'',scamA:'',scamM:'',scamP:'',scamE:'',scamR:'', aTitle:'',bName: '',input3: '',input4:'',input5:'',input6:'', roomName:''}
+      setdata(data);
+      setDoor('입장'); 
+      // setRoomUid('');
+      // setRoom({});
+      setNotice('');setVideo('');
+    }  
+           
+    //카운터 줄이기
+    // const manMinus = () => {
+    //   let num = 0;
+    //   if(data['enterMan']>0){ num=--data['enterMan']}else{return}
+    //   fireSync.cubeUp(folder, roomName,{enterMan:num} );
+    //   return;
+    // }
+
+  // roomName.substr(0,6) 방입장
+  const enterRoom = () => {
+    const roomvalue = roomERef.current.value || "";
+    const enterRoomId =  roomERef.current.value.substr(0,roomSubstr)||"";
+    // if(entering&&roomvalue){roomNameReset(); }else if(entering&&!roomvalue){roomRowReset();}
+    if(entering){setEntering(false); roomNameReset(); setroomName("");setDoor('입장'); }  
+      if(roomvalue.length !== 10){return;}
+      if(roomvalue.length === 10&&!entering){
+        const cf1 = { 
+          f1: ()=>{setroomName(roomvalue); setRoomUid(enterRoomId);setDoor('퇴장');setReport(false);
+          setEntering(true);  setSee(false);},      
+          f2: (p) => { setdata(p) },     
+          f3: (p) => { setRoom(p) }, 
+          f4: (host) => { setroomName(""); roomNameReset(); setEntering(false)}
+        }          
+       fireSync.roomUser(folder,roomvalue,cf1)
+        }
+    }
+
+  // 관리자 방입장
+  const adminEnter = (e) => {
+    // roomNameReset();
+    setEntering(true);
+    const textRoom = e.currentTarget.textContent;
+    const roomMap = Object.keys(room);
+    const roomNumber = roomMap[textRoom]
+    const roomname = roomUid +roomNumber;
+    setroomName(roomname);
+    setLinkCopy('https://samtool.netlify.app/#/'+folder+'/'+roomname);  
+    roomERef.current.value =roomname;     
+    setReport(false); 
+    setDoor('퇴장');
+    setSwitch0(true); setSwitch1(true); 
+    setSwitch2(true); setSwitch3(true); 
+    const cf2 = {
+      f1: (p) => { setdata(p);  },
+      f2: () => { setdata({}) },
+      f3: (p) => { setRoom(p) },
+      f4: () => { setRoom({}) },
+    }
+  fireSync.dataSync(folder,roomname, cf2);
+  fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
+  }
+
+// notice 저장 - 공지 보내기
+  const noticeUp = (e) => {
+    e.preventDefault();
+    const data = noticeRef.current.value;
+    fireApp.videoSave(folder, user.uid,'Tok', data)
+    noticeRef.current.value='';
+    
+  }
+  //scamper 글 데이터 저장, 방개수 6개 이하일때만 데이터 저장
+  const onSubmit = () => {
+    if (roomName!==roomERef.current.value||roomERef.current.value===''||report) { return }
+    const dataId = Date.now();
+    const data = {
+      aTitle: aTitle.current.value || '',
+      bName: bName.current.value || '',
+      input3: input3.current.value || '',
+      input4: input4.current.value || '',
+      input5: input5.current.value || '',
+      input6: input6.current.value || '',
+      scamS: scamperS.current.value || '',
+      scamC: scamperC.current.value || '',
+      scamA: scamperA.current.value || '',
+      scamM: scamperM.current.value || '',
+      scamP: scamperP.current.value || '',
+      scamE: scamperE.current.value || '',
+      scamR: scamperR.current.value || '',     
+      uid: user.uid||'',
+      dataId: dataId,
+      name: userInfo.name||'',
+      today: today,
+      progress: 0,
+    }    
+    // const roomUid =  roomERef.current.value.substr(0,roomSubstr)
+    // fireApp.dataUp(folder, roomERef.current.value, data);
+    if(roomName){fireProblem.dataUp(folder, roomName, data);}
+  }
+
+
+   //데이터 초기화
+   const dataRefresh = ()=>{     
+    Swal.fire({ 
+      title: '전체 내용을 삭제하겠습니까?',
+      icon:'warning',
+      showCancelButton: true})
+    .then((result) => { if(result.isConfirmed){ 
+      const data = {scamS:'',scamC:'',scamA:'',scamM:'',scamP:'',aTitle:'',bName: '',input3: '', 
+      input4: '',input5: '',input6: '',  good0:0, good1:0, good2:0, good3:0, good4:0, good5:0, good6:0, good7:0,}
+      fireProblem.dataUp(folder, roomName, data);
+      Swal.fire('삭제되었습니다.');       
+    }});
+ }
     
 
    // 보고서 제출
    const btnInput = (e) => {
-    e.preventDefault();
-    const today = new Date().toLocaleDateString().substr(5);
-    const dataId =  Date.now();
-    // const id = Date.now();
-    // if (Object.keys(user).length<1) { return }
-    if (!roomName&&!userUID) { return }
-    const data = {
+    if (!roomName||!userUID) { return }
+   e.preventDefault();
+   const today = new Date().toLocaleDateString().substr(5);
+   const dataId =  Date.now();
+   const data = {
+     cDate : today|| '', 
+     dataId : dataId|| '',
+     userId : user.uid|| '',
+     roomName:roomName || '',
+     good7:0,
       aTitle: aTitle.current.value || '',
       bName: bName.current.value || '',
-      cDate : today|| '', 
-      dataId : dataId|| '',
-      userId : user.uid|| '',
       input3: input3.current.value || '',
       input4: input4.current.value || '',
       input5: input5.current.value || '',
@@ -356,25 +440,20 @@ useEffect(() => {
       scamP: scamperP.current.value || '',
       scamE: scamperE.current.value || '',
       scamR: scamperR.current.value || '',
-      good7:0,
-      roomName:roomName || ''
     }
-    // if (roomName!==roomERef.current.value||roomERef.current.value==='') { return }
-    if(!roomName&&userUID){
-      const roomId = user.uid;
-      if(!data.aTitle||!data.bName||!data.input3||!data.input4||!data.input5||!data.input6){
-        Swal.fire({title:'빈칸을 모두 채워주세요!',icon:'warning'})}else{
-          Swal.fire({title:'제출완료',icon:'success'});
-          fireApp.reportSave(folder, roomId, dataId, data);
-        }        
-    }else{
     const roomUid =  roomERef.current.value.substr(0,roomSubstr);
     const roomId = roomUid+'REPORT';
-    if(!data.aTitle||!data.bName||!data.input3||!data.input4||!data.input5||!data.input6){
-      Swal.fire({title:'빈칸을 모두 채워주세요.',icon:'warning'})}else{
-        Swal.fire({title:'제출완료',icon:'success'});
-        fireApp.reportSave(folder, roomId, roomName, data);
-      }
+    if(!aTitle.current.value){
+        Swal.fire({title:'처음문제를 입력해주세요.',icon:'warning'})}
+    else if(!bName.current.value){
+          Swal.fire({title:'최종문제를 입력해주세요.',icon:'warning'})}
+    else{
+      Swal.fire({title:'내용을 저장하겠습니까?', showCancelButton: true}).then((result)=>{
+        if(result.isConfirmed){
+          Swal.fire({title:'제출완료',icon:'success'});
+          fireProblem.reportSave(folder, roomId, roomName, data);
+        }
+      })       
     }
   }
 
@@ -428,38 +507,56 @@ useEffect(() => {
 
     <div className="drawer" ref={drawerRef}>
     {rightModal && 
-     <ScamperReport fireApp={fireApp} user={user} folder={folder} setroomName={setroomName} 
-      roomName={roomName} setReport={setReport} userInfo={userInfo} setEntering={setEntering} 
-      moveModal2={moveModal2} roomNameHide={roomNameHide} setdata={setdata} setDoor={setDoor} /> 
-    }
+     <ScamperReport enterRoom={enterRoom} setLinkCopy={setLinkCopy} fireSync={fireSync} fireProblem={fireProblem} user={user} folder={folder} setroomName={setroomName} roomRowReset={roomRowReset}
+     roomName={roomName} setReport={setReport} roomNameHide={roomNameHide} userInfo={userInfo} 
+     moveModal2={moveModal2} report={report} setdata={setdata} setDoor={setDoor} setEntering={setEntering}  /> 
+   }
     </div>
-    <div className="drawerback backNone" ref={backRef} onClick={moveModal2}></div>
+    <div className="drawerback backNone" ref={backRef} onClick={moveModal2}  style={{zIndex:"1"}}></div>
        
-      {level>0 && 
+      {roomAdmin && 
         <form className="adimBar">
           <button className="enterBtn"  onClick={noticeUp}><AddCommentIcon/></button> 
           <input type="text" className="enterInput" placeholder="전달사항" ref={noticeRef} />
           <button className="enterBtn"  style={{width:'30px'}} onClick={fireInsert}><YouTubeIcon/></button> 
         </form>
       }
-      {level>0 &&
+      {roomAdmin &&
         <div className="adimBar">
-          <div> <button className="enterBtn" onClick={createRoom} style={{fontSize:'12px'}}>개설</button> </div>
-          <div className="enterNumber" style={{fontSize:'small'}}>
-            {see && room && Object.keys(room).map((e) => e.length>3 &&
-              <button key={e} className="btnRoom" onClick={adminEnter} >{e}</button>) 
-            }
-          </div>
-        </div>
+        <Tooltip arrow placement="left" title="새로운 룸 생성">
+         <div> <button className="enterBtn" onClick={createRoom} style={{fontSize:'12px'}}>개설</button> </div>
+         </Tooltip>
+         <div className="enterNumber" style={{fontSize:'small'}}>
+           {see && room && Object.keys(room).map((e,i) => e.length>3 &&
+             <button key={e} className="btnRoom" onClick={adminEnter} >{i}</button>) 
+           }
+         </div>
+       </div>
       }
-      <div className="s-header">
-        <div className="enterWrap" >
-       <button className="enterBtn" onClick={enterRoom} style={{fontSize:'12px'}} >{door}</button>
-        
-          <input type="text" className="enterInput roomnum" placeholder="방번호" style={{width:'85px'}} ref={roomERef} />
-        </div>
-        {level>0 && <button className="btnRoomDel" style={{margin:'0'}} onClick={dataDel}><DeleteForever /></button>  }
 
+      <div className="s-header" style={{display:'flex'}}>
+        <div className="enterWrap" >
+          <button className="enterBtn" onClick={enterRoom} style={{fontSize:'12px'}} >{door}</button>
+          <input type="text" className="enterInput roomnum" placeholder="방번호" style={{width:'85px'}} ref={roomERef}/>
+        </div>
+        {roomAdmin && 
+         <Tooltip arrow placement="top" title="룸링크 복사">
+         <IconButton size="small" component="span" onClick={()=> { if(roomName){Swal.fire({ title: '링크가 복사되었습니다.',text:linkCopy,icon:'warning'});}}}
+             style={{color:"var(--Bcolor)",flex:"auto",width:'50px'}}>
+               <CopyToClipboard text={linkCopy}>               
+                <LinkIcon />
+                </CopyToClipboard>
+          </IconButton>
+          </Tooltip>
+          }
+
+        {roomAdmin && 
+         <IconButton size="small"  onClick={btnInput} style={{color:"var(--Bcolor)",flex:"auto",width:'50px', height:'25px',padding:"0"}}>
+         <Tooltip arrow placement="top"  title="저장">
+                <SaveIcon /> 
+          </Tooltip>
+          </IconButton>
+        }
           {/* 스위치호출 */}
         <div className="enterTitle" >
           <span >SCAMPER </span>
@@ -467,6 +564,23 @@ useEffect(() => {
           color="default" />  
           <span > TRIZ</span>
         </div>    
+
+        {roomAdmin && !report &&
+          <IconButton size="small" component="span" onClick={dataRefresh} style={{color:"var(--Bcolor)",flex:"auto",width:'50px', height:'25px'}}>
+         <Tooltip arrow placement="top"  title="초기화">
+                <ReplayIcon /> 
+          </Tooltip>
+          </IconButton>
+          } 
+
+        {roomAdmin && 
+         <Tooltip arrow  placement="top" title="룸삭제">
+          <IconButton size="small" component="span" onClick={dataDel} style={{color:"var(--Bcolor)",flex:"auto",width:'50px',padding:"0"}}>
+                <DeleteForever />  
+          </IconButton>
+          </Tooltip>
+        }
+        
 
         <div className="voicechat" >             
           <button style={{width:'30px'}}  onClick={fire}>
@@ -486,8 +600,7 @@ useEffect(() => {
           <InsertEmoticon /> 
         </Badge> 
         <div className="enterTitle" >{notice}</div>  
-      </div>
-      
+      </div>    
 
         <form className="s-items" ref={formRef} >
           
