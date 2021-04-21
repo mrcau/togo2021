@@ -97,9 +97,9 @@ useEffect(() => {
   fireSync.onAuth((e) => { console.log('data',data,user)
     if(!e&&!roomName){ return}
     if(data.userId){ if(data.userId === user.uid){setUserClass(true)} }          
-    if(roomName && e){ 
-      if(roomName.substr(0,6) === user.uid.substr(0,6)){setroomAdmin(true);} }
-      else if(!roomName&&level>0){ setroomAdmin(true) }    
+    if(roomName && e){ console.log('룸네임있고 로그인',roomName)
+      if(roomName.substr(0,6) === user.uid.substr(0,6)){setroomAdmin(true);console.log('룸네임있고 레벨0이상',level)} }
+      else if(roomName.length<5&&level>0){ setroomAdmin(true);console.log('룸네임없고 레벨0이상',level) }    
     const cf = {  f1: (p) => { setdata(p) },  f2: () => { setdata({}) },
                   f3: (p) => { setRoom(p) },   f4: () => { setRoom({}) },
                }
