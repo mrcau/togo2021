@@ -35,8 +35,9 @@ let roomGetNum = 0;
     const found = data2.filter(e => e.length > 3);
     if(data){ roomGetNum = found.length;}
   })
-    if(roomGetNum < level){  console.log(roomGetNum,level)
-    fireInit.database().ref(`${folder}/${roomUid}/${Uid}/${dataId}`).set(data)
+    if(roomGetNum < level){  
+    fireInit.database().ref(`${folder}/${roomUid}/${Uid}/${dataId}`).set(data);
+    return true;
   }else{return}  
 }
 //  룸 개수 가져오기

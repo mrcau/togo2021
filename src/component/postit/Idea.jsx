@@ -258,7 +258,9 @@ return;
       text2:'',
       host:'입장'
     }
-    fireIdea.roomGetSave2(folder, newRoom, dataId, data,level);
+    const abc = fireIdea.roomGetSave2(folder, newRoom, dataId, data,level)
+    if(abc){adminEnter2(newRoom)}else{return}
+    
   }
   
   //데이터 초기화
@@ -289,7 +291,26 @@ return;
     const roomNumber = roomMap[textRoom]
     const roomname = roomUid +roomNumber;
     setroomName(roomname);
+    setLinkCopy('https://samtool.netlify.app/#/'+folder+'/'+roomname);  
+    roomERef.current.value =roomname; 
+  setReport(false); 
+  setDoor('퇴장');       
+  const cf2 = {
+    f1: (p) => { setItems(p);  },
+    f2: () => { setItems({}) },
+    f3: (p) => { setRoom(p) },
+    f4: () => { setRoom({}) },
+  }
+fireSync.dataSync(folder,roomname, cf2);
+fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
+}
 
+
+  // 관리자 방입장
+  const adminEnter2 = (e) => {
+    setEntering(true);
+    const roomname = e;
+    setroomName(roomname);
     setLinkCopy('https://samtool.netlify.app/#/'+folder+'/'+roomname);  
     roomERef.current.value =roomname; 
   setReport(false); 
@@ -361,9 +382,9 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
 
              
   // roomName.substr(0,6) 방입장
-  const enterRoom = () => { 
-    const roomvalue = roomERef.current.value || "";
-    const enterRoomId =  roomERef.current.value.substr(0,roomSubstr)||"";
+  const enterRoom = (createRoomNum) => { 
+    const roomvalue = createRoomNum || roomERef.current.value || "";
+    const enterRoomId = createRoomNum || roomERef.current.value.substr(0,roomSubstr)||"";
     if(entering){
       setEntering(false); 
       roomNameReset();
@@ -559,6 +580,8 @@ const upLoad = (e) => { console.log('uplod')
               <button key={e} className="btnRoom" onClick={adminEnter} >{i}</button>) 
             }
           </div>
+          
+          
         </div>
       }
 

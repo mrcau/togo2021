@@ -5,11 +5,11 @@
   font-size: large;
 }
 .basicInfo{
-  background: rgba(1, 1, 1, 0.2);
+  background: white;
   padding: 10px;
   /* width:50%; */
   border-radius: 12px;
-  height: 90%;
+  height: 95%;
 }
 .mypageForm{
   display: flex;
