@@ -258,7 +258,9 @@ return;
       text2:'',
       host:'입장'
     }
-    fireIdea.roomGetSave2(folder, newRoom, dataId, data,level);
+    const abc = fireIdea.roomGetSave2(folder, newRoom, dataId, data,level)
+    if(abc){adminEnter2(newRoom)}else{return}
+    
   }
   
   //데이터 초기화
@@ -289,7 +291,26 @@ return;
     const roomNumber = roomMap[textRoom]
     const roomname = roomUid +roomNumber;
     setroomName(roomname);
+    setLinkCopy('https://samtool.netlify.app/#/'+folder+'/'+roomname);  
+    roomERef.current.value =roomname; 
+  setReport(false); 
+  setDoor('퇴장');       
+  const cf2 = {
+    f1: (p) => { setItems(p);  },
+    f2: () => { setItems({}) },
+    f3: (p) => { setRoom(p) },
+    f4: () => { setRoom({}) },
+  }
+fireSync.dataSync(folder,roomname, cf2);
+fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
+}
 
+
+  // 관리자 방입장
+  const adminEnter2 = (e) => {
+    setEntering(true);
+    const roomname = e;
+    setroomName(roomname);
     setLinkCopy('https://samtool.netlify.app/#/'+folder+'/'+roomname);  
     roomERef.current.value =roomname; 
   setReport(false); 
@@ -361,9 +382,9 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
 
              
   // roomName.substr(0,6) 방입장
-  const enterRoom = () => { 
-    const roomvalue = roomERef.current.value || "";
-    const enterRoomId =  roomERef.current.value.substr(0,roomSubstr)||"";
+  const enterRoom = (createRoomNum) => { 
+    const roomvalue = createRoomNum || roomERef.current.value || "";
+    const enterRoomId = createRoomNum || roomERef.current.value.substr(0,roomSubstr)||"";
     if(entering){
       setEntering(false); 
       roomNameReset();
@@ -538,38 +559,47 @@ const upLoad = (e) => { console.log('uplod')
       {video}
     </div> */}
     <div className="drawerback backNone" ref={backRef} onClick={moveModal2} style={{zIndex:"1"}}></div>
-    {roomAdmin && 
-        <form className="adimBar">
-         <Tooltip arrow placement="left" title="메시지 전송">
-          <button className="enterBtn"  onClick={noticeUp}><AddCommentIcon/></button> 
-          </Tooltip>
-          <input type="text" className="enterInput" placeholder="전달사항" ref={noticeRef} />
-         <Tooltip arrow placement="left" title="회의자료 입력">
-          <button className="enterBtn"  style={{width:'30px'}} onClick={fireInsert}><YouTubeIcon/></button> 
-          </Tooltip>
-        </form>
+   
+    {roomAdmin &&
+        <div className="RoomLink">
+          <div style={{flex:"1"}}> <button className="btnRoomLink" onClick={createRoom} style={{width:"100%"}}>룸개설</button> </div>
+          <div style={{flex:"1"}}> 
+            <button className="btnRoomLink" style={{width:"100%"}} 
+            onClick={()=> { if(roomName){Swal.fire({ title: '링크가 복사되었습니다.',text:linkCopy,icon:'warning'});}}}>
+               <CopyToClipboard text={linkCopy}>               
+               <span>룸링크</span>
+               </CopyToClipboard>
+            </button>
+           </div>           
+          <div style={{flex:"1"}}> <button className="btnRoomLink" onClick={fireInsert} style={{width:"100%"}}>자료공유</button> </div>
+          <div style={{flex:"1"}}> <button className="btnRoomLink" onClick={moveModal} style={{width:"100%"}}>저장자료</button> </div>
+        </div>
       }
+
+
       {roomAdmin &&
         <div className="adimBar">
-         <Tooltip arrow placement="left" title="새로운 룸 생성">
+         {/* <Tooltip arrow placement="left" title="새로운 룸 생성">
           <div> <button className="enterBtn" onClick={createRoom} style={{fontSize:'12px'}}>개설</button> </div>
-          </Tooltip>
+          </Tooltip> */}
           <div className="enterNumber" style={{fontSize:'small'}}>
             {see && room && Object.keys(room).map((e,i) => e.length>3 &&
               <button key={e} className="btnRoom" onClick={adminEnter} >{i}</button>) 
             }
           </div>
+          
+          
         </div>
       }
 
       <div className="s-header" style={{display:'flex'}}>
         <div className="enterWrap" >
-          <button className="enterBtn" onClick={enterRoom} style={{fontSize:'12px'}} >{door}</button>
-          <input type="text" className="enterInput roomnum" placeholder="방번호" style={{width:'85px'}} ref={roomERef} />
+          <button className="btnRoomLink" onClick={enterRoom} style={{fontSize:'12px',width:"40px"}} >{door}</button>
+          <input type="text" className="enterInput roomnum" placeholder="방번호" style={{width:'85px',borderBottom:"solid 1px",borderTop:"solid 1px"}} ref={roomERef} />
         </div>
 
         <div style={{width:"100%", display:'flex'}}>
-        {roomAdmin && 
+        {/* {roomAdmin && 
          <Tooltip arrow placement="top" title="룸링크 복사">
          <IconButton size="small" component="span" onClick={()=> { if(roomName){Swal.fire({ title: '링크가 복사되었습니다.',text:linkCopy,icon:'warning'});}}}
              style={{color:"var(--Bcolor)"}}>
@@ -578,7 +608,7 @@ const upLoad = (e) => { console.log('uplod')
                 </CopyToClipboard>
           </IconButton>
           </Tooltip>
-          }
+          } */}
           
           {roomAdmin && 
          <IconButton size="small"  onClick={reportSave} style={{color:"var(--Bcolor)",flex:"auto",width:'30px', height:'25px',padding:"0"}}>
@@ -587,6 +617,13 @@ const upLoad = (e) => { console.log('uplod')
           </Tooltip>
           </IconButton>
           }
+    
+          {/* <IconButton size="small"  onClick={fire} style={{color:"var(--Bcolor)",flex:"auto",width:'30px', height:'25px'}}>
+         <Tooltip arrow  placement="top" title="자료보기">
+             <VisibilityIcon fontSize='small' />
+         </Tooltip>
+        </IconButton> */}
+
           {roomAdmin && !report &&
           <IconButton size="small" component="span" onClick={dataRefresh} style={{color:"var(--Bcolor)",flex:"auto",width:'30px', height:'25px'}}>
          <Tooltip arrow placement="top"  title="초기화">
@@ -597,18 +634,16 @@ const upLoad = (e) => { console.log('uplod')
 
         {roomAdmin && 
          <Tooltip arrow  placement="top" title="룸삭제">
-          <IconButton size="small" component="span" onClick={dataDel} style={{color:"var(--Bcolor)",padding:"0"}}>
+          <IconButton size="small" component="span" onClick={dataDel} style={{color:"var(--Bcolor)",flex:"auto",width:'30px', height:'25px'}}>
                 <DeleteForever />  
           </IconButton>
           </Tooltip>
         }
         </div>
 
-        <div className="voicechat"  >             
+          <button style={{width:'60px',cursor:"pointer"}}  className="btnRoomLink"  onClick={fire}>보기</button>          
+        {/* <div   >             
          <Tooltip arrow  placement="top" title="회의자료 보기">
-          <button style={{width:'30px'}}  onClick={fire}>
-             <VoiceChatIcon fontSize='small' />
-          </button>          
           </Tooltip>
           {level>0 && 
          <Tooltip arrow  placement="top" title="저장자료 보기">
@@ -617,9 +652,21 @@ const upLoad = (e) => { console.log('uplod')
           </button> 
           </Tooltip>
         }
-        </div>   
+        </div>    */}
 
       </div>
+            
+    {roomAdmin && 
+        <form className="adimBar" onSubmit={noticeUp} >
+         {/* <Tooltip arrow placement="left" title="메시지 전송" style={{visibility:"none"}}>
+          <button className="btnRoomLink" style={{width:"40px",visibility:"none"}} onClick={noticeUp}><AddCommentIcon/></button> 
+          </Tooltip> */}
+          <input type="text" className="enterInput" placeholder="전달사항" ref={noticeRef} />
+         {/* <Tooltip arrow placement="left" title="회의자료 입력">
+          <button className="enterBtn"  style={{width:'30px'}} onClick={fireInsert}><YouTubeIcon/></button> 
+          </Tooltip> */}
+        </form>
+      }
         {/* <div className="noticeTitle" > 공지 </div> */}
       <div className="s-header noticeHeader" ref={titleRef}>
          {/* 접속자 카운트 */}
