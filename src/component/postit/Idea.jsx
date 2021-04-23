@@ -594,7 +594,7 @@ const upLoad = (e) => { console.log('uplod')
 
       <div className="s-header" style={{display:'flex'}}>
         <div className="enterWrap" >
-          <button className="btnRoomLink" onClick={enterRoom} style={{fontSize:'12px',width:"40px"}} >{door}</button>
+          <button className="btnRoomLink" onClick={enterRoom} style={{width:"40px"}} >{door}</button>
           <input type="text" className="enterInput roomnum" placeholder="방번호" style={{width:'85px',borderBottom:"solid 1px",borderTop:"solid 1px"}} ref={roomERef} />
         </div>
 
