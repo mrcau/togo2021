@@ -21,14 +21,13 @@ const columns = [
 
 //글 선택하면 실행함수
 const selectRow = () => { setReport(true); moveModal2(); roomNameHide();setDoor('퇴장');setEntering(true);}
-  // roomRowReset();  
 const rows = Object.values(data2).map((e,i) => { 
   return({ id: i, title: Object.values(e)[0].text, ...e}) 
   })
 
   return (
     <div className="reportMenu"  >
-     포스툴
+     게시툴
      <DataGrid  scrollbarSize={10} className="row"  rows={rows} columns={columns} pageSize={10} 
      autoHeight rowHeight={25} headerHeight={25}  disableColumnMenu 
      onRowSelected={(p)=>{ 

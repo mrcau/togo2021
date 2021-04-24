@@ -195,7 +195,7 @@ return;
       width:'80%',
       // eslint-disable-next-line no-use-before-define
       inputValue: video||'',
-      inputLabel: '참고자료',
+      title: '공유자료',
       // inputPlaceholder: '이곳에 자료를 입력해주세요.',
       // inputAttributes: {'aria-label': 'Type your message here'},
       // showCancelButton: true
@@ -222,7 +222,8 @@ return;
       title:'',text:'',
       host:'입장'
     }
-    fireIdea.roomGetSave2(folder, newRoom, dataId, data,level);
+    const abc = fireIdea.roomGetSave2(folder, newRoom, dataId, data,level);
+    if(abc){adminEnter2(newRoom)}else{return}
   }
 
   //데이터 초기화
@@ -265,8 +266,28 @@ return;
        }
      fireSync.dataSync(folder,roomname, cf2);
 fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
-
   }
+
+  
+  // 관리자 방입장
+  const adminEnter2 = (e) => {
+    setEntering(true);
+    const roomname = e;
+    setroomName(roomname);
+    setLinkCopy('https://samtool.netlify.app/#/'+folder+'/'+roomname);  
+    roomERef.current.value =roomname; 
+  setReport(false); 
+  setDoor('퇴장');       
+  const cf2 = {
+    f1: (p) => { setItems(p);  },
+    f2: () => { setItems({}) },
+    f3: (p) => { setRoom(p) },
+    f4: () => { setRoom({}) },
+  }
+fireSync.dataSync(folder,roomname, cf2);
+fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
+}
+
     // input roomName 초기화
     const roomNameReset=() => {
       fireSync.videoSync(folder,roomName,'See',(p)=>{setVideo(p); },1);
@@ -432,49 +453,48 @@ const dataDel = () => {
     }
     </div>
     <div className="drawerback backNone" ref={backRef} onClick={moveModal2} style={{zIndex:"1"}}></div>
-      {roomAdmin &&
-        <form className="adimBar">
-         <Tooltip arrow placement="left" title="메시지 전송">
-          <button className="enterBtn"  onClick={noticeUp}><AddCommentIcon/></button> 
-          </Tooltip>
-          <input type="text" className="enterInput" placeholder="전달사항" ref={noticeRef} />
-         <Tooltip arrow placement="left" title="회의자료 입력">
-          <button className="enterBtn"  style={{width:'30px'}} onClick={fireInsert}><YouTubeIcon/></button> 
-          </Tooltip>
-        </form>
+     
+    {roomAdmin &&
+        <div className="RoomLink">
+          <div style={{flex:"1"}}> <button className="btnRoomLink" onClick={createRoom} style={{width:"100%"}}>룸개설</button> </div>
+          <div style={{flex:"1"}}> 
+            <button className="btnRoomLink" style={{width:"100%"}} 
+            onClick={()=> { if(roomName){Swal.fire({ title: '링크가 복사되었습니다.',text:linkCopy,icon:'warning'});}}}>
+               <CopyToClipboard text={linkCopy}>               
+               <span>룸링크</span>
+               </CopyToClipboard>
+            </button>
+           </div>           
+          <div style={{flex:"1"}}> <button className="btnRoomLink" onClick={fireInsert} style={{width:"100%"}}>공유자료</button> </div>
+          <div style={{flex:"1"}}> <button className="btnRoomLink" onClick={moveModal} style={{width:"100%"}}>저장자료</button> </div>
+        </div>
       }
 
-      {roomAdmin && 
+      {roomAdmin &&
         <div className="adimBar">
-         <Tooltip arrow placement="left" title="새로운 룸 생성">
-          <div> <button className="enterBtn" onClick={createRoom} style={{fontSize:'12px'}}>개설</button> </div>
-          </Tooltip>
           <div className="enterNumber" style={{fontSize:'small'}}>
             {see && room && Object.keys(room).map((e,i) => e.length>3 &&
               <button key={e} className="btnRoom" onClick={adminEnter} >{i}</button>) 
             }
-          </div>
+          </div>           
         </div>
       }
+
       <div className="s-header" style={{display:'flex'}}>
         <div className="enterWrap" >
-          <button className="enterBtn" onClick={enterRoom} style={{fontSize:'12px'}} >{door}</button>        
+          <button className="btnRoomLink" onClick={enterRoom} style={{width:"40px"}} >{door}</button>
           <input type="text" className="enterInput roomnum" placeholder="방번호" style={{width:'85px'}} ref={roomERef} />
         </div>
 
         <div style={{width:"100%", display:'flex'}}>
-        {roomAdmin && 
-         <Tooltip arrow  placement="top" title="룸링크 복사">
-         <IconButton size="small" component="span" onClick={()=> { if(roomName){Swal.fire({ title: '링크가 복사되었습니다.',text:linkCopy,icon:'warning'});}}}
-             style={{color:"var(--Bcolor)"}}>
-               <CopyToClipboard text={linkCopy}>               
-                <LinkIcon />
-                </CopyToClipboard>
-          </IconButton>
+          {roomAdmin && !report &&
+         <IconButton size="small"  onClick={reportSave} style={{color:"var(--Bcolor)",flex:"auto",width:'30px', height:'25px',padding:"0"}}>
+         <Tooltip arrow placement="top"  title="저장">
+                <SaveIcon /> 
           </Tooltip>
-          }
-          
-        {roomAdmin && entering && !report &&       
+          </IconButton>
+          }    
+            {roomAdmin && entering && !report &&       
          <IconButton size="small" onClick={submit} style={{flex:'auto',color:"var(--Bcolor)",width:'30px', height:'25px'}} > 
          <Tooltip arrow  placement="top" title="페이지 추가">
           <AddCircleOutlineIcon  />  
@@ -488,13 +508,6 @@ const dataDel = () => {
          </Tooltip>
         </IconButton>
 
-          {level>0 && !report &&
-         <IconButton size="small"  onClick={reportSave} style={{color:"var(--Bcolor)",flex:"auto",width:'30px', height:'25px'}}>
-         <Tooltip arrow placement="top"  title="저장">
-                <SaveIcon /> 
-          </Tooltip>
-          </IconButton>
-          }
           {roomAdmin && !report &&
           <IconButton size="small" component="span" onClick={dataRefresh} style={{color:"var(--Bcolor)",flex:"auto",width:'30px', height:'25px'}}>
          <Tooltip arrow placement="top"  title="초기화">
@@ -502,40 +515,34 @@ const dataDel = () => {
           </Tooltip>
           </IconButton>
           } 
-
         {roomAdmin && 
-         <Tooltip arrow  placement="top" title="삭제">
-          <IconButton size="small" component="span" onClick={dataDel} style={{color:"var(--Bcolor)",padding:"0",marginLeft:"auto"}}>
+         <Tooltip arrow  placement="top" title="룸삭제">
+          <IconButton size="small" component="span" onClick={dataDel} style={{color:"var(--Bcolor)",flex:"auto",width:'30px', height:'25px'}}>
                 <DeleteForever />  
           </IconButton>
           </Tooltip>
         }
         </div>
-
-        <div className="voicechat"  >             
-         <Tooltip arrow  placement="top" title="회의자료 보기">
-          <button style={{width:'30px'}}  onClick={fire}>
-             <VoiceChatIcon fontSize='small' />
-          </button>          
-          </Tooltip>
-         <Tooltip arrow  placement="top" title="저장자료 보기">
-          <button style={{width:'30px'}} onClick={moveModal}> 
-            <MenuSharp />
-          </button> 
-          </Tooltip>
-        </div>    
-            
-      </div>
-
+        {video&&
+          <button style={{width:'85px',cursor:"pointer"}}  className="btnRoomLink"  onClick={fire}>공유자료</button>          
+        }
+       </div>            
+    {roomAdmin && 
+        <form className="adimBar"  onSubmit={noticeUp} >
+         {/* <Tooltip arrow placement="left" title="메시지 전송">
+          <button className="btnRoomLink" style={{width:"40px"}} onClick={noticeUp}><AddCommentIcon/></button> 
+          </Tooltip> */}
+          <input type="text" className="enterInput" placeholder="전달사항" ref={noticeRef} />
+        </form>
+      }
         {/* <div className="noticeTitle" > 공지 </div> */}
       <div className="s-header noticeHeader" ref={titleRef}>
          {/* 접속자 카운트 */}
-         <Badge badgeContent={items.enterMan||0} color="error" style={{width:'40px',background:'var(--Acolor)', paddingLeft:'10px',marginTop:'2px'}}>
-          <InsertEmoticon  /> 
+         <Badge badgeContent={items.enterMan||0} color="error" style={{width:'40px', paddingLeft:'10px',marginTop:'2px'}}>
+          <InsertEmoticon /> 
         </Badge> 
-        <div className="enterTitle" style={{background:"var(--Acolor)"}} >{notice}</div>  
+        <div className="enterTitle" >{notice}</div>  
       </div>
-
 {/* 여기부터 todo스타일 */}
       <div className="s-itemsv">
         {/* <div className="s-item"> */}

@@ -150,17 +150,6 @@ const manStart = (roomvalue) => {
 fireIdea.manUp(folder,roomvalue,{enterMan:1});
 return;
 }
-
-//   useEffect(() => {
-//     if(entering&&roomERef.current.value&&roomName){
-//       let num = ++items['enterMan']||0 ;
-//       console.log(entering,folder,num,roomName,items,items['enterMan'])
-//   fireIdea.manUp(folder,roomName,{enterMan:num});
-//     }
-//     return ()=>{manMinus();}
-//   },[entering])
-
-
     
     //오른쪽 모달 핸들링
     const moveModal = () => {
@@ -202,7 +191,7 @@ return;
       input: 'textarea', 
       width:'80%', height:'500px',
       inputValue: video||'',
-      title: '참고자료',
+      title: '공유자료',
       // showCancelButton: false
     })
     if (text) {
@@ -510,34 +499,6 @@ const submit = (e) => {
       }
     }
 
-
-
-  // Swal.fire({title:'내용을 저장하겠습니까?.',icon:'warning'}).then((result)=>{
-  //   if(result.isConfirmed){ 
-  //     // rocketOn();
-  //     const dataId = Date.now();
-  //     const data = {
-  //       uid: user.uid||'',
-  //       dataId: dataId,
-  //       name: userInfo.name||'',
-  //       title: title,
-  //       text: text,
-  //       text2: text2,
-  //       today: today,
-  //       progress: 0,
-  //       color : 'secondary',
-  //       photoData
-  //     }
-  //     if(roomName){fireIdea.itemSave2(folder, roomName, dataId, data)}
-  //     // else{fireIdea.itemSave(folder,data); }
-  //     titleRef2.current.value = '';
-  //     textRef.current.value = '';
-  //     textRef2.current.value = '';
-  //     setPhotoData('');
-  //     }
-  // })
-
-
 const upLoad = (e) => { console.log('uplod')
   const imgDataId = Date.now();
   const file = e.target.files[0];
@@ -555,9 +516,6 @@ const upLoad = (e) => { console.log('uplod')
       moveModal2={moveModal2} report={report} setItems={setItems} setDoor={setDoor} setEntering={setEntering}  /> 
     }
     </div> 
-    {/* <div className="drawerScreen" id="screenCap" >
-      {video}
-    </div> */}
     <div className="drawerback backNone" ref={backRef} onClick={moveModal2} style={{zIndex:"1"}}></div>
    
     {roomAdmin &&
@@ -571,59 +529,35 @@ const upLoad = (e) => { console.log('uplod')
                </CopyToClipboard>
             </button>
            </div>           
-          <div style={{flex:"1"}}> <button className="btnRoomLink" onClick={fireInsert} style={{width:"100%"}}>자료공유</button> </div>
+          <div style={{flex:"1"}}> <button className="btnRoomLink" onClick={fireInsert} style={{width:"100%"}}>공유자료</button> </div>
           <div style={{flex:"1"}}> <button className="btnRoomLink" onClick={moveModal} style={{width:"100%"}}>저장자료</button> </div>
         </div>
       }
 
-
       {roomAdmin &&
         <div className="adimBar">
-         {/* <Tooltip arrow placement="left" title="새로운 룸 생성">
-          <div> <button className="enterBtn" onClick={createRoom} style={{fontSize:'12px'}}>개설</button> </div>
-          </Tooltip> */}
           <div className="enterNumber" style={{fontSize:'small'}}>
             {see && room && Object.keys(room).map((e,i) => e.length>3 &&
               <button key={e} className="btnRoom" onClick={adminEnter} >{i}</button>) 
             }
-          </div>
-          
-          
+          </div>           
         </div>
       }
 
       <div className="s-header" style={{display:'flex'}}>
         <div className="enterWrap" >
-          <button className="btnRoomLink" onClick={enterRoom} style={{fontSize:'12px',width:"40px"}} >{door}</button>
-          <input type="text" className="enterInput roomnum" placeholder="방번호" style={{width:'85px',borderBottom:"solid 1px",borderTop:"solid 1px"}} ref={roomERef} />
+          <button className="btnRoomLink" onClick={enterRoom} style={{width:"40px"}} >{door}</button>
+          <input type="text" className="enterInput roomnum" placeholder="방번호" style={{width:'85px'}} ref={roomERef} />
         </div>
 
         <div style={{width:"100%", display:'flex'}}>
-        {/* {roomAdmin && 
-         <Tooltip arrow placement="top" title="룸링크 복사">
-         <IconButton size="small" component="span" onClick={()=> { if(roomName){Swal.fire({ title: '링크가 복사되었습니다.',text:linkCopy,icon:'warning'});}}}
-             style={{color:"var(--Bcolor)"}}>
-               <CopyToClipboard text={linkCopy}>               
-                <LinkIcon />
-                </CopyToClipboard>
-          </IconButton>
-          </Tooltip>
-          } */}
-          
-          {roomAdmin && 
+          {roomAdmin && !report &&
          <IconButton size="small"  onClick={reportSave} style={{color:"var(--Bcolor)",flex:"auto",width:'30px', height:'25px',padding:"0"}}>
          <Tooltip arrow placement="top"  title="저장">
                 <SaveIcon /> 
           </Tooltip>
           </IconButton>
-          }
-    
-          {/* <IconButton size="small"  onClick={fire} style={{color:"var(--Bcolor)",flex:"auto",width:'30px', height:'25px'}}>
-         <Tooltip arrow  placement="top" title="자료보기">
-             <VisibilityIcon fontSize='small' />
-         </Tooltip>
-        </IconButton> */}
-
+          }    
           {roomAdmin && !report &&
           <IconButton size="small" component="span" onClick={dataRefresh} style={{color:"var(--Bcolor)",flex:"auto",width:'30px', height:'25px'}}>
          <Tooltip arrow placement="top"  title="초기화">
@@ -631,7 +565,6 @@ const upLoad = (e) => { console.log('uplod')
           </Tooltip>
           </IconButton>
           } 
-
         {roomAdmin && 
          <Tooltip arrow  placement="top" title="룸삭제">
           <IconButton size="small" component="span" onClick={dataDel} style={{color:"var(--Bcolor)",flex:"auto",width:'30px', height:'25px'}}>
@@ -640,31 +573,16 @@ const upLoad = (e) => { console.log('uplod')
           </Tooltip>
         }
         </div>
-
-          <button style={{width:'60px',cursor:"pointer"}}  className="btnRoomLink"  onClick={fire}>보기</button>          
-        {/* <div   >             
-         <Tooltip arrow  placement="top" title="회의자료 보기">
-          </Tooltip>
-          {level>0 && 
-         <Tooltip arrow  placement="top" title="저장자료 보기">
-          <button style={{width:'30px'}} onClick={moveModal}> 
-            <MenuSharp />
-          </button> 
-          </Tooltip>
+        {video&&
+          <button style={{width:'85px',cursor:"pointer"}}  className="btnRoomLink"  onClick={fire}>공유자료</button>          
         }
-        </div>    */}
-
-      </div>
-            
+       </div>            
     {roomAdmin && 
-        <form className="adimBar">
-         <Tooltip arrow placement="left" title="메시지 전송">
+        <form className="adimBar"  onSubmit={noticeUp} >
+         {/* <Tooltip arrow placement="left" title="메시지 전송">
           <button className="btnRoomLink" style={{width:"40px"}} onClick={noticeUp}><AddCommentIcon/></button> 
-          </Tooltip>
-          <input type="text" className="enterInput" placeholder="전달사항" ref={noticeRef} />
-         {/* <Tooltip arrow placement="left" title="회의자료 입력">
-          <button className="enterBtn"  style={{width:'30px'}} onClick={fireInsert}><YouTubeIcon/></button> 
           </Tooltip> */}
+          <input type="text" className="enterInput" placeholder="전달사항" ref={noticeRef} />
         </form>
       }
         {/* <div className="noticeTitle" > 공지 </div> */}
@@ -688,7 +606,6 @@ const upLoad = (e) => { console.log('uplod')
         {/* {entering && */}
         <div className="idea-input">
           <div onSubmit={submit} className="idea-form">
-            {/* <input type="url" ref={titleRef2} className="inputTitle" placeholder="  Link"/> */}
 
           <Tooltip arrow  placement="top" title="링크첨부"> 
             <button className="btnadd" style={{ outline: "none", border: "none" }} onClick={linkInsert} >
@@ -707,12 +624,6 @@ const upLoad = (e) => { console.log('uplod')
                 {photoData?'추가됨!':'사진추가'}</IconButton>
             </label>
           </Tooltip>
-
-          {/* {photoData&&
-          <label htmlFor="imgData" style={{background:"white", height:"25px",margin:"0"}}> 
-              <IconButton size="small" component="span" style={{background:"white", height:"22px"}}> <CollectionsIcon /> 추가됨</IconButton>
-            </label>
-          }           */}
          
           <Tooltip arrow  placement="top" title="내용저장"> 
             <button className="btnadd" style={{ outline: "none", border: "none",color:"white",fontSize:'16px' }} onClick={()=>{submit();}} >
@@ -722,11 +633,8 @@ const upLoad = (e) => { console.log('uplod')
             <input type="text"className="textarea titleText" ref={textRef} cols="20" rows="4"  minlength="4" size="10" style={{height:"80px",fontSize:"20px"}} placeholder="제목/내용을 입력해주세요."
             // maxlength="20" 
             />
-            {/* <textarea className="textarea" ref={textRef2} cols="30" rows="2" 
-            style={{borderTop: 'dashed 1px'}} placeholder=" Content" /> */}
           </div>
         </div>    
-         {/* }     */}
         </div>
       </div>      
   );

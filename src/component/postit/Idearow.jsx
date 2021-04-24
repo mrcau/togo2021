@@ -89,7 +89,7 @@ const [reports, setReports] = useState(report)
      {item.color && 
      <Card bg={item.color} text={'white'} style={{ width: '12rem',height:'120px'}} className="mb-2" >
       {item.roomUid 
-      ? <Card.Header style={{fontSize:"large",fontWeight:"900",textAlign:"center"}}>방제목</Card.Header>
+      ? <Card.Header style={{fontSize:"large",fontWeight:"900",textAlign:"center"}}>제목</Card.Header>
       :
       <Card.Header style={{display:'flex',justifyContent:"space-between" ,padding:'5px'}} >
 

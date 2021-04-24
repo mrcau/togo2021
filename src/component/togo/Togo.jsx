@@ -117,7 +117,7 @@ function Togo({ fireApp, user, userInfo, setlogoName, photo }) {
               <button className="btn1">바로가기</button>
             </Card.Body>
           </Card>      
-          <Card className="mainCard"  onClick={() =>{history.push('/datastudy/:id');}}>
+          {/* <Card className="mainCard"  onClick={() =>{history.push('/datastudy/:id');}}>
             <Card.Img variant="top"  src={anlysis} className="cardImg"  />
             <Card.Body>
               <Card.Title style={{fontWeight:"900",textAlign:"center"}}>데이터분석</Card.Title>
@@ -126,7 +126,7 @@ function Togo({ fireApp, user, userInfo, setlogoName, photo }) {
               </Card.Text>
               <button className="btn1">바로가기</button>
             </Card.Body>
-          </Card>        
+          </Card>         */}
           <Card  className="mainCard" onClick={() =>{history.push('/scamper/:id');}}>
             <Card.Img variant="top" src={idea}  className="cardImg"  />
             <Card.Body>

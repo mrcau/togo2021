@@ -40,6 +40,7 @@ roomGetSave2(folder,newRoom, data,level){
     })
       if(roomGetNum < level){  console.log(roomGetNum,level)
       fireInit.database().ref(`${folder}/${roomUid}/${Uid}`).set(data)
+    return true;
     }else{return}  
   }
 
@@ -59,7 +60,8 @@ roomGetSave2(folder,newRoom, data,level){
     })
   
   if(roomGetNum < level){
-  fireInit.database().ref(`${folder}/${roomUid}/${Uid}`).set(data)
+  fireInit.database().ref(`${folder}/${roomUid}/${Uid}`).set(data);
+  return true;
   }else{return}  
 }
 
