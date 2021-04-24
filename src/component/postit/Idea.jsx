@@ -547,11 +547,7 @@ const upLoad = (e) => { console.log('uplod')
       <div className="s-header" style={{display:'flex'}}>
         <div className="enterWrap" >
           <button className="btnRoomLink" onClick={enterRoom} style={{width:"40px"}} >{door}</button>
-<<<<<<< HEAD
           <input type="text" className="enterInput roomnum" placeholder="방번호" style={{width:'85px'}} ref={roomERef} />
-=======
-          <input type="text" className="enterInput roomnum" placeholder="방번호" style={{width:'85px',borderBottom:"solid 1px",borderTop:"solid 1px"}} ref={roomERef} />
->>>>>>> 0bd8cd7a6933ee1c57929c3afd2f2795e49e24fd
         </div>
 
         <div style={{width:"100%", display:'flex'}}>
@@ -582,19 +578,9 @@ const upLoad = (e) => { console.log('uplod')
         }
        </div>            
     {roomAdmin && 
-<<<<<<< HEAD
         <form className="adimBar"  onSubmit={noticeUp} >
          {/* <Tooltip arrow placement="left" title="메시지 전송">
           <button className="btnRoomLink" style={{width:"40px"}} onClick={noticeUp}><AddCommentIcon/></button> 
-=======
-        <form className="adimBar" onSubmit={noticeUp} >
-         {/* <Tooltip arrow placement="left" title="메시지 전송" style={{visibility:"none"}}>
-          <button className="btnRoomLink" style={{width:"40px",visibility:"none"}} onClick={noticeUp}><AddCommentIcon/></button> 
-          </Tooltip> */}
-          <input type="text" className="enterInput" placeholder="전달사항" ref={noticeRef} />
-         {/* <Tooltip arrow placement="left" title="회의자료 입력">
-          <button className="enterBtn"  style={{width:'30px'}} onClick={fireInsert}><YouTubeIcon/></button> 
->>>>>>> 0bd8cd7a6933ee1c57929c3afd2f2795e49e24fd
           </Tooltip> */}
           <input type="text" className="enterInput" placeholder="전달사항" ref={noticeRef} />
         </form>
