@@ -98,13 +98,13 @@ useEffect(() => {
   fireSync.onAuth((e) => {
     if(!e&&!roomName){ return}
     if(data.dataId){ if(data.dataId.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){setUserClass(true)} }          
-    if(roomName&&e){ 
-      if(roomName.substr(0,6) === user.uid.substr(0,6)){setroomAdmin(true)} 
-      }else if(!roomName&&level>0){ setroomAdmin(true) }    
+    if(roomName&&e){ console.log('룸네임있고 로그인',roomName)
+      if(roomName.substr(0,6) === user.uid.substr(0,6)){setroomAdmin(true); console.log('roomAdmin1 리포트false!',roomAdmin)} 
+      }else if(!roomName&&level>0){ setroomAdmin(true);console.log('roomAdmin2 리포트false!',roomAdmin,roomName,level) }    
     const cf = {  f1: (p) => { setItems(p) },  f2: () => { setItems({}) },
                   f3: (p) => { setRoom(p) },   f4: () => { setRoom({}) },
                }
-    if (e && report===false && id.length<10) {   console.log('로그인하고 리포트false!')
+    if (e && report===false && id.length<10) {   console.log('로그인하고 리포트false!',roomAdmin)
     setRoomUid(e.uid.substr(0, roomSubstr));
     setUserUID(e.uid);
     const stopDataSync = fireSync.dataSync(folder, roomName, cf);
@@ -113,7 +113,8 @@ useEffect(() => {
       return ()=>{stopDataSync();stoproomSync();}    
     }       
     else  if(e && report){ console.log('로그인 레포트');
-    if(items.roomName){ if(items.roomName.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){setUserClass(true); setItems(items); setReport(true)} }
+    if(items.roomName){ 
+      if(items.roomName.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){setUserClass(true); setItems(items); setReport(true)} }
     } 
     else {return}
   })
@@ -174,7 +175,6 @@ return;
         link.click();
     });
   }
-  
     
   // 화면캡쳐 모달창3
   const fire = () => {
@@ -295,7 +295,7 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
 }
 
 
-  // 관리자 방입장
+  // 관리자 방입장2
   const adminEnter2 = (e) => {
     setEntering(true);
     const roomname = e;
@@ -453,11 +453,10 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
         Swal.fire('삭제되었습니다.');
         roomNameReset();
         setEntering(false); 
-        manMinus();
+        // manMinus();
         setroomName("");setDoor('입장'); 
       }});
-    }
-    
+    }    
   } 
   //로켓발사
   const rocketOn = () => {
@@ -552,36 +551,33 @@ const upLoad = (e) => { console.log('uplod')
 
         <div style={{width:"100%", display:'flex'}}>
           {roomAdmin && !report &&
-         <IconButton size="small"  onClick={reportSave} style={{color:"var(--Bcolor)",flex:"auto",width:'30px', height:'25px',padding:"0"}}>
+         <IconButton size="small"  onClick={reportSave} style={{color:"var(--Bcolor)",flex:"auto",width:'30px'}}>
          <Tooltip arrow placement="top"  title="저장">
                 <SaveIcon /> 
           </Tooltip>
           </IconButton>
           }    
           {roomAdmin && !report &&
-          <IconButton size="small" component="span" onClick={dataRefresh} style={{color:"var(--Bcolor)",flex:"auto",width:'30px', height:'25px'}}>
+          <IconButton size="small" component="span" onClick={dataRefresh} style={{color:"var(--Bcolor)",flex:"auto",width:'30px'}}>
          <Tooltip arrow placement="top"  title="초기화">
                 <ReplayIcon /> 
           </Tooltip>
           </IconButton>
           } 
         {roomAdmin && 
-         <Tooltip arrow  placement="top" title="룸삭제">
-          <IconButton size="small" component="span" onClick={dataDel} style={{color:"var(--Bcolor)",flex:"auto",width:'30px', height:'25px'}}>
+          <IconButton size="small" component="span" onClick={dataDel} style={{color:"var(--Bcolor)",flex:"auto",width:'30px'}}>
+            <Tooltip arrow  placement="top" title="룸삭제">
                 <DeleteForever />  
-          </IconButton>
           </Tooltip>
+          </IconButton>
         }
         </div>
         {video&&
           <button style={{width:'85px',cursor:"pointer"}}  className="btnRoomLink"  onClick={fire}>공유자료</button>          
         }
        </div>            
-    {roomAdmin && 
+      {roomAdmin && 
         <form className="adimBar"  onSubmit={noticeUp} >
-         {/* <Tooltip arrow placement="left" title="메시지 전송">
-          <button className="btnRoomLink" style={{width:"40px"}} onClick={noticeUp}><AddCommentIcon/></button> 
-          </Tooltip> */}
           <input type="text" className="enterInput" placeholder="전달사항" ref={noticeRef} />
         </form>
       }

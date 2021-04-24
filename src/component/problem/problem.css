@@ -180,9 +180,14 @@ flex:auto; font-size: small;}
 .enterBtn{  font-size: small; width:40px;}
 .enterWrap{ display: flex; width: 150px;}
 .nowRoom{padding: 0 10px;}
-.enterTitle{  flex: auto; font-size: small; 
-  width: 100%; overflow-x: auto; transition: all 300ms;
-  animation: noticeFly 1000ms;}
+.enterTitle{  
+  flex: auto;
+  font-size: small; 
+  width: 100%; 
+  overflow: hidden; 
+  transition: all 300ms;
+  animation: noticeFly 1000ms;
+}
 .enterInput{  width: 60px; outline: none; border: none;}
 /* .noticeTitle{ width: 40px; background: var(--Acolor);} */
 
