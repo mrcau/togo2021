@@ -561,7 +561,7 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
           <input type="text" className="enterInput roomnum" placeholder="방번호" style={{width:'80px'}} ref={roomERef}/>
         </div>
 
-        {roomAdmin && 
+        {roomAdmin && !report &&
          <IconButton size="small"  onClick={btnInput} style={{color:"var(--Bcolor)",flex:"1"}}>
          <Tooltip arrow placement="top"  title="저장" style={{width:"30px"}}>
                 <SaveIcon /> 

@@ -209,7 +209,7 @@ useEffect(() => {
     const dataId = Date.now();
     // setroomName(newRoom);
     const data = {text1:'',text2:'',text3:'',text4:'',text5:'',text6:'',text7: '',text8: '', 
-    text9: '',text10: '',text11: '', text12: '',text13: '', good0:0, good1:0, good2:0, good3:0, good4:0, 
+    text9: '', good0:0, good1:0, good2:0, good3:0, good4:0, 
     good5:0, good6:0, good7:0,good8:0, good9:0,writer:'',enterMan:0,  
     userId:user.uid||'',
     enterMan:0,
@@ -279,7 +279,7 @@ useEffect(() => {
     const roomRowReset=() => {
       roomERef.current.value=''; 
       const data = {writer:'',text1:'',text2:'',text3:'',text4:'',text5:'',text6:'',text7: '',text8: '', 
-      text9: '',text10: '',text11: '', text12: '',text13: ''}
+      text9: ''}
       setdata(data);
       setDoor('입장'); 
       // setRoomUid('');
@@ -371,11 +371,6 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
       text7: text7.current.value || '',
       text8: text8.current.value || '',
       text9: text9.current.value || '',
-      text10: text10.current.value || '',
-      text11: text11.current.value || '',
-      text12: text12.current.value || '',
-      text13: text13.current.value || '',
-      writer: writer.current.value || '',   
       uid: user.uid||'',
       dataId: dataId,
       name: userInfo.name||'',
@@ -395,11 +390,6 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
     text7.current.value = '';
     text8.current.value = '';
     text9.current.value = '';
-    text10.current.value = '';
-    text11.current.value = '';
-    text12.current.value = '';
-    text13.current.value = '';
-    writer.current.value = '';
     roomERef.current.value='';    
   }
      //데이터 초기화
@@ -410,7 +400,7 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
         showCancelButton: true})
       .then((result) => { if(result.isConfirmed){ 
         const data = {text1:'',text2:'',text3:'',text4:'',text5:'',text6:'',text7: '',text8: '', 
-        text9: '',text10: '',text11: '', text12: '',text13: '', good0:0, good1:0, good2:0, good3:0, good4:0, 
+        text9: '', good0:0, good1:0, good2:0, good3:0, good4:0, 
         good5:0, good6:0, good7:0,good8:0, good9:0,writer:'',enterMan:0}
         fireProblem.dataUp(folder, roomName, data);
         Swal.fire('삭제되었습니다.');       
@@ -436,16 +426,16 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
       text7: text7.current.value || '',
       text8: text8.current.value || '',
       text9: text9.current.value || '',
-      text10: text10.current.value || '',
-      text11: text11.current.value || '',
-      text12: text12.current.value || '',
-      text13: text13.current.value || '',
-      writer: writer.current.value || '',
+      // text10: text10.current.value || '',
+      // text11: text11.current.value || '',
+      // text12: text12.current.value || '',
+      // text13: text13.current.value || '',
+      // writer: writer.current.value || '',
     }
     const roomUid =  roomERef.current.value.substr(0,roomSubstr);
     const roomId = roomUid+'REPORT';
-    if(!writer.current.value){
-        Swal.fire({title:'최종 아이디어를 입력해주세요.',icon:'warning'})}
+    if(!text1.current.value){
+        Swal.fire({title:'문제를 입력해주세요.',icon:'warning'})}
   
     else{
       Swal.fire({title:'내용을 저장하겠습니까?', showCancelButton: true}).then((result)=>{
@@ -504,8 +494,8 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
     <div className="drawer" ref={drawerRef}>
     {rightModal && 
      <StartupReport fireSync={fireSync} fireProblem={fireProblem} user={user} folder={folder} setroomName={setroomName} roomRowReset={roomRowReset}
-      roomName={roomName} setReport={setReport} roomNameHide={roomNameHide} userInfo={userInfo} 
-      moveModal2={moveModal2} setdata={setdata} setDoor={setDoor} setEntering={setEntering}  /> 
+      roomName={roomName} setReport={setReport} roomNameHide={roomNameHide} userInfo={userInfo} setLinkCopy={setLinkCopy}
+      moveModal2={moveModal2} setdata={setdata} setDoor={setDoor} setEntering={setEntering} enterRoom={enterRoom} /> 
     }
     </div>
     <div className="drawerback backNone" ref={backRef} onClick={moveModal2}  style={{zIndex:"1"}}></div>
@@ -540,9 +530,10 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
            <div className="enterWrap" >
              <button className="btnRoomLink" onClick={enterRoom} style={{width:"40px"}} >{door}</button>
              <input type="text" className="enterInput roomnum" placeholder="방번호" style={{width:'80px'}} ref={roomERef}/>
+             {/* <button className="btnRoomLink" onClick={btnInput} style={{width:"40px"}} >저장</button> */}
            </div>
    
-           {roomAdmin && 
+           {roomAdmin && !report &&
             <IconButton size="small"  onClick={btnInput} style={{color:"var(--Bcolor)",flex:"1"}}>
             <Tooltip arrow placement="top"  title="저장" style={{width:"30px"}}>
                    <SaveIcon /> 
@@ -569,7 +560,7 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
            }
            
               {video&&
-             <button style={{width:'150px',cursor:"pointer"}}  className="btnRoomLink"  onClick={fire}>공유자료</button>          
+             <button style={{width:'100px',cursor:"pointer"}}  className="btnRoomLink"  onClick={fire}>공유자료</button>          
            }
    
          </div>
@@ -602,7 +593,7 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
             </IconButton> }
             </div>
             <textarea  className="s-intemInput input1" cols="30" rows="2" placeholder={placeData.text1} 
-            ref={text1}  onChange={onSubmit} value={data.text1} />
+            ref={text1}  onChange={onSubmit} value={data.text1} style={{background:"lightpink"}} />
           </div>
           <div className="s-item">
             <div className="s-itemTitle">{placeData.title2}
@@ -711,7 +702,7 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
             ref={text9} onChange={onSubmit} value={data.text9} />
           </div>
 
-          <div className="inputBox" >
+          {/* <div className="inputBox" >
             <div className="s-itemTitle" style={{width:"100%"}}>{placeData.title10}</div>
             <textarea cols="30" rows="1" className="problemInput input1" ref={writer} 
             onChange={onSubmit} value={data.writer} placeholder={placeData.writer} />
@@ -724,7 +715,7 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
             <textarea cols="30" rows="1" className="problemInput input5 " ref={text13} 
             onChange={onSubmit} value={data.text13} placeholder={placeData.text13} />       
             <input type="button" className="problemInput btn" onClick={btnInput} value="저장"/>
-          </div>
+          </div> */}
           
           {/* <div className="s-item">
             <div className="s-itemTitle">문제정의</div>
