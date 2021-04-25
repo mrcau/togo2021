@@ -304,13 +304,13 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
       setRoomUid('');setReport(false); setSee(true); setRoom({}); 
       setNotice('');setVideo(''); 
       roomERef.current.value=''; 
-      
+      if(!report){      
       if(user.uid){
         if(user.uid.substr(0,roomSubstr)===roomName.substr(0,roomSubstr)){
           fireSync.cubeUp(folder,roomName, {host:'퇴장',enterMan:0});
         }}
-    }  
-             
+      }  
+    }        
     // 토론방 삭제시 데이터 리셋 entering 제거
     const roomNameReset2=() => {
       fireSync.videoSync(folder,roomName,'See',(p)=>{setVideo(p); },1);
@@ -436,7 +436,7 @@ const dataDel = () => {
       Swal.fire('삭제되었습니다.');
       roomNameReset();
       setEntering(false); 
-      manMinus();
+      // manMinus();
       setroomName("");setDoor('입장'); 
     }});
   }

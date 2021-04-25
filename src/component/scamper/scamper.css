@@ -116,18 +116,20 @@ flex:auto; font-size: small;}
   text-align: left;
   padding : 0 5px;
   font-size: 12px;
-  line-height: 15px;
+  line-height: 16px;
 }
 
 .scamperInput.input3, .input5, .input6, .input7{
+  resize:none;
   flex: auto;
 }
 .scamperInput.input2, .input4, .input6{
   border-top: 1px dashed;
+  resize:none;
   border-bottom: 1px dashed;
 }
 .scamperInput.input3, .input5, .input6{
-  resize:vertical;
+  resize:none;
 
 }
 

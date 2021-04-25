@@ -45,7 +45,7 @@ function Scamper({ fireProblem, fireApp, fireSync, user, userInfo ,setlogoName }
   const [data, setdata] = useState({});
   const [room, setRoom] = useState({});
   const {id}=useParams();
-  const [roomName, setroomName] = useState(id||'');
+  const [roomName, setroomName] = useState('');
   // const '' = userInfo ? userInfo.user.substr(0, 6) :'';
   const [roomUid, setRoomUid] = useState('');
   const [video, setVideo] = useState('');
@@ -64,6 +64,7 @@ function Scamper({ fireProblem, fireApp, fireSync, user, userInfo ,setlogoName }
   const [userClass, setUserClass] = useState(false)
   const [linkCopy, setLinkCopy] = useState('');
   setlogoName(' IDEA');
+  
   
     //링크접속
     useEffect(() => {     
@@ -96,12 +97,12 @@ function Scamper({ fireProblem, fireApp, fireSync, user, userInfo ,setlogoName }
 
      //일반접속
 useEffect(() => { 
-  fireSync.onAuth((e) => { console.log('data',data,user)
+  fireSync.onAuth((e) => { 
     if(!e&&!roomName){ return}
     if(data.userId){ if(data.userId === user.uid){setUserClass(true)} }          
-    if(roomName && e){ 
-      if(roomName.substr(0,6) === user.uid.substr(0,6)){setroomAdmin(true);} }
-      else if(!roomName&&level>0){ setroomAdmin(true) }    
+    if(roomName && e){ console.log('룸네임있고 로그인',roomName)
+      if(roomName.substr(0,6) === user.uid.substr(0,6)){setroomAdmin(true); console.log('roomAdmin1 리포트false!',roomAdmin)} 
+      }else if(!roomName&&level>0){ setroomAdmin(true) ;console.log('roomAdmin2 리포트false!',roomAdmin,roomName,level)}    
     const cf = {  f1: (p) => { setdata(p) },  f2: () => { setdata({}) },
                   f3: (p) => { setRoom(p) },   f4: () => { setRoom({}) },
                }
@@ -175,6 +176,7 @@ useEffect(() => {
     }
     //오른쪽 모달 핸들링
     const moveModal = () => {
+      roomNameReset2();setEntering(false);
       drawerRef.current.classList.add("moveDrawer");
       backRef.current.classList.remove("backNone");    
       setrightModal(true);
@@ -234,8 +236,9 @@ useEffect(() => {
     host:'입장'
   }
   
-  fireProblem.roomGetSave2(folder, newRoom, data, level)
-  }
+  const abc = fireProblem.roomGetSave2(folder, newRoom, data, level)
+  if(abc){adminEnter2(newRoom)}else{return}
+}
   
 
   //데이터 리셋
@@ -267,7 +270,7 @@ useEffect(() => {
       fireSync.roomUser(folder,roomUid,cf2,1);        
       fireSync.dataSync(folder, roomName, cf,1);
 
-      history.push('/problem/:id');  setdata({});     
+      history.push('/scamper/:id');  setdata({});     
       dataReset(); setroomName("");setDoor('입장'); setRoomUid('');
       setReport(false); setEntering(false); setSee(true); setRoom({});
       setNotice('');setVideo('');
@@ -291,7 +294,7 @@ useEffect(() => {
       const cf2 = () => { setdata({});setRoom({});  }
       fireSync.roomUser(folder,roomUid,cf2,1);        
       fireSync.dataSync(folder, roomName, cf,1);
-      history.push('/problem/:id');  setdata({});     
+      history.push('/scamper/:id');  setdata({});     
       dataReset();setroomName("");setDoor('입장'); setRoomUid('');
       setReport(false); setEntering(false); setSee(true); setRoom({});
       setNotice('');setVideo('');
@@ -362,6 +365,24 @@ useEffect(() => {
   fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
   }
 
+  // 관리자 방입장2
+  const adminEnter2 = (e) => {
+    setEntering(true);
+    const roomname = e;
+    setroomName(roomname);
+    setLinkCopy('https://samtool.netlify.app/#/'+folder+'/'+roomname);  
+    roomERef.current.value =roomname; 
+  setReport(false); 
+  setDoor('퇴장');       
+  const cf2 = {
+    f1: (p) => { setdata(p);  },
+    f2: () => { setdata({}) },
+    f3: (p) => { setRoom(p) },
+    f4: () => { setRoom({}) },
+  }
+fireSync.dataSync(folder,roomname, cf2);
+fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
+}
 // notice 저장 - 공지 보내기
   const noticeUp = (e) => {
     e.preventDefault();
@@ -394,26 +415,9 @@ useEffect(() => {
       today: today,
       progress: 0,
     }    
-    // const roomUid =  roomERef.current.value.substr(0,roomSubstr)
-    // fireApp.dataUp(folder, roomERef.current.value, data);
     if(roomName){fireProblem.dataUp(folder, roomName, data);}
   }
 
-
-   //데이터 초기화
-   const dataRefresh = ()=>{     
-    Swal.fire({ 
-      title: '전체 내용을 삭제하겠습니까?',
-      icon:'warning',
-      showCancelButton: true})
-    .then((result) => { if(result.isConfirmed){ 
-      const data = {scamS:'',scamC:'',scamA:'',scamM:'',scamP:'',aTitle:'',bName: '',input3: '', 
-      input4: '',input5: '',input6: '',  good0:0, good1:0, good2:0, good3:0, good4:0, good5:0, good6:0, good7:0,}
-      fireProblem.dataUp(folder, roomName, data);
-      Swal.fire('삭제되었습니다.');       
-    }});
- }
-    
 
    // 보고서 제출
    const btnInput = (e) => {
@@ -443,10 +447,9 @@ useEffect(() => {
     }
     const roomUid =  roomERef.current.value.substr(0,roomSubstr);
     const roomId = roomUid+'REPORT';
-    if(!aTitle.current.value){
-        Swal.fire({title:'처음문제를 입력해주세요.',icon:'warning'})}
-    else if(!bName.current.value){
-          Swal.fire({title:'최종문제를 입력해주세요.',icon:'warning'})}
+    if(!input4.current.value){
+        Swal.fire({title:'최종 아이디어를 입력해주세요.',icon:'warning'})}
+  
     else{
       Swal.fire({title:'내용을 저장하겠습니까?', showCancelButton: true}).then((result)=>{
         if(result.isConfirmed){
@@ -457,48 +460,59 @@ useEffect(() => {
     }
   }
 
-    // 아이템 삭제
-  const dataDel = () => {
-    console.log(report,data.userId,user.uid)
-    if(report && data.dataId && data.userId === user.uid){ 
-      Swal.fire({ 
-        title: '내정보를 삭제하겠습니까?',
-        text:"삭제될 게시물 : "+data.aTitle,
-        icon:'warning',
-        showCancelButton: true})
-      .then((result) => { if(result.isConfirmed){ Swal.fire('삭제되었습니다.');
-      fireApp.reportDel(folder,user.uid,data.dataId); dataReset();
-      }});
-      }
-    
-    if(roomName && report && data.userId === user.uid){      
-        Swal.fire({ 
-          title: '정보를 삭제하겠습니까?',
-          text:"삭제될 게시물 : "+data.aTitle,
-          icon:'warning',
-          showCancelButton: true})
-        .then((result) => { if(result.isConfirmed){ Swal.fire('삭제되었습니다.');
-        const roomUid =  roomName.substr(0,roomSubstr);
-        const roomId = roomUid+'REPORT';
-        fireApp.reportDel(folder,roomId,roomName)
-        dataReset();
-        }});
-      }
 
-      if(roomName!==roomERef.current.value||roomERef.current.value==='') { return }
-      
-      if(data.userId === user.uid){  
+   //데이터 초기화
+   const dataRefresh = ()=>{     
+    Swal.fire({ 
+      title: '전체 내용을 삭제하겠습니까?',
+      icon:'warning',
+      showCancelButton: true})
+    .then((result) => { if(result.isConfirmed){ 
+      const data = {scamS:'',scamC:'',scamA:'',scamM:'',scamP:'',aTitle:'',bName: '',input3: '', 
+      input4: '',input5: '',input6: '',  good0:0, good1:0, good2:0, good3:0, good4:0, good5:0, good6:0, good7:0,}
+      fireProblem.dataUp(folder, roomName, data);
+      Swal.fire('삭제되었습니다.');       
+    }});
+ }
+    
+  // 아이템 삭제
+  const dataDel = () => {  
+    if(!report){
+    if(!roomName||!user||data.roomName.substr(0,roomSubstr) !== user.uid.substr(0,roomSubstr)){return}
+    }
+    if(Object.entries(data).length<1){ return}
+    let entry = Object.entries(data)||[];
+    const itemUid = entry[0][1].uid||'';
+    if(!report && data.roomName.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){ console.log('뻥',roomName)
       Swal.fire({ 
         title: '토론방을 삭제하겠습니까?',
         text:"삭제될 토론방 : "+roomName,
         icon:'warning',
         showCancelButton: true})
-      .then((result) => { if(result.isConfirmed){ Swal.fire('삭제되었습니다.');
-      fireApp.dataDel(folder,roomName);   
-      dataReset();
+      .then((result) => { if(result.isConfirmed){ 
+      fireProblem.dataDel(folder,roomName); 
+        Swal.fire('삭제되었습니다.');
+        roomNameReset2();
       }});
-    }
-    
+      }  
+
+      if(report&&data.roomName.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){ 
+      Swal.fire({ 
+        title: '토론방을 삭제하겠습니까?',
+        text:"삭제될 토론방 : "+data.roomName,
+        icon:'warning',
+        showCancelButton: true})
+      .then((result) => { if(result.isConfirmed){ 
+        const roomUid =   user.uid.substr(0,roomSubstr);
+        const roomId = roomUid+'REPORT';
+        fireProblem.reportDel(folder,roomId,data.roomName);   
+        Swal.fire('삭제되었습니다.');
+        roomNameReset();
+        setEntering(false); 
+        // manMinus();
+        setroomName("");setDoor('입장'); 
+      }});
+    }    
   } 
 //  console.log(report)
 //titleRef.current.classList.add("noticeFly");
@@ -512,20 +526,27 @@ useEffect(() => {
      moveModal2={moveModal2} report={report} setdata={setdata} setDoor={setDoor} setEntering={setEntering}  /> 
    }
     </div>
+    
     <div className="drawerback backNone" ref={backRef} onClick={moveModal2}  style={{zIndex:"1"}}></div>
        
-      {roomAdmin && 
-        <form className="adimBar">
-          <button className="enterBtn"  onClick={noticeUp}><AddCommentIcon/></button> 
-          <input type="text" className="enterInput" placeholder="전달사항" ref={noticeRef} />
-          <button className="enterBtn"  style={{width:'30px'}} onClick={fireInsert}><YouTubeIcon/></button> 
-        </form>
+    {roomAdmin &&
+        <div className="RoomLink">
+          <div style={{flex:"1"}}> <button className="btnRoomLink" onClick={createRoom} style={{width:"100%"}}>룸개설</button> </div>
+          <div style={{flex:"1"}}> 
+            <button className="btnRoomLink" style={{width:"100%"}} 
+            onClick={()=> { if(roomName){Swal.fire({ title: '링크가 복사되었습니다.',text:linkCopy,icon:'warning'});}}}>
+               <CopyToClipboard text={linkCopy}>               
+               <span>룸링크</span>
+               </CopyToClipboard>
+            </button>
+           </div>           
+          <div style={{flex:"1"}}> <button className="btnRoomLink" onClick={fireInsert} style={{width:"100%"}}>공유자료</button> </div>
+          <div style={{flex:"1"}}> <button className="btnRoomLink" onClick={moveModal} style={{width:"100%"}}>저장자료</button> </div>
+        </div>
       }
+
       {roomAdmin &&
-        <div className="adimBar">
-        <Tooltip arrow placement="left" title="새로운 룸 생성">
-         <div> <button className="enterBtn" onClick={createRoom} style={{fontSize:'12px'}}>개설</button> </div>
-         </Tooltip>
+        <div className="adimBar">       
          <div className="enterNumber" style={{fontSize:'small'}}>
            {see && room && Object.keys(room).map((e,i) => e.length>3 &&
              <button key={e} className="btnRoom" onClick={adminEnter} >{i}</button>) 
@@ -536,63 +557,52 @@ useEffect(() => {
 
       <div className="s-header" style={{display:'flex'}}>
         <div className="enterWrap" >
-          <button className="enterBtn" onClick={enterRoom} style={{fontSize:'12px'}} >{door}</button>
-          <input type="text" className="enterInput roomnum" placeholder="방번호" style={{width:'85px'}} ref={roomERef}/>
+          <button className="btnRoomLink" onClick={enterRoom} style={{width:"40px"}} >{door}</button>
+          <input type="text" className="enterInput roomnum" placeholder="방번호" style={{width:'80px'}} ref={roomERef}/>
         </div>
-        {roomAdmin && 
-         <Tooltip arrow placement="top" title="룸링크 복사">
-         <IconButton size="small" component="span" onClick={()=> { if(roomName){Swal.fire({ title: '링크가 복사되었습니다.',text:linkCopy,icon:'warning'});}}}
-             style={{color:"var(--Bcolor)",flex:"auto",width:'50px'}}>
-               <CopyToClipboard text={linkCopy}>               
-                <LinkIcon />
-                </CopyToClipboard>
-          </IconButton>
-          </Tooltip>
-          }
 
-        {roomAdmin && 
-         <IconButton size="small"  onClick={btnInput} style={{color:"var(--Bcolor)",flex:"auto",width:'50px', height:'25px',padding:"0"}}>
-         <Tooltip arrow placement="top"  title="저장">
+        {roomAdmin && !report &&
+         <IconButton size="small"  onClick={btnInput} style={{color:"var(--Bcolor)",flex:"1"}}>
+         <Tooltip arrow placement="top"  title="저장" style={{width:"30px"}}>
                 <SaveIcon /> 
           </Tooltip>
           </IconButton>
         }
           {/* 스위치호출 */}
         <div className="enterTitle" >
-          <span >SCAMPER </span>
+          <span > 스캠퍼 </span>
           <Switch checked={state.triz} name="triz" onChange={handleChange} size="small" 
           color="default" />  
-          <span > TRIZ</span>
+          <span > 트리즈 </span>
         </div>    
 
         {roomAdmin && !report &&
-          <IconButton size="small" component="span" onClick={dataRefresh} style={{color:"var(--Bcolor)",flex:"auto",width:'50px', height:'25px'}}>
-         <Tooltip arrow placement="top"  title="초기화">
+          <IconButton size="small"  onClick={dataRefresh} style={{color:"var(--Bcolor)",flex:"1"}}>
+         <Tooltip arrow placement="top"  title="초기화" style={{width:"30px"}}>
                 <ReplayIcon /> 
           </Tooltip>
           </IconButton>
           } 
 
         {roomAdmin && 
-         <Tooltip arrow  placement="top" title="룸삭제">
-          <IconButton size="small" component="span" onClick={dataDel} style={{color:"var(--Bcolor)",flex:"auto",width:'50px',padding:"0"}}>
+          <IconButton size="small"  onClick={dataDel} style={{color:"var(--Bcolor)",flex:"1"}}>
+         <Tooltip arrow  placement="top" title="룸삭제" style={{width:"30px"}}>
                 <DeleteForever />  
-          </IconButton>
           </Tooltip>
+          </IconButton>
         }
         
+           {video&&
+          <button style={{width:'150px',cursor:"pointer"}}  className="btnRoomLink"  onClick={fire}>공유자료</button>          
+        }
 
-        <div className="voicechat" >             
-          <button style={{width:'30px'}}  onClick={fire}>
-             <VoiceChatIcon fontSize='small' />
-          </button>
-
-          <button style={{width:'30px'}} onClick={moveModal}> 
-            <MenuSharp />
-          </button> 
-        </div>        
       </div>
-
+   
+      {roomAdmin && 
+        <form className="adimBar"  onSubmit={noticeUp} >
+          <input type="text" className="enterInput" placeholder="전달사항" ref={noticeRef} />
+        </form>
+      }
         {/* <div className="noticeTitle" > 공지 </div> */}
       <div className="s-header noticeHeader" ref={titleRef}>
         {/* 접속자 카운트 */}
@@ -600,7 +610,7 @@ useEffect(() => {
           <InsertEmoticon /> 
         </Badge> 
         <div className="enterTitle" >{notice}</div>  
-      </div>    
+      </div>      
 
         <form className="s-items" ref={formRef} >
           
@@ -696,30 +706,35 @@ useEffect(() => {
           </div>
           
           <div className="inputBox" >
-            <div className="s-itemTitle" style={{width:"100%"}}>최종아이디어
-            {/* {report &&
-            <IconButton style={{width:'25px', height:'25px'}} >
-              <Badge badgeContent={good[7]} color="secondary" style={{paddingRight:'10px'}}>
-                <ThumbUp style={{color:'var(--Bcolor)'}} onClick={()=>{goodPlus2('good7',Switch7,setSwitch7)}} />
-              </Badge>
-            </IconButton> 
-            } */}
-            </div>
+            <div className="s-itemTitle" style={{width:"100%"}}>좋은 아이디어 </div>
             <div></div>
-            <textarea cols="30" rows="1" className="scamperInput input1" ref={aTitle} 
-            onChange={onSubmit} value={data.aTitle} placeholder="제목" />
-            <textarea cols="30" rows="1" className="scamperInput input2" ref={bName} 
-            onChange={onSubmit} value={data.bName} placeholder="작성자" />
-
+            <textarea cols="30" rows="1" className="scamperInput input3" ref={aTitle} 
+            onChange={onSubmit} value={data.aTitle} placeholder="좋은아이디어1" />
+            <textarea cols="30" rows="1" className="scamperInput input4" ref={bName} 
+            onChange={onSubmit} value={data.bName} placeholder="좋은아이디어2" />
             <textarea cols="30" rows="1" className="scamperInput input3" ref={input3} 
-            onChange={onSubmit} value={data.input3} placeholder={placeData.goodidea} />            
-            <textarea cols="30" rows="1" className="scamperInput input4" ref={input4} 
+            onChange={onSubmit} value={data.input3} placeholder="좋은아이디어3" />            
+            {/* <textarea cols="30" rows="1" className="scamperInput input4" ref={input4} 
             onChange={onSubmit} value={data.input4} placeholder={placeData.bestidea} />
             <textarea cols="30" rows="1" className="scamperInput input5 " ref={input5} 
             onChange={onSubmit} value={data.input5} placeholder={placeData.plusidea} />
             <textarea cols="30" rows="1" className="scamperInput input6" ref={input6} 
+            onChange={onSubmit} value={data.input6} placeholder={placeData.minusidea} />             */}
+            {/* <input type="button" className="scamperInput btn" onClick={btnInput} value="저장"/> */}
+          </div>
+
+          <div className="inputBox" >
+            <div className="s-itemTitle" style={{width:"100%"}}>최종아이디어
+            </div>
+            <div></div>
+             
+            <textarea cols="30" rows="1" className="scamperInput input4" ref={input4} 
+            onChange={onSubmit} value={data.input4} placeholder={placeData.bestidea} style={{background:"lightpink"}}/>
+            <textarea cols="30" rows="1" className="scamperInput input5 " ref={input5} 
+            onChange={onSubmit} value={data.input5} placeholder={placeData.plusidea} />
+            <textarea cols="30" rows="1" className="scamperInput input6" ref={input6} 
             onChange={onSubmit} value={data.input6} placeholder={placeData.minusidea} />            
-            <input type="button" className="scamperInput btn" onClick={btnInput} value="저장"/>
+            {/* <input type="button" className="scamperInput btn" onClick={btnInput} value="저장"/> */}
           </div>
 
         </form>
