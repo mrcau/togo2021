@@ -262,12 +262,15 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
       imageUrl:cube,
       inputValue:cube,
       inputLabel:'❤️ 👉 ✔️ ❌ 🔹 ⚜️',
-      inputPlaceholder: '코드입력시: <iframe width="100%" src="주소" /> \n 링크입력시:<a href="링크" target="_blank">제목</a>',
+      inputPlaceholder: '-코드입력시: <iframe width="100%" src="주소" /> \n-링크입력시:<a href="링크" target="_blank">제목</a>',
       showCancelButton: true
     })    
     if (text) {
       if(!entering){return};
-      Swal.fire(text); 
+      Swal.fire({
+        html:text, width:'80%',
+        imageUrl:text,
+      }); 
       const data = {[t]:text};
       fireProblem.cubeDataUp(folder, roomName, T, data);
     }
@@ -288,7 +291,7 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
     const cubeData = fireSync.cubeSync(folder, roomName, T, t);
     const cube = cubeData ||'';
     const { value: text } = await Swal.fire({
-      input: 'url',
+      input: 'url', width:'80%',
       inputValue:cube,
       inputLabel:'링크를 입력해주세요.',
       showCancelButton: true

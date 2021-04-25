@@ -82,7 +82,7 @@ const [reports, setReports] = useState(report)
     }
   }
   }
-
+  // setselectNumbers([...selectNumbers,item.selectNum])
 
   return (
     <div className="idearow" > 
@@ -95,6 +95,8 @@ const [reports, setReports] = useState(report)
 
         {roomAdmin && !reports ? <IconButton style={{width:'20px', height:'15px'}} > <DeleteForever onClick={itemDel} style={{color:'white'}} /></IconButton>   
         :ipAPI === item.ip && !reports && <IconButton style={{width:'20px', height:'15px'}} > <DeleteForever onClick={itemDel} style={{color:'white'}} /></IconButton> }
+
+        {item.selectNum && <span>{item.selectNum}</span> }
 
         {!reports && roomAdmin ?
         <DropdownButton as={ButtonGroup} variant={item.color} title="구분" size="sm" >
@@ -128,6 +130,7 @@ const [reports, setReports] = useState(report)
         </div>
       </DropdownButton>
       }
+      
 
         { item.text2 || item.photoData ?
           <IconButton style={{width:'30px', height:'20px'}} >

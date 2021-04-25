@@ -20,6 +20,7 @@ import CollectionsIcon from '@material-ui/icons/Collections';
 import domtoimage from 'dom-to-image';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
+import { DropdownButton,Dropdown,ButtonGroup } from 'react-bootstrap';
 
 function Idea({ fireIdea, fireSync, user, userInfo ,setlogoName}) {
   const folder = "postit";
@@ -63,6 +64,14 @@ function Idea({ fireIdea, fireSync, user, userInfo ,setlogoName}) {
   const [items, setItems] = useState({});
   const today = new Date().toLocaleDateString();
   const [color, setColor] = useState('primary');
+  const [selectNum, setSelectNum] = useState('0');
+  const [selectNumbers, setselectNumbers] = useState([])
+
+  const idNum = [];
+  for(let i=0;i<31;i++){
+    idNum[i]=i;
+  }
+
   setlogoName(' 게시툴');
   
    //링크접속
@@ -245,7 +254,8 @@ return;
       roomUid : num,
       text:newRoom,
       text2:'',
-      host:'입장'
+      host:'입장',
+      selectNum:0
     }
     const abc = fireIdea.roomGetSave2(folder, newRoom, dataId, data,level)
     if(abc){adminEnter2(newRoom)}else{return}
@@ -490,6 +500,7 @@ const submit = (e) => {
             progress: 0,
             color : 'secondary',
             ip : ipAPI,
+            selectNum,
             photoData
           }
           fireIdea.itemSave2(folder, roomName, dataId, data)
@@ -585,28 +596,63 @@ const upLoad = (e) => { console.log('uplod')
           <input type="text" className="enterInput" placeholder="전달사항" ref={noticeRef} />
         </form>
       }
-        {/* <div className="noticeTitle" > 공지 </div> */}
-      <div className="s-header noticeHeader" ref={titleRef}>
+ 
+    {/* <div className="noticeTitle" > 공지 </div> */}
+    <div className="s-header noticeHeader" ref={titleRef}>
          {/* 접속자 카운트 */}
          <Badge badgeContent={items.enterMan||0} color="error" style={{width:'40px', paddingLeft:'10px',marginTop:'2px'}}>
-          <InsertEmoticon /> 
-        </Badge> 
+          <InsertEmoticon />  </Badge> 
         <div className="enterTitle" >{notice}</div>  
       </div>
+
+    {/* {roomName && 
+      <div style={{display:"flex",background:"var(--Bcolor)",height:"30px"}}>
+      { 
+      Object.values(selectNumbers).map((e,i) => {
+           return <button  onClick={()=>{setselectNumbers(e)}} 
+           style={{textAlign:"center", fontSize:"14px",padding:"0",fontWeight:"900"}}>{e}</button>
+       })
+      }
+    </div>
+    } */}
+
+   {roomName && 
+      <div style={{display:"flex",background:"var(--Bcolor)",height:"30px"}}>
+      { 
+      Object.values(items).map((e,i) => {
+           return <button  onClick={()=>{setselectNumbers(e.selectNum)}} 
+           style={{textAlign:"center", fontSize:"14px",padding:"0",fontWeight:"900"}}>{e.selectNum}</button>
+       })
+      }
+    </div>
+    }
 
 {/* 여기부터 todo스타일 */}
       <div className="ideas" >
         <div className="idea-items">
         {
           Object.keys(items).map((e) => {
-            return <Idearow key={e} ipAPI={ipAPI} user={user} fireSync={fireSync} roomAdmin={roomAdmin} item={items[e]} roomName={roomName} fireIdea={fireIdea} level={level} setColor={setColor} color={color} report={report} />
-          })
+            // setselectNumbers([...selectNumbers,items[e].selectNum]) 
+            if(selectNumbers===0){
+              return <Idearow key={e} ipAPI={ipAPI} user={user} setselectNumbers={setselectNumbers} selectNumbers={selectNumbers} fireSync={fireSync} roomAdmin={roomAdmin} item={items[e]} roomName={roomName} fireIdea={fireIdea} level={level} setColor={setColor} color={color} report={report} />
+            }else{
+            return  e>10&&selectNumbers===items[e].selectNum&&
+            <Idearow key={e} ipAPI={ipAPI} user={user}  fireSync={fireSync} roomAdmin={roomAdmin} item={items[e]} roomName={roomName} fireIdea={fireIdea} level={level} setColor={setColor} color={color} report={report} />
+          }})
         }
         </div>
         {/* {entering && */}
+        
         <div className="idea-input">
           <div onSubmit={submit} className="idea-form">
 
+         
+        <div className="idNumGroup">
+          <span className="num" style={{background:"var(--Dcolor)",padding:"0 5px",color:"white",fontWeight:"900"}}> 번호 </span> 
+          <select name="jobSelect" className="idNum" onChange={e=>{setSelectNum(e.currentTarget.value);}} >
+             { Object.values(idNum).map((e,i) => { return <option value={e}>{e}</option>})}
+          </select>
+        </div>
           <Tooltip arrow  placement="top" title="링크첨부"> 
             <button className="btnadd" style={{ outline: "none", border: "none" }} onClick={linkInsert} >
             <LinkIcon  /> {addLink?'첨부됨!':'링크추가'}</button>
@@ -626,7 +672,7 @@ const upLoad = (e) => { console.log('uplod')
           </Tooltip>
          
           <Tooltip arrow  placement="top" title="내용저장"> 
-            <button className="btnadd" style={{ outline: "none", border: "none",color:"white",fontSize:'16px' }} onClick={()=>{submit();}} >
+            <button className="btnadd" style={{ outline: "none", color:"white",fontSize:'16px' }} onClick={()=>{submit();}} >
               <span className="rocket" ref={rocketRef} style={{fontSize:"16px"}} >🚀</span>  저장</button>
           </Tooltip>
 
