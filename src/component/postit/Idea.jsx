@@ -65,7 +65,7 @@ function Idea({ fireIdea, fireSync, user, userInfo ,setlogoName}) {
   const today = new Date().toLocaleDateString();
   const [color, setColor] = useState('primary');
   const [selectNum, setSelectNum] = useState('0');
-  const [selectNumbers, setselectNumbers] = useState([])
+  const [selectNumbers, setselectNumbers] = useState(0)
 
   const idNum = [];
   for(let i=0;i<31;i++){
@@ -149,6 +149,13 @@ useEffect(() => {
 
   },[])
 
+//제출자료 소트
+const sortNumber = Object.values(items).map((e) => { return e.selectNum; })
+sortNumber.sort((a,b)=>{return a-b})
+const SortNums = sortNumber.filter(e=>e!==undefined) //undefined 제거 필터
+const filterSortNum = [...new Set(SortNums)] //중복제거 Set(배열)
+// console.log(sortNumber,filterSortNum)
+
 //   // 입장자 카운팅
 const manMinus = () => {
   let num = 0;
@@ -160,7 +167,7 @@ const manStart = (roomvalue) => {
 fireIdea.manUp(folder,roomvalue,{enterMan:1});
 return;
 }
-    
+
     //오른쪽 모달 핸들링
     const moveModal = () => {
       roomNameReset2();setEntering(false);
@@ -515,7 +522,7 @@ const upLoad = (e) => { console.log('uplod')
   
   const metaData = { contentType: mime.lookup(file.name) } ||''
   fireIdea.imgUpload( imgDataId, file, metaData, (e) => setPhotoData(e));
-  console.log(file.name,file,metaData)
+  // console.log(file.name,file,metaData)
 }
   return (
     <div className="idea" >       
@@ -556,7 +563,7 @@ const upLoad = (e) => { console.log('uplod')
 
       <div className="s-header" style={{display:'flex'}}>
         <div className="enterWrap" >
-          <button className="btnRoomLink" onClick={enterRoom} style={{width:"40px"}} >{door}</button>
+          <button className="btnRoomLink" onClick={enterRoom} style={{width:"40px",fontSize:"13px"}} >{door}</button>
           <input type="text" className="enterInput roomnum" placeholder="방번호" style={{width:'85px'}} ref={roomERef} />
         </div>
 
@@ -584,7 +591,7 @@ const upLoad = (e) => { console.log('uplod')
         }
         </div>
         {video&&
-          <button style={{width:'85px',cursor:"pointer"}}  className="btnRoomLink"  onClick={fire}>공유자료</button>          
+          <button style={{width:'85px',cursor:"pointer",fontSize:"13px"}}  className="btnRoomLink"  onClick={fire}>공유자료</button>          
         }
        </div>            
       {roomAdmin && 
@@ -595,34 +602,23 @@ const upLoad = (e) => { console.log('uplod')
  
     {/* <div className="noticeTitle" > 공지 </div> */}
     <div className="s-header noticeHeader" ref={titleRef}>
-         {/* 접속자 카운트 */}
-         <Badge badgeContent={items.enterMan||0} color="error" style={{width:'40px', paddingLeft:'10px',marginTop:'2px'}}>
+         {/* 접속자 카운트 */} 
+         <Badge badgeContent={items.enterMan||0} color="error" style={{width:'40px', paddingLeft:'10px'}}>
           <InsertEmoticon />  </Badge> 
         <div className="enterTitle" >{notice}</div>  
       </div>
 
-    {/* {roomName && 
-      <div style={{display:"flex",background:"var(--Bcolor)",height:"30px"}}>
-      { 
-      Object.values(selectNumbers).map((e,i) => {
-           return <button  onClick={()=>{setselectNumbers(e)}} 
-           style={{textAlign:"center", fontSize:"14px",padding:"0",fontWeight:"900"}}>{e}</button>
-       })
-      }
-    </div>
-    } */}
 
    {roomName && 
-      <div style={{display:"flex",background:"var(--Bcolor)",height:"30px"}}>
+      <div style={{display:"flex",background:"var(--Bcolor)",height:"25px"}}>
       { 
-      Object.values(items).map((e,i) => {
-           return <button  onClick={()=>{setselectNumbers(e.selectNum)}} 
-           style={{textAlign:"center", fontSize:"14px",padding:"0",fontWeight:"900"}}>{e.selectNum}</button>
-       })
-      }
-    </div>
+        Object.values(filterSortNum).map((e) => {
+             return <button className="btnRoomLink2" onClick={()=>{if(!roomAdmin){return};setselectNumbers(e)}}>{e}</button>
+         })
+        }
+      </div>
     }
-
+  
 {/* 여기부터 todo스타일 */}
       <div className="ideas" >
         <div className="idea-items">
@@ -643,9 +639,9 @@ const upLoad = (e) => { console.log('uplod')
           <div onSubmit={submit} className="idea-form">
 
          
-        <div className="idNumGroup">
-          <span className="num" style={{background:"var(--Dcolor)",padding:"0 5px",color:"white",fontWeight:"900"}}> 번호 </span> 
-          <select name="jobSelect" className="idNum" onChange={e=>{setSelectNum(e.currentTarget.value);}} >
+        <div className="idNumGroup" style={{width:"100px"}}>
+          <span className="num" style={{padding:"0 5px",color:"white",fontWeight:"900"}}> 번호 </span> 
+          <select name="jobSelect" className="idNum" onChange={e=>{setSelectNum(e.currentTarget.value);}} style={{background:"lightpink"}} >
              { Object.values(idNum).map((e,i) => { return <option value={e}>{e}</option>})}
           </select>
         </div>
@@ -672,7 +668,8 @@ const upLoad = (e) => { console.log('uplod')
               <span className="rocket" ref={rocketRef} style={{fontSize:"16px"}} >🚀</span>  저장</button>
           </Tooltip>
 
-            <input type="text"className="textarea titleText" ref={textRef} cols="20" rows="4"  minlength="4" size="10" style={{height:"80px",fontSize:"20px"}} placeholder="제목/내용을 입력해주세요."
+            <input type="text"className="textarea titleText" ref={textRef} cols="20" rows="4"  minlength="4" size="10" 
+            style={{height:"80px",fontSize:"20px"}} placeholder="제목/내용을 입력해주세요."
             // maxlength="20" 
             />
           </div>

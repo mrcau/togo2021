@@ -1,4 +1,5 @@
 
+
 .idea{
   height: 100%;
   display: flex;
@@ -25,6 +26,13 @@
   border: solid 1px !important;
 }
 .btnRoomLink:hover{
+  background: white !important;
+}
+.btnRoomLink2{
+  background: var(--Ccolor) !important;
+  padding: 0;
+}
+.btnRoomLink2:hover{
   background: white !important;
 }
 .moveDrawer{
@@ -259,7 +267,7 @@ position:absolute !important; left: 10px !important;}
 
 .idea-form{
   display: grid;
-  grid-template-columns: 140px 1fr 1fr 1fr 1fr;
+  grid-template-columns: 90px 1fr 1fr 1fr 1fr;
   border: none;
   outline: none;
   border-top: var(--Acolor) 1px solid;
