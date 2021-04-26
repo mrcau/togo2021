@@ -296,6 +296,9 @@ return;
     const roomMap = Object.keys(room);
     const roomNumber = roomMap[textRoom]
     const roomname = roomUid +roomNumber;
+    const dataId = Date.now();
+    const rommNameId = roomName+dataId;
+    
     setroomName(roomname);
     setLinkCopy('https://samtool.netlify.app/#/'+folder+'/'+roomname);  
     roomERef.current.value =roomname; 
@@ -308,12 +311,14 @@ return;
     f4: () => { setRoom({}) },
   }
 fireSync.dataSync(folder,roomname, cf2);
-fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
+fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname,rommNameId});
 }
 
 
   // 관리자 방입장2
   const adminEnter2 = (e) => {
+    const dataId = Date.now();
+    const rommNameId = roomName+dataId;
     setEntering(true);
     const roomname = e;
     setroomName(roomname);
@@ -328,7 +333,7 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
     f4: () => { setRoom({}) },
   }
 fireSync.dataSync(folder,roomname, cf2);
-fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
+fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname,rommNameId});
 }
 
     // input roomName 초기화
@@ -421,17 +426,17 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
 
     //리포트 저장
     const reportSave = () => { console.log(items,Object.values(items)[0])
-      // if (roomName!==roomERef.current.value||roomERef.current.value===''||report) { return }
       if(!roomName||!user||items.roomName.substr(0,roomSubstr) !== user.uid.substr(0,roomSubstr)){return}    
       if (!Object.values(items)[0]){Swal.fire('제목을 입력해주세요.'); return}
       else{   
-      // fireIdea.reportSave(folder, roomId, roomName, value).then(()=>{Swal.fire('저장완료')})
           Swal.fire({ title: '내용을 저장하겠습니까?', icon:'warning', showCancelButton: true})
           .then((result) => { if(result.isConfirmed){  
             const roomUid =  user.uid.substr(0,roomSubstr);
             const roomId = roomUid+'REPORT';
-            const value = items
-          fireIdea.reportSave(folder, roomId, roomName, value);
+            const value = items;
+            // const dataId = Date.now();
+            // const rommNameId = roomName+dataId
+          fireIdea.reportSave(folder, roomId, items.rommNameId, value);
           Swal.fire('저장되었습니다.');        
       }})
     }}
@@ -460,13 +465,13 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
       if(report&&items.roomName.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){ 
       Swal.fire({ 
         title: '토론방을 삭제하겠습니까?',
-        text:"삭제될 토론방 : "+items.roomName,
+        text:"삭제될 토론방 : "+items.rommNameId,
         icon:'warning',
         showCancelButton: true})
       .then((result) => { if(result.isConfirmed){ 
         const roomUid =   user.uid.substr(0,roomSubstr);
         const roomId = roomUid+'REPORT';
-        fireIdea.reportDel(folder,roomId,items.roomName);   
+        fireIdea.reportDel(folder,roomId,items.rommNameId);   
         Swal.fire('삭제되었습니다.');
         roomNameReset();
         setEntering(false); 
