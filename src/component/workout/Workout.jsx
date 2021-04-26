@@ -75,7 +75,7 @@ console.log(items)
     return `${100}°C`;
   }
   return (
-    <div className="workout">
+    <div className="samworkout">
       {today}
       <div className="workout-items">
         {
@@ -124,7 +124,7 @@ console.log(items)
                max={110}
              />
            </div>
-          <textarea className="textarea" ref={textRef} cols="30" rows="3" style={{resize: 'none'}} />
+          <textarea className="samtextarea" ref={textRef} cols="30" rows="3" style={{resize: 'none'}} />
         </form>
       </div>
     </div>

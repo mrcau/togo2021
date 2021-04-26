@@ -444,7 +444,7 @@ const dataDel = () => {
 } 
 
   return (
-    <div className="solving" >     
+    <div className="samtoolsolving" >     
     <div className="drawer" ref={drawerRef}>
     {rightModal && 
      <ProblemReport setLinkCopy={setLinkCopy} fireSync={fireSync} user={user} folder={folder} setroomName={setroomName} roomRowReset={roomRowReset}

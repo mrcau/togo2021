@@ -41,7 +41,7 @@ function Mypage({fireApp,user,userInfo,setlogoName}) {
     };
   }
   return (
-    <div className="mypage">      
+    <div className="samtoolmypage">      
       {/* <div className="mypageTop"><div className="logo"/>My page</div> */}
       <h3 style={{textAlign:"center",fontWeight:"900"}}>- 기본정보 -</h3>
       <div className="basicInfo">

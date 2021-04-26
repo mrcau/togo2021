@@ -1,4 +1,4 @@
-.leftMenu{
+.samtoolleftMenu{
   display: flex;
   align-items: center;
   flex-direction: column; 
@@ -18,19 +18,19 @@
   border-radius: 2px;  
 }
 
-.imgBg{
+.samtoolleftMenu .imgBg{
   height:120px;
   width:120px;
   border-radius:50%;
   background-position: center;
   background-size: cover;
 }
-.btnlink{
+.samtoolleftMenu .btnlink{
   height: 25px;
   border-radius: 5px;
   margin-bottom: 10px;
 }
-.accordion{
+.samtoolleftMenu .accordion{
   height:40px;
   width: 100%;
   padding:10px !important;
@@ -38,35 +38,35 @@
   text-align: left;
   color:var(--Acolor);
 }
-.Amenu {
+.samtoolleftMenu .Amenu {
   padding-left: 30px !important;
   text-align: left;
   font-size: 15px;
 }
-.Amenu:hover{
+.samtoolleftMenu .Amenu:hover{
   color:var(--Bcolor);
   font-weight: 900;
   background: var(--Acolor);
 }
-.Bmenu {
+.samtoolleftMenu .Bmenu {
   padding-left: 20px !important;
   text-align: left;
   color:var(--Acolor) !important;
   height:30px;
   font-size: 14px;
 }
-.myMenu{
+.samtoolleftMenu .myMenu{
   /* height:20px !important; */
   padding: 30 !important;
 }
-.btnLogout{
+.samtoolleftMenu .btnLogout{
   /* padding:0 10px !important; */
   margin: auto ;
   height:25px;
   width:90% !important;
   border-radius: 3px;
 }
-.menuTitle{
+.samtoolleftMenu .menuTitle{
   height:25px;
   background: var(--Acolor);
   width:90% ;
@@ -77,14 +77,14 @@
   line-height: 25px;
 }
 
-.dropItem{
+.samtoolleftMenu .dropItem{
   padding:0 !important;
 }
-.a{
+.samtoolleftMenu .a{
   display: flex;
 }
 
-.icon{
+.samtoolleftMenu .samtoolicon{
   width: 150px;
   height: 21px;
   text-align: left;
@@ -95,7 +95,7 @@
   margin-left: 3px;
   background-position: left bottom;
 }
-.icon::after{
+.samtoolleftMenu .samtoolicon::after{
   content: '';
   width: 30px;
   height:21px;
@@ -107,6 +107,6 @@
   background-position: left 21px;
   transition: all 400ms;
 }
-.icon:hover::after{
+.samtoolleftMenu .samtoolicon:hover::after{
   background-position: left 0;
 }

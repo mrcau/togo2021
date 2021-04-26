@@ -18,7 +18,7 @@
   padding-bottom: 30px;
   transform:rotate(0.03deg);
 }
-.auth form{
+.loginModal .auth form{
   display: flex;
   flex-direction: column;
   width:100%;
@@ -29,29 +29,29 @@
   margin-bottom: 2px;
   padding:0;
 }
-.formGroup{
+.loginModal .formGroup{
   color:var(--Acolor);
   display : flex;
   align-items: center;
   width:100%;
 }
-.formLabel{
+.loginModal .formLabel{
   height:30px;
   width:50px;
   line-height: 30px;
   margin:auto;
 }
-.formInput{
+.loginModal .formInput{
   flex:auto;
 }
-.auth button{
+.loginModal .auth button{
   background:var(--Acolor);
   border: none;
 }
-.auth button:hover{
+.loginModal .auth button:hover{
   background:var(--Bcolor);
 }
-.btnGoogle{
+.loginModal .btnGoogle{
   background-color: white;
   padding:0;
   width: 40px;
@@ -60,18 +60,18 @@
   font-size: 40px;
   color:var(--Acolor);
 }
-.btnGoogle:hover{
+.loginModal .btnGoogle:hover{
   color:var(--Bcolor);
 }
-.btnGoogle:active{
+.loginModal .btnGoogle:active{
   border: none;
   outline: none;
 }
-.btnRegister{
+.loginModal .btnRegister{
   color: var(--Acolor);
   text-align: left;
   height: 50px;
 }
-.btnRegister:hover{
+.loginModal .btnRegister:hover{
   color:var(--Bcolor);
 }

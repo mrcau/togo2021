@@ -1,4 +1,4 @@
-import './problemReport.css';
+// import './problemReport.css';
 import React, { memo, useEffect, useState } from 'react';
 import { DataGrid } from '@material-ui/data-grid';
 

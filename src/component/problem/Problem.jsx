@@ -537,7 +537,7 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
 //  console.log(report)
 //titleRef.current.classList.add("noticeFly");
   return (
-    <div className="problem" >     
+    <div className="samtoolproblem" >     
 
     <div className="drawer" ref={drawerRef}>
     {rightModal && 
@@ -566,7 +566,7 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
       }
 
       {roomAdmin &&
-        <div className="adimBar">       
+        <div className="samtoolAdminbar">       
          <div className="enterNumber" style={{fontSize:'small'}}>
            {see && room && Object.keys(room).map((e,i) => e.length>3 &&
              <button key={e} className="btnRoom" onClick={adminEnter} >{i}</button>) 
@@ -619,7 +619,7 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
       </div>
    
       {roomAdmin && 
-        <form className="adimBar"  onSubmit={noticeUp} >
+        <form className="samtoolAdminbar"  onSubmit={noticeUp} >
           <input type="text" className="enterInput" placeholder="전달사항" ref={noticeRef} />
         </form>
       }
@@ -635,17 +635,17 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
         <form className="s-items" ref={formRef} >         
           <div className="inputBox" >
             <div className="s-itemTitle" style={{width:"100%"}}>5WHY질문</div>
-            <textarea cols="30" rows="1" className="problemInput input1" ref={aTitle} style={{padding:"3px",background:"lightpink"}}
+            <textarea cols="30" rows="1" className="problemInput saminput1" ref={aTitle} style={{padding:"3px",background:"lightpink"}}
             onChange={onSubmit} value={data.aTitle} placeholder="처음문제 : 해결하려고 하는 문제는?" />
-            <textarea cols="30" rows="1" className="problemInput input2" ref={bName} 
+            <textarea cols="30" rows="1" className="problemInput saminput2" ref={bName} 
             onChange={onSubmit} value={data.bName} placeholder={placeData.why1} />
-            <textarea cols="30" rows="1" className="problemInput input3" ref={input3} 
+            <textarea cols="30" rows="1" className="problemInput saminput3" ref={input3} 
             onChange={onSubmit} value={data.input3} placeholder={placeData.why2} />            
-            <textarea cols="30" rows="1" className="problemInput input4" ref={input4} 
+            <textarea cols="30" rows="1" className="problemInput saminput4" ref={input4} 
             onChange={onSubmit} value={data.input4} placeholder={placeData.why3} />
-            <textarea cols="30" rows="1" className="problemInput input5 " ref={input5} 
+            <textarea cols="30" rows="1" className="problemInput saminput5 " ref={input5} 
             onChange={onSubmit} value={data.input5} placeholder={placeData.why4} />
-            <textarea cols="30" rows="1" className="problemInput input6" ref={input6} 
+            <textarea cols="30" rows="1" className="problemInput saminput6" ref={input6} 
             onChange={onSubmit} value={data.input6} placeholder={placeData.why5} />            
           </div>   
           
@@ -658,7 +658,7 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
               </Badge>            
             </IconButton> }
             </div>
-            <textarea  className="s-intemInput input1" cols="30" rows="2" placeholder={placeData.text1} 
+            <textarea  className="s-intemInput saminput1" cols="30" rows="2" placeholder={placeData.text1} 
             ref={problemS}  onChange={onSubmit} value={data.scamS} />
           </div>
 
@@ -671,7 +671,7 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
               </Badge>
             </IconButton>} 
             </div>
-            <textarea  className="s-intemInput input1" cols="30" rows="2" placeholder={placeData.text2} 
+            <textarea  className="s-intemInput saminput1" cols="30" rows="2" placeholder={placeData.text2} 
             ref={problemC} onChange={onSubmit} value={data.scamC} />
           </div>
         
@@ -684,7 +684,7 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
               </Badge>
             </IconButton>} 
             </div>
-            <textarea  className="s-intemInput input1" cols="30" rows="2" placeholder={placeData.text3} 
+            <textarea  className="s-intemInput saminput1" cols="30" rows="2" placeholder={placeData.text3} 
             ref={problemA} onChange={onSubmit} value={data.scamA} />
           </div>
 
@@ -697,14 +697,14 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
               </Badge>
             </IconButton>} 
             </div>
-            <textarea  className="s-intemInput input1" cols="30" rows="2" placeholder={placeData.text4} 
+            <textarea  className="s-intemInput saminput1" cols="30" rows="2" placeholder={placeData.text4} 
             ref={problemM} onChange={onSubmit} value={data.scamM} />
           </div>
 
           
           <div className="s-item">
             <div className="s-itemTitle">문제정의</div>
-            <textarea  className="s-intemInput input1" cols="30" rows="2" placeholder="최종문제 : 5why질문/관찰/공감을 통해 찾게된 최종 문제는?" 
+            <textarea  className="s-intemInput saminput1" cols="30" rows="2" placeholder="최종문제 : 5why질문/관찰/공감을 통해 찾게된 최종 문제는?" 
             ref={problemP} onChange={onSubmit} value={data.scamP} style={{background:"lightpink"}} />
           </div>
 

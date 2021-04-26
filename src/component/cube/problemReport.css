@@ -1,5 +1,5 @@
 
-.reportMenu{
+.samtoolreportMenu{
   width: 75vw; 
   padding:  10px 10px 10px 25px; 
   height: 100%;
@@ -13,7 +13,7 @@
   text-align: center;
   width: 90vw !important;
 }
-.row{
+.samtoolrow{
   cursor: pointer;
   }
   .MuiDataGrid-root{

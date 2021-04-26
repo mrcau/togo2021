@@ -489,7 +489,7 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
 //  console.log(report)
 //titleRef.current.classList.add("noticeFly");
   return (
-    <div className="problem" >     
+    <div className="samtoolstartUp" >     
 
     <div className="drawer" ref={drawerRef}>
     {rightModal && 
@@ -701,29 +701,6 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
             <textarea  className="s-intemInput input1" cols="30" rows="2" placeholder={placeData.text9} 
             ref={text9} onChange={onSubmit} value={data.text9} />
           </div>
-
-          {/* <div className="inputBox" >
-            <div className="s-itemTitle" style={{width:"100%"}}>{placeData.title10}</div>
-            <textarea cols="30" rows="1" className="problemInput input1" ref={writer} 
-            onChange={onSubmit} value={data.writer} placeholder={placeData.writer} />
-            <textarea cols="30" rows="1" className="problemInput input2" ref={text10} 
-            onChange={onSubmit} value={data.text10} placeholder={placeData.text10} />
-            <textarea cols="30" rows="1" className="problemInput input3" ref={text11} 
-            onChange={onSubmit} value={data.text11} placeholder={placeData.text11} />            
-            <textarea cols="30" rows="1" className="problemInput input4" ref={text12} 
-            onChange={onSubmit} value={data.text12} placeholder={placeData.text12} />
-            <textarea cols="30" rows="1" className="problemInput input5 " ref={text13} 
-            onChange={onSubmit} value={data.text13} placeholder={placeData.text13} />       
-            <input type="button" className="problemInput btn" onClick={btnInput} value="저장"/>
-          </div> */}
-          
-          {/* <div className="s-item">
-            <div className="s-itemTitle">문제정의</div>
-            <textarea  className="s-intemInput input1" cols="30" rows="2" placeholder="해결하고자 하는 최종 문제는?" 
-            ref={problemP} onChange={onSubmit} value={data.scamP} />
-            <input type="button" className="problemInput btn" onClick={btnInput} value="저장"/>
-          </div> */}
-
         </form>
       </div>
   );

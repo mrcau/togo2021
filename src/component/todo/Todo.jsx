@@ -61,7 +61,7 @@ function Todo({ fireTodo, user, userName, setlogoName }) {
   }
 
   return (
-    <div className="todo">
+    <div className="samtooltodo">
       <div className="todo-items">
         {
           Object.keys(items).map((e) => {

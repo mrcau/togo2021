@@ -1,6 +1,6 @@
 
 
-.idea{
+.samtoolidea{
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -130,7 +130,7 @@ flex:auto; font-size: small;}
   font-size: 12px;
   line-height: 15px;
 }
-
+/* 
 .problemInput.input2, .input3, .input4, .input5, .input6 {
   flex: auto;
 }
@@ -138,9 +138,9 @@ flex:auto; font-size: small;}
   border-top: 1px dashed;
   border-bottom: 1px dashed;
 }
-/* .problemInput.input3, .input5, .input6{
+.problemInput.input3, .input5, .input6{
   resize:vertical;
-} */
+}
 
 .problemInput.btn{
   padding: 0;
@@ -156,9 +156,9 @@ flex:auto; font-size: small;}
 .problemInput.btn:active{
   color: var(--Bcolor);
   background: var(--Acolor);
-}
+} */
 
-.adimBar{
+.samtooladimBar{
   display: flex ;
   justify-content: space-between;
   background: var(--Ccolor);
@@ -218,9 +218,9 @@ position:absolute !important; left: 10px !important;}
 .noticeFly{
   animation: noticeFly 1000ms ;
 }
-.problem span{
+/* .problem span{
   font-size: 14px; font-weight: 900;
-}
+} */
 .voicechat{
   width:100px; display: flex; justify-content: flex-end;
 }
@@ -231,15 +231,15 @@ position:absolute !important; left: 10px !important;}
 }
 
 /* 여기서부터 todo 스타일 */
-.idea ::-webkit-scrollbar {
+.samtoolidea ::-webkit-scrollbar {
   width: 4px;
 }
-.idea ::-webkit-scrollbar-thumb {
+.samtoolidea ::-webkit-scrollbar-thumb {
   width: thin;
   background-color: var(--Acolor);
   border-radius: 2px;  
 }
-.ideas {
+.samtoolideas {
   height: 100%;
   width:100%;
   display: flex ;
@@ -261,9 +261,9 @@ position:absolute !important; left: 10px !important;}
   overflow-y:auto ;
 }
 
-.cardBody{
+/* .cardBody{
   padding:5px;
-}
+} */
 
 .idea-form{
   display: grid;
@@ -273,7 +273,7 @@ position:absolute !important; left: 10px !important;}
   border-top: var(--Acolor) 1px solid;
   background: var(--Acolor);
 }
-.idea .btnadd {
+.samtoolidea .samtoolbtnadd {
   background: var(--Acolor);
   color: var(--Bcolor);
   border: none;
@@ -281,21 +281,21 @@ position:absolute !important; left: 10px !important;}
   font-weight: 900;
   font-size: small;
 }
-.idea .rocket {
+.samtoolidea .rocket {
   display: inline-block;
   border: none;
   outline: none;
 }
-.idea .rocketOn {
+.samtoolidea .rocketOn {
   animation: skyon 1000ms;
 }
-.idea .input{
+.samtoolidea .input{
   border: none;
   outline: none;
   padding: 0;
   margin: 0;
 }
-.idea .inputTitle {
+.samtoolidea .inputTitle {
   width: 100%;
   font-size: 1rem;
   padding: 2px;
@@ -304,7 +304,7 @@ position:absolute !important; left: 10px !important;}
   border-bottom: 1px dashed var(--Acolor);
   /* text-align: center; */
 }
-.idea .textarea {
+.samtoolidea .textarea {
   grid-column: 1/6;
   max-width: 100%;
   min-width: 100%;
@@ -321,10 +321,10 @@ position:absolute !important; left: 10px !important;}
 .idea-input, .s-item{
   border: solid 1px var(--Acolor);
 }
-.btnadd:hover{
+.samtoolbtnadd:hover{
   background: var(--Dcolor);
 }
-.btnadd:active{
+.samtoolbtnadd:active{
   background: var(--Acolor);
 }
 @keyframes skyon {

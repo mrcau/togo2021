@@ -30,9 +30,9 @@ const rows = Object.values(data2).map((e,i) => {
   })
 
   return (
-    <div className="reportMenu"  >
+    <div className="samtoolreportMenu"  >
      큐브툴
-     <DataGrid  scrollbarSize={10} className="row"  rows={rows} columns={columns} pageSize={10} 
+     <DataGrid  scrollbarSize={10} className="samtoolrow"  rows={rows} columns={columns} pageSize={10} 
      autoHeight rowHeight={25} headerHeight={25}  disableColumnMenu 
      onRowSelected={(p)=>{ setdata({...p.data}); setroomName(p.data.dataId);
   setLinkCopy('https://samtool.netlify.app/#/'+folder+'/'+p.data.dataId+'re');  }}

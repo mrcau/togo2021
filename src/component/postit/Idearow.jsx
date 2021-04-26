@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-no-target-blank */
-import './idearow.css';
+// import './idearow.css';
 import React, { memo, useState } from 'react';
 import Swal from 'sweetalert2';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
@@ -91,7 +91,7 @@ const [reports, setReports] = useState(report)
       {item.roomUid 
       ? <Card.Header style={{fontSize:"large",fontWeight:"900",textAlign:"center"}}>제목</Card.Header>
       :
-      <Card.Header style={{display:'flex',justifyContent:"space-between" ,padding:'5px'}} >
+      <Card.Header style={{display:'flex',justifyContent:"space-between" ,padding:'1px'}} >
 
         {roomAdmin && !reports ? <IconButton style={{width:'20px', height:'15px'}} > <DeleteForever onClick={itemDel} style={{color:'white'}} /></IconButton>   
         :ipAPI === item.ip && !reports && <IconButton style={{width:'20px', height:'15px'}} > <DeleteForever onClick={itemDel} style={{color:'white'}} /></IconButton> }
@@ -133,12 +133,12 @@ const [reports, setReports] = useState(report)
       
 
         { item.text2 || item.photoData ?  item.color !=='success' &&
-          <IconButton style={{width:'30px', height:'20px'}} >
+          <IconButton style={{width:'25px', height:'20px'}} >
           <VisibilityIcon style={{color:'white'}} size="small" onClick={fire} /> 
           </IconButton> : <p/>
         }
         {item.title && 
-        <IconButton style={{width:'30px', height:'20px'}} >
+        <IconButton style={{width:'25px', height:'20px'}} >
            <a className="iconLink" href={item.title} target="_blank">
                <LinkIcon />
            </a>

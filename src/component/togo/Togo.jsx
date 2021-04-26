@@ -24,8 +24,8 @@ function Togo({ fireApp, user, userInfo, setlogoName, photo }) {
   const history = useHistory()  ;
   console.log('user', user,'userInfo', userInfo)
   return (
-    <div className="togo" style={{paddingBottom:"10px"}}>      
-        <div className="jumbo"> <div className="mainlogo"/>  </div>
+    <div className="samtooltogo" style={{paddingBottom:"10px"}}>      
+        <div className="samtooljumbo"> <div className="mainlogo"/>  </div>
         {user.uid &&  <div className="ppp" >나의 메뉴</div> }
         {user.uid && 
         <div className="togoMain1">  
@@ -96,7 +96,7 @@ function Togo({ fireApp, user, userInfo, setlogoName, photo }) {
         </div>
 
         <div className="togoTop" style={{display:"flex"}} > 
-          <div className="jumbo2" >
+          <div className="samjumbo2" >
             <div className="h1" style={{textAlign:"center"}}> Let's create ideas and challenges </div>
           </div> 
         </div>

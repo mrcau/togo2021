@@ -27,7 +27,7 @@ function  Itemrow ({item,fireTodo,todayId}) {
       fireTodo.itemUp(folder,item.uid,item.dataId,{color:p})
   }
   return (
-    <div className="itemrow">      
+    <div className="samtoolitemrow">      
       <Card bg={itemSet[0].color} text={'white'} style={{ width: '100%', height:'120px'}} className="mb-2" >      
         <Card.Header style={{display:'flex',justifyContent:"space-between",padding:'2px',height:'30px'}} >
           <div>

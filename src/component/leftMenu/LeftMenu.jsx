@@ -16,7 +16,7 @@ const upLoad = (e) => {
 const level = userInfo.level || 0;
 const history = useHistory();
   return (
-    <div className="leftMenu">
+    <div className="samtoolleftMenu">
 
       {/* <button className="btnLogout" onClick={() => history.push('/price')} style={{marginBottom:"10px"}} > 업그레이드 </button> */}
       {photo 
@@ -31,31 +31,31 @@ const history = useHistory();
       {user.uid && 
         <div style={{width:'100%',padding:"0"}}>
           <button className="btnLogout" onClick={logout} style={{marginLeft:"10px"}} > LOGOUT </button>
-          <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/mypage"><div className="icon">MyPage </div></Link> </div>
-          <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/mytool"><div className="icon">ToolBox </div></Link></div>
-          {/* <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/todo"><div className="icon"> 나의 할일들 </div></Link></div> */}
+          <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/mypage"><div className="samtoolicon">MyPage </div></Link> </div>
+          <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/mytool"><div className="samtoolicon">ToolBox </div></Link></div>
+          {/* <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/todo"><div className="samtoolicon"> 나의 할일들 </div></Link></div> */}
           {level>9 &&
-          <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/workout"><div className="icon">Workout </div></Link></div>
+          <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/workout"><div className="samtoolicon">Workout </div></Link></div>
           }
           {/* {level>0 &&
-          <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/opentool"><div className="icon"> 오픈 툴박스 </div></Link></div>
+          <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/opentool"><div className="samtoolicon"> 오픈 툴박스 </div></Link></div>
           } */}
           {level>5 &&
-          <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/atable"><div className="icon"> 회원관리 </div></Link></div>
+          <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/atable"><div className="samtoolicon"> 회원관리 </div></Link></div>
           }
         </div>
       }
       <hr style={{width:'90%',border:'dashed 1px gray'}} />    
       <div style={{width:'100%',padding:"0"}}>
         <div className="menuTitle"  > 협업도구 </div>
-        <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/postit/:id"><div className="icon">게시툴</div></Link> </div>
+        <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/postit/:id"><div className="samtoolicon">게시툴</div></Link> </div>
         {userInfo&&userInfo.level>9&&
-        <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/solving/:id"><div className="icon">코딩툴</div></Link></div>
+        <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/solving/:id"><div className="samtoolicon">코딩툴</div></Link></div>
         }
         {userInfo&&userInfo.level>9&&
-        <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/cube/:id"><div className="icon">큐브툴</div></Link> </div>
+        <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/cube/:id"><div className="samtoolicon">큐브툴</div></Link> </div>
         }
-        <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/opentool"><div className="icon">공유툴</div></Link></div>
+        <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/opentool"><div className="samtoolicon">공유툴</div></Link></div>
       </div>  
 
       <hr style={{width:'90%',border:'dashed 1px gray'}} />    

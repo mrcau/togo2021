@@ -1,11 +1,11 @@
 
-.datastudy{
-  /* height: 90%; */
+.samtooldatastudy{  
+  height: 100%;
   display: flex;
   flex-direction: column;
 }
 /* 서랍열고닫기 */
-.drawer{
+.samtooldrawer{
   width:74vw;
   background:white;
   position: fixed;
@@ -148,7 +148,7 @@ flex:auto; font-size: small;}
   background: var(--Acolor);
 }
 
-.adimBar{
+.samtooladimBar{
   display: flex ;
   justify-content: space-between;
   background: var(--Ccolor);
@@ -218,7 +218,7 @@ position:absolute !important; left: 10px !important;}
 }
 
 /* 만다라트 */
-.mandarat {
+.samtoolmandarat {
   padding: 2px;
   flex: auto;
   background: lightgray;
@@ -227,7 +227,7 @@ position:absolute !important; left: 10px !important;}
   align-items: center;
   /* perspective: 600px; */
 }
-.box, .items {
+.samtoolbox, .samtoolitems {
   transition: all 200ms;
   height: 100%;
   width: 100%;
@@ -235,11 +235,11 @@ position:absolute !important; left: 10px !important;}
   grid-gap: 3px ;
   grid-template-columns: 1fr 1fr 1fr;
 }
-.items { 
+.samtoolitems { 
   background: gray;
   border:solid 2px black;
 }
-.item { 
+.samtoolitem { 
   display: flex;
   flex-direction: column;
   color:white;  
@@ -248,7 +248,7 @@ position:absolute !important; left: 10px !important;}
   line-height: 16px;
 }
 .eye{ flex: auto; height: 50%; background: none;}
-.itemArea.btnArea{
+.samtoolitemArea.btnArea{
   flex: auto;
   background: none;
   color:white;
@@ -256,18 +256,18 @@ position:absolute !important; left: 10px !important;}
   outline: none;
   text-align: center;
 }
-.item5 { 
+.samtoolitem5 { 
   background: #ffffff;
   color:var(--Acolor);
   font-weight: 900;  
 }
-.itemArea.area{
+.samtoolitemArea.samtoolarea{
   font-weight: 900;
   color: var(--Acolor);
 }
-.items5 { border:none; background:none;}
-.itemArea.area5{font-weight: 900; line-height: normal; }
-.itemArea{ line-height: normal;
+.samtoolitems5 { border:none; background:none;}
+.samtoolitemArea.area5{font-weight: 900; line-height: normal; }
+.samtoolitemArea{ line-height: normal;
   width:100%; height:100%;resize: none;
   color: var(--Acolor);
   padding: 3px;
@@ -275,11 +275,11 @@ position:absolute !important; left: 10px !important;}
   text-align: center !important;
   
 }
-.area1, .area2, .area3, .area4,.area6,.area7,.area8,.area9,.area {  
+.samtoolarea1, .samtoolarea2, .samtoolarea3, .samtoolarea4,.samtoolarea6,.samtoolarea7,.samtoolarea8,.samtoolarea9,.samtoolarea {  
   font-size: 14px;  font-weight: 900;
 
 }
-.area5{
+.samtoolarea5{
   color:white;
   background-color: var(--Acolor);
   font-size: 16px;
@@ -288,22 +288,22 @@ position:absolute !important; left: 10px !important;}
 }
 /* .item:hover { background: rgba(0, 0, 255, 0.2);}
 .item:active { background: rgba(255, 0, 0, 0.5);} */
-.items5 .item1{ background:white;border:solid 3px #dc3545;}
-.items5 .item2{ background:white;border:solid 3px #ffc107;}
-.items5 .item3{ background:white;border:solid 3px #28a745;}
-.items5 .item4{ background:white;border:solid 3px #007bff;}
-.items5 .item5{ background:black;}
-.items5 .item6{ background:white;border:solid 3px #17a2b8;}
-.items5 .item7{ background:white;border:solid 3px #7b7de7;}
-.items5 .item8{ background:white;border:solid 3px #6c757d;}
-.items5 .item9{ background:white;border:solid 3px #343a40;}
+.samtoolitems5 .samtoolitem1{ background:white;border:solid 3px #dc3545;}
+.samtoolitems5 .samtoolitem2{ background:white;border:solid 3px #ffc107;}
+.samtoolitems5 .samtoolitem3{ background:white;border:solid 3px #28a745;}
+.samtoolitems5 .samtoolitem4{ background:white;border:solid 3px #007bff;}
+.samtoolitems5 .samtoolitem5{ background:black;}
+.samtoolitems5 .samtoolitem6{ background:white;border:solid 3px #17a2b8;}
+.samtoolitems5 .samtoolitem7{ background:white;border:solid 3px #7b7de7;}
+.samtoolitems5 .samtoolitem8{ background:white;border:solid 3px #6c757d;}
+.samtoolitems5 .samtoolitem9{ background:white;border:solid 3px #343a40;}
 
-.items1 { background: #dc3545;}
-.items2 { background: #ffc107;}
-.items3 { background: #28a745;}
-.items4 { background: #007bff;}
-.items5 { background: #ffffff;}
-.items6 { background: #17a2b8;}
-.items7 { background: #7b7de7;}
-.items8 { background: #6c757d;}
-.items9 { background: #343a40;}
+.samtoolitems1 { background: #dc3545;}
+.samtoolitems2 { background: #ffc107;}
+.samtoolitems3 { background: #28a745;}
+.samtoolitems4 { background: #007bff;}
+.samtoolitems5 { background: #ffffff;}
+.samtoolitems6 { background: #17a2b8;}
+.samtoolitems7 { background: #7b7de7;}
+.samtoolitems8 { background: #6c757d;}
+.samtoolitems9 { background: #343a40;}

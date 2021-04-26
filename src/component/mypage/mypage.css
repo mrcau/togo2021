@@ -1,10 +1,10 @@
-.mypage {
+.samtoolmypage {
   background: var(--Ecolor);
   padding: 10px;
   height: 100%;
   font-size: large;
 }
-.basicInfo{
+.samtoolmypage .basicInfo{
   background: white;
   padding: 10px;
   /* width:50%; */
@@ -13,13 +13,13 @@
   border: solid 2px black !important;
 
 }
-.mypageForm{
+.samtoolmypage .mypageForm{
   display: flex;
   flex-direction: column;
   width: 80%;
   margin: auto;
 }
-.mypageInput{
+.samtoolmypage .mypageInput{
   width: 90%;
   border-top: none;
   background: none;
@@ -30,24 +30,24 @@
   font-size: 25px;
   outline: none;
 }
-.mypageList{
+.samtoolmypage .mypageList{
   margin: 20px 0 0 0 !important;
 }
-.mypageTitle{
+.samtoolmypage .mypageTitle{
   font-size: large;
   font-weight: 900;
   border: none;
   width: 50%;
 }
 
-.jobdropDown{
+.samtoolmypage .jobdropDown{
   font-size: large;
   font-weight: 900;
   border: none;
   width: 100px;
   /* margin: 0 30px; */
 }
-.mypagejob{
+.samtoolmypage .mypagejob{
   background: white;
   border: 1px solid;
   border-top: none;
@@ -58,7 +58,7 @@
   font-size: 25px;
 }
 
-.mypage .mypageTop{
+.samtoolmypage .mypageTop{
   display: flex;
   justify-content: center;
   padding: 10px;
@@ -66,7 +66,7 @@
   font-weight: 900;
   color: var(--Acolor);
 }
-.mypage .logo{
+.samtoolmypage .logo{
   width:10vw;
   height:10vw;
   max-width: 80px;
@@ -80,6 +80,6 @@
   font-weight:900;
   color:var(--Dcolor)
 }
-.job{
+.samtoolmypage .job{
   margin:0 40px;
 }

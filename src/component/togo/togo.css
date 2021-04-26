@@ -1,8 +1,8 @@
-.togo{
+.samtooltogo{
   display: flex;
   flex-direction: column;
 }
-.jumbo{
+.samtooljumbo{
   display: flex; 
    flex-direction: column;
   align-items: center;
@@ -15,7 +15,7 @@
   padding: 0;
   flex: 1;
 }
-.jumbo2{
+.samjumbo2{
   display: flex;
   flex-direction: column;
   justify-content:center;
@@ -26,7 +26,7 @@
   background: url('./mainBack.png') right/contain no-repeat;
 }
 
-.jumbo2 .h1{
+.samjumbo2 .h1{
   font-weight: 900;
   color: var(--Acolor);
   border-radius: 5px;
@@ -42,13 +42,13 @@
   height:120px;
   /* margin: auto; */
 }
-.togo .pp {
+.samtooltogo .pp {
   font-size: 1.6rem;
   padding: 20px 0 10px 0;
   color: var(--Acolor);
   font-weight: 900;
 }
-.togo .ppp {
+.samtooltogo .ppp {
   font-size: 1.3rem;
   color: var(--Acolor);
   font-weight: 900;
@@ -102,7 +102,7 @@
   /* box-shadow: 2px 4px 11px -2px rgba(69,69,69,1); */
 }
 
-.togo Button {
+.samtooltogo Button {
   height: 30px;
 }
 

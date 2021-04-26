@@ -525,7 +525,7 @@ const upLoad = (e) => { console.log('uplod')
   // console.log(file.name,file,metaData)
 }
   return (
-    <div className="idea" >       
+    <div className="samtoolidea" >       
     <div className="drawer" ref={drawerRef}>
     {rightModal && 
      <ProblemReport setLinkCopy={setLinkCopy} fireSync={fireSync} user={user} folder={folder} setroomName={setroomName} roomRowReset={roomRowReset}
@@ -552,7 +552,7 @@ const upLoad = (e) => { console.log('uplod')
       }
 
       {roomAdmin &&
-        <div className="adimBar">
+        <div className="samtooladimBar">
           <div className="enterNumber" style={{fontSize:'small'}}>
             {see && room && Object.keys(room).map((e,i) => e.length>3 &&
               <button key={e} className="btnRoom" onClick={adminEnter} >{i}</button>) 
@@ -595,7 +595,7 @@ const upLoad = (e) => { console.log('uplod')
         }
        </div>            
       {roomAdmin && 
-        <form className="adimBar"  onSubmit={noticeUp} >
+        <form className="samtooladimBar"  onSubmit={noticeUp} >
           <input type="text" className="enterInput" placeholder="전달사항" ref={noticeRef} />
         </form>
       }
@@ -620,7 +620,7 @@ const upLoad = (e) => { console.log('uplod')
     }
   
 {/* 여기부터 todo스타일 */}
-      <div className="ideas" >
+      <div className="samtoolideas" >
         <div className="idea-items">
         {
           Object.keys(items).map((e) => {
@@ -646,25 +646,27 @@ const upLoad = (e) => { console.log('uplod')
           </select>
         </div>
           <Tooltip arrow  placement="top" title="링크첨부"> 
-            <button className="btnadd" style={{ outline: "none", border: "none" }} onClick={linkInsert} >
+            <button className="samtoolbtnadd" style={{ outline: "none", border: "none" }} onClick={linkInsert} >
             <LinkIcon  /> {addLink?'첨부됨!':'링크추가'}</button>
           </Tooltip>
           
           <Tooltip arrow  placement="top" title="추가내용 첨부"> 
-            <button className="btnadd" style={{ outline: "none", border: "none" }} onClick={contentInsert}>
+            <button className="samtoolbtnadd" style={{ outline: "none", border: "none" }} onClick={contentInsert}>
               <VisibilityIcon/> {addCon?'첨부됨!':'내용추가'}</button>
           </Tooltip>
           
-          {roomName && <input accept="image/*" style={{ display: 'none' }} id="imgData" type="file" onChange={upLoad} /> }
-          <Tooltip arrow className="btnadd" placement="top" title="사진첨부"> 
+          {roomName && 
+          <input accept="image/*" style={{ display: 'none' }} id="imgData" type="file" onChange={upLoad} /> }
+          <Tooltip arrow className="samtoolbtnadd" placement="top" title="사진첨부"> 
           <label htmlFor="imgData" style={{ height:"25px",margin:"0",textAlign:"center"}}> 
-              <IconButton  className="btnadd" size="small" component="span" style={{height:"22px",color:"var(--Bcolor)"}}> <AddPhotoAlternateIcon />
-                {photoData?'추가됨!':'사진추가'}</IconButton>
+              <IconButton  className="samtoolbtnadd" size="small" component="span" style={{height:"22px",color:"var(--Bcolor)"}}> <AddPhotoAlternateIcon />
+                {photoData?'추가됨!':'사진추가'}
+                </IconButton>
             </label>
           </Tooltip>
          
           <Tooltip arrow  placement="top" title="내용저장"> 
-            <button className="btnadd" style={{ outline: "none", color:"white",fontSize:'16px' }} onClick={()=>{submit();}} >
+            <button className="samtoolbtnadd" style={{ outline: "none", color:"white",fontSize:'16px' }} onClick={()=>{submit();}} >
               <span className="rocket" ref={rocketRef} style={{fontSize:"16px"}} >🚀</span>  저장</button>
           </Tooltip>
 

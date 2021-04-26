@@ -1,5 +1,5 @@
 
-.problem{
+.samtoolproblem{
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -108,6 +108,7 @@ flex:auto; font-size: small;}
   flex-wrap: wrap;
   width: 100%;
   line-height: 20px;
+  border: solid 1px;
 }
 .problemInput{
   resize: none;
@@ -120,12 +121,15 @@ flex:auto; font-size: small;}
   line-height: 15px;
 }
 
-.problemInput.input2, .input3, .input4, .input5, .input6 {
+.problemInput.saminput2, .saminput3, .saminput4, .saminput5, .saminput6 {
   flex: auto;
 }
-.problemInput.input2, .input4, .input6{
+.problemInput.saminput2, .problemInput.saminput4{
   border-top: 1px dashed;
   border-bottom: 1px dashed;
+}
+.problemInput.saminput6{
+  border-top: 1px dashed;
 }
 /* .problemInput.input3, .input5, .input6{
   resize:vertical;
@@ -149,7 +153,7 @@ flex:auto; font-size: small;}
   background: var(--Acolor);
 }
 
-.adimBar{
+.samtoolAdminbar{
   display: flex ;
   justify-content: space-between;
   background: var(--Ccolor);
@@ -212,7 +216,7 @@ position:absolute !important; left: 10px !important;}
 .noticeFly{
   animation: noticeFly 1000ms ;
 }
-.problem span{
+.samtoolproblem span{
   font-size: 14px; font-weight: 900;
 }
 .voicechat{

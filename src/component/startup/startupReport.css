@@ -13,9 +13,9 @@
   text-align: center;
   width: 90vw !important;
 }
-.row{
+/* .row{
   cursor: pointer;
-  }
+  } */
   .MuiDataGrid-root{
     margin: auto;
   }

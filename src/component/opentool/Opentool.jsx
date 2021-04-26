@@ -208,30 +208,29 @@ console.log(file.name,file,metaData)
             }
             </div>
           
-          <Tooltip arrow  placement="top" title="링크첨부"> 
-            <button className="btnadd" style={{ outline: "none", border: "none" }} onClick={linkInsert} >
-            <LinkIcon  /> {addLink?'첨부됨!':'링크'}</button>
+            <Tooltip arrow  placement="top" title="링크첨부"> 
+            <button className="samtoolbtnadd" style={{ outline: "none", border: "none" }} onClick={linkInsert} >
+            <LinkIcon  /> {addLink?'첨부!':'링크'}</button>
           </Tooltip>
           
           <Tooltip arrow  placement="top" title="추가내용 첨부"> 
-            <button className="btnadd" style={{ outline: "none", border: "none" }} onClick={contentInsert}>
-              <VisibilityIcon/> {addCon?'첨부됨!':'내용'}</button>
+            <button className="samtoolbtnadd" style={{ outline: "none", border: "none" }} onClick={contentInsert}>
+              <VisibilityIcon/> {addCon?'첨부!':'내용'}</button>
           </Tooltip>
           
           <input accept="image/*" style={{ display: 'none' }} id="imgData" type="file" onChange={upLoad} /> 
-          <Tooltip arrow className="btnadd" placement="top" title="사진첨부"> 
+          <Tooltip arrow className="samtoolbtnadd" placement="top" title="사진첨부"> 
           <label htmlFor="imgData" style={{ height:"25px",margin:"0",textAlign:"center"}}> 
-              <IconButton  className="btnadd" size="small" component="span" style={{height:"22px",color:"var(--Bcolor)"}}> <AddPhotoAlternateIcon />
-              <span style={{width:"30px"}}>  {photoData?'추가됨!':'사진'}</span></IconButton>
+              <IconButton  className="samtoolbtnadd" size="small" component="span" style={{height:"22px",color:"var(--Bcolor)",width:"80px"}}> <AddPhotoAlternateIcon />
+                {photoData?'추가!':'사진'}
+                </IconButton>
             </label>
-          </Tooltip>        
+          </Tooltip>   
         </div>         
         <Tooltip arrow  placement="top" title="내용저장"> 
-          <IconButton size="small" component="span" onClick={submit} style={{color:"var(--Bcolor)",padding:"0"}}>
-          <span className="rocket" ref={rocketRef}>🚀</span>
-          <span style={{cursor:"pointer",fontWeight:"900"}}>저장</span> 
-          </IconButton>
-        </Tooltip>       
+            <button className="samtoolbtnadd" style={{ outline: "none", color:"white",fontSize:'16px' }} onClick={()=>{submit();}} >
+              <span className="rocket" ref={rocketRef} style={{fontSize:"16px"}} >🚀</span>  저장</button>
+          </Tooltip>    
         </form>
       </div>
       }

@@ -1,14 +1,14 @@
-.todo {
+.samtooltodo {
   height: 100%;
   display: flex ;
   flex-direction: column;
   position: relative;
   overflow-y:auto ;
 }
-.todo ::-webkit-scrollbar {
+.samtooltodo ::-webkit-scrollbar {
   width: 4px;
 }
-.todo ::-webkit-scrollbar-thumb {
+.samtooltodo ::-webkit-scrollbar-thumb {
   width: thin;
   background-color: var(--Acolor);
   border-radius: 2px;  
@@ -48,7 +48,7 @@
   background-color: var(--Acolor);
   border-radius: 2px;  
 }
-.todo .btnadd {
+.samtooltodo .btnadd {
   background: var(--Acolor);
   color: var(--Bcolor);
   border: none;
@@ -56,12 +56,12 @@
   font-weight: 900;
   font-size: small;
 }
-.todo .rocket {
+.samtooltodo .rocket {
   display: inline-block;
   border: none;
   outline: none;
 }
-.todo .rocketOn {
+.samtooltodo .rocketOn {
   animation: skyon 1000ms;
 }
 .input{
@@ -70,7 +70,7 @@
   padding: 0;
   margin: 0;
 }
-.todo .inputTitle {
+.samtooltodo .inputTitle {
   width: 100%;
   font-size: 1rem;
   padding: 2px;
@@ -78,7 +78,7 @@
   border: none;
   border-bottom: 1px dashed var(--Acolor);
 }
-.todo .textarea {
+.samtooltodo .textarea {
   grid-column: 1/4;
   max-width: 100%;
   min-width: 100%;

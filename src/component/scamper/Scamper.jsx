@@ -517,7 +517,7 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
 //  console.log(report)
 //titleRef.current.classList.add("noticeFly");
   return (
-    <div className="scamper" >     
+    <div className="samtoolscamper" >     
 
     <div className="drawer" ref={drawerRef}>
     {rightModal && 
@@ -546,7 +546,7 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
       }
 
       {roomAdmin &&
-        <div className="adimBar">       
+        <div className="samtoolAdminbar">       
          <div className="enterNumber" style={{fontSize:'small'}}>
            {see && room && Object.keys(room).map((e,i) => e.length>3 &&
              <button key={e} className="btnRoom" onClick={adminEnter} >{i}</button>) 
@@ -599,7 +599,7 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
       </div>
    
       {roomAdmin && 
-        <form className="adimBar"  onSubmit={noticeUp} >
+        <form className="samtoolAdminbar"  onSubmit={noticeUp} >
           <input type="text" className="enterInput" placeholder="전달사항" ref={noticeRef} />
         </form>
       }
@@ -624,7 +624,7 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
               </Badge>            
             </IconButton> }
             </div>
-            <textarea  className="s-intemInput input1" cols="30" rows="2" placeholder={placeData.text1} 
+            <textarea  className="s-intemInput saminput1" cols="30" rows="2" placeholder={placeData.text1} 
             ref={scamperS}  onChange={onSubmit} value={data.scamS} />
           </div>
           <div className="s-item">
@@ -636,7 +636,7 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
               </Badge>
             </IconButton>} 
             </div>
-            <textarea  className="s-intemInput input1" cols="30" rows="2" placeholder={placeData.text2} 
+            <textarea  className="s-intemInput saminput1" cols="30" rows="2" placeholder={placeData.text2} 
             ref={scamperC} onChange={onSubmit} value={data.scamC} />
           </div>
         
@@ -649,7 +649,7 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
               </Badge>
             </IconButton>} 
             </div>
-            <textarea  className="s-intemInput input1" cols="30" rows="2" placeholder={placeData.text3} 
+            <textarea  className="s-intemInput saminput1" cols="30" rows="2" placeholder={placeData.text3} 
             ref={scamperA} onChange={onSubmit} value={data.scamA} />
           </div>
 
@@ -662,7 +662,7 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
               </Badge>
             </IconButton>} 
             </div>
-            <textarea  className="s-intemInput input1" cols="30" rows="2" placeholder={placeData.text4} 
+            <textarea  className="s-intemInput saminput1" cols="30" rows="2" placeholder={placeData.text4} 
             ref={scamperM} onChange={onSubmit} value={data.scamM} />
           </div>
 
@@ -675,7 +675,7 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
               </Badge>
             </IconButton>} 
             </div>
-            <textarea  className="s-intemInput input1" cols="30" rows="2" placeholder={placeData.text5} 
+            <textarea  className="s-intemInput saminput1" cols="30" rows="2" placeholder={placeData.text5} 
             ref={scamperP} onChange={onSubmit} value={data.scamP} />
           </div>
 
@@ -688,7 +688,7 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
               </Badge>
             </IconButton>} 
             </div>
-            <textarea  className="s-intemInput input1" cols="30" rows="2" placeholder={placeData.text6}  
+            <textarea  className="s-intemInput saminput1" cols="30" rows="2" placeholder={placeData.text6}  
             ref={scamperE} onChange={onSubmit} value={data.scamE} />
           </div>
 
@@ -701,40 +701,29 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
               </Badge>
             </IconButton>} 
             </div>
-            <textarea  className="s-intemInput input1" cols="30" rows="2" style={{resize: 'none'}} 
+            <textarea  className="s-intemInput saminput1" cols="30" rows="2" style={{resize: 'none'}} 
             ref={scamperR} onChange={onSubmit} value={data.scamR} placeholder={placeData.text7} />
           </div>
           
-          <div className="inputBox" >
+          <div className="samtoolinputBox" >
             <div className="s-itemTitle" style={{width:"100%"}}>좋은 아이디어 </div>
-            <div></div>
-            <textarea cols="30" rows="1" className="scamperInput input3" ref={aTitle} 
+            <textarea cols="30" rows="1" className="scamperInput samlinput1" ref={aTitle} 
             onChange={onSubmit} value={data.aTitle} placeholder="좋은아이디어1" />
-            <textarea cols="30" rows="1" className="scamperInput input4" ref={bName} 
+            <textarea cols="30" rows="1" className="scamperInput samInput2" ref={bName} 
             onChange={onSubmit} value={data.bName} placeholder="좋은아이디어2" />
-            <textarea cols="30" rows="1" className="scamperInput input3" ref={input3} 
-            onChange={onSubmit} value={data.input3} placeholder="좋은아이디어3" />            
-            {/* <textarea cols="30" rows="1" className="scamperInput input4" ref={input4} 
-            onChange={onSubmit} value={data.input4} placeholder={placeData.bestidea} />
-            <textarea cols="30" rows="1" className="scamperInput input5 " ref={input5} 
-            onChange={onSubmit} value={data.input5} placeholder={placeData.plusidea} />
-            <textarea cols="30" rows="1" className="scamperInput input6" ref={input6} 
-            onChange={onSubmit} value={data.input6} placeholder={placeData.minusidea} />             */}
-            {/* <input type="button" className="scamperInput btn" onClick={btnInput} value="저장"/> */}
+            <textarea cols="30" rows="1" className="scamperInput samlinput3" ref={input3} 
+            onChange={onSubmit} value={data.input3} placeholder="좋은아이디어3" />                       
           </div>
 
-          <div className="inputBox" >
+          <div className="samtoolinputBox" >
             <div className="s-itemTitle" style={{width:"100%"}}>최종아이디어
             </div>
-            <div></div>
-             
-            <textarea cols="30" rows="1" className="scamperInput input4" ref={input4} 
+            <textarea cols="30" rows="1" className="scamperInput samlinput1" ref={input4} 
             onChange={onSubmit} value={data.input4} placeholder={placeData.bestidea} style={{background:"lightpink"}}/>
-            <textarea cols="30" rows="1" className="scamperInput input5 " ref={input5} 
+            <textarea cols="30" rows="1" className="scamperInput samInput2 " ref={input5} 
             onChange={onSubmit} value={data.input5} placeholder={placeData.plusidea} />
-            <textarea cols="30" rows="1" className="scamperInput input6" ref={input6} 
+            <textarea cols="30" rows="1" className="scamperInput samlinput3" ref={input6} 
             onChange={onSubmit} value={data.input6} placeholder={placeData.minusidea} />            
-            {/* <input type="button" className="scamperInput btn" onClick={btnInput} value="저장"/> */}
           </div>
 
         </form>

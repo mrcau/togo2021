@@ -18,11 +18,11 @@ export default
   title8:"비용구조",
   text8:"- 비용이 발생되는 부분",
   title9:"핵심지표",
-  text9:"- 사업이 잘 되는지 판단을 위한 지표",
+  text9:"- ",
   title10:"SWOT분석",
   text10:"- 강점(Strengths)",
   text11:"- 약점(Weaknesses)",
-  text12:"- 기회(Opportunities ",
+  text12:"- 기회(Opportunities) ",
   text13:"- 위기(Threats)",
   writer:"- 작성자",
 }

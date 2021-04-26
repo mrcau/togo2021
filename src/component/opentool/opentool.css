@@ -65,12 +65,12 @@
 .opentool .rocketOn {
   animation: skyon 1000ms;
 }
-.input{
+/* .input{
   border: none;
   outline: none;
   padding: 0;
   margin: 0;
-}
+} */
 .opentool .inputTitle {
   grid-column: 1/5;
   width: 100%;
@@ -96,6 +96,14 @@
 }
 .opentool-input{
   border: solid 1px var(--Acolor);
+}
+.opentool .samtoolbtnadd {
+  background: var(--Acolor);
+  color: var(--Bcolor);
+  border: none;
+  outline: none;
+  font-weight: 900;
+  font-size: small;
 }
 
 @keyframes skyon {

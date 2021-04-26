@@ -4,7 +4,7 @@ import React, { memo, useEffect,  useRef, useState } from 'react';
 import LinkIcon from '@material-ui/icons/Link';
 import AddCommentIcon from '@material-ui/icons/AddComment';
 import YouTubeIcon from '@material-ui/icons/YouTube';
-import './datastudy.css';
+// import './datastudy.css';
 import VoiceChatIcon from '@material-ui/icons/VoiceChat';
 import Swal from 'sweetalert2';
 import ProblemReport from './problemReport';
