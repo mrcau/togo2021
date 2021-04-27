@@ -23,11 +23,13 @@ const columns = [
 //글 선택하면 실행함수
 const selectRow = () => { setReport(true); moveModal2(); roomNameHide();setDoor('퇴장');setEntering(true);}
 const rows = Object.values(data2).map((e,i) => {
-  return( { id:i, date:e.Date||'',title:e.text1||'', roomName:e.roomName||'', dataId:e.dataId||'', userId:e.userId||'',
-          text1:e.text1||'',text2:e.text2||'',text3:e.text3||'',text4:e.text4||'',text5:e.text5||'',
-          text6:e.text6||'',text7:e.text7||'',text8:e.text8||'',text9:e.text9||'',text10:e.text10||'',
-          text11:e.text11||'',text12:e.text12||'',text13:e.text13||''
-  }) 
+  // return( { id:i, date:e.Date||'',title:e.text1||'', roomName:e.roomName||'', dataId:e.dataId||'', userId:e.userId||'',
+  //         text1:e.text1||'',text2:e.text2||'',text3:e.text3||'',text4:e.text4||'',text5:e.text5||'',
+  //         text6:e.text6||'',text7:e.text7||'',text8:e.text8||'',text9:e.text9||'',text10:e.text10||'',
+  //         text11:e.text11||'',text12:e.text12||'',text13:e.text13||''
+  // }) 
+  return({ id: i, title: e.text1|| '', ...e})
+
   }) 
 
   return (

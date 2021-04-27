@@ -343,6 +343,7 @@ useEffect(() => {
     const roomMap = Object.keys(room);
     const roomNumber = roomMap[textRoom]
     const roomname = roomUid +roomNumber;
+    const rommNameId = Date.now();
     setroomName(roomname);
     setLinkCopy('https://samtool.netlify.app/#/'+folder+'/'+roomname);  
     roomERef.current.value =roomname;     
@@ -357,10 +358,11 @@ useEffect(() => {
       f4: () => { setRoom({}) },
     }
   fireSync.dataSync(folder,roomname, cf2);
-  fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
+  fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname,rommNameId});
   }
   // 관리자 방입장2
   const adminEnter2 = (e) => {
+    const rommNameId = Date.now();
     setEntering(true);
     const roomname = e;
     setroomName(roomname);
@@ -375,7 +377,7 @@ useEffect(() => {
     f4: () => { setRoom({}) },
   }
 fireSync.dataSync(folder,roomname, cf2);
-fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
+fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname,rommNameId});
 }
 // notice 저장 - 공지 보내기
   const noticeUp = (e) => {
@@ -419,7 +421,7 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
     e.preventDefault();
     const today = new Date().toLocaleDateString().substr(5);
     const dataId =  Date.now();
-    const data = {
+    const newData = {
       cDate : today|| '', 
       dataId : dataId|| '',
       userId : user.uid|| '',
@@ -436,6 +438,7 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
       scamA: problemA.current.value || '',
       scamM: problemM.current.value || '',
       scamP: problemP.current.value || '',
+      rommNameId:data.rommNameId
     }
     const roomUid =  roomERef.current.value.substr(0,roomSubstr);
     const roomId = roomUid+'REPORT';
@@ -443,11 +446,11 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
         Swal.fire({title:'처음문제를 입력해주세요.',icon:'warning'})}
     else if(!problemP.current.value){
           Swal.fire({title:'최종문제를 입력해주세요.',icon:'warning'})}
-    else{
+    else{ console.log(data)
       Swal.fire({title:'내용을 저장하겠습니까?', showCancelButton: true}).then((result)=>{
         if(result.isConfirmed){
           Swal.fire({title:'제출완료',icon:'success'});
-          fireProblem.reportSave(folder, roomId, roomName, data);
+          fireProblem.reportSave(folder, roomId, data.rommNameId, newData);
         }
       })       
     }
@@ -467,34 +470,6 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
     }});
  }
 
-    // 아이템 삭제
-  // const dataDel = () => {
-  //   if(report && data.dataId && data.userId === user.uid){ console.log('리포트 삭제')
-  //       Swal.fire({ 
-  //         title: '정보를 삭제하겠습니까?',
-  //         text:"삭제될 게시물 : "+data.aTitle,
-  //         icon:'warning',
-  //         showCancelButton: true})
-  //       .then((result) => { if(result.isConfirmed){ Swal.fire('삭제되었습니다.');
-  //       const roomUid =  roomName.substr(0,roomSubstr);
-  //       const roomId = roomUid+'REPORT';
-  //       fireProblem.reportDel(folder,roomId,roomName)
-  //       dataReset();
-  //       }});
-  //     }
-      
-  //     if(data.userId === user.uid){  console.log('일반 삭제')
-  //     Swal.fire({ 
-  //       title: '토론방을 삭제하겠습니까?',
-  //       text:"삭제될 토론방 : "+roomName,
-  //       icon:'warning',
-  //       showCancelButton: true})
-  //     .then((result) => { if(result.isConfirmed){ Swal.fire('삭제되었습니다.');
-  //     fireProblem.dataDel(folder,roomName);   
-  //     roomNameReset2();
-  //     }});
-  //   }    
-  // } 
     // 아이템 삭제
     const dataDel = () => {  
       if(!report){
@@ -516,7 +491,7 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
         }});
         }  
   
-        if(report&&data.roomName.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){ 
+        if(report&&data.roomName.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){ console.log(data)
         Swal.fire({ 
           title: '토론방을 삭제하겠습니까?',
           text:"삭제될 토론방 : "+data.roomName,
@@ -525,7 +500,7 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
         .then((result) => { if(result.isConfirmed){ 
           const roomUid =   user.uid.substr(0,roomSubstr);
           const roomId = roomUid+'REPORT';
-          fireProblem.reportDel(folder,roomId,data.roomName);   
+          fireProblem.reportDel(folder,roomId,data.rommNameId);   
           Swal.fire('삭제되었습니다.');
           roomNameReset();
           setEntering(false); 
@@ -534,7 +509,7 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
         }});
       }    
     } 
-//  console.log(report)
+ console.log('report',data)
 //titleRef.current.classList.add("noticeFly");
   return (
     <div className="samtoolproblem" >     
@@ -577,7 +552,7 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
 
       <div className="s-header" style={{display:'flex'}}>
         <div className="enterWrap" >
-          <button className="btnRoomLink" onClick={enterRoom} style={{width:"40px"}} >{door}</button>
+          <button className="btnRoomLink" onClick={enterRoom} style={{width:"40px",fontSize:"13px"}} >{door}</button>
           <input type="text" className="enterInput roomnum" placeholder="방번호" style={{width:'80px'}} ref={roomERef}/>
         </div>
 
@@ -613,7 +588,7 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname});
         }
         
            {video&&
-          <button style={{width:'150px',cursor:"pointer"}}  className="btnRoomLink"  onClick={fire}>공유자료</button>          
+          <button style={{width:'150px',cursor:"pointer",fontSize:"13px"}}  className="btnRoomLink"  onClick={fire}>공유자료</button>          
         }
 
       </div>

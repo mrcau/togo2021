@@ -15,7 +15,7 @@ import {  Link, useHistory } from 'react-router-dom';
 function  Toolrow ({fireSync,item,level, user,selectFolder}) {
   const folder = "mytool";
   const Swal = require('sweetalert2');
-  const fire = () => {Swal.fire({html:item.text2, width:'90%'})}
+  const fire = () => {Swal.fire({html:item.text2,imageUrl:item.photoData, width:'90%'})}
   const [Switch, setSwitch] = useState(true);
   let counter = item.progress;
   
@@ -91,10 +91,10 @@ function  Toolrow ({fireSync,item,level, user,selectFolder}) {
             </CopyToClipboard>
           </IconButton>
         }
-        {item.text2 && 
+        {item.text2  || item.photoData ? 
           <IconButton style={{width:'30px', height:'20px'}} >
           <VisibilityIcon style={{color:'white'}} size="small" onClick={fire} /> 
-          </IconButton>
+          </IconButton> : <p/>
         }
         
         {item.title && 

@@ -296,8 +296,7 @@ return;
     const roomMap = Object.keys(room);
     const roomNumber = roomMap[textRoom]
     const roomname = roomUid +roomNumber;
-    const dataId = Date.now();
-    const rommNameId = roomName+dataId;
+    const rommNameId = Date.now();
     
     setroomName(roomname);
     setLinkCopy('https://samtool.netlify.app/#/'+folder+'/'+roomname);  
@@ -317,8 +316,7 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname,rommNameId});
 
   // 관리자 방입장2
   const adminEnter2 = (e) => {
-    const dataId = Date.now();
-    const rommNameId = roomName+dataId;
+    const rommNameId = Date.now();
     setEntering(true);
     const roomname = e;
     setroomName(roomname);
@@ -523,11 +521,10 @@ const submit = (e) => {
 
 const upLoad = (e) => { console.log('uplod')
   const imgDataId = Date.now();
-  const file = e.target.files[0];
-  
+  const file = e.target.files[0];  
   const metaData = { contentType: mime.lookup(file.name) } ||''
   fireIdea.imgUpload( imgDataId, file, metaData, (e) => setPhotoData(e));
-  // console.log(file.name,file,metaData)
+
 }
   return (
     <div className="samtoolidea" >       
@@ -664,8 +661,8 @@ const upLoad = (e) => { console.log('uplod')
           <input accept="image/*" style={{ display: 'none' }} id="imgData" type="file" onChange={upLoad} /> }
           <Tooltip arrow className="samtoolbtnadd" placement="top" title="사진첨부"> 
           <label htmlFor="imgData" style={{ height:"25px",margin:"0",textAlign:"center"}}> 
-              <IconButton  className="samtoolbtnadd" size="small" component="span" style={{height:"22px",color:"var(--Bcolor)"}}> <AddPhotoAlternateIcon />
-                {photoData?'추가됨!':'사진추가'}
+              <IconButton  className="samtoolbtnadd" size="small" component="span" style={{height:"22px",color:"var(--Bcolor)"}}> 
+              <AddPhotoAlternateIcon />  {photoData?'추가됨!':'사진추가'}
                 </IconButton>
             </label>
           </Tooltip>

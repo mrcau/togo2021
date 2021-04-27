@@ -147,11 +147,11 @@ function Mytool({fireIdea,fireApp, fireSync,user, userInfo, setlogoName }) {
 //사진업로드
     const upLoad = (e) => { 
     const imgDataId = Date.now();
-    const file = e.target.files[0];
-    
+    const file = e.target.files[0];    
     const metaData = { contentType: mime.lookup(file.name) } ||''
     fireIdea.imgUpload( imgDataId, file, metaData, (e) => setPhotoData(e));
   }
+
   return (
     <div className="samtoolmytool">
       <div className="mytool-items">
@@ -203,11 +203,12 @@ function Mytool({fireIdea,fireApp, fireSync,user, userInfo, setlogoName }) {
               <VisibilityIcon/> {addCon?'첨부됨!':'내용'}</button>
           </Tooltip>
           
-          <input accept="image/*" style={{ display: 'none' }} id="imgData" type="file" onChange={upLoad} /> 
-          <Tooltip arrow className="btnadd" placement="top" title="사진첨부" > 
-          <label htmlFor="imgData" style={{ margin:"0",textAlign:"center",width:"300px"}}> 
-              <IconButton  className="btnadd" size="small" component="span" style={{height:"22px",color:"var(--Bcolor)"}}> <AddPhotoAlternateIcon />
-              <span style={{width:"30px"}}>  {photoData?'추가됨!':'사진'}</span></IconButton>
+          <input accept="image/*" style={{ display: 'none' }} id="imgData" type="file" onChange={upLoad} /> }
+          <Tooltip arrow className="samtoolbtnadd" placement="top" title="사진첨부"> 
+          <label htmlFor="imgData" style={{ height:"25px",margin:"0",textAlign:"center"}}> 
+              <IconButton  className="samtoolbtnadd" size="small" component="span" style={{height:"22px",color:"var(--Bcolor)"}}> 
+              <div style={{width:"80px",fontWeight:"900"}}><AddPhotoAlternateIcon /> {photoData?'추가됨!':'사진'}</div>
+                </IconButton>
             </label>
           </Tooltip>
         

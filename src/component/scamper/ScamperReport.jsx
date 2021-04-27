@@ -24,10 +24,12 @@ const selectRow = () => { setReport(true); moveModal2(); roomNameHide();setDoor(
 // level>0 && <button className="btnRoomDel" style={{margin:'0'}} onClick={data2Del}><DeleteForever /></button>  
 //글목록 data2에서 데이터 하나씩 빼기
 const rows = Object.values(data2).map((e,i) => {
-  return( { id: i, date: e.cDate || '', title: e.input4 || '', good: e.good7 || '', roomName:e.roomName || '', dataId:e.dataId || '', userId:e.userId || '',
-            aTitle:e.aTitle || '',bName:e.bName || '',input3:e.input3 || '',input4:e.input4 || '',input5:e.input5 || '',input6:e.input6 || '',
-            scamA:e.scamA || '', scamC:e.scamC || '', scamE:e.scamE || '', scamM:e.scamM || '', scamP:e.scamP || '',scamR:e.scamR || '', scamS:e.scamS || '', 
-  }) 
+  // return( { id: i, date: e.cDate || '', title: e.input4 || '', good: e.good7 || '', roomName:e.roomName || '', dataId:e.dataId || '', userId:e.userId || '',
+  //           aTitle:e.aTitle || '',bName:e.bName || '',input3:e.input3 || '',input4:e.input4 || '',input5:e.input5 || '',input6:e.input6 || '',
+  //           scamA:e.scamA || '', scamC:e.scamC || '', scamE:e.scamE || '', scamM:e.scamM || '', scamP:e.scamP || '',scamR:e.scamR || '', scamS:e.scamS || '', 
+  // }) 
+  return({ id: i, title: e.input4|| '', ...e})
+
   })
 
   return (

@@ -22,11 +22,12 @@ const columns = [
 const selectRow = () => { setReport(true); moveModal2(); roomNameHide();setDoor('퇴장');setEntering(true);}
   // roomRowReset();  
 const rows = Object.values(data2).map((e,i) => {
-  return( { id: i, date: e.cDate || '', title: e.aTitle || '', good: e.good7 || '', roomName:e.roomName || '',
-           dataId:e.dataId || '', userId:e.userId || '', aTitle:e.aTitle || '',bName:e.bName || '',
-           input3:e.input3 || '',input4:e.input4 || '',input5:e.input5 || '',input6:e.input6 || '',
-            scamA:e.scamA || '', scamC:e.scamC || '', scamE:e.scamE || '', scamM:e.scamM || '', scamP:e.scamP || '',scamR:e.scamR || '', scamS:e.scamS || '', 
-  }) 
+  // return( { id: i, date: e.cDate || '', title: e.aTitle || '', good: e.good7 || '', roomName:e.roomName || '', rommNameId:e.rommNameId||'',
+  //          dataId:e.dataId || '', userId:e.userId || '', aTitle:e.aTitle || '',bName:e.bName || '',
+  //          input3:e.input3 || '',input4:e.input4 || '',input5:e.input5 || '',input6:e.input6 || '',
+  //           scamA:e.scamA || '', scamC:e.scamC || '', scamE:e.scamE || '', scamM:e.scamM || '', scamP:e.scamP || '',scamR:e.scamR || '', scamS:e.scamS || '', 
+  // }) 
+  return({ id: i, title: e.aTitle|| '', ...e})
   })
 
   return (

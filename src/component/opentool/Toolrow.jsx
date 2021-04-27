@@ -15,7 +15,10 @@ function  Toolrow ({item,fireApp,level, user}) {
   const folder = "Opentool";
   const Swal = require('sweetalert2');
   // const [video, setVideo] = useState('');
-  const fire = () => {Swal.fire({html:item.text2, width:'90%'})}
+  const fire = () => { 
+    if(item.text2||item.photoData){
+    Swal.fire({html:item.text2,imageUrl:item.photoData, width:'90%'})
+  }}
   const [Switch, setSwitch] = useState(true);
   let counter = item.progress;
 
@@ -90,10 +93,10 @@ function  Toolrow ({item,fireApp,level, user}) {
             </CopyToClipboard>
           </IconButton>
         }
-        {item.text2 && 
+        {item.text2  || item.photoData ? 
         <IconButton style={{width:'30px', height:'20px'}} >
           <VisibilityIcon style={{color:'white'}} size="small" onClick={fire} /> 
-          </IconButton>
+          </IconButton> : <p/>
         }
         
         {item.title && 
@@ -115,7 +118,7 @@ function  Toolrow ({item,fireApp,level, user}) {
 
       <div className="cardTitle" style={{textAlign:"center"}}>
         <Card.Body style={{padding:"8px",height:"55px",overflowY:"auto" }}>
-          <Card.Title style={{fontSize:"16px",fontWeight:"900"}}  onClick={editText} > {item.text||''} </Card.Title>
+          <Card.Title style={{fontSize:"16px",fontWeight:"900",cursor:"pointer"}}  onClick={fire} > {item.text||''} </Card.Title>
           <Card.Text style={{fontSize:"12px",lineHeight:"6px",padding:"0", whiteSpace:"pre-wrap"  }}> {item.name} </Card.Text>
         </Card.Body>
       </div>
