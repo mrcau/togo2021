@@ -226,7 +226,7 @@ itemUp2(folder,roomName, dataId, counter) {
 }
 
   // 프로필사진 자료저장
-  async imgUpload(imgDataId,file, metaData, cf) {
+  async imgUpload(imgDataId,file, metaData, cf) { console.log('ideaIMG',file)
     try {
       const e = await fireInit.storage().ref(`imgData/${imgDataId}`).put(file, metaData)
       const downloadUrl = await e.ref.getDownloadURL();

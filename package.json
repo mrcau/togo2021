@@ -12,6 +12,7 @@
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "bootstrap": "^4.6.0",
+    "compressorjs": "^1.0.7",
     "dom-to-image": "^2.6.0",
     "emmet": "^2.3.4",
     "firebase": "^8.2.3",

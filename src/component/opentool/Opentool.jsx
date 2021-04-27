@@ -13,6 +13,7 @@ import LinkIcon from '@material-ui/icons/Link';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate';
 import mime from 'mime-types';
+import Compressor from 'compressorjs';
 
 function Opentool({ fireSync, fireApp, fireIdea, user, userInfo,setlogoName }) {
 
@@ -165,7 +166,18 @@ const file = e.target.files[0];
 
 const metaData = { contentType: mime.lookup(file.name) } ||''
 fireIdea.imgUpload( imgDataId, file, metaData, (e) => setPhotoData(e));
-console.log(file.name,file,metaData)
+console.log(file.name,file,metaData);
+
+// new Compressor(file, {
+//   quality: 0.6, 
+//   success(result) {
+// const metaData = { contentType: mime.lookup(file.name) } ||''
+// const formData = new FormData();
+//     formData.append(imgDataId, result, result.name);
+// fireIdea.imgUpload( imgDataId, formData, metaData, (e) => setPhotoData(e));
+// }
+// })
+
 }
 
   return (
@@ -222,7 +234,7 @@ console.log(file.name,file,metaData)
           <Tooltip arrow className="btnadd" placement="top" title="사진첨부"> 
           <label htmlFor="imgData" style={{ height:"25px",margin:"0",textAlign:"center"}}> 
               <IconButton  className="btnadd" size="small" component="span" style={{height:"22px",color:"var(--Bcolor)"}}> <AddPhotoAlternateIcon />
-              <span style={{width:"50px"}}>  {photoData?'추가됨!':'사진'}</span></IconButton>
+              <span style={{width:"35px"}}>  {photoData?'추가!':'사진'}</span></IconButton>
             </label>
           </Tooltip>        
         </div>         

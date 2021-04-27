@@ -644,7 +644,7 @@ const upLoad = (e) => { console.log('uplod')
         <div className="idNumGroup" style={{width:"100px"}}>
           <span className="num" style={{padding:"0 5px",color:"white",fontWeight:"900"}}> 번호 </span> 
           <select name="jobSelect" className="idNum" onChange={e=>{setSelectNum(e.currentTarget.value);}} style={{background:"lightpink"}} >
-             { Object.values(idNum).map((e,i) => { return <option value={e}>{e}</option>})}
+             { Object.values(idNum).map((e,i) => { return <option value={e}> {e} </option>})}
           </select>
         </div>
           <Tooltip arrow  placement="top" title="링크첨부"> 
