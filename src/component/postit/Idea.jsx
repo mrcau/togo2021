@@ -149,7 +149,7 @@ useEffect(() => {
 
   },[])
 
-//제출자료 소트
+//제출자료 소트 학번 selectNum
 const sortNumber = Object.values(items).map((e) => { return e.selectNum; })
 sortNumber.sort((a,b)=>{return a-b})
 const SortNums = sortNumber.filter(e=>e!==undefined) //undefined 제거 필터
@@ -262,7 +262,7 @@ return;
       text:newRoom,
       text2:'',
       host:'입장',
-      selectNum:0
+      // selectNum:0
     }
     const abc = fireIdea.roomGetSave2(folder, newRoom, dataId, data,level)
     if(abc){adminEnter2(newRoom)}else{return}
@@ -603,35 +603,37 @@ const upLoad = (e) => { console.log('uplod')
       }
  
     {/* <div className="noticeTitle" > 공지 </div> */}
-    <div className="s-header noticeHeader" ref={titleRef}>
+    <div className="s-header noticeHeader" ref={titleRef} >
          {/* 접속자 카운트 */} 
-         <Badge badgeContent={items.enterMan||0} color="error" style={{width:'40px', paddingLeft:'10px'}}>
-          <InsertEmoticon />  </Badge> 
+         {/* <Badge badgeContent={items.enterMan||0} color="error" style={{width:'40px', paddingLeft:'10px'}}> </Badge>  */}
+         <span style={{fontSize:"20px"}}>📢</span>
         <div className="enterTitle" >{notice}</div>  
       </div>
 
 
    {roomName && 
       <div style={{display:"flex",background:"var(--Bcolor)",height:"25px"}}>
+        <button className="btnRoomLink2" onClick={()=>{if(!roomAdmin){return};setselectNumbers(0);}} style={{width:"35px",cursor:"pointer"}}>번호</button>
+        <div style={{display:"flex",background:"var(--Bcolor)",height:"25px",flex:"1"}}>
       { 
         Object.values(filterSortNum).map((e) => {
-             return <button className="btnRoomLink2" onClick={()=>{if(!roomAdmin){return};setselectNumbers(e)}}>{e}</button>
+             return <button className="btnRoomLink2" onClick={()=>{if(!roomAdmin){return};setselectNumbers(e);}}>{e}</button>
          })
         }
       </div>
+      </div>
     }
-  
+ { console.log(selectNumbers)}
 {/* 여기부터 todo스타일 */}
       <div className="samtoolideas" >
         <div className="idea-items">
         {
+          // eslint-disable-next-line array-callback-return
           Object.keys(items).map((e) => {
-            // setselectNumbers([...selectNumbers,items[e].selectNum]) 
             if(selectNumbers===0){
               return <Idearow key={e} ipAPI={ipAPI} user={user} setselectNumbers={setselectNumbers} selectNumbers={selectNumbers} fireSync={fireSync} roomAdmin={roomAdmin} item={items[e]} roomName={roomName} fireIdea={fireIdea} level={level} setColor={setColor} color={color} report={report} />
-            }else{
-            return  e>10&&selectNumbers===items[e].selectNum&&
-            <Idearow key={e} ipAPI={ipAPI} user={user}  fireSync={fireSync} roomAdmin={roomAdmin} item={items[e]} roomName={roomName} fireIdea={fireIdea} level={level} setColor={setColor} color={color} report={report} />
+            }else if(selectNumbers!==0 && e>10 && selectNumbers===items[e].selectNum){
+            return <Idearow key={e} ipAPI={ipAPI} user={user}  fireSync={fireSync} roomAdmin={roomAdmin} item={items[e]} roomName={roomName} fireIdea={fireIdea} level={level} setColor={setColor} color={color} report={report} />
           }})
         }
         </div>
@@ -644,7 +646,7 @@ const upLoad = (e) => { console.log('uplod')
         <div className="idNumGroup" style={{width:"100px"}}>
           <span className="num" style={{padding:"0 5px",color:"white",fontWeight:"900"}}> 번호 </span> 
           <select name="jobSelect" className="idNum" onChange={e=>{setSelectNum(e.currentTarget.value);}} style={{background:"lightpink"}} >
-             { Object.values(idNum).map((e,i) => { return <option value={e}> {e} </option>})}
+           { Object.values(idNum).map((e,i) => { return <option value={e}> {e} </option>})}
           </select>
         </div>
           <Tooltip arrow  placement="top" title="링크첨부"> 
