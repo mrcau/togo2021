@@ -49,18 +49,15 @@ function Opentool({ fireSync, fireApp, fireIdea, user, userInfo,setlogoName }) {
       // })
   }, [user,selectFolder,fireApp]);
   //DB에 글 데이터 저장
-  const submit = (e) => { console.log(userInfo)
+  const submit = (e) => {
     e.preventDefault();
     if(e.currentTarget == null){return;}
     const text = textRef.current.value; // 내용
     let text2 = addCon; //ContentYYY
-    // const title = titleRef.current.value;
-    // const text = textRef.current.value;
-    // const text2 = textRef2.current.value;
     if(addLink&&!addCon){text2 = `<iframe src=${addLink} width="90%" height="500px"/>`}
     if( !text ){ Swal.fire({title:'내용을 입력해 주세요.',icon:'warning'}) }
-    if (userInfo && text ) { console.log(text)
-      rocketOn();
+
+    if (userInfo && text && !photoData ) { 
       const dataId = Date.now();
       const data = {
         uid: user.uid||'',
@@ -78,11 +75,50 @@ function Opentool({ fireSync, fireApp, fireIdea, user, userInfo,setlogoName }) {
       }
       fireApp.opentoolSave(folder,data);  
       textRef.current.value = '';
-      setPhotoData(''); rocketOn();
-      setAddLink(''); setAddCon('')
+      setPhotoData(''); setAddLink(''); setAddCon('')
+    }
+    
+    if (userInfo && text && photoData) {
+      const dataId = Date.now();
+      const metaData = { contentType: mime.lookup(photoData.name) } ||''
+      fireIdea.imgUpload( dataId, photoData, metaData).then((e)=>{        
+        const data = {
+          uid: user.uid||'',
+          dataId: dataId,
+          name: userInfo.name||'',
+          title: addLink,
+          text: text,
+          text2: text2,
+          today: today,
+          progress: 0,
+          color : 'secondary',
+          photoData : e||'',
+          selectFolder
+        }
+        fireApp.opentoolSave(folder,data);     
+      })      
+      textRef.current.value = '';
+      setPhotoData(''); setAddLink(''); setAddCon('')      
     }
   }
 
+//사진업로드
+const upLoad = (e) => {  
+  const file = e.target.files[0]||'';     
+  setPhotoData(file)
+
+
+// new Compressor(file, {
+//   quality: 0.6, 
+//   success(result) {
+// const metaData = { contentType: mime.lookup(file.name) } ||''
+// const formData = new FormData();
+//     formData.append(imgDataId, result, result.name);
+// fireIdea.imgUpload( imgDataId, formData, metaData, (e) => setPhotoData(e));
+// }
+// })
+
+}
   //로켓발사
   const rocketOn = () => {
     rocketRef.current.classList.add("rocketOn");
@@ -159,92 +195,70 @@ function Opentool({ fireSync, fireApp, fireIdea, user, userInfo,setlogoName }) {
       }
     }
 
-//사진업로드
-const upLoad = (e) => { console.log('uplod')
-const imgDataId = Date.now();
-const file = e.target.files[0];
-
-const metaData = { contentType: mime.lookup(file.name) } ||''
-fireIdea.imgUpload( imgDataId, file, metaData, (e) => setPhotoData(e));
-console.log(file.name,file,metaData);
-
-// new Compressor(file, {
-//   quality: 0.6, 
-//   success(result) {
-// const metaData = { contentType: mime.lookup(file.name) } ||''
-// const formData = new FormData();
-//     formData.append(imgDataId, result, result.name);
-// fireIdea.imgUpload( imgDataId, formData, metaData, (e) => setPhotoData(e));
-// }
-// })
-
-}
 
   return (
     <div className="opentool">
       
       {level>5 && 
       <div className="mytool-input">
-        <form className="mytool-form">
-        <input type="text" className="textarea titleText" ref={textRef} cols="20" rows="4"  minlength="4" size="10" placeholder="제목"
-            maxlength="20" style={{textAlign:"center"}}
-            />
-        <div className="mytoolInputMenu">          
+        <input type="text" className="textarea titleText" ref={textRef} cols="20" rows="4"  minlength="4" size="10" placeholder="제목/내용을 입력해주세요."/>
+        <div onSubmit={submit} className="mytool-form">
+        <div className="mytoolInputMenu" style={{flex:"auto", display: "flex"}}>
           <div className="folderDorpDown" style={{flex:"auto"}}>
-          <DropdownButton as={ButtonGroup} variant="primary" title={selectFolder} size="sm" style={{flex:"1"}} >
-           <div className="cardSelect">
-             {
-             folderBox && Object.values(folderBox).map((e,i) => {
-               return <Dropdown.Item as="button" type="button"  onClick={()=>{setselectFolder(e)}} style={{textAlign:"center", fontSize:"12px",padding:"0",fontWeight:"900"}}>{e}</Dropdown.Item>
-             })
-             }
-           </div>
-          </DropdownButton>
+              <DropdownButton as={ButtonGroup} variant="primary" title={selectFolder} size="sm" style={{flex:"1"}} >
+               <div className="cardSelect">
+                 {
+                 folderBox && Object.values(folderBox).map((e,i) => {
+                   return <Dropdown.Item as="button" type="button"  onClick={()=>{setselectFolder(e)}} style={{textAlign:"center", fontSize:"12px",padding:"0",fontWeight:"900"}}>{e}</Dropdown.Item>
+                 })
+                 }
+               </div>
+              </DropdownButton>
           </div>
-          <div style={{display:"flex",background:"white",flex:"auto"}}>
-            {level>0 && 
-           <Tooltip arrow  placement="top" title="폴더삭제">
-            <IconButton size="small" component="span" onClick={deleteFolder} style={{color:"var(--Acolor)",padding:"0 5px 0 0"}}>
-                  <DeleteForever />  
-            </IconButton>
-            </Tooltip>
-            }
-
-            <input type="text" ref={newFolder} className="inputTitle" style={{flex:"3",minWidth:"50px"}} placeholder="새폴더"/>
-            {level>0 &&       
-             <IconButton size="small" component="span" onClick={AddNewFolder} style={{color:"var(--Acolor)",padding:"0 0 0 5px"}} > 
-             <Tooltip arrow  placement="top" title="폴더 추가">
-              <AddCircleOutlineIcon  />  
-              </Tooltip>
-            </IconButton>
-            }
-            </div>
-          
+          <div style={{display:"flex",background:"white"}}>
+                {level>0 && 
+               <Tooltip arrow  placement="top" title="폴더삭제">
+                <IconButton size="small" component="span" onClick={deleteFolder} style={{color:"var(--Acolor)",padding:"0 5px 0 0"}}>
+                      <DeleteForever />  
+                </IconButton>
+                </Tooltip>
+                }
+                <input type="text" ref={newFolder} className="inputTitle" style={{flex:"3",minWidth:"50px"}} placeholder="새폴더"/>
+                {level>0 &&       
+                 <IconButton size="small" component="span" onClick={AddNewFolder} style={{color:"var(--Acolor)",padding:"0 0 0 5px"}} > 
+                 <Tooltip arrow  placement="top" title="폴더 추가">
+                  <AddCircleOutlineIcon  />  
+                  </Tooltip>
+                </IconButton>
+                }
+          </div>
+        </div>  
           <Tooltip arrow  placement="top" title="링크첨부"> 
-            <button className="btnadd" style={{ outline: "none", border: "none" }} onClick={linkInsert} >
+            <button className="samtoolbtnadd" style={{ outline: "none", border: "none" }} onClick={linkInsert} >
             <LinkIcon  /> {addLink?'첨부됨!':'링크'}</button>
           </Tooltip>
           
           <Tooltip arrow  placement="top" title="추가내용 첨부"> 
-            <button className="btnadd" style={{ outline: "none", border: "none" }} onClick={contentInsert}>
+            <button className="samtoolbtnadd" style={{ outline: "none", border: "none" }} onClick={contentInsert}>
               <VisibilityIcon/> {addCon?'첨부됨!':'내용'}</button>
           </Tooltip>
           
           <input accept="image/*" style={{ display: 'none' }} id="imgData" type="file" onChange={upLoad} /> 
-          <Tooltip arrow className="btnadd" placement="top" title="사진첨부"> 
+          <Tooltip arrow  className="samtoolbtnadd" placement="top" title="사진첨부"> 
           <label htmlFor="imgData" style={{ height:"25px",margin:"0",textAlign:"center"}}> 
-              <IconButton  className="btnadd" size="small" component="span" style={{height:"22px",color:"var(--Bcolor)"}}> <AddPhotoAlternateIcon />
-              <span style={{width:"35px"}}>  {photoData?'추가!':'사진'}</span></IconButton>
+              <IconButton  className="samtoolbtnadd" size="small" component="span" style={{height:"22px",color:"var(--Bcolor)"}}> 
+              <AddPhotoAlternateIcon />  {photoData?'추가됨!':'사진'}
+                </IconButton>
             </label>
           </Tooltip>        
-        </div>         
+       
         <Tooltip arrow  placement="top" title="내용저장"> 
-          <IconButton size="small" component="span" onClick={submit} style={{color:"var(--Bcolor)",padding:"0"}}>
+          <button size="small" className="samtoolbtnadd" onClick={submit} style={{ outline: "none", color:"white",fontSize:'16px' }}>
           <span className="rocket" ref={rocketRef}>🚀</span>
-          <span style={{cursor:"pointer",fontWeight:"900"}}>저장</span> 
-          </IconButton>
-        </Tooltip>       
-        </form>
+          저장 
+          </button>
+        </Tooltip> 
+        </div>
       </div>
       }
 

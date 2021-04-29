@@ -15,21 +15,23 @@ useEffect(() => {
  }, [folder,roomName,user,userInfo,fireSync]);
 
 const columns = [
-  { field: 'id', headerName: '번호', width: '65px' },
-  { field: 'title', headerName: '제목', width: '58vw' },
+  { field: 'id', headerName: '번호', width: '65px',sortable: false, },
+  { field: 'date', headerName: '날짜', width: '110px',sortable: false, },
+  { field: 'title', headerName: '제목', width: '58vw',sortable: false, },
 ];
 
 //글 선택하면 실행함수
 const selectRow = () => { setReport(true); moveModal2(); roomNameHide();setDoor('퇴장');setEntering(true);}
 const rows = Object.values(data2).map((e,i) => { 
-  return({ id: i, title: Object.values(e)[0].text, ...e}) 
+  return({ id: i, date:Object.values(e)[0].today, title: Object.values(e)[0].text, ...e}) 
   })
 
   return (
     <div className="reportMenu"  >
      게시툴
-     <DataGrid  scrollbarSize={10} className="samtoolrow"  rows={rows} columns={columns} pageSize={10} 
+     <DataGrid  scrollbarSize={10} className="samtoolrow"  rows={rows} columns={columns} pageSize={20} 
      autoHeight rowHeight={25} headerHeight={25}  disableColumnMenu 
+     sortModel={[{  field: 'date', sort: 'desc', }]}
      onRowSelected={(p)=>{ 
      setItems(p.data); setroomName(p.data.roomName);enterRoom();setReport(true);
   setLinkCopy('https://samtool.netlify.app/#/'+folder+'/'+p.data.roomName+'re');  }}

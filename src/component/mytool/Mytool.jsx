@@ -47,11 +47,9 @@ function Mytool({fireIdea,fireApp, fireSync,user, userInfo, setlogoName }) {
     if(e.currentTarget == null){return;}
     const text = textRef.current.value; // 내용
     let text2 = addCon; //Content
-  // const title = titleRef.current.value; //Link
-    // let text2 = textRef2.current.value; // content
     if(addLink&&!addCon){text2 = `<iframe src=${addLink} width="90%" height="500px"/>`}
     if( !text ){ Swal.fire({title:'내용을 입력해 주세요.',icon:'warning'}) }
-    if (userInfo && text) {
+    if (userInfo && text && !photoData) {
       rocketOn();
       const dataId = Date.now();
       const data = {
@@ -72,7 +70,44 @@ function Mytool({fireIdea,fireApp, fireSync,user, userInfo, setlogoName }) {
       setPhotoData(''); rocketOn();
       setAddLink(''); setAddCon('')
     }
+  
+    if (userInfo && text && photoData) {
+      rocketOn();
+      const dataId = Date.now();
+      const metaData = { contentType: mime.lookup(photoData.name) } ||''
+      fireIdea.imgUpload( dataId, photoData, metaData).then((e)=>{        
+        const data = {
+          uid: user.uid||'',
+          dataId: dataId,
+          name: userInfo.name||'',
+          title: addLink,
+          text: text,
+          text2: text2,
+          today: today,
+          progress: 0,
+          color : 'secondary',
+          photoData : e||'',
+          selectFolder
+        }
+        fireSync.toolSave(folder,user.uid,selectFolder,data);      
+      })      
+      textRef.current.value = '';
+      setPhotoData(''); rocketOn();
+      setAddLink(''); setAddCon('')      
+    }
   }
+
+//사진업로드
+const upLoad = (e) => { 
+  const file = e.target.files[0]||'';     
+  setPhotoData(file)
+}
+// const upLoad = (e) => { 
+//   const imgDataId = Date.now();
+//   const file = e.target.files[0];    
+//   const metaData = { contentType: mime.lookup(file.name) } ||''
+//   fireIdea.imgUpload( imgDataId, file, metaData, (e) => setPhotoData(e));
+// }
 
   //로켓발사
   const rocketOn = () => {
@@ -144,13 +179,7 @@ function Mytool({fireIdea,fireApp, fireSync,user, userInfo, setlogoName }) {
       console.log(addCon)
       }
     }
-//사진업로드
-    const upLoad = (e) => { 
-    const imgDataId = Date.now();
-    const file = e.target.files[0];    
-    const metaData = { contentType: mime.lookup(file.name) } ||''
-    fireIdea.imgUpload( imgDataId, file, metaData, (e) => setPhotoData(e));
-  }
+
 
   return (
     <div className="samtoolmytool">
@@ -161,69 +190,68 @@ function Mytool({fireIdea,fireApp, fireSync,user, userInfo, setlogoName }) {
           })
         }
       </div>
+
       <div className="mytool-input">
-        <form className="mytool-form">
-        <div className="mytoolInputMenu">
+        <div onSubmit={submit} className="mytool-form">
+        <div className="mytoolInputMenu" style={{flex:"auto"}}>
           <div className="folderDorpDown" style={{flex:"auto"}}>
-          <DropdownButton as={ButtonGroup} variant="primary" title={selectFolder} size="sm" style={{flex:"1"}} >
-           <div className="cardSelect">
-             {
-             folderBox && Object.values(folderBox).map((e,i) => {
-               return <Dropdown.Item as="button" type="button"  onClick={()=>{setselectFolder(e)}} style={{textAlign:"center", fontSize:"12px",padding:"0",fontWeight:"900"}}>{e}</Dropdown.Item>
-             })
-             }
-           </div>
-          </DropdownButton>
+              <DropdownButton as={ButtonGroup} variant="primary" title={selectFolder} size="sm" style={{flex:"1"}} >
+               <div className="cardSelect">
+                 {
+                 folderBox && Object.values(folderBox).map((e,i) => {
+                   return <Dropdown.Item as="button" type="button"  onClick={()=>{setselectFolder(e)}} style={{textAlign:"center", fontSize:"12px",padding:"0",fontWeight:"900"}}>{e}</Dropdown.Item>
+                 })
+                 }
+               </div>
+              </DropdownButton>
           </div>
           <div style={{display:"flex",background:"white"}}>
-            {level>0 && 
-           <Tooltip arrow  placement="top" title="폴더삭제">
-            <IconButton size="small" component="span" onClick={deleteFolder} style={{color:"var(--Acolor)",padding:"0 5px 0 0"}}>
-                  <DeleteForever />  
-            </IconButton>
-            </Tooltip>
-            }
-            <input type="text" ref={newFolder} className="inputTitle" style={{flex:"3",minWidth:"50px"}} placeholder="새폴더"/>
-            {level>0 &&       
-             <IconButton size="small" component="span" onClick={AddNewFolder} style={{color:"var(--Acolor)",padding:"0 0 0 5px"}} > 
-             <Tooltip arrow  placement="top" title="폴더 추가">
-              <AddCircleOutlineIcon  />  
-              </Tooltip>
-            </IconButton>
-            }
+                {level>0 && 
+               <Tooltip arrow  placement="top" title="폴더삭제">
+                <IconButton size="small" component="span" onClick={deleteFolder} style={{color:"var(--Acolor)",padding:"0 5px 0 0"}}>
+                      <DeleteForever />  
+                </IconButton>
+                </Tooltip>
+                }
+                <input type="text" ref={newFolder} className="inputTitle" style={{flex:"3",minWidth:"50px"}} placeholder="새폴더"/>
+                {level>0 &&       
+                 <IconButton size="small" component="span" onClick={AddNewFolder} style={{color:"var(--Acolor)",padding:"0 0 0 5px"}} > 
+                 <Tooltip arrow  placement="top" title="폴더 추가">
+                  <AddCircleOutlineIcon  />  
+                  </Tooltip>
+                </IconButton>
+                }
           </div>
-          
+        </div>  
           <Tooltip arrow  placement="top" title="링크첨부"> 
-            <button className="btnadd" style={{ outline: "none", border: "none" }} onClick={linkInsert} >
+            <button className="samtoolbtnadd" style={{ outline: "none", border: "none" }} onClick={linkInsert} >
             <LinkIcon  /> {addLink?'첨부됨!':'링크'}</button>
           </Tooltip>
           
           <Tooltip arrow  placement="top" title="추가내용 첨부"> 
-            <button className="btnadd" style={{ outline: "none", border: "none" }} onClick={contentInsert}>
+            <button className="samtoolbtnadd" style={{ outline: "none", border: "none" }} onClick={contentInsert}>
               <VisibilityIcon/> {addCon?'첨부됨!':'내용'}</button>
           </Tooltip>
           
-          <input accept="image/*" style={{ display: 'none' }} id="imgData" type="file" onChange={upLoad} /> }
-          <Tooltip arrow className="samtoolbtnadd" placement="top" title="사진첨부"> 
+          <input accept="image/*" style={{ display: 'none' }} id="imgData" type="file" onChange={upLoad} /> 
+          <Tooltip arrow  className="samtoolbtnadd" placement="top" title="사진첨부"> 
           <label htmlFor="imgData" style={{ height:"25px",margin:"0",textAlign:"center"}}> 
               <IconButton  className="samtoolbtnadd" size="small" component="span" style={{height:"22px",color:"var(--Bcolor)"}}> 
-              <div style={{width:"80px",fontWeight:"900"}}><AddPhotoAlternateIcon /> {photoData?'추가됨!':'사진'}</div>
+              <AddPhotoAlternateIcon />  {photoData?'추가됨!':'사진'}
                 </IconButton>
             </label>
-          </Tooltip>
-        
-        </div>  
+          </Tooltip>        
        
         <Tooltip arrow  placement="top" title="내용저장"> 
-          <IconButton size="small" component="span" onClick={submit} style={{color:"var(--Bcolor)",padding:"0"}}>
+          <button size="small" className="samtoolbtnadd" onClick={submit} style={{ outline: "none", color:"white",fontSize:'16px' }}>
           <span className="rocket" ref={rocketRef}>🚀</span>
-          <span style={{cursor:"pointer",fontWeight:"900"}}>저장</span> 
-          </IconButton>
+          저장 
+          </button>
         </Tooltip> 
         <input type="text" className="textarea titleText" ref={textRef} cols="20" rows="4"  minlength="4" size="10" placeholder="제목/내용을 입력해주세요."
             // maxlength="20" 
             />
-        </form>
+        </div>
       </div>
 
     </div>

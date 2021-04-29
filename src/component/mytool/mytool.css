@@ -23,6 +23,22 @@
   height: 25px;
   font-weight: 900;
 }
+.samtoolbtnadd {
+  background: var(--Acolor);
+  color: var(--Bcolor);
+  border: none;
+  outline: none;
+  font-weight: 900;
+  font-size: small;
+  flex: auto !important;
+}
+.samtoolbtnadd:hover{
+  background: var(--Dcolor);
+  color:white;
+}
+.samtoolbtnadd:active{
+  background: var(--Acolor);
+}
 .mytool-items {
   flex:  auto;
   height: 100px; 
@@ -38,14 +54,14 @@
 }
 .mytool-form{
   display: grid;
-  grid-template-columns:  1fr    60px ;
+  grid-template-columns:  1fr 1fr  1fr 1fr 1fr ;
   border: none;
   outline: none;
   border-top: var(--Acolor) 1px solid;
   background: var(--Acolor);
 }
 .samtoolmytool .textarea {
-  grid-column: 1/5;
+  grid-column: 1/6;
   max-width: 100%;
   min-width: 100%;
   outline: none;

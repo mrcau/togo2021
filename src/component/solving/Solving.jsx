@@ -539,16 +539,14 @@ const dataDel = () => {
          {/* <Tooltip arrow placement="left" title="메시지 전송">
           <button className="btnRoomLink" style={{width:"40px"}} onClick={noticeUp}><AddCommentIcon/></button> 
           </Tooltip> */}
-          <input type="text" className="enterInput" placeholder="전달사항" ref={noticeRef} />
+          <input type="text" className="enterInput" placeholder="전달사항" ref={noticeRef} style={{padding:"10px"}} />
         </form>
       }
         {/* <div className="noticeTitle" > 공지 </div> */}
-      <div className="s-header noticeHeader" ref={titleRef}>
+      <div className="s-header noticeHeader" ref={titleRef} style={{height:"30px"}}>
          {/* 접속자 카운트 */}
-         <Badge badgeContent={items.enterMan||0} color="error" style={{width:'40px', paddingLeft:'10px',marginTop:'2px'}}>
-          <InsertEmoticon /> 
-        </Badge> 
-        <div className="enterTitle" >{notice}</div>  
+         <span style={{fontSize:"25px",height:"60px"}}>📢</span>
+        <div className="enterTitle" style={{fontSize:"20px"}} >{notice}</div>  
       </div>
 {/* 여기부터 todo스타일 */}
       <div className="s-itemsv">

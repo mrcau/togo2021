@@ -97,15 +97,18 @@
 .opentool-input{
   border: solid 1px var(--Acolor);
 }
-.opentool .samtoolbtnadd {
+.samtoolbtnadd {
   background: var(--Acolor);
   color: var(--Bcolor);
   border: none;
   outline: none;
   font-weight: 900;
   font-size: small;
+  flex: auto !important;
 }
-
+.titleText{
+  text-align: center !important;
+}
 @keyframes skyon {
   to {
     transform: translateY(-300px) translateX(-180px) rotate(-130deg) scale(5);

@@ -67,10 +67,11 @@ function Idea({ fireIdea, fireSync, user, userInfo ,setlogoName}) {
   const [selectNum, setSelectNum] = useState('0');
   const [selectNumbers, setselectNumbers] = useState(0)
 
-  const idNum = [];
-  for(let i=0;i<31;i++){
-    idNum[i]=i;
-  }
+  const idNum = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30];
+  // const idNum = [];
+  // for(let i=0;i<31;i++){
+  //   idNum[i]=i;
+  // }
 
   setlogoName(' 게시툴');
   
@@ -108,7 +109,7 @@ useEffect(() => {
     if(!e&&!roomName){ return}
     if(data.dataId){ if(data.dataId.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){setUserClass(true)} }          
     if(roomName&&e){ console.log('룸네임있고 로그인',roomName)
-      if(roomName.substr(0,6) === user.uid.substr(0,6)){setroomAdmin(true); console.log('roomAdmin1 리포트false!',roomAdmin)} 
+      if(roomName.substr(0,6) === user.uid.substr(0,6)){setroomAdmin(true); console.log('roomAdmin1 리포트false!')} 
       }else if(!roomName&&level>0){ setroomAdmin(true);console.log('roomAdmin2 리포트false!',roomAdmin,roomName,level) }    
     const cf = {  f1: (p) => { setItems(p) },  f2: () => { setItems({}) },
                   f3: (p) => { setRoom(p) },   f4: () => { setRoom({}) },
@@ -150,7 +151,7 @@ useEffect(() => {
   },[])
 
 //제출자료 소트 학번 selectNum
-const sortNumber = Object.values(items).map((e) => { return e.selectNum; })
+const sortNumber = Object.values(items).map((e) => { return e.selectNum  })
 sortNumber.sort((a,b)=>{return a-b})
 const SortNums = sortNumber.filter(e=>e!==undefined) //undefined 제거 필터
 const filterSortNum = [...new Set(SortNums)] //중복제거 Set(배열)
@@ -262,6 +263,8 @@ return;
       text:newRoom,
       text2:'',
       host:'입장',
+      today: today
+
       // selectNum:0
     }
     const abc = fireIdea.roomGetSave2(folder, newRoom, dataId, data,level)
@@ -496,7 +499,7 @@ const submit = (e) => {
   let text2 = addCon; //Content
   if(roomAdmin&&addLink&&!addCon){text2 = `<iframe src=${addLink} width="90%" height="500px"/>`}
   if(!text){ Swal.fire({title:'내용을 입력해주세요.',icon:'warning'}) }
-  if (userInfo && text ) { 
+  if (userInfo && text && !photoData ) { 
           const dataId = Date.now();
           const data = {
             uid: user.uid||'',
@@ -517,15 +520,44 @@ const submit = (e) => {
           setPhotoData(''); rocketOn();
           setAddLink(''); setAddCon('')
       }
+      if (userInfo && text && photoData) {
+        rocketOn();
+        const dataId = Date.now();
+        const metaData = { contentType: mime.lookup(photoData.name) } ||''
+        fireIdea.imgUpload( dataId, photoData, metaData).then((e)=>{        
+          const data = {
+            uid: user.uid||'',
+            dataId: dataId,
+            name: userInfo.name||'',
+            title: addLink,
+            text: text,
+            text2: text2,
+            today: today,
+            progress: 0,
+            color : 'secondary',
+            ip : ipAPI,
+            selectNum,
+            photoData : e||'',
+          }
+          fireIdea.itemSave2(folder, roomName, dataId, data)      
+        })      
+        textRef.current.value = '';
+        setPhotoData(''); rocketOn();
+        setAddLink(''); setAddCon('')      
+      }
     }
-
-const upLoad = (e) => { console.log('uplod')
-  const imgDataId = Date.now();
-  const file = e.target.files[0];  
-  const metaData = { contentType: mime.lookup(file.name) } ||''
-  fireIdea.imgUpload( imgDataId, file, metaData, (e) => setPhotoData(e));
-
+//사진업로드
+const upLoad = (e) => { 
+  const file = e.target.files[0]||'';    
+  setPhotoData(file)
 }
+// const upLoad = (e) => { console.log('uplod')
+//   const imgDataId = Date.now();
+//   const file = e.target.files[0];  
+//   const metaData = { contentType: mime.lookup(file.name) } ||''
+//   fireIdea.imgUpload( imgDataId, file, metaData, (e) => setPhotoData(e));
+// }
+
   return (
     <div className="samtoolidea" >       
     <div className="drawer" ref={drawerRef}>
@@ -598,17 +630,15 @@ const upLoad = (e) => { console.log('uplod')
        </div>            
       {roomAdmin && 
         <form className="samtooladimBar"  onSubmit={noticeUp} >
-          <input type="text" className="enterInput" placeholder="전달사항" ref={noticeRef} />
+          <input type="text" className="enterInput" placeholder="전달사항" ref={noticeRef} style={{padding:"10px"}} />
         </form>
       }
  
     {/* <div className="noticeTitle" > 공지 </div> */}
-    <div className="s-header noticeHeader" ref={titleRef} >
-         {/* 접속자 카운트 */} 
-         {/* <Badge badgeContent={items.enterMan||0} color="error" style={{width:'40px', paddingLeft:'10px'}}> </Badge>  */}
-         <span style={{fontSize:"20px"}}>📢</span>
-        <div className="enterTitle" >{notice}</div>  
-      </div>
+    <div className="s-header noticeHeader" ref={titleRef} style={{height:"30px"}}>
+         <span style={{fontSize:"25px",height:"60px"}}>📢</span>
+        <div className="enterTitle" style={{fontSize:"20px"}} >{notice}</div>  
+    </div>
 
 
    {roomName && 
@@ -646,7 +676,7 @@ const upLoad = (e) => { console.log('uplod')
         <div className="idNumGroup" style={{width:"100px"}}>
           <span className="num" style={{padding:"0 5px",color:"white",fontWeight:"900"}}> 번호 </span> 
           <select name="jobSelect" className="idNum" onChange={e=>{setSelectNum(e.currentTarget.value);}} style={{background:"lightpink"}} >
-           { Object.values(idNum).map((e,i) => { return <option value={e}> {e} </option>})}
+           { Object.values(idNum).map((e,i) => { return <option value={i}> {i} </option>})}
           </select>
         </div>
           <Tooltip arrow  placement="top" title="링크첨부"> 
