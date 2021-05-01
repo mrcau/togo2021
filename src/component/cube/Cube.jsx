@@ -73,7 +73,8 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
   const [report, setReport] = useState(false);
   const [userUID, setUserUID] = useState('');
   // const [cube, setCube] = useState('');
-
+  const today = new Date().toLocaleDateString();
+  // const [today, settoday] = useState(today0);
    //링크접속
    useEffect(() => {    
     if(id.length===10){  console.log('id.length===10')
@@ -422,7 +423,7 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
           f4: () => { setRoom({}) },
         }
       fireSync.dataSync(folder,roomname, cf2);
-      fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname,rommNameId});
+      fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname,rommNameId,today});
       }
 
         // 관리자 방입장
@@ -442,7 +443,7 @@ function Cube({ fireProblem, fireSync, user, userInfo ,setlogoName }) {
     f4: () => { setRoom({}) },
   }
 fireSync.dataSync(folder,roomname, cf2);
-fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname,rommNameId});
+fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname,rommNameId,today});
 }
    
       // input roomName 초기화

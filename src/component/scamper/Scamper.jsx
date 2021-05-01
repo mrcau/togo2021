@@ -363,7 +363,7 @@ useEffect(() => {
       f4: () => { setRoom({}) },
     }
   fireSync.dataSync(folder,roomname, cf2);
-  fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname,rommNameId});
+  fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname,rommNameId,today});
   }
 
   // 관리자 방입장2
@@ -383,7 +383,7 @@ useEffect(() => {
     f4: () => { setRoom({}) },
   }
 fireSync.dataSync(folder,roomname, cf2);
-fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname,rommNameId});
+fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname,rommNameId,today});
 }
 // notice 저장 - 공지 보내기
   const noticeUp = (e) => {
@@ -446,7 +446,8 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname,rommNameId});
       scamP: scamperP.current.value || '',
       scamE: scamperE.current.value || '',
       scamR: scamperR.current.value || '',
-      rommNameId:data.rommNameId
+      rommNameId:data.rommNameId|| '',
+      today
     }
     const roomUid =  roomERef.current.value.substr(0,roomSubstr);
     const roomId = roomUid+'REPORT';

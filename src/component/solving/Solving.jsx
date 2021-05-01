@@ -170,7 +170,7 @@ return;
     margin:0 0 10px 0;
     }
     .btnz { width:100px;background: #2778c4 ;border-radius:8px;
-    line-height:80px ; cursor:pointer; padding: 3px 0;  }
+    line-height:60px ; cursor:pointer; padding: 3px 0;  }
     .ahref{color:white;  font-weight:900; }
     .btinz:hover{ background:yellow; }
     </style>
@@ -266,7 +266,7 @@ return;
          f4: () => { setRoom({}) },
        }
      fireSync.dataSync(folder,roomname, cf2);
-fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname,rommNameId});
+fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname,rommNameId,today});
   }
 
   
@@ -287,7 +287,7 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname,rommNameId});
     f4: () => { setRoom({}) },
   }
 fireSync.dataSync(folder,roomname, cf2);
-fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname,rommNameId});
+fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname,rommNameId,today});
 }
 
     // input roomName 초기화
@@ -404,8 +404,8 @@ const submit = (e) => {
       progress: 0,
       color : 'secondary'
     }
-    if(roomName){fireIdea.itemSave3(folder, roomName, dataId, data,level)}
-    else{fireIdea.itemSave(folder,data); }
+    fireIdea.itemSave3(folder, roomName, dataId, data,level)
+    console.log(level)
   }
 }
 

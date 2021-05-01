@@ -15,10 +15,10 @@ useEffect(() => {
      return ()=>{stopReportSync()}
  }, [folder,roomName,fireProblem,user,userInfo,fireSync,report]);
 
-const columns = [
-  { field: 'id', headerName: '번호', width: '65px' },
-  { field: 'title', headerName: '제목', width: '58vw' },
-
+ const columns = [
+  { field: 'id', headerName: '번호', width: '65px',sortable: false, },
+  { field: 'date', headerName: '날짜', width: '110px',sortable: false, },
+  { field: 'title', headerName: '제목', width: '58vw',sortable: false, },
 ];
 
 //글 선택하면 실행함수
@@ -26,7 +26,7 @@ const selectRow = () => { setReport(true); moveModal2();setDoor('퇴장');setEnt
 
   // roomRowReset();  
 const rows = Object.values(data2).map((e,i) => { 
-  return( { id: i, title: e.text5, ...e}) 
+  return( { id: i, date:e.today, title: e.text5, ...e}) 
   })
 
   return (

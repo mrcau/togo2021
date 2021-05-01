@@ -19,11 +19,10 @@ const columns = [
   { field: 'date', headerName: '날짜', width: '110px',sortable: false, },
   { field: 'title', headerName: '제목', width: '58vw',sortable: false, },
 ];
-
 //글 선택하면 실행함수
 const selectRow = () => { setReport(true); moveModal2(); roomNameHide();setDoor('퇴장');setEntering(true);}
 const rows = Object.values(data2).map((e,i) => { 
-  return({ id: i, date:Object.values(e)[0].today, title: Object.values(e)[0].text, ...e}) 
+  return({ id: i, date:e.today, title: Object.values(e)[0].text, ...e}) 
   })
 
   return (

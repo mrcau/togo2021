@@ -2,6 +2,7 @@ import fireInit from './fire';
 import "firebase/auth";
 import "firebase/database";
 import "firebase/storage";
+import 'firebase/firestore'
 
 const roomSubstr = 6;
 const roomNumer = 10;
@@ -103,8 +104,11 @@ roomUser(folder,roomUid,cf) {
   // 보고서 저장
   async reportSave(folder, roomId, roomName, data) {
     fireInit.database().ref(`${folder}/${roomId}/${roomName}`)
-      .set(data)
+    .set(data)
   }
+  // async reportSave(folder, roomId, roomName, data) {
+  //   fireInit.collection(folder).doc(roomId).set(data);
+  // }
   
 // 비디오 메시지 저장
 videoSave(folder,roomName,spot,data){
@@ -174,10 +178,10 @@ itemSave3(folder,roomName, dataId, data,level) {
   let roomGetNum = 0; 
   const ref = fireInit.database().ref(`${folder}/${roomUid}/${roomNum}`);
   ref.on('value',(p)=>{const data = p.val();
-    if(data){ roomGetNum = Object.keys(data).length; }
+    if(data){ roomGetNum = Object.keys(data).length; console.log(roomGetNum)}
   })
 
-    if(roomGetNum < level){ console.log(roomGetNum)
+    if(roomGetNum < level+4){ 
       fireInit.database().ref(`${folder}/${roomUid}/${roomNum}/${dataId}`).set(data)
     .then(() => console.log('글 저장성공'))
     .catch((e) => console.log(e))

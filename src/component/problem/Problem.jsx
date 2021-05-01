@@ -358,7 +358,7 @@ useEffect(() => {
       f4: () => { setRoom({}) },
     }
   fireSync.dataSync(folder,roomname, cf2);
-  fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname,rommNameId});
+  fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname,rommNameId,today});
   }
   // 관리자 방입장2
   const adminEnter2 = (e) => {
@@ -377,7 +377,7 @@ useEffect(() => {
     f4: () => { setRoom({}) },
   }
 fireSync.dataSync(folder,roomname, cf2);
-fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname,rommNameId});
+fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname,rommNameId,today});
 }
 // notice 저장 - 공지 보내기
   const noticeUp = (e) => {
@@ -438,7 +438,8 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname,rommNameId});
       scamA: problemA.current.value || '',
       scamM: problemM.current.value || '',
       scamP: problemP.current.value || '',
-      rommNameId:data.rommNameId
+      rommNameId:data.rommNameId || '',
+      today
     }
     const roomUid =  roomERef.current.value.substr(0,roomSubstr);
     const roomId = roomUid+'REPORT';
@@ -446,7 +447,7 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname,rommNameId});
         Swal.fire({title:'처음문제를 입력해주세요.',icon:'warning'})}
     else if(!problemP.current.value){
           Swal.fire({title:'최종문제를 입력해주세요.',icon:'warning'})}
-    else{ console.log(data)
+    else{ console.log('data',data)
       Swal.fire({title:'내용을 저장하겠습니까?', showCancelButton: true}).then((result)=>{
         if(result.isConfirmed){
           Swal.fire({title:'제출완료',icon:'success'});

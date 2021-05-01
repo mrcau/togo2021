@@ -63,15 +63,16 @@ function Idea({ fireIdea, fireSync, user, userInfo ,setlogoName}) {
   //itemrow  
   const [items, setItems] = useState({});
   const today = new Date().toLocaleDateString();
+  // const [today, settoday] = useState(today0);
   const [color, setColor] = useState('primary');
   const [selectNum, setSelectNum] = useState('0');
   const [selectNumbers, setselectNumbers] = useState(0)
 
-  const idNum = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30];
-  // const idNum = [];
-  // for(let i=0;i<31;i++){
-  //   idNum[i]=i;
-  // }
+  // const idNum = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30];
+  const idNum = [];
+  for(let i=0;i<31;i++){
+    idNum[i]=i;
+  }
 
   setlogoName(' 게시툴');
   
@@ -90,7 +91,7 @@ function Idea({ fireIdea, fireSync, user, userInfo ,setlogoName}) {
       return ()=>{stoproomSync();}
     }
     
-    else if(id.length===12){ console.log('hi',id)
+    else if(id.length===12){ 
       const enterRoomId =  id.substr(0,roomSubstr)||"";
       const cf = { 
       f1: ()=>{setroomName(id.substr(0,10)); setRoomUid(enterRoomId);setDoor('퇴장');
@@ -227,7 +228,6 @@ return;
     })
     if (text) {
     setAddLink(text)
-    console.log(addLink)
     }
   }
 
@@ -242,7 +242,6 @@ return;
       })
       if (text) {
       setAddCon(text)
-      console.log(addCon)
       }
     }
 
@@ -278,7 +277,7 @@ return;
       if(Object.entries(items).length<1){ return}
       let entry = Object.entries(items)||[];
       const itemUid = entry[0][1].uid||'';
-      if(!report && items.roomName.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){ console.log('뻥',roomName)
+      if(!report && items.roomName.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){ 
         Swal.fire({ 
           title: '전체 내용을 삭제하겠습니까?',
           icon:'warning',
@@ -295,6 +294,8 @@ return;
   // 관리자 방입장
   const adminEnter = (e) => {
     setEntering(true);
+    // const today1 = new Date().toLocaleDateString();
+    // settoday(today1)
     const textRoom = e.currentTarget.textContent;
     const roomMap = Object.keys(room);
     const roomNumber = roomMap[textRoom]
@@ -313,12 +314,14 @@ return;
     f4: () => { setRoom({}) },
   }
 fireSync.dataSync(folder,roomname, cf2);
-fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname,rommNameId});
+fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname,rommNameId,today});
 }
 
 
   // 관리자 방입장2
   const adminEnter2 = (e) => {
+    // const today1 = new Date().toLocaleDateString();
+    // settoday(today1)
     const rommNameId = Date.now();
     setEntering(true);
     const roomname = e;
@@ -334,7 +337,7 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname,rommNameId});
     f4: () => { setRoom({}) },
   }
 fireSync.dataSync(folder,roomname, cf2);
-fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname,rommNameId});
+fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname,rommNameId,today});
 }
 
     // input roomName 초기화
@@ -426,7 +429,7 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname,rommNameId});
   }
 
     //리포트 저장
-    const reportSave = () => { console.log(items,Object.values(items)[0])
+    const reportSave = () => { 
       if(!roomName||!user||items.roomName.substr(0,roomSubstr) !== user.uid.substr(0,roomSubstr)){return}    
       if (!Object.values(items)[0]){Swal.fire('제목을 입력해주세요.'); return}
       else{   
@@ -438,7 +441,8 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname,rommNameId});
             // const dataId = Date.now();
             // const rommNameId = roomName+dataId
           fireIdea.reportSave(folder, roomId, items.rommNameId, value);
-          Swal.fire('저장되었습니다.');        
+          // fireSync.ideaTextEdit(folder,roomName,item.dataId,text);
+      Swal.fire('저장되었습니다.');        
       }})
     }}
       
@@ -450,7 +454,7 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname,rommNameId});
     if(Object.entries(items).length<1){ return}
     let entry = Object.entries(items)||[];
     const itemUid = entry[0][1].uid||'';
-    if(!report && items.roomName.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){ console.log('뻥',roomName)
+    if(!report && items.roomName.substr(0,roomSubstr) === user.uid.substr(0,roomSubstr)){ 
       Swal.fire({ 
         title: '토론방을 삭제하겠습니까?',
         text:"삭제될 토론방 : "+roomName,
@@ -653,7 +657,6 @@ const upLoad = (e) => {
       </div>
       </div>
     }
- { console.log(selectNumbers)}
 {/* 여기부터 todo스타일 */}
       <div className="samtoolideas" >
         <div className="idea-items">
