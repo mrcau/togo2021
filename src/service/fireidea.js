@@ -245,13 +245,18 @@ itemUp2(folder,roomName, dataId, counter) {
     try {
       const e = await fireInit.storage().ref(`imgData/${imgDataId}`).put(file, metaData)
       const downloadUrl = await e.ref.getDownloadURL();
+      console.log(downloadUrl)
       return downloadUrl
+
     }
     catch (error) {
       console.log(error)
     }
   }
 
+  imgDel(imgDataId) { 
+      fireInit.storage().ref(`imgData/${imgDataId}`).delete()
+  }
 // 룸네임 없으면 컬러 업데이트
 itemColorUp(folder, uid, dataId, color) {
   fireInit.database().ref(`${folder}/${uid}/${dataId}`)

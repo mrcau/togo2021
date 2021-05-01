@@ -11,13 +11,13 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import LinkIcon from '@material-ui/icons/Link';
 
-function  Toolrow ({item,fireApp,level, user}) {
+function  Toolrow ({item,fireApp,level, fireIdea,user}) {
   const folder = "Opentool";
   const Swal = require('sweetalert2');
   // const [video, setVideo] = useState('');
   const fire = () => { 
-    if(item.text2||item.photoData){
-    Swal.fire({html:item.text2,imageUrl:item.photoData, width:'90%'})
+    if(item.text2){
+    Swal.fire({html:item.text2, width:'90%'})
   }}
   const [Switch, setSwitch] = useState(true);
   let counter = item.progress;
@@ -29,7 +29,12 @@ function  Toolrow ({item,fireApp,level, user}) {
         title: '데이터를 삭제하겠습니까?',
         icon:'warning',
         showCancelButton: true})
-      .then((result) => {fireApp.opentoolDel(folder,item.dataId)});
+      .then((result) => {
+        fireApp.opentoolDel(folder,item.dataId);
+        if(item.photoData){ 
+          fireIdea.imgDel(item.dataId)
+          }
+      });
     }      
     
   const plus = () => {
@@ -66,7 +71,7 @@ function  Toolrow ({item,fireApp,level, user}) {
   return (
     <div className="toolrow">
 
-<Card bg={item.color} text={'white'} style={{ width: '15rem',height:'7rem' }} className="mb-2" >
+<Card bg={item.color} text={'white'} style={{ width: '15rem'}} className="mb-2" >
       
       <Card.Header style={{display:'flex',justifyContent:"space-between" ,padding:'5px'}} >
         {user.uid===item.uid && <IconButton style={{width:'20px', height:'15px'}} > <DeleteForever onClick={itemDel} style={{color:'white'}} /></IconButton> }
@@ -87,8 +92,8 @@ function  Toolrow ({item,fireApp,level, user}) {
           </div>
         </DropdownButton>}
         {item.text2 && 
-          <IconButton style={{width:'30px', height:'20px'}} >
-            <CopyToClipboard text={item.text2}>
+          <IconButton style={{width:'30px', height:'20px'}} onClick={()=>{Swal.fire("자료가 복사되었습니다.\n 필요한곳에 붙여넣기 하세요 Ctrl+V ")} } >
+            <CopyToClipboard text={item.text2} >
               <FileCopyIcon style={{color:'white'}} size="small"  /> 
             </CopyToClipboard>
           </IconButton>
@@ -114,7 +119,11 @@ function  Toolrow ({item,fireApp,level, user}) {
           </Badge>
         </IconButton>
       </Card.Header>
-      
+
+    {item.photoData &&      
+      <Card.Img variant="top" src={item.photoData} onClick={()=>{Swal.fire({imageUrl:item.photoData, width:'90%'})}} 
+      style={{cursor:"pointer",maxHeight:"105px",margin:"auto"}} />
+    }
 
       <div className="cardTitle" style={{textAlign:"center"}}>
         <Card.Body style={{padding:"8px",height:"55px",overflowY:"auto" }}>

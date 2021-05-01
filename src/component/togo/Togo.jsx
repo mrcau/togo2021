@@ -22,10 +22,10 @@ import Opentoolbox from '../opentool/Opentoolbox';
 function Togo({ fireApp, user, userInfo, setlogoName, photo }) {
   setlogoName('');
   const history = useHistory()  ;
-  console.log('user', user,'userInfo', userInfo)
   return (
     <div className="samtooltogo" style={{paddingBottom:"10px"}}>      
         <div className="samtooljumbo"> <div className="mainlogo"/>  </div>
+        {/* <button className="samtoolstart"  onClick={() =>{history.push('/opentool');}}>SamTool Start</button> */}
         {user.uid &&  <div className="ppp" >나의 메뉴</div> }
         {user.uid && 
         <div className="togoMain1">  
@@ -71,7 +71,7 @@ function Togo({ fireApp, user, userInfo, setlogoName, photo }) {
               </Card.Body>
             </Card>
 
-            {userInfo&&userInfo.level>9&&
+            {user.uid && userInfo&&userInfo.level>9&&
             <Card  className="mainCard1"  onClick={() =>{history.push('/solving/:id');}} >
               <Card.Img variant="top" src={caht}  className="cardImg1" />
               <Card.Body>
@@ -79,7 +79,7 @@ function Togo({ fireApp, user, userInfo, setlogoName, photo }) {
               </Card.Body>
             </Card>
             }
-            {userInfo&&userInfo.level>9&&
+            {user.uid && userInfo&&userInfo.level>9&&
             <Card  className="mainCard1" onClick={() =>{history.push('/cube/:id');}}>
               <Card.Img variant="top" src={cube}  className="cardImg1" />
               <Card.Body>
@@ -90,7 +90,7 @@ function Togo({ fireApp, user, userInfo, setlogoName, photo }) {
             <Card  className="mainCard1" onClick={() =>{history.push('/opentool');}} >
               <Card.Img variant="top" src={tool}  className="cardImg1"  />
               <Card.Body>
-                <button className="btn1 card1" >공유툴</button>
+                <button className="btn1 card1" > 사용법</button>
               </Card.Body>
             </Card>
         </div>
@@ -100,12 +100,12 @@ function Togo({ fireApp, user, userInfo, setlogoName, photo }) {
             <div className="h1" style={{textAlign:"center"}}> Let's create ideas and challenges </div>
           </div> 
         </div>
-        {userInfo&&userInfo.level>9&&
+        {user.uid && userInfo&&userInfo.level>9&&
             <div className="ppp" >디자인씽킹 프로젝트 
             {/* 기발한 아이디어와 도전을 이끌어내 보세요. */}
             </div>
           }
-        {userInfo&&userInfo.level>9&&
+        {user.uid && userInfo&&userInfo.level>9&&
         <div className="togoMain">          
           <Card className="mainCard"  onClick={() =>{history.push('/problem/:id');}} >
             <Card.Img variant="top" src={problem} className="cardImg"  />

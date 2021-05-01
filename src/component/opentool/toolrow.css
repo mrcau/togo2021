@@ -9,6 +9,7 @@
   transition: all 900ms;
   transform-style: preserve-3d;
   box-shadow: 2px 4px 11px -2px rgba(69,69,69,1);
+  margin: 0 auto;
 }
 .toolrow:hover {
   transform: rotateY(180deg);

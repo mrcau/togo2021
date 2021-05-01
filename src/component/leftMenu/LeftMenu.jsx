@@ -49,17 +49,17 @@ const history = useHistory();
       <div style={{width:'100%',padding:"0"}}>
         <div className="menuTitle"  > 협업도구 </div>
         <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/postit/:id"><div className="samtoolicon">게시툴</div></Link> </div>
-        {userInfo&&userInfo.level>9&&
+        {user.uid && userInfo&&userInfo.level>9&&
         <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/solving/:id"><div className="samtoolicon">코딩툴</div></Link></div>
         }
-        {userInfo&&userInfo.level>9&&
+        {user.uid && userInfo&&userInfo.level>9&&
         <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/cube/:id"><div className="samtoolicon">큐브툴</div></Link> </div>
         }
-        <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/opentool"><div className="samtoolicon">공유툴</div></Link></div>
+        <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/opentool"><div className="samtoolicon">사용법</div></Link></div>
       </div>  
 
       <hr style={{width:'90%',border:'dashed 1px gray'}} />    
-      {userInfo&&userInfo.level>9&&
+      {user.uid && userInfo&&userInfo.level>9&&
       <div style={{width:'100%',padding:"0"}}>
         <div className="menuTitle"  > 디자인씽킹 </div>
         <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/problem/:id"><BatteryCharging20/>문제찾기</Link> </div>
@@ -68,7 +68,6 @@ const history = useHistory();
         <div className="accordion Bmenu" onClick={moveModal2}> <Link className="a" to="/startup/:id">🚀 스타트업</Link></div>
       </div>  
       }
-     
 {/* 
         <Accordion  style={{width:'100%'}}>         
           <Card>

@@ -38,9 +38,9 @@ const [reports, setReports] = useState(report)
     }
     setSwitch(!Switch);
   }
-   const itemDel = () => {
+   const itemDel = () => { console.log(item.dataId)
      if(report){return}
-     if(!roomName){
+     if(!roomName){ 
       Swal.fire({ 
         title: '내정보를 삭제하겠습니까?',
         icon:'warning',
@@ -48,13 +48,16 @@ const [reports, setReports] = useState(report)
       .then((result) => { if(result.isConfirmed){ 
       fireIdea.itemDel(folder,item.uid,item.dataId); 
       }});
-    }else{
+    }else{ 
       Swal.fire({ 
         title: '내정보를 삭제하겠습니까?',
         icon:'warning',
         showCancelButton: true})
       .then((result) => { if(result.isConfirmed){ 
       fireIdea.itemDel2(folder,roomName,item.dataId); 
+      if(item.photoData){ 
+      fireIdea.imgDel(item.dataId)
+      }
       }});
     }
     }
@@ -66,7 +69,7 @@ const [reports, setReports] = useState(report)
       fireIdea.itemColorUp(folder,item.uid,item.dataId,p);
       }
   }
-  const fire = () => {Swal.fire({html:item.text2,imageUrl:item.photoData, width:'90%'})}
+  const fire = () => {Swal.fire({html:item.text2, width:'90%'})}
 
   const editText = async()=>{ 
     // e.preventDefault();
@@ -87,7 +90,7 @@ const [reports, setReports] = useState(report)
   return (
     <div className="idearow" > 
      {item.color && 
-     <Card bg={item.color} text={'white'} style={{ width: '12rem',height:'120px'}} className="mb-2" >
+     <Card bg={item.color} text={'white'} style={{ width: '15rem',minHeight:"110px"}} className="mb-2" >
       {item.roomUid 
       ? <Card.Header style={{fontSize:"large",fontWeight:"900",textAlign:"center"}}>제목</Card.Header>
       :
@@ -152,12 +155,17 @@ const [reports, setReports] = useState(report)
         </IconButton>
       </Card.Header>
       }
-
-
+    {item.photoData &&
+      // <div  style={{textAlign:"center"}}>
+      <Card.Img variant="top" src={item.photoData} onClick={()=>{Swal.fire({imageUrl:item.photoData, width:'90%'})}} 
+      style={{cursor:"pointer",height:"37px",width:"45px",margin:"auto"}} />
+      // </div>
+      }
       <div className="cardTitle" style={{textAlign:"center"}}>
-        <Card.Body style={{padding:"8px",height:"79px",overflowY:"auto" }}>
+        {/* Card.body 에 스크롤바를 주려면 height 값을 지정해주면 됨 */}
+        <Card.Body style={{padding:"8px",overflowY:"auto", maxHeight:"78px" }}> 
           <Card.Title style={{fontSize:"16px",fontWeight:"900"}}  onClick={editText} > {item.text} </Card.Title>
-          <Card.Text style={{fontSize:"12px",lineHeight:"14px", whiteSpace:"pre-wrap" }}  onClick={editText} > {item.ip && 'IP : '+ item.ip.substr(8)} </Card.Text>
+          <Card.Text style={{fontSize:"12px",lineHeight:"14px", whiteSpace:"pre-wrap" }}  onClick={editText} > {item.ip && '작성자 IP : '+ item.ip.substr(8)} </Card.Text>
         </Card.Body>
       </div>
      </Card>}

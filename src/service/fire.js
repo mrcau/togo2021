@@ -8,7 +8,7 @@ const firebaseConfig = {
   authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
   databaseURL: process.env.REACT_APP_FIREBASE_DB_URL,
   projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
-  // storageBucket: process.env.REACT_APP_FIREBASE_STORAGE,
+  storageBucket: "samtool-2021.appspot.com",
   // messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGE,
   // appId: process.env.REACT_APP_FIREBASE_APPID,
   // measurementId: process.env.REACT_APP_FIREBASE_MEASURE,

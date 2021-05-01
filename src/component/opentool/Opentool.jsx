@@ -28,7 +28,7 @@ function Opentool({ fireSync, fireApp, fireIdea, user, userInfo,setlogoName }) {
   const Swal = require('sweetalert2');
   const level = userInfo.level || 0;
   const [folderBox, setfolderBox] = useState([])
-  const [selectFolder, setselectFolder] = useState('SAMTOOL')
+  const [selectFolder, setselectFolder] = useState('사용방법')
   const [anchorEl, setAnchorEl] = useState('');
   const [photoData, setPhotoData] = useState('');
   const [addLink, setAddLink] = useState('')
@@ -38,7 +38,7 @@ function Opentool({ fireSync, fireApp, fireIdea, user, userInfo,setlogoName }) {
   const handleClose = () => { setAnchorEl(null); };
 
 
-  setlogoName(' 공유툴');
+  setlogoName('사용법 / 공유툴');
 
   useEffect(() => {    
     const cf = { f1: (p)=>{setItems(p);setfolderBox(p.toolbox)}, f2: ()=>{setItems({})}  }
@@ -130,7 +130,7 @@ const upLoad = (e) => {
 
   
   const deleteFolder = () =>{
-    if(selectFolder==='SAMTOOL'){return}
+    if(selectFolder==='사용방법'){return}
     newFolder.current.value = '';
     Swal.fire({ 
       title: selectFolder + ' 폴더와 자료가 모두 삭제됩니다.',
@@ -142,7 +142,7 @@ const upLoad = (e) => {
     console.log(folderBox,imsiFolder )
      const folders =  delete folderBox.selectFolder
         fireApp.openfolderDel(folder,'toolbox',folderBox);
-    setselectFolder('SAMTOOL')
+    setselectFolder('사용방법')
   }});    
   }
 
@@ -199,7 +199,7 @@ const upLoad = (e) => {
   return (
     <div className="opentool">
       
-      {level>5 && 
+      {user.uid && userInfo && userInfo.level>9 && 
       <div className="mytool-input">
         <input type="text" className="textarea titleText" ref={textRef} cols="20" rows="4"  minlength="4" size="10" placeholder="제목/내용을 입력해주세요."/>
         <div onSubmit={submit} className="mytool-form">
@@ -276,7 +276,7 @@ const upLoad = (e) => {
         {
           // eslint-disable-next-line array-callback-return
           Object.keys(items).map((e) => { 
-            return e>10&&selectFolder===items[e].selectFolder&&<Toolrow key={e} user={user} item={items[e]} fireApp={fireApp} level={level} />
+            return e>10&&selectFolder===items[e].selectFolder&&<Toolrow key={e} fireIdea={fireIdea} user={user} item={items[e]} fireApp={fireApp} level={level} />
           })
         }
       </div>

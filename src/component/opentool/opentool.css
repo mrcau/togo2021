@@ -27,11 +27,12 @@
   display: grid;
   gap: 40px;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  grid-template-rows: repeat(auto-fill, 70px);
+  grid-template-rows: repeat(auto-fill);
   padding: 10px;
   padding-right: 30px;
   overflow-y:auto ;
   overflow-x: hidden;
+  justify-content: center;
 }
 .opentool-form{
   display: grid;

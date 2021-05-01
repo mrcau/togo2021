@@ -495,7 +495,7 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname,rommNameId,tod
   }
 
 
-const submit = (e) => {
+const submit = (e) => { console.log(photoData)
   // e.preventDefault();
   if(!roomName){return;}
   // const title = titleRef2.current.value ||'';//Link
@@ -524,7 +524,7 @@ const submit = (e) => {
           setPhotoData(''); rocketOn();
           setAddLink(''); setAddCon('')
       }
-      if (userInfo && text && photoData) {
+      if (userInfo && text && photoData) { 
         rocketOn();
         const dataId = Date.now();
         const metaData = { contentType: mime.lookup(photoData.name) } ||''
@@ -561,7 +561,6 @@ const upLoad = (e) => {
 //   const metaData = { contentType: mime.lookup(file.name) } ||''
 //   fireIdea.imgUpload( imgDataId, file, metaData, (e) => setPhotoData(e));
 // }
-
   return (
     <div className="samtoolidea" >       
     <div className="drawer" ref={drawerRef}>
