@@ -13,6 +13,7 @@ function Workout({ fireTodo, user, userName, setlogoName }) {
   const today3 = new Date().getDate();
   const todayId = `${today1}`+`${today2}`+`${today3}`
   const textRef = useRef();
+  const datetRef = useRef();
   // const titleRef = useRef();
   const rocketRef = useRef();
   const [items, setItems] = useState({});
@@ -23,6 +24,7 @@ function Workout({ fireTodo, user, userName, setlogoName }) {
   const [sholder, setSholder] = useState(['파이크푸쉬업','리버스크로스','비하인드넥프레스','사이드레터럴'])
   const [sports, setSports] = useState(chest)
   const [selectBody, setselectBody] = useState('종목선택')
+  const [workDate, setWorkDate] = useState('datetRef.current.value')
   setlogoName(' Workout');
 
   // 데이터 보여주기 싱크
@@ -86,7 +88,10 @@ console.log(items)
       </div>
       <div className="workout-input">
         <form onSubmit={submit} className="workout-form">
-          <DropdownButton as={ButtonGroup} variant={color} title={body} size="sm" >
+
+        <input type="date" ref={datetRef}  value={today}></input>
+
+        <DropdownButton as={ButtonGroup} variant={color} title={body} size="sm" >
           <div className="cardSelect">
             <Dropdown.Item as="button" onClick={()=>{setColor('danger');setSports(chest); setBody('가슴')}} style={{color:"#d53343",textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>가슴</Dropdown.Item>
             <Dropdown.Item as="button" onClick={()=>{setColor('warning'); setBody('등')}} style={{color:"#f7bb07",textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>등</Dropdown.Item>

@@ -1,6 +1,7 @@
 .samtoolmypage {
   background: var(--Ecolor);
   padding: 10px;
+  height: 200px; 
   height: 100%;
   font-size: large;
 }
@@ -9,6 +10,7 @@
   padding: 10px;
   /* width:50%; */
   border-radius: 12px;
+  height: 200px; 
   height: 90%;
   border: solid 2px black !important;
 
