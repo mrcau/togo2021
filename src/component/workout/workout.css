@@ -26,22 +26,32 @@
   display: grid;
   row-gap: 10px;
   column-gap: 50px;
-  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   padding: 10px;
   /* padding-right: 50px; */
   overflow-x: hidden;
   overflow-y:auto ;
 }
-.workout-form{
+.samworkout .btnWorkoutAdd{
+  height:50px;
+  background: var(--Bcolor);
+  color: white;
+  font-size: larger;
+}
+.samworkout .topSelect{
   display: grid;
-  grid-template-columns:50px 140px 1fr 70px;
+  grid-template-columns:1fr 1fr 1fr 1fr;
+}
+/* .workout-form{
+  display: grid;
+  grid-template-columns:1fr 1fr 1fr ;
   border: none;
   outline: none;
   border-top: var(--Acolor) 1px solid;
   background: var(--Bcolor);
-}
+} */
 .samworkout .samtextarea {
-  grid-column: 1/5;
+  grid-column: 1/4;
   max-width: 100%;
   min-width: 100%;
   outline: none;
