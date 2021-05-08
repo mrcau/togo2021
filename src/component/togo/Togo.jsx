@@ -79,14 +79,12 @@ function Togo({ fireApp, user, userInfo, setlogoName, photo }) {
               </Card.Body>
             </Card>
             }
-            {user.uid && userInfo&&userInfo.level>9&&
             <Card  className="mainCard1" onClick={() =>{history.push('/cube/:id');}}>
               <Card.Img variant="top" src={cube}  className="cardImg1" />
               <Card.Body>
                 <button className="btn1 card1" >큐브툴</button>
               </Card.Body>
             </Card>
-            }
             <Card  className="mainCard1" onClick={() =>{history.push('/opentool');}} >
               <Card.Img variant="top" src={tool}  className="cardImg1"  />
               <Card.Body>
@@ -100,12 +98,9 @@ function Togo({ fireApp, user, userInfo, setlogoName, photo }) {
             <div className="h1" style={{textAlign:"center"}}> Let's create ideas and challenges </div>
           </div> 
         </div>
-        {user.uid && userInfo&&userInfo.level>9&&
             <div className="ppp" >디자인씽킹 프로젝트 
             {/* 기발한 아이디어와 도전을 이끌어내 보세요. */}
             </div>
-          }
-        {user.uid && userInfo&&userInfo.level>9&&
         <div className="togoMain">          
           <Card className="mainCard"  onClick={() =>{history.push('/problem/:id');}} >
             <Card.Img variant="top" src={problem} className="cardImg"  />
@@ -137,6 +132,8 @@ function Togo({ fireApp, user, userInfo, setlogoName, photo }) {
               <button className="btn1"  >바로가기</button>
             </Card.Body>
           </Card>
+
+        {user.uid && userInfo&&userInfo.level>9&&
           <Card  className="mainCard"onClick={() =>{history.push('/startup/:id');}} >
             <Card.Img variant="top" src={rocket}  className="cardImg" />
             <Card.Body>
@@ -147,8 +144,8 @@ function Togo({ fireApp, user, userInfo, setlogoName, photo }) {
               <button className="btn1" >바로가기</button>
             </Card.Body>
           </Card>
-        </div>
         }
+        </div>
 
     </div>  );}    
     export default Togo;

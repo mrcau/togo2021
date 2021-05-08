@@ -33,6 +33,7 @@
   overflow-y:auto ;
   overflow-x: hidden;
   justify-content: center;
+  height: 200px; 
 }
 .opentool-form{
   display: grid;

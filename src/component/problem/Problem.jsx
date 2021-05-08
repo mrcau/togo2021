@@ -605,22 +605,7 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname,rommNameId,tod
         <div className="enterTitle" style={{fontSize:"20px"}} >{notice}</div>  
     </div>
 
-        <form className="s-items" ref={formRef} >         
-          <div className="inputBox" >
-            <div className="s-itemTitle" style={{width:"100%"}}>5WHY질문</div>
-            <textarea cols="30" rows="1" className="problemInput saminput1" ref={aTitle} style={{padding:"3px",background:"lightpink"}}
-            onChange={onSubmit} value={data.aTitle} placeholder="처음문제 : 해결하려고 하는 문제는?" />
-            <textarea cols="30" rows="1" className="problemInput saminput2" ref={bName} 
-            onChange={onSubmit} value={data.bName} placeholder={placeData.why1} />
-            <textarea cols="30" rows="1" className="problemInput saminput3" ref={input3} 
-            onChange={onSubmit} value={data.input3} placeholder={placeData.why2} />            
-            <textarea cols="30" rows="1" className="problemInput saminput4" ref={input4} 
-            onChange={onSubmit} value={data.input4} placeholder={placeData.why3} />
-            <textarea cols="30" rows="1" className="problemInput saminput5 " ref={input5} 
-            onChange={onSubmit} value={data.input5} placeholder={placeData.why4} />
-            <textarea cols="30" rows="1" className="problemInput saminput6" ref={input6} 
-            onChange={onSubmit} value={data.input6} placeholder={placeData.why5} />            
-          </div>   
+        <form className="s-items" ref={formRef} > 
           
           <div className="s-item">
             <div className="s-itemTitle" sty>{placeData.title1} 
@@ -673,7 +658,22 @@ fireSync.cubeUp(folder,roomname, {host:'입장',roomName:roomname,rommNameId,tod
             <textarea  className="s-intemInput saminput1" cols="30" rows="2" placeholder={placeData.text4} 
             ref={problemM} onChange={onSubmit} value={data.scamM} />
           </div>
-
+        
+          <div className="inputBox" >
+            <div className="s-itemTitle" style={{width:"100%"}}>5WHY질문</div>
+            <textarea cols="30" rows="1" className="problemInput saminput1" ref={aTitle} style={{padding:"3px",background:"lightpink"}}
+            onChange={onSubmit} value={data.aTitle} placeholder="처음문제 : 해결하려고 하는 문제는?" />
+            <textarea cols="30" rows="1" className="problemInput saminput2" ref={bName} 
+            onChange={onSubmit} value={data.bName} placeholder={placeData.why1} />
+            <textarea cols="30" rows="1" className="problemInput saminput3" ref={input3} 
+            onChange={onSubmit} value={data.input3} placeholder={placeData.why2} />            
+            <textarea cols="30" rows="1" className="problemInput saminput4" ref={input4} 
+            onChange={onSubmit} value={data.input4} placeholder={placeData.why3} />
+            <textarea cols="30" rows="1" className="problemInput saminput5 " ref={input5} 
+            onChange={onSubmit} value={data.input5} placeholder={placeData.why4} />
+            <textarea cols="30" rows="1" className="problemInput saminput6" ref={input6} 
+            onChange={onSubmit} value={data.input6} placeholder={placeData.why5} />            
+          </div>   
           
           <div className="s-item">
             <div className="s-itemTitle">문제정의</div>
