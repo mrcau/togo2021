@@ -79,14 +79,12 @@ function Togo({ fireApp, user, userInfo, setlogoName, photo }) {
               </Card.Body>
             </Card>
             }
-            {user.uid && userInfo&&userInfo.level>9&&
             <Card  className="mainCard1" onClick={() =>{history.push('/cube/:id');}}>
               <Card.Img variant="top" src={cube}  className="cardImg1" />
               <Card.Body>
                 <button className="btn1 card1" >큐브툴</button>
               </Card.Body>
             </Card>
-            }
             <Card  className="mainCard1" onClick={() =>{history.push('/opentool');}} >
               <Card.Img variant="top" src={tool}  className="cardImg1"  />
               <Card.Body>

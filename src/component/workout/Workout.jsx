@@ -89,7 +89,7 @@ console.log(items)
       <div className="workout-input">
         <form onSubmit={submit} className="workout-form">
 
-        <input type="date" ref={datetRef}  value={today}></input>
+        <input type="date" ref={datetRef}  value={today} onChange={console.log('hi')} ></input>
 
         <DropdownButton as={ButtonGroup} variant={color} title={body} size="sm" >
           <div className="cardSelect">
