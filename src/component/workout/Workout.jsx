@@ -15,10 +15,8 @@ function Workout({ fireTodo, user, userName, setlogoName }) {
   const today3 = new Date().getDate();
   const todayId = `${today1}`+`${today2}`+`${today3}`
   // const textRef = useRef();
-  const rocketRef = useRef();
   const repeateRef = useRef();
   const [items, setItems] = useState({});
-  const [todoCount, setTodoCount] = useState(0);
 
 
   const [body1, setBody1] = useState('가슴');
@@ -33,10 +31,12 @@ function Workout({ fireTodo, user, userName, setlogoName }) {
   const [placeholder, setplaceholder] = useState(placeholder1)
   const [bodySelect, setbodySelect] = useState(placeholder[0]);
   const [bodySelect2, setbodySelect2] = useState(placeholder[0]);
-
+const [workRepeat, setworkRepeat] = useState(1)
 
   setlogoName(' Workout');
-
+  const handleSliderChange = (event, newValue) => {
+    setworkRepeat(newValue);
+  };
   // 데이터 보여주기 싱크
   useEffect(() => {    
     const cf = {
@@ -49,15 +49,20 @@ function Workout({ fireTodo, user, userName, setlogoName }) {
 
   const submit = (e) => {
     e.preventDefault();
-    console.log(repeateRef.current.defaultValue)
     // console.log('items', items,'itemsbody2', items[body2], items[body2][gameSelect2],items[body2][gameSelect2].workoutSet)
     if(gameSelect2==='종목'){return}
     let addSet = 1;
     let rePeat = 1;
-
+    let addworkRepeat = workRepeat;
     if(items[body2]){
       if(items[body2][gameSelect2]){
       addSet = 1+ items[body2][gameSelect2].workoutSet
+      }
+    }else{ console.log('운동부위 언디파인')}
+    
+    if(items[body2]){
+      if(items[body2][gameSelect2]){
+      addworkRepeat = workRepeat+ items[body2][gameSelect2].workRepeat
       }
     }else{ console.log('운동부위 언디파인')}
     
@@ -69,7 +74,7 @@ function Workout({ fireTodo, user, userName, setlogoName }) {
         dataId: dataId,
         name: userName,
         today: today,
-        progress: 0,
+        progress: 5,
         color : color2,
         todayId,
         body: body2,
@@ -77,23 +82,15 @@ function Workout({ fireTodo, user, userName, setlogoName }) {
         workoutSet:addSet,
         gameSelect:gameSelect2,
         selectStyle:selectStyle2,
-        repeat : rePeat
+        workRepeat : addworkRepeat
       }
       fireTodo.workoutSave(folder,data)
       // fireTodo.workoutSave(folder,data)
     }
   }
-
-  //로켓발사
-  const rocketOn = () => {
-    rocketRef.current.classList.add("rocketOn");
-    setTimeout(() => {
-      rocketRef.current.classList.remove("rocketOn");
-      clearTimeout(rocketOn);
-    }, 1000);
-  }
-  function valuetext() {
-    return `${100}°C`;
+console.log(workRepeat)
+  function valuetext(value) {
+    return `${value}°C`;
   }
   return (
     <div className="samworkout">
@@ -108,7 +105,7 @@ function Workout({ fireTodo, user, userName, setlogoName }) {
             <Dropdown.Item as="button" onClick={()=>{setselectStyle1('유산소운동')}} style={{textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>유산소운동</Dropdown.Item>
         </DropdownButton>
 
-        <DropdownButton as={ButtonGroup} variant={color1} title={body1} size="sm" >
+        <DropdownButton as={ButtonGroup} variant={'dark'} title={body1} size="sm" >
           <div className="cardSelect">
             <Dropdown.Item as="button" onClick={()=>{setColor1('danger');setbodySelect(placeholder[0]); setBody1('가슴')}} style={{color:"#d53343",textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>가슴</Dropdown.Item>
             <Dropdown.Item as="button" onClick={()=>{setColor1('primary');setbodySelect(placeholder[1]); setBody1('어깨')}} style={{color:"#0077f7",textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>어깨</Dropdown.Item>
@@ -120,7 +117,7 @@ function Workout({ fireTodo, user, userName, setlogoName }) {
           </div>
         </DropdownButton>
         
-        <DropdownButton as={ButtonGroup} variant="info" title={gameSelect} size="sm" >
+        <DropdownButton as={ButtonGroup} variant='dark' title={gameSelect} size="sm" >
           <div className="cardSelect">
             {
             Object.values(bodySelect).map((e,i) => {
@@ -177,8 +174,9 @@ function Workout({ fireTodo, user, userName, setlogoName }) {
           
         <button  className="btnRoomLink">동영상</button>
         </div>
-
-        <div className="slider" style={{padding:"5px 15px"}} >
+        
+        <div className="slider" >
+          <h5>횟수 : {workRepeat}</h5>
               <Slider style={{width:'99%',margin:'auto'}} ref={repeateRef}
                defaultValue={30}
                getAriaValueText={valuetext}
@@ -186,10 +184,13 @@ function Workout({ fireTodo, user, userName, setlogoName }) {
                valueLabelDisplay="auto"
                step={1}
                marks
-               min={10}
+               min={1}
                max={110}
+               onChange={handleSliderChange}
              />
+         
         </div>
+        
         {/* <textarea className="samtextarea" ref={textRef} cols="30" rows="3" style={{resize: 'none'}} /> */}
         <button className="btnWorkoutAdd" onClick={submit}> 추가</button>
         {/* </form> */}

@@ -39,11 +39,6 @@ class firetodo {
   //     .then(() => console.log('글 저장성공'))
   //     .catch((e) => console.log(e))
   // }
-   workoutSave(folder, data) {
-    fireInit.database().ref(`${folder}/${data.uid}/${data.todayId}/${data.body}/${data.gameSelect}`).set(data)
-      .then(() => console.log('글 저장성공'))
-      .catch((e) => console.log(e))
-  }
   // workout 씽크
   workoutSync(folder, uid,todayId, cf) {
     const ref = fireInit.database().ref(`${folder}/${uid}/${todayId}`);
@@ -52,6 +47,12 @@ class firetodo {
       data ? cf.f1(data) : cf.f2();
     })
   }  
+  
+  workoutSave(folder, data) {
+   fireInit.database().ref(`${folder}/${data.uid}/${data.todayId}/${data.body}/${data.gameSelect}`).set(data)
+     .then(() => console.log('글 저장성공'))
+     .catch((e) => console.log(e))
+ }
   // workout 삭제
   workoutDel(folder, uid, todayId,body,dataId) { 
     fireInit.database().ref(`${folder}/${uid}/${todayId}/${body}/${dataId}`).remove();

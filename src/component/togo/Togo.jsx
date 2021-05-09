@@ -133,7 +133,7 @@ function Togo({ fireApp, user, userInfo, setlogoName, photo }) {
             </Card.Body>
           </Card>
 
-        {user.uid && userInfo&&userInfo.level>9&&
+        {/* {user.uid && userInfo&&userInfo.level>9&& */}
           <Card  className="mainCard"onClick={() =>{history.push('/startup/:id');}} >
             <Card.Img variant="top" src={rocket}  className="cardImg" />
             <Card.Body>
@@ -144,7 +144,7 @@ function Togo({ fireApp, user, userInfo, setlogoName, photo }) {
               <button className="btn1" >바로가기</button>
             </Card.Body>
           </Card>
-        }
+        {/* } */}
         </div>
 
     </div>  );}    

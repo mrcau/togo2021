@@ -80,12 +80,12 @@
 .samworkout .rocketOn {
   animation: skyon 1000ms;
 }
-/* .input{
-  border: none;
-  outline: none;
-  padding: 0;
-  margin: 0;
-} */
+.slider{
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  padding: 5px 25px 5px 10px;
+  background: var(--Bcolor);
+}
 .samworkout .inputTitle {
   width: 100%;
   font-size: 1rem;
@@ -99,7 +99,7 @@
 }
 
 .btnWorkoutAdd{
-  background: var(--Ccolor) ;
+  background: var(--Dcolor) ;
   border: solid 1px ;
   height:40px;
   cursor: pointer;
@@ -118,3 +118,13 @@
   padding: 1px;
   font-size: larger;
 } */
+.samtoolitemrow .btn{
+  width:25px;
+  height:25px;
+  padding:0 4px 8px 4px;
+  font-size:14px;
+  color:white;
+  font-weight:900;
+  margin-left: 3px;
+  background: var(--Bcolor);
+}

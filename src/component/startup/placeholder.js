@@ -18,7 +18,7 @@ export default
   title8:"비용구조",
   text8:"- 비용이 발생되는 부분",
   title9:"핵심지표",
-  text9:"- ",
+  text9:"- 사업성과 확인을 위한 핵심지표",
   title10:"SWOT분석",
   text10:"- 강점(Strengths)",
   text11:"- 약점(Weaknesses)",
