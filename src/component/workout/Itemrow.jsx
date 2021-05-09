@@ -47,7 +47,7 @@ function  Itemrow ({item,fireTodo,todayId}) {
             {
               Object.values(itemSet).map((e,i) => { 
                 return <Card.Text style={{fontSize:"12px",lineHeight:"5px",padding:"0",textAlign:'left'  }}> 
-                {i+1} 세트 :  {e.gameSelect} {e.text||''} </Card.Text>
+                {i+1} - {e.gameSelect} {e.workoutSet||1}세트 </Card.Text>
               })
             }
           </Card.Body>
