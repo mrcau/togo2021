@@ -22,6 +22,7 @@
   height: 25px;
 }
 .btnRoomLink{
+  width:100%;
   background: var(--Ccolor) !important;
   border: solid 1px !important;
 }

@@ -34,8 +34,13 @@ class firetodo {
   }
 
    // workout  저장 
+  //  workoutSave(folder, data) {
+  //   fireInit.database().ref(`${folder}/${data.uid}`).set(data)
+  //     .then(() => console.log('글 저장성공'))
+  //     .catch((e) => console.log(e))
+  // }
    workoutSave(folder, data) {
-    fireInit.database().ref(`${folder}/${data.uid}/${data.todayId}/${data.body}/${data.dataId}`).set(data)
+    fireInit.database().ref(`${folder}/${data.uid}/${data.todayId}/${data.body}/${data.gameSelect}`).set(data)
       .then(() => console.log('글 저장성공'))
       .catch((e) => console.log(e))
   }

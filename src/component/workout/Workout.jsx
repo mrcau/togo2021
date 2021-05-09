@@ -17,15 +17,20 @@ function Workout({ fireTodo, user, userName, setlogoName }) {
   const rocketRef = useRef();
   const [items, setItems] = useState({});
   const [todoCount, setTodoCount] = useState(0);
-  const [color, setColor] = useState('danger');
-  const [body, setBody] = useState('가슴');
-  const [selectStyle, setselectStyle] = useState('유형');
-  const [selectBody, setselectBody] = useState('종목');
-  const [chest, setChest] = useState(placeholder[0]);
-  const [sholder, setSholder] = useState(placeholder[1])
-  const [sports, setSports] = useState(chest);
-  // const [state, setState] = useState({ triz:false,  Switch7:true });
-  // const placeData = state.triz ? placeholder[1] : placeholder[0];
+
+
+  const [body1, setBody1] = useState('가슴');
+  const [body2, setBody2] = useState('가슴');
+  const [color1, setColor1] = useState('danger');
+  const [color2, setColor2] = useState('danger');
+  const [selectStyle1, setselectStyle1] = useState('유형');
+  const [selectStyle2, setselectStyle2] = useState('유형');
+  const [gameSelect, setgameSelect] = useState('종목');
+  const [gameSelect2, setgameSelect2] = useState('종목');
+  
+  const [bodySelect, setbodySelect] = useState(placeholder[0]);
+  const [bodySelect2, setbodySelect2] = useState(placeholder[0]);
+
 
   setlogoName(' Workout');
 
@@ -37,30 +42,31 @@ function Workout({ fireTodo, user, userName, setlogoName }) {
       }
    user ? fireTodo.workoutSync(folder,user.uid,todayId, cf):console.log('no-User')
   }, [fireTodo,user]);
-console.log(items)
   //DB에 글 데이터 저장
+
   const submit = (e) => {
     e.preventDefault();
+    console.log('items', items,'itemsbody2', items.body2,body2)
     if(e.currentTarget == null){return;}
-    // const text = textRef.current.value;
     if (userName) {
       const dataId = Date.now();
       const data = {
         uid: user.uid,
         dataId: dataId,
         name: userName,
-        // title: title,
-        // text: text,
         today: today,
         progress: 0,
-        color : color,
+        color : color2,
         todayId,
-        body,
-        selectBody
+        body: body2,
+        workoutTime:5,
+        workoutSet:1,
+        gameSelect:gameSelect2,
+        selectStyle:selectStyle2
       }
       fireTodo.workoutSave(folder,data)
+      // fireTodo.workoutSave(folder,data)
     }
-    // textRef.current.value = '';
   }
 
   //로켓발사
@@ -79,38 +85,37 @@ console.log(items)
 
        <div className="workout-input">
         {/* <form onSubmit={submit} className="workout-form"> */}
-        <div className="topSelect">
-        <button  className="btnVideo">{today}</button>
+        <div className="topSelect"  >
 
-        <DropdownButton as={ButtonGroup} variant={color} title={body} size="sm" >
-          <div className="cardSelect">
-            <Dropdown.Item as="button" onClick={()=>{setColor('primary'); selectStyle('맨몸운동')}} style={{color:"#0077f7",textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>맨몸운동</Dropdown.Item>
-            <Dropdown.Item as="button" onClick={()=>{setColor('warning'); setBody('웨이트운동')}} style={{color:"#f7bb07",textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>웨이트운동</Dropdown.Item>
-            <Dropdown.Item as="button" onClick={()=>{setColor('success'); setBody('유산소운동')}} style={{color:"#27a243",textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>유산소운동</Dropdown.Item>
-          </div>
+        <DropdownButton as={ButtonGroup} title={selectStyle1} size="sm" variant={'dark'} style={{width:"100%",border:"soid 1px", background:"var(--Ccolor)"}} >
+            <Dropdown.Item as="button" onClick={()=>{setselectStyle1('맨몸운동')}}   style={{textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>맨몸운동</Dropdown.Item>
+            <Dropdown.Item as="button" onClick={()=>{setselectStyle1('웨이트운동')}} style={{textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>웨이트운동</Dropdown.Item>
+            <Dropdown.Item as="button" onClick={()=>{setselectStyle1('유산소운동')}} style={{textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>유산소운동</Dropdown.Item>
         </DropdownButton>
 
-        <DropdownButton as={ButtonGroup} variant={color} title={body} size="sm" >
+        <DropdownButton as={ButtonGroup} variant={color1} title={body1} size="sm" >
           <div className="cardSelect">
-            <Dropdown.Item as="button" onClick={()=>{setColor('danger');setSports(chest); setBody('가슴')}} style={{color:"#d53343",textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>가슴</Dropdown.Item>
-            <Dropdown.Item as="button" onClick={()=>{setColor('warning'); setBody('등')}} style={{color:"#f7bb07",textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>등</Dropdown.Item>
-            <Dropdown.Item as="button" onClick={()=>{setColor('success'); setBody('다리')}} style={{color:"#27a243",textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>다리</Dropdown.Item>
-            <Dropdown.Item as="button" onClick={()=>{setColor('primary');setSports(sholder); setBody('어깨')}} style={{color:"#0077f7",textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>어깨</Dropdown.Item>
-            <Dropdown.Item as="button" onClick={()=>{setColor('info'); setBody('삼두')}} style={{color:"#17a2b8",textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>삼두</Dropdown.Item>
-            <Dropdown.Item as="button" onClick={()=>{setColor('secondary'); setBody('이두')}} style={{color:"#697179",textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>이두</Dropdown.Item>
-            <Dropdown.Item as="button" onClick={()=>{setColor('dark'); setBody('복근')}} style={{color:"#32383e",textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>복근</Dropdown.Item>
+            <Dropdown.Item as="button" onClick={()=>{setColor1('danger');setbodySelect(placeholder[0]); setBody1('가슴')}} style={{color:"#d53343",textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>가슴</Dropdown.Item>
+            <Dropdown.Item as="button" onClick={()=>{setColor1('primary');setbodySelect(placeholder[1]); setBody1('어깨')}} style={{color:"#0077f7",textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>어깨</Dropdown.Item>
+            <Dropdown.Item as="button" onClick={()=>{setColor1('warning');setbodySelect(placeholder[2]); setBody1('등')}} style={{color:"#f7bb07",textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>등</Dropdown.Item>
+            <Dropdown.Item as="button" onClick={()=>{setColor1('info');setbodySelect(placeholder[3]); setBody1('삼두')}} style={{color:"#17a2b8",textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>삼두</Dropdown.Item>
+            <Dropdown.Item as="button" onClick={()=>{setColor1('secondary');setbodySelect(placeholder[4]); setBody1('이두')}} style={{color:"#697179",textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>이두</Dropdown.Item>
+            <Dropdown.Item as="button" onClick={()=>{setColor1('dark');setbodySelect(placeholder[5]); setBody1('복근')}} style={{color:"#32383e",textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>복근</Dropdown.Item>
+            <Dropdown.Item as="button" onClick={()=>{setColor1('success');setbodySelect(placeholder[6]); setBody1('다리')}} style={{color:"#27a243",textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>다리</Dropdown.Item>
           </div>
         </DropdownButton>
         
-        <DropdownButton as={ButtonGroup} variant="info" title={selectBody} size="sm" >
+        <DropdownButton as={ButtonGroup} variant="info" title={gameSelect} size="sm" >
           <div className="cardSelect">
             {
-            Object.values(sports).map((e,i) => {
-              return <Dropdown.Item as="button" onClick={()=>setselectBody(e)} style={{textAlign:"center", fontSize:"12px",padding:"0",fontWeight:"900"}}>{e}</Dropdown.Item>
+            Object.values(bodySelect).map((e,i) => {
+              return <Dropdown.Item as="button" onClick={()=>setgameSelect(e)} style={{textAlign:"center", fontSize:"14px",padding:"0",fontWeight:"900"}}>{e}</Dropdown.Item>
             })
             }
           </div>
         </DropdownButton>
+
+        <button  className="btnRoomLink" >{today}</button>
           
         </div>
       </div>
@@ -127,37 +132,36 @@ console.log(items)
       <div className="workout-input">
         {/* <form onSubmit={submit} className="workout-form"> */}
         <div className="topSelect">
-        <DropdownButton as={ButtonGroup} variant={color} title={body} size="sm" >
-          <div className="cardSelect">
-            <Dropdown.Item as="button" onClick={()=>{setColor('primary'); selectStyle('맨몸운동')}} style={{color:"#0077f7",textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>맨몸운동</Dropdown.Item>
-            <Dropdown.Item as="button" onClick={()=>{setColor('warning'); setBody('웨이트운동')}} style={{color:"#f7bb07",textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>웨이트운동</Dropdown.Item>
-            <Dropdown.Item as="button" onClick={()=>{setColor('success'); setBody('유산소운동')}} style={{color:"#27a243",textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>유산소운동</Dropdown.Item>
-          </div>
+          
+        <DropdownButton as={ButtonGroup} title={selectStyle2} size="sm" variant={'dark'} style={{width:"100%",border:"soid 1px", background:"var(--Ccolor)"}} >
+            <Dropdown.Item as="button" onClick={()=>{setselectStyle2('맨몸운동')}}   style={{textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>맨몸운동</Dropdown.Item>
+            <Dropdown.Item as="button" onClick={()=>{setselectStyle2('웨이트운동')}} style={{textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>웨이트운동</Dropdown.Item>
+            <Dropdown.Item as="button" onClick={()=>{setselectStyle2('유산소운동')}} style={{textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>유산소운동</Dropdown.Item>
         </DropdownButton>
 
-        <DropdownButton as={ButtonGroup} variant={color} title={body} size="sm" >
-          <div className="cardSelect">
-            <Dropdown.Item as="button" onClick={()=>{setColor('danger');setSports(chest); setBody('가슴')}} style={{color:"#d53343",textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>가슴</Dropdown.Item>
-            <Dropdown.Item as="button" onClick={()=>{setColor('warning'); setBody('등')}} style={{color:"#f7bb07",textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>등</Dropdown.Item>
-            <Dropdown.Item as="button" onClick={()=>{setColor('success'); setBody('다리')}} style={{color:"#27a243",textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>다리</Dropdown.Item>
-            <Dropdown.Item as="button" onClick={()=>{setColor('primary');setSports(sholder); setBody('어깨')}} style={{color:"#0077f7",textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>어깨</Dropdown.Item>
-            <Dropdown.Item as="button" onClick={()=>{setColor('info'); setBody('삼두')}} style={{color:"#17a2b8",textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>삼두</Dropdown.Item>
-            <Dropdown.Item as="button" onClick={()=>{setColor('secondary'); setBody('이두')}} style={{color:"#697179",textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>이두</Dropdown.Item>
-            <Dropdown.Item as="button" onClick={()=>{setColor('dark'); setBody('복근')}} style={{color:"#32383e",textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>복근</Dropdown.Item>
+        <DropdownButton as={ButtonGroup} variant={color2} title={body2} size="sm" >
+        <div className="cardSelect">
+            <Dropdown.Item as="button" onClick={()=>{setColor2('danger');setbodySelect2(placeholder[0]); setBody2('가슴')}} style={{color:"#d53343",textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>가슴</Dropdown.Item>
+            <Dropdown.Item as="button" onClick={()=>{setColor2('primary');setbodySelect2(placeholder[1]); setBody2('어깨')}} style={{color:"#0077f7",textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>어깨</Dropdown.Item>
+            <Dropdown.Item as="button" onClick={()=>{setColor2('warning');setbodySelect2(placeholder[2]); setBody2('등')}} style={{color:"#f7bb07",textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>등</Dropdown.Item>
+            <Dropdown.Item as="button" onClick={()=>{setColor2('info');setbodySelect2(placeholder[3]); setBody2('삼두')}} style={{color:"#17a2b8",textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>삼두</Dropdown.Item>
+            <Dropdown.Item as="button" onClick={()=>{setColor2('secondary');setbodySelect2(placeholder[4]); setBody2('이두')}} style={{color:"#697179",textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>이두</Dropdown.Item>
+            <Dropdown.Item as="button" onClick={()=>{setColor2('dark');setbodySelect2(placeholder[5]); setBody2('복근')}} style={{color:"#32383e",textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>복근</Dropdown.Item>
+            <Dropdown.Item as="button" onClick={()=>{setColor2('success');setbodySelect2(placeholder[6]); setBody2('다리')}} style={{color:"#27a243",textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>다리</Dropdown.Item>
           </div>
         </DropdownButton>
         
-        <DropdownButton as={ButtonGroup} variant="info" title={selectBody} size="sm" >
+        <DropdownButton as={ButtonGroup} variant="info" title={gameSelect2} size="sm" >
           <div className="cardSelect">
             {
-            Object.values(sports).map((e,i) => {
-              return <Dropdown.Item as="button" onClick={()=>setselectBody(e)} style={{textAlign:"center", fontSize:"12px",padding:"0",fontWeight:"900"}}>{e}</Dropdown.Item>
+            Object.values(bodySelect2).map((e,i) => {
+              return <Dropdown.Item as="button" onClick={()=>setgameSelect2(e)} style={{textAlign:"center", fontSize:"12px",padding:"0",fontWeight:"900"}}>{e}</Dropdown.Item>
             })
             }
           </div>
         </DropdownButton>
           
-        <button  className="btnVideo">동영상</button>
+        <button  className="btnRoomLink">동영상</button>
         </div>
 
         <div className="slider" >
