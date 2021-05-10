@@ -46,8 +46,11 @@ function  Itemrow ({item,fireTodo,todayId}) {
           <Card.Body style={{padding:"8px",height:"80px",overflowY:"auto"}}>
             {
               Object.values(itemSet).map((e,i) => { 
-                return <Card.Text style={{fontSize:"12px",lineHeight:"5px",padding:"0",textAlign:'left'  }}> 
-                {i+1} - {e.gameSelect} {e.workoutSet||1}세트  {e.workRepeat||1}회 </Card.Text>
+                return <Card.Text style={{fontSize:"14px",lineHeight:"5px",padding:"0",textAlign:'left'  }}> 
+                {i+1} - {e.gameSelect} {e.workoutSet||1}세트  {e.workWeight||1}kg {e.workRepeat||1}회 
+                {/* {e.workRepeat.map((e)=>{return e})}  */}
+                
+                </Card.Text>
               })
             }
           </Card.Body>

@@ -32,11 +32,10 @@ function Workout({ fireTodo, user, userName, setlogoName }) {
   const [bodySelect, setbodySelect] = useState(placeholder[0]);
   const [bodySelect2, setbodySelect2] = useState(placeholder[0]);
 const [workRepeat, setworkRepeat] = useState(1)
+const [workWeight, setworkWeight] = useState(1)
 
   setlogoName(' Workout');
-  const handleSliderChange = (event, newValue) => {
-    setworkRepeat(newValue);
-  };
+
   // 데이터 보여주기 싱크
   useEffect(() => {    
     const cf = {
@@ -52,17 +51,26 @@ const [workRepeat, setworkRepeat] = useState(1)
     // console.log('items', items,'itemsbody2', items[body2], items[body2][gameSelect2],items[body2][gameSelect2].workoutSet)
     if(gameSelect2==='종목'){return}
     let addSet = 1;
-    let rePeat = 1;
-    let addworkRepeat = workRepeat;
+
     if(items[body2]){
       if(items[body2][gameSelect2]){
-      addSet = 1+ items[body2][gameSelect2].workoutSet
+        addSet = 1+ items[body2][gameSelect2].workoutSet
       }
     }else{ console.log('운동부위 언디파인')}
     
+    let addworkWeight = workWeight;
+    if(items[body2]){
+      if(items[body2][gameSelect2]){
+        addworkWeight = workWeight+ items[body2][gameSelect2].workWeight
+      }
+    }else{ console.log('운동부위 언디파인')}
+
+    let addworkRepeat = workRepeat;
     if(items[body2]){
       if(items[body2][gameSelect2]){
       addworkRepeat = workRepeat+ items[body2][gameSelect2].workRepeat
+      // addworkRepeat = setworkRepeat([...dataWorkRepeate, ...workRepeat])
+
       }
     }else{ console.log('운동부위 언디파인')}
     
@@ -82,16 +90,25 @@ const [workRepeat, setworkRepeat] = useState(1)
         workoutSet:addSet,
         gameSelect:gameSelect2,
         selectStyle:selectStyle2,
-        workRepeat : addworkRepeat
+        workRepeat : addworkRepeat,
+        workWeight : addworkWeight
       }
       fireTodo.workoutSave(folder,data)
       // fireTodo.workoutSave(folder,data)
     }
   }
-console.log(workRepeat)
   function valuetext(value) {
-    return `${value}°C`;
+    return value;
   }
+
+  const handleSliderChange = (event, newValue) => {
+    setworkRepeat(newValue);
+  };
+  const handleSliderChange0 = (event, newValue) => {
+    setworkWeight(newValue);
+  };
+
+
   return (
     <div className="samworkout">
 
@@ -176,19 +193,33 @@ console.log(workRepeat)
         </div>
         
         <div className="slider" >
-          <h5>횟수 : {workRepeat}</h5>
-              <Slider style={{width:'99%',margin:'auto'}} ref={repeateRef}
-               defaultValue={30}
+          <h5>무게: {workWeight}kg</h5>
+              <Slider style={{width:'99%',margin:'auto',color:"red"}} ref={repeateRef}
+               defaultValue={1}
                getAriaValueText={valuetext}
                aria-labelledby="discrete-slider"
                valueLabelDisplay="auto"
                step={1}
-               marks
+               marks 
+               min={1}
+               max={110}
+               onChange={handleSliderChange0}
+             />         
+        </div>
+
+        <div className="slider" >
+          <h5>횟수: {workRepeat}회</h5>
+              <Slider style={{width:'99%',margin:'auto',color:"red"}} ref={repeateRef}
+               defaultValue={1}
+               getAriaValueText={valuetext}
+               aria-labelledby="discrete-slider"
+               valueLabelDisplay="auto"
+               step={1}
+               marks 
                min={1}
                max={110}
                onChange={handleSliderChange}
-             />
-         
+             />         
         </div>
         
         {/* <textarea className="samtextarea" ref={textRef} cols="30" rows="3" style={{resize: 'none'}} /> */}

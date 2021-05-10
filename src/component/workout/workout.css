@@ -82,9 +82,9 @@
 }
 .slider{
   display: grid;
-  grid-template-columns: 80px 1fr;
+  grid-template-columns: 92px 1fr;
   padding: 5px 25px 5px 10px;
-  background: var(--Bcolor);
+  background: lightgray;
 }
 .samworkout .inputTitle {
   width: 100%;
