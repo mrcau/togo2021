@@ -21,7 +21,7 @@
   font-weight: 900;
 }
 .workout-items {
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   flex:  auto;
   height: 100px; 
   display: grid;

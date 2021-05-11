@@ -47,7 +47,7 @@ class firetodo {
       data ? cf.f1(data) : cf.f2();
     })
   }  
-  
+
   workoutSave(folder, data) {
    fireInit.database().ref(`${folder}/${data.uid}/${data.todayId}/${data.body}/${data.gameSelect}`).set(data)
      .then(() => console.log('글 저장성공'))
@@ -62,6 +62,11 @@ class firetodo {
     fireInit.database().ref(`${folder}/${uid}/${todayId}/${body}/${dataId}`)
       .update({ progress: counter })
   }
+    // workout 업데이트
+    workouttotal(folder, uid,todayId, gameSelect,repeat) { 
+      fireInit.database().ref(`${folder}/${uid}/totalWokout/${todayId}`)
+        .update({ [gameSelect]: repeat })
+    }
 
   //Auth 테이블 싱크 for left menu
   authSync(auth, uid,cf) {

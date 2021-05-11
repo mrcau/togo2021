@@ -32,7 +32,7 @@ function Workout({ fireTodo, user, userName, setlogoName }) {
   const [bodySelect, setbodySelect] = useState(placeholder[0]);
   const [bodySelect2, setbodySelect2] = useState(placeholder[0]);
 const [workRepeat, setworkRepeat] = useState(1)
-const [workWeight, setworkWeight] = useState(1)
+const [workWeight, setworkWeight] = useState(0)
 
   setlogoName(' Workout');
 
@@ -58,23 +58,27 @@ const [workWeight, setworkWeight] = useState(1)
       }
     }else{ console.log('운동부위 언디파인')}
     
-    let addworkWeight = workWeight;
+    let addworkWeight = [workWeight];
     if(items[body2]){
       if(items[body2][gameSelect2]){
-        addworkWeight = workWeight+ items[body2][gameSelect2].workWeight
+
+        addworkWeight = [...items[body2][gameSelect2].workWeight,workWeight]
+        // addworkWeight = workWeight+ items[body2][gameSelect2].workWeight
       }
     }else{ console.log('운동부위 언디파인')}
 
-    let addworkRepeat = workRepeat;
+    let addworkRepeat = [workRepeat];
     if(items[body2]){
       if(items[body2][gameSelect2]){
-      addworkRepeat = workRepeat+ items[body2][gameSelect2].workRepeat
-      // addworkRepeat = setworkRepeat([...dataWorkRepeate, ...workRepeat])
 
+        addworkRepeat = [...items[body2][gameSelect2].workRepeat,workRepeat]
+      // addworkRepeat = workRepeat+ items[body2][gameSelect2].workRepeat
       }
     }else{ console.log('운동부위 언디파인')}
     
     if(e.currentTarget == null){return;}
+    if(selectStyle2==='웨이트운동' && workWeight === 0){return;}
+
     if (userName) {
       const dataId = Date.now();
       const data = {
@@ -90,8 +94,8 @@ const [workWeight, setworkWeight] = useState(1)
         workoutSet:addSet,
         gameSelect:gameSelect2,
         selectStyle:selectStyle2,
+        workWeight : addworkWeight,
         workRepeat : addworkRepeat,
-        workWeight : addworkWeight
       }
       fireTodo.workoutSave(folder,data)
       // fireTodo.workoutSave(folder,data)
@@ -115,6 +119,7 @@ const [workWeight, setworkWeight] = useState(1)
        <div className="workout-input">
         {/* <form onSubmit={submit} className="workout-form"> */}
         <div className="topSelect"  >
+        <button  className="btnRoomLink" >{today}</button>
 
         <DropdownButton as={ButtonGroup} title={selectStyle1} size="sm" variant={'dark'} style={{width:"100%",border:"soid 1px", background:"var(--Ccolor)"}} >
             <Dropdown.Item as="button" onClick={()=>{setselectStyle1('맨몸운동')}}   style={{textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>맨몸운동</Dropdown.Item>
@@ -143,8 +148,6 @@ const [workWeight, setworkWeight] = useState(1)
             }
           </div>
         </DropdownButton>
-
-        <button  className="btnRoomLink" >{today}</button>
           
         </div>
       </div>
@@ -163,7 +166,7 @@ const [workWeight, setworkWeight] = useState(1)
         <div className="topSelect">
           
         <DropdownButton as={ButtonGroup} title={selectStyle2} size="sm" variant={'dark'} style={{width:"100%",border:"soid 1px", background:"var(--Ccolor)"}} >
-            <Dropdown.Item as="button" onClick={()=>{setselectStyle2('맨몸운동');setColor2('danger');setplaceholder(placeholder1);setbodySelect2(placeholder1[0]);setgameSelect2(Object.values(placeholder1[0])[0]); setBody2('가슴')}}   style={{textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>맨몸운동</Dropdown.Item>
+            <Dropdown.Item as="button" onClick={()=>{setselectStyle2('맨몸운동');setColor2('danger');setplaceholder(placeholder1);setbodySelect2(placeholder1[0]);setgameSelect2(Object.values(placeholder1[0])[0]); setBody2('가슴'); setworkWeight(0)}}   style={{textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>맨몸운동</Dropdown.Item>
             <Dropdown.Item as="button" onClick={()=>{setselectStyle2('웨이트운동');setColor2('danger');setplaceholder(placeholder2);setbodySelect2(placeholder2[0]);setgameSelect2(Object.values(placeholder2[0])[0]); setBody2('가슴')}} style={{textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>웨이트운동</Dropdown.Item>
         </DropdownButton>
 
@@ -179,7 +182,7 @@ const [workWeight, setworkWeight] = useState(1)
           </div>
         </DropdownButton>
         
-        <DropdownButton as={ButtonGroup} variant="info" title={gameSelect2} size="sm" >
+        <DropdownButton as={ButtonGroup} variant="dark" title={gameSelect2} size="sm" >
           <div className="cardSelect">
             {
             Object.values(bodySelect2).map((e,i) => { 
@@ -192,8 +195,9 @@ const [workWeight, setworkWeight] = useState(1)
         <button  className="btnRoomLink">동영상</button>
         </div>
         
+        {selectStyle2 === '웨이트운동' && 
         <div className="slider" >
-          <h5>무게: {workWeight}kg</h5>
+          <h5 style={{margin:"auto",marginLeft:"0"}}>무게: {workWeight}kg</h5>
               <Slider style={{width:'99%',margin:'auto',color:"red"}} ref={repeateRef}
                defaultValue={1}
                getAriaValueText={valuetext}
@@ -202,13 +206,13 @@ const [workWeight, setworkWeight] = useState(1)
                step={1}
                marks 
                min={1}
-               max={110}
+               max={190}
                onChange={handleSliderChange0}
              />         
         </div>
-
+        }
         <div className="slider" >
-          <h5>횟수: {workRepeat}회</h5>
+          <h5 style={{margin:"auto",marginLeft:"0"}}>횟수: {workRepeat}회</h5>
               <Slider style={{width:'99%',margin:'auto',color:"red"}} ref={repeateRef}
                defaultValue={1}
                getAriaValueText={valuetext}
