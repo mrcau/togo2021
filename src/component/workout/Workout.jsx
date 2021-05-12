@@ -213,8 +213,9 @@ const [workWeight, setworkWeight] = useState(0)
           </div>
         </DropdownButton>
           
-        <button  className="btnRoomLink">기록 {maxItem} {selectStyle2==='맨몸운동'?'(회)':'(kg)'} </button>
-        <button  className="btnRoomLink">동영상</button>
+         <button  className="btnRoomLink" style={{fontSize:"12px"}}>
+          기록 {maxItem} {selectStyle2==='맨몸운동'?'(회)':'(kg)'} 
+        </button>
         </div>
         
         {selectStyle2 === '웨이트운동' && 
@@ -249,7 +250,10 @@ const [workWeight, setworkWeight] = useState(0)
         </div>
         
         {/* <textarea className="samtextarea" ref={textRef} cols="30" rows="3" style={{resize: 'none'}} /> */}
+        <div style={{display:"flex"}}>
         <button className="btnWorkoutAdd" onClick={submit}> 추가</button>
+        <button className="btnWorkoutAdd" >동영상</button>
+        </div>
         {/* </form> */}
       </div>
     </div>

@@ -39,7 +39,7 @@
 } */
 .samworkout .topSelect{
   display: grid;
-  grid-template-columns:1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns:1fr 1fr 1fr 1fr;
   grid-gap: 2px;
   background:var(--Bcolor);
   height: 35px;
@@ -99,8 +99,8 @@
 }
 
 .btnWorkoutAdd{
-  background: var(--Dcolor) ;
-  border: solid 1px ;
+  background: var(--Ccolor) ;
+  border: solid 2px white !important;
   height:40px;
   cursor: pointer;
 }
