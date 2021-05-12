@@ -47,6 +47,13 @@ class firetodo {
       data ? cf.f1(data) : cf.f2();
     })
   }  
+  totalworkoutSync(folder, uid,cf) {
+    const ref = fireInit.database().ref(`${folder}/${uid}/totalWokout`);
+    ref.on('value', (p) => {
+      const data = p.val();
+      data ? cf.f3(data) : cf.f4();
+    })
+  }  
 
   workoutSave(folder, data) {
    fireInit.database().ref(`${folder}/${data.uid}/${data.todayId}/${data.body}/${data.gameSelect}`).set(data)
@@ -63,7 +70,8 @@ class firetodo {
       .update({ progress: counter })
   }
     // workout 업데이트
-    workouttotal(folder, uid,todayId, gameSelect,repeat) { 
+
+  workouttotal(folder, uid,todayId, gameSelect,repeat) { 
       fireInit.database().ref(`${folder}/${uid}/totalWokout/${todayId}`)
         .update({ [gameSelect]: repeat })
     }

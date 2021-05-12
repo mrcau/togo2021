@@ -6,10 +6,10 @@ import { IconButton } from '@material-ui/core';
 import FitnessCenterIcon from '@material-ui/icons/FitnessCenter';
 
 function  Itemrow ({item,fireTodo,todayId}) {
+  const folder = "workout";
   const itemSet = Object.values(item);
   const itemBody = itemSet[0];
-
-  const folder = "workout";
+  const now = itemBody.progress;
   let counter = itemBody.progress;
   const itemDel=() => {
     fireTodo.workoutDel(folder,itemBody.uid,itemBody.todayId,itemBody.body,itemBody.gameSelect)
@@ -21,23 +21,19 @@ function  Itemrow ({item,fireTodo,todayId}) {
   const minus = () => {
     if(counter>0){counter = counter-5}
     fireTodo.workoutUp(folder,itemBody.uid,itemBody.todayId,itemBody.body,itemBody.gameSelect,counter)
-  }
-  const now = itemBody.progress;
-  
-  const changeColor = (p)=>{
-      fireTodo.itemUp(folder,item.uid,item.dataId,{color:p})
-  }
-  const returnData = (e,i)=>{
-    console.log(e,i)
-    fireTodo.workouttotal(folder,itemBody.uid,todayId,i,e)
+  }  
+  // const changeColor = (p)=>{ fireTodo.itemUp(folder,item.uid,item.dataId,{color:p}) }
+
+  const returnData = (e,gameSelect)=>{ 
+    fireTodo.workouttotal(folder,itemBody.uid,todayId,gameSelect,e)
     return e
   }
+
   return (
     <div className="samtoolitemrow">      
-    {/* height:'120px' */}
-      <Card bg={itemSet[0].color} text={'white'} style={{ width: '100%',maxHeight:"250px"  }} className="mb-2" >      
-        <Card.Header bg={'dark'} style={{display:'flex',justifyContent:"space-between",padding:'2px',height:'30px',background:'black'}} >
-          
+    {/* height:'120px' bg={itemSet[0].color */ }
+      <Card bg={itemSet[0].color} text={'white'} style={{ width: '100%',maxHeight:"280px"  }} className="mb-2" >      
+        <Card.Header  style={{display:'flex',justifyContent:"space-between",padding:'2px',height:'30px',background:'black'}} >
           <div>
           <IconButton style={{width:'20px', height:'15px'}} > <DeleteForever onClick={itemDel} style={{color:'white'}} /></IconButton>         
           {itemSet[0].today}
@@ -51,7 +47,8 @@ function  Itemrow ({item,fireTodo,todayId}) {
         </Card.Header>      
         {/* height:"80px", */}
         <div className="cardTitle" style={{textAlign:"center"}}>
-          <Card.Body style={{padding:"8px",overflowY:"auto",maxHeight:"200px"}}>
+          <Card.Body style={{padding:"8px",overflowY:"auto",maxHeight:"240px"}}>
+            <div style={{height:"100%",width:"100%",background:"white",color:"black",borderRadius:"5px"}}>
             {
               Object.values(itemSet).map((e,i) => { 
                 return <Card.Text style={{fontSize:"15px",lineHeight:"20px",padding:"0",textAlign:'left' }}> 
@@ -60,8 +57,8 @@ function  Itemrow ({item,fireTodo,todayId}) {
                  returnData( e.workRepeat.reduce(function add(sum, currValue) { return sum + currValue; }, 0),e.gameSelect)
                 }회 
                 {e.workWeight[0] !==0 && ' / 최대'  }
-                {
-                 e.workWeight[0] !==0 && returnData(  Math.max(...e.workWeight),e.gameSelect)
+                {e.workWeight[0] !==0 && 
+                 returnData(  Math.max(...e.workWeight),e.gameSelect) 
                 } 
                 {e.workWeight[0] !==0 && 'kg'}
                 {<br/>}
@@ -73,10 +70,10 @@ function  Itemrow ({item,fireTodo,todayId}) {
                 {e.workWeight[0] !==0 && <br/>} 
                  {/* <FitnessCenterIcon/> 무게 : {e.workWeight.map((e)=>{return e + 'kg '})}  */}
                  <FitnessCenterIcon/> 횟수 : {e.workRepeat.map((e)=>{return e + '회 '})} 
-                
                 </Card.Text>
               })
             }
+            </div>
           </Card.Body>
         </div>
      </Card>

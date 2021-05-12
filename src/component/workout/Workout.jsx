@@ -17,6 +17,7 @@ function Workout({ fireTodo, user, userName, setlogoName }) {
   // const textRef = useRef();
   const repeateRef = useRef();
   const [items, setItems] = useState({});
+  const [totalItems, settotalItems] = useState({});
 
 
   const [body1, setBody1] = useState('가슴');
@@ -40,12 +41,24 @@ const [workWeight, setworkWeight] = useState(0)
   useEffect(() => {    
     const cf = {
       f1: (p)=>{setItems(p)},
-      f2: ()=>{setItems({})}
+      f2: ()=>{setItems({})},
+      f3: (p)=>{settotalItems(p)},
+      f4: ()=>{settotalItems({})}
       }
-   user ? fireTodo.workoutSync(folder,user.uid,todayId, cf):console.log('no-User')
+   if(user){
+    fireTodo.workoutSync(folder,user.uid,todayId, cf) 
+    fireTodo.totalworkoutSync(folder,user.uid, cf) 
+   }else{console.log('no-User')}
   }, [fireTodo,user]);
   //DB에 글 데이터 저장
 
+  let maxItem = {}
+  const ttt = Object.values(totalItems)
+  const ttf = Object.values(ttt).map((e)=>{
+    settotalItems({...totalItems,...e})
+    console.log(totalItems)
+  })
+  // console.log(ttt,ttf)
   const submit = (e) => {
     e.preventDefault();
     // console.log('items', items,'itemsbody2', items[body2], items[body2][gameSelect2],items[body2][gameSelect2].workoutSet)
@@ -111,7 +124,10 @@ const [workWeight, setworkWeight] = useState(0)
   const handleSliderChange0 = (event, newValue) => {
     setworkWeight(newValue);
   };
+ 
+  const totalGame = (e)=>{
 
+  }
 
   return (
     <div className="samworkout">
@@ -186,7 +202,7 @@ const [workWeight, setworkWeight] = useState(0)
           <div className="cardSelect">
             {
             Object.values(bodySelect2).map((e,i) => { 
-              return <Dropdown.Item as="button" onClick={()=>setgameSelect2(e)} style={{textAlign:"center", fontSize:"12px",padding:"0",fontWeight:"900"}}>{e}</Dropdown.Item>
+              return <Dropdown.Item as="button" onClick={()=>{setgameSelect2(e);totalGame(e)}} style={{textAlign:"center", fontSize:"12px",padding:"0",fontWeight:"900"}}>{e}</Dropdown.Item>
             })
             }
           </div>
@@ -204,7 +220,7 @@ const [workWeight, setworkWeight] = useState(0)
                aria-labelledby="discrete-slider"
                valueLabelDisplay="auto"
                step={1}
-               marks 
+              //  marks 
                min={1}
                max={190}
                onChange={handleSliderChange0}
@@ -219,7 +235,7 @@ const [workWeight, setworkWeight] = useState(0)
                aria-labelledby="discrete-slider"
                valueLabelDisplay="auto"
                step={1}
-               marks 
+              //  marks 
                min={1}
                max={110}
                onChange={handleSliderChange}
