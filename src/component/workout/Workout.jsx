@@ -18,7 +18,7 @@ function Workout({ fireTodo, user, userName, setlogoName }) {
   const repeateRef = useRef();
   const [items, setItems] = useState({});
   const [totalItems, settotalItems] = useState({});
-
+const [maxItem, setMaxItem] = useState('')
 
   const [body1, setBody1] = useState('가슴');
   const [body2, setBody2] = useState('가슴');
@@ -52,16 +52,19 @@ const [workWeight, setworkWeight] = useState(0)
   }, [fireTodo,user]);
   //DB에 글 데이터 저장
 
-  let maxItem = {}
-  const ttt = Object.values(totalItems)
-  const ttf = Object.values(ttt).map((e)=>{
-    settotalItems({...totalItems,...e})
-    console.log(totalItems)
-  })
-  // console.log(ttt,ttf)
+  const maxChange = (selectGame)=>{
+    const ttt = Object.values(totalItems)
+    const total = ttt.map((e)=>{ return e[selectGame]||0 })
+    const totalResult = Math.max(...total)
+    if(totalResult){
+      setMaxItem(totalResult)
+      console.log('기록있음',totalItems)
+    }else{console.log('기록없음'); setMaxItem(0)}
+    console.log(total,totalResult)
+  }
+   
   const submit = (e) => {
     e.preventDefault();
-    // console.log('items', items,'itemsbody2', items[body2], items[body2][gameSelect2],items[body2][gameSelect2].workoutSet)
     if(gameSelect2==='종목'){return}
     let addSet = 1;
 
@@ -182,8 +185,10 @@ const [workWeight, setworkWeight] = useState(0)
         <div className="topSelect">
           
         <DropdownButton as={ButtonGroup} title={selectStyle2} size="sm" variant={'dark'} style={{width:"100%",border:"soid 1px", background:"var(--Ccolor)"}} >
-            <Dropdown.Item as="button" onClick={()=>{setselectStyle2('맨몸운동');setColor2('danger');setplaceholder(placeholder1);setbodySelect2(placeholder1[0]);setgameSelect2(Object.values(placeholder1[0])[0]); setBody2('가슴'); setworkWeight(0)}}   style={{textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>맨몸운동</Dropdown.Item>
-            <Dropdown.Item as="button" onClick={()=>{setselectStyle2('웨이트운동');setColor2('danger');setplaceholder(placeholder2);setbodySelect2(placeholder2[0]);setgameSelect2(Object.values(placeholder2[0])[0]); setBody2('가슴')}} style={{textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>웨이트운동</Dropdown.Item>
+            <Dropdown.Item as="button" onClick={()=>{ setselectStyle2('맨몸운동');setColor2('danger');setplaceholder(placeholder1);setbodySelect2(placeholder1[0]);setgameSelect2(Object.values(placeholder1[0])[0]); maxChange(Object.values(placeholder1[0])[0]); setBody2('가슴'); setworkWeight(0)}}   
+            style={{textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>맨몸운동</Dropdown.Item>
+            <Dropdown.Item as="button" onClick={()=>{setselectStyle2('웨이트운동');setColor2('danger');setplaceholder(placeholder2);setbodySelect2(placeholder2[0]);setgameSelect2(Object.values(placeholder2[0])[0]); maxChange(Object.values(placeholder2[0])[0]); setBody2('가슴')}} 
+            style={{textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>웨이트운동</Dropdown.Item>
         </DropdownButton>
 
         <DropdownButton as={ButtonGroup} variant={color2} title={body2} size="sm" >
@@ -202,12 +207,13 @@ const [workWeight, setworkWeight] = useState(0)
           <div className="cardSelect">
             {
             Object.values(bodySelect2).map((e,i) => { 
-              return <Dropdown.Item as="button" onClick={()=>{setgameSelect2(e);totalGame(e)}} style={{textAlign:"center", fontSize:"12px",padding:"0",fontWeight:"900"}}>{e}</Dropdown.Item>
+              return <Dropdown.Item as="button" onClick={()=>{setgameSelect2(e);totalGame(e);maxChange(e);}} style={{textAlign:"center", fontSize:"12px",padding:"0",fontWeight:"900"}}>{e}</Dropdown.Item>
             })
             }
           </div>
         </DropdownButton>
           
+        <button  className="btnRoomLink">기록 {maxItem} {selectStyle2==='맨몸운동'?'(회)':'(kg)'} </button>
         <button  className="btnRoomLink">동영상</button>
         </div>
         
