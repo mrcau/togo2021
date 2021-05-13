@@ -60,6 +60,21 @@ class firetodo {
      .then(() => console.log('글 저장성공'))
      .catch((e) => console.log(e))
  }
+
+ addyouhyung(folder,uid,data) {
+   // eslint-disable-next-line no-useless-computed-key
+   fireInit.database().ref(`${folder}/${uid}/${data}`).update({['부위']:'data'})
+ }
+ addbuwi(folder,uid,youhyung,data) {
+   // eslint-disable-next-line no-useless-computed-key
+   fireInit.database().ref(`${folder}/${uid}/${youhyung}/${data}`).update({['부위']:'data'})
+ }
+ addjongmock(folder,uid,youhyung,buwi,data) {
+   // eslint-disable-next-line no-useless-computed-key
+   fireInit.database().ref(`${folder}/${uid}/${youhyung}/${buwi}`).update({[data]:'data'})
+ }
+
+
   // workout 삭제
   workoutDel(folder, uid, todayId,body,dataId) { 
     fireInit.database().ref(`${folder}/${uid}/${todayId}/${body}/${dataId}`).remove();
