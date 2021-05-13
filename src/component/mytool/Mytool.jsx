@@ -18,6 +18,11 @@ function Mytool({fireIdea,fireApp, fireSync,user, userInfo, setlogoName }) {
   const titleRef = useRef();
   const rocketRef = useRef();
   const newFolder = useRef();
+  const youhyungRef = useRef();
+  const jongmockRef = useRef();
+  const buwiRef = useRef();
+  const videoLinkRef = useRef();
+  
   const [items, setItems] = useState({});
   const folder = "mytool"
   const Swal = require('sweetalert2');
@@ -25,7 +30,10 @@ function Mytool({fireIdea,fireApp, fireSync,user, userInfo, setlogoName }) {
   const [photoData, setPhotoData] = useState('');
   const [addLink, setAddLink] = useState('')
   const [addCon, setAddCon] = useState('')
-  
+  const [youhyung, setYouhyung] = useState('맨몸운동')
+  const [jongmock, setJongmock] = useState('팔굽혀펴기')
+  const [buwi, setbuwi] = useState('가슴')
+  const [videoLink, setVideoLink] = useState('')
   const [folderBox, setfolderBox] = useState([])
   const [selectFolder, setselectFolder] = useState('기본')
   setlogoName(' My ToolBox');

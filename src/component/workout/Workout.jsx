@@ -5,6 +5,11 @@ import { DropdownButton,Dropdown,ButtonGroup } from 'react-bootstrap';
 import Slider from '@material-ui/core/Slider';
 import placeholder1 from './placeholder';
 import placeholder2 from './placeholder2';
+import {  DeleteForever } from '@material-ui/icons';
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import { IconButton, Tooltip } from '@material-ui/core';
+import Accordion from 'react-bootstrap/Accordion'
+import { Card,Button } from 'react-bootstrap';
 
 function Workout({ fireTodo, user, userName, setlogoName }) {
 
@@ -15,6 +20,7 @@ function Workout({ fireTodo, user, userName, setlogoName }) {
   const today3 = new Date().getDate();
   const todayId = `${today1}`+`${today2}`+`${today3}`
   // const textRef = useRef();
+  const newFolder = useRef();
   const repeateRef = useRef();
   const [items, setItems] = useState({});
   const [totalItems, settotalItems] = useState({});
@@ -182,8 +188,62 @@ const [workWeight, setworkWeight] = useState(0)
 
       <div className="workout-input">
         {/* <form onSubmit={submit} className="workout-form"> */}
+        <Accordion>
+        <Card style={{background:"gray",borderRadius:"12px 12px 0 0"}}>
+          <Card.Header style={{height:"30px",padding:"0",background:"dimgray",borderRadius:"12px 12px 0 0"}}>
+            <Accordion.Toggle as={Button} variant="link" eventKey="0" style={{margin:"0",padding:"0",color:"white"}}>
+              종목선택
+            </Accordion.Toggle>
+          </Card.Header>         
+        
+        <Accordion.Collapse eventKey="0">
+        {/* defaultActiveKey="0" */}
         <div className="topSelect">
+          <div style={{display:"flex",background:"gray"}}>
+           <IconButton size="small" component="span" style={{color:"var(--Acolor)",margin:"auto"}}>
+             <DeleteForever />  
+           </IconButton>
+           <input type="text" placeholder="유형" ref={youhyungRef} style={{height:"100%",width:"100%",textAlign:"center"}}/>
+            <IconButton size="small" component="span" style={{color:"var(--Acolor)",margin:"auto"}} > 
+             <AddCircleOutlineIcon  />  
+           </IconButton>
+          </div>
           
+          <div style={{display:"flex",background:"gray"}}>
+           <IconButton size="small" component="span" style={{color:"var(--Acolor)",margin:"auto"}}>
+             <DeleteForever />  
+           </IconButton>
+           <input type="text" placeholder="부위" ref={buwiRef} style={{height:"100%",width:"100%",textAlign:"center"}}/>
+            <IconButton size="small" component="span" style={{color:"var(--Acolor)",margin:"auto"}} > 
+             <AddCircleOutlineIcon  />  
+           </IconButton>
+          </div>
+          
+          <div style={{display:"flex",background:"gray"}}>
+           <IconButton size="small" component="span" style={{color:"var(--Acolor)",margin:"auto"}}>
+             <DeleteForever />  
+           </IconButton>
+           <input type="text" placeholder="종목" ref={jongmockRef} style={{height:"100%",width:"100%",textAlign:"center"}}/>
+            <IconButton size="small" component="span" style={{color:"var(--Acolor)",margin:"auto"}} > 
+             <AddCircleOutlineIcon  />  
+           </IconButton>
+          </div>
+
+          <div style={{display:"flex",background:"gray"}}>
+           <IconButton size="small" component="span" style={{color:"var(--Acolor)",margin:"auto"}}>
+             <DeleteForever />  
+           </IconButton>
+           <input type="text" placeholder="링크" ref={videoLinkRef} style={{height:"100%",width:"100%",textAlign:"center"}}/>
+            <IconButton size="small" component="span" style={{color:"var(--Acolor)",margin:"auto"}} > 
+             <AddCircleOutlineIcon  />  
+           </IconButton>
+          </div>
+        </div>
+        </Accordion.Collapse>
+        </Card>
+        </Accordion>
+
+        <div className="topSelect">          
         <DropdownButton as={ButtonGroup} title={selectStyle2} size="sm" variant={'dark'} style={{width:"100%",border:"soid 1px", background:"var(--Ccolor)"}} >
             <Dropdown.Item as="button" onClick={()=>{ setselectStyle2('맨몸운동');setColor2('danger');setplaceholder(placeholder1);setbodySelect2(placeholder1[0]);setgameSelect2(Object.values(placeholder1[0])[0]); maxChange(Object.values(placeholder1[0])[0]); setBody2('가슴'); setworkWeight(0)}}   
             style={{textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>맨몸운동</Dropdown.Item>
@@ -213,11 +273,11 @@ const [workWeight, setworkWeight] = useState(0)
           </div>
         </DropdownButton>
           
-         <button  className="btnRoomLink" style={{fontSize:"12px"}}>
-          기록 {maxItem} {selectStyle2==='맨몸운동'?'(회)':'(kg)'} 
+         <button  className="btnRoomLink" style={{fontSize:"13px"}}>
+            동영상
         </button>
         </div>
-        
+
         {selectStyle2 === '웨이트운동' && 
         <div className="slider" >
           <h5 style={{margin:"auto",marginLeft:"0"}}>무게: {workWeight}kg</h5>
@@ -251,8 +311,10 @@ const [workWeight, setworkWeight] = useState(0)
         
         {/* <textarea className="samtextarea" ref={textRef} cols="30" rows="3" style={{resize: 'none'}} /> */}
         <div style={{display:"flex"}}>
+        <button className="btnWorkoutAdd" >
+        최고기록 {maxItem} {selectStyle2==='맨몸운동'?'(회)':'(kg)'} 
+        </button>
         <button className="btnWorkoutAdd" onClick={submit}> 추가</button>
-        <button className="btnWorkoutAdd" >동영상</button>
         </div>
         {/* </form> */}
       </div>
