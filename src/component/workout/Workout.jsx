@@ -24,6 +24,7 @@ function Workout({ fireTodo, user, userName, setlogoName }) {
   const repeateRef = useRef();
   const [items, setItems] = useState({});
   const [totalItems, settotalItems] = useState({});
+  const [mentoItem, setmentoItem] = useState({});
 const [maxItem, setMaxItem] = useState('')
 
 const [selectStyle1, setselectStyle1] = useState('맨몸운동');
@@ -45,7 +46,7 @@ const youhyungRef = useRef();
 const buwiRef = useRef();
 const jongmockRef = useRef();
 const videoLinkRef = useRef();
-
+const mentoKey = 'ffB1YI'
   setlogoName(' Workout');
 
   // 데이터 보여주기 싱크
@@ -54,11 +55,14 @@ const videoLinkRef = useRef();
       f1: (p)=>{setItems(p)},
       f2: ()=>{setItems({})},
       f3: (p)=>{settotalItems(p)},
-      f4: ()=>{settotalItems({})}
+      f4: ()=>{settotalItems({})},
+      f5: (p)=>{setmentoItem(p)},
+      f6: ()=>{setmentoItem({})},
       }
    if(user){
     fireTodo.workoutSync(folder,user.uid,todayId, cf) 
     fireTodo.totalworkoutSync(folder,user.uid, cf) 
+    fireTodo.mentoworkoutSync(folder,mentoKey, cf) 
    }else{console.log('no-User')}
   }, [fireTodo,user]);
   //DB에 글 데이터 저장
@@ -94,6 +98,16 @@ const videoLinkRef = useRef();
     if(!data){return}
     fireTodo.addjongmock(folder,uid6,youhyung,buwi,data)
     jongmockRef.current.value ='';
+  }
+  const videoLink = ()=>{    
+    const data = videoLinkRef.current.value;
+    const uid6 = user.uid.substr(0,6);
+    if(!data){return}
+    fireTodo.addvideoLink(folder,uid6,youhyung,buwi,jongmock,data)
+    videoLinkRef.current.value ='';
+  }
+  const workoutVideo = ()=>{    
+    console.log(mentoItem)
   }
   // const addyouhyung = ()=>{
     
@@ -264,7 +278,7 @@ const videoLinkRef = useRef();
              <DeleteForever />  
            </IconButton>
            <input type="text" placeholder="링크" ref={videoLinkRef} style={{height:"100%",width:"100%",textAlign:"center"}}/>
-            <IconButton size="small" component="span" style={{color:"var(--Acolor)",margin:"auto"}} > 
+            <IconButton size="small" component="span" onClick={videoLink} style={{color:"var(--Acolor)",margin:"auto"}} > 
              <AddCircleOutlineIcon  />  
            </IconButton>
           </div>
@@ -303,7 +317,7 @@ const videoLinkRef = useRef();
           </div>
         </DropdownButton>
           
-         <button  className="btnRoomLink" style={{fontSize:"13px"}}>
+         <button  className="btnRoomLink" style={{fontSize:"13px"}} onClick={workoutVideo}>
             동영상
         </button>
         </div>
