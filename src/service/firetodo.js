@@ -69,22 +69,25 @@ class firetodo {
  }
 
  addyouhyung(folder,uid,data) {
-   // eslint-disable-next-line no-useless-computed-key
-   fireInit.database().ref(`${folder}/${uid}/${data}`).update({['부위']:'data'})
+   fireInit.database().ref(`${folder}/${uid}/${data}`).update({['기타']:'data'})
  }
  addbuwi(folder,uid,youhyung,data) {
-   // eslint-disable-next-line no-useless-computed-key
-   fireInit.database().ref(`${folder}/${uid}/${youhyung}/${data}`).update({['부위']:'data'})
+   fireInit.database().ref(`${folder}/${uid}/${youhyung}/${data}`).update({['기타']:'data'})
  }
  addjongmock(folder,uid,youhyung,buwi,data) {
-   // eslint-disable-next-line no-useless-computed-key
    fireInit.database().ref(`${folder}/${uid}/${youhyung}/${buwi}`).update({[data]:'data'})
  }
  addvideoLink(folder,uid,youhyung,buwi,jongmock,data) {
-   // eslint-disable-next-line no-useless-computed-key
    fireInit.database().ref(`${folder}/${uid}/${youhyung}/${buwi}`).update({[jongmock]:data})
  }
 
+ delbuwi(folder,uid,youhyung,buwi) {
+  fireInit.database().ref(`${folder}/${uid}/${youhyung}/${buwi}`).remove()
+}
+
+deljongmok(folder,uid,youhyung,buwi,jongmok) {
+  fireInit.database().ref(`${folder}/${uid}/${youhyung}/${buwi}}`).remove({[jongmok]:'data'})
+}
 
   // workout 삭제
   workoutDel(folder, uid, todayId,body,dataId) { 

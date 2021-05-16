@@ -22,10 +22,6 @@ function Workout({ fireTodo, user, userName, setlogoName }) {
   // const textRef = useRef();
   const newFolder = useRef();
   const repeateRef = useRef();
-  const [items, setItems] = useState({});
-  const [totalItems, settotalItems] = useState({});
-  const [mentoItem, setmentoItem] = useState({});
-const [maxItem, setMaxItem] = useState('')
 
 const [selectStyle1, setselectStyle1] = useState('맨몸운동');
   const [body1, setBody1] = useState('가슴');
@@ -39,9 +35,13 @@ const [selectStyle1, setselectStyle1] = useState('맨몸운동');
   const [workRepeat, setworkRepeat] = useState(1)
   const [workWeight, setworkWeight] = useState(0)
   
-  const [youhyung, setyouhyung] = useState('맨몸운동');
-  const [buwi, setbuwi] = useState('가슴');
-  const [jongmock, setjongmock] = useState('종목');
+  const [youhyung, setyouhyung] = useState('');
+  const [buwi, setbuwi] = useState('');
+  const [jongmock, setjongmock] = useState('');  
+  const [items, setItems] = useState({});
+  const [totalItems, settotalItems] = useState({});
+  const [maxItem, setMaxItem] = useState('')
+  const [mentoItem, setmentoItem] = useState({});
 const youhyungRef = useRef();
 const buwiRef = useRef();
 const jongmockRef = useRef();
@@ -56,7 +56,11 @@ const mentoKey = 'ffB1YI'
       f2: ()=>{setItems({})},
       f3: (p)=>{settotalItems(p)},
       f4: ()=>{settotalItems({})},
-      f5: (p)=>{setmentoItem(p)},
+      f5: (p)=>{setmentoItem(p);
+        setyouhyung(Object.keys(p)[0])
+        setbuwi(Object.keys(Object.values(p)[0])[0]);
+        setjongmock(Object.keys(Object.values(Object.values(p)[0])[0])[0])
+      },
       f6: ()=>{setmentoItem({})},
       }
    if(user){
@@ -67,6 +71,8 @@ const mentoKey = 'ffB1YI'
   }, [fireTodo,user]);
   //DB에 글 데이터 저장
 
+
+
   const maxChange = (selectGame)=>{
     const ttt = Object.values(totalItems)
     const total = ttt.map((e)=>{ return e[selectGame]||0 })
@@ -75,7 +81,6 @@ const mentoKey = 'ffB1YI'
       setMaxItem(totalResult)
       console.log('기록있음',totalItems)
     }else{console.log('기록없음'); setMaxItem(0)}
-    console.log(total,totalResult)
   }
    
   const addyouhyung = ()=>{
@@ -106,8 +111,13 @@ const mentoKey = 'ffB1YI'
     fireTodo.addvideoLink(folder,uid6,youhyung,buwi,jongmock,data)
     videoLinkRef.current.value ='';
   }
-  const workoutVideo = ()=>{    
-    console.log(mentoItem,mentoItem[youhyung])
+  const delbuwi = ()=>{    
+    const uid6 = user.uid.substr(0,6);
+    fireTodo.delbuwi(folder,uid6,youhyung,buwi,buwi)
+  }
+  const deljongmok = ()=>{    
+    const uid6 = user.uid.substr(0,6);
+    fireTodo.deljongmok(folder,uid6,youhyung,buwi,buwi,jongmock)
   }
   // const addyouhyung = ()=>{
     
@@ -254,7 +264,7 @@ const mentoKey = 'ffB1YI'
           </div>
           
           <div style={{display:"flex",background:"gray"}}>
-           <IconButton size="small" component="span" style={{color:"var(--Acolor)",margin:"auto"}}>
+           <IconButton size="small" component="span" onClick={delbuwi} style={{color:"var(--Acolor)",margin:"auto"}}>
              <DeleteForever />  
            </IconButton>
            <input type="text" placeholder="부위" ref={buwiRef} style={{height:"100%",width:"100%",textAlign:"center"}}/>
@@ -264,7 +274,7 @@ const mentoKey = 'ffB1YI'
           </div>
           
           <div style={{display:"flex",background:"gray"}}>
-           <IconButton size="small" component="span" style={{color:"var(--Acolor)",margin:"auto"}}>
+           <IconButton size="small" component="span" onClick={deljongmok} style={{color:"var(--Acolor)",margin:"auto"}}>
              <DeleteForever />  
            </IconButton>
            <input type="text" placeholder="종목" ref={jongmockRef} style={{height:"100%",width:"100%",textAlign:"center"}}/>
@@ -302,12 +312,14 @@ const mentoKey = 'ffB1YI'
         </DropdownButton>
 
         <DropdownButton as={ButtonGroup} variant={color2} title={buwi} size="sm" >
-        <div className="cardSelect">
-            {
-            Object.keys(mentoItem[youhyung]).map((e,i) => {  
-              return <Dropdown.Item as="button" onClick={()=>{setbuwi(e); console.log(e,Object.keys(mentoItem[youhyung][e])[0])}} 
-              style={{textAlign:"center", fontSize:"12px",padding:"0",fontWeight:"900"}}>{e}</Dropdown.Item>
-            })
+        <div className="cardSelect"> 
+
+            {  
+            youhyung &&
+              Object.keys(mentoItem[youhyung]).map((e,i) => {  
+                       return <Dropdown.Item as="button" onClick={()=>{setbuwi(e); setjongmock(Object.keys(mentoItem[youhyung][e])[0]) }} 
+                       style={{textAlign:"center", fontSize:"12px",padding:"0",fontWeight:"900"}}>{e}</Dropdown.Item>
+              })
             }
             {/* <Dropdown.Item as="button" onClick={()=>{setColor2('danger');setbodySelect2(placeholder[0]);   setjongmock(Object.values(placeholder[0])[0]); setbuwi('가슴')}} style={{color:"#d53343",textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>가슴</Dropdown.Item>
             <Dropdown.Item as="button" onClick={()=>{setColor2('primary');setbodySelect2(placeholder[1]);  setjongmock(Object.values(placeholder[1])[0]); setbuwi('어깨')}} style={{color:"#0077f7",textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>어깨</Dropdown.Item>
@@ -322,16 +334,21 @@ const mentoKey = 'ffB1YI'
         <DropdownButton as={ButtonGroup} variant="dark" title={jongmock} size="sm" >
           <div className="cardSelect">
             {
-            Object.values(bodySelect2).map((e,i) => { 
+            youhyung && buwi &&
+            Object.keys(mentoItem[youhyung][buwi]).map((e,i) => { 
               return <Dropdown.Item as="button" onClick={()=>{setjongmock(e);totalGame(e);maxChange(e);}} style={{textAlign:"center", fontSize:"12px",padding:"0",fontWeight:"900"}}>{e}</Dropdown.Item>
             })
             }
           </div>
         </DropdownButton>
-          
-         <button  className="btnRoomLink" style={{fontSize:"13px"}} onClick={workoutVideo}>
+        { 
+            youhyung && buwi && jongmock &&
+        <a href={mentoItem[youhyung][buwi][jongmock]} target="_blank" rel="noreferrer">
+          <button  className="btnRoomLink" style={{fontSize:"13px"}} >
             동영상
-        </button>
+          </button>
+        </a>
+        }
         </div>
 
         <div className="slider" >
