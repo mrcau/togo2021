@@ -24,6 +24,7 @@ function Workout({ fireTodo, user, userName, setlogoName }) {
   const repeateRef = useRef();
   const [items, setItems] = useState({});
   const [totalItems, settotalItems] = useState({});
+  const [mentoItem, setmentoItem] = useState({});
 const [maxItem, setMaxItem] = useState('')
 
 const [selectStyle1, setselectStyle1] = useState('맨몸운동');
@@ -45,7 +46,7 @@ const youhyungRef = useRef();
 const buwiRef = useRef();
 const jongmockRef = useRef();
 const videoLinkRef = useRef();
-
+const mentoKey = 'ffB1YI'
   setlogoName(' Workout');
 
   // 데이터 보여주기 싱크
@@ -54,11 +55,14 @@ const videoLinkRef = useRef();
       f1: (p)=>{setItems(p)},
       f2: ()=>{setItems({})},
       f3: (p)=>{settotalItems(p)},
-      f4: ()=>{settotalItems({})}
+      f4: ()=>{settotalItems({})},
+      f5: (p)=>{setmentoItem(p)},
+      f6: ()=>{setmentoItem({})},
       }
    if(user){
     fireTodo.workoutSync(folder,user.uid,todayId, cf) 
     fireTodo.totalworkoutSync(folder,user.uid, cf) 
+    fireTodo.mentoworkoutSync(folder,mentoKey, cf) 
    }else{console.log('no-User')}
   }, [fireTodo,user]);
   //DB에 글 데이터 저장
@@ -94,6 +98,16 @@ const videoLinkRef = useRef();
     if(!data){return}
     fireTodo.addjongmock(folder,uid6,youhyung,buwi,data)
     jongmockRef.current.value ='';
+  }
+  const videoLink = ()=>{    
+    const data = videoLinkRef.current.value;
+    const uid6 = user.uid.substr(0,6);
+    if(!data){return}
+    fireTodo.addvideoLink(folder,uid6,youhyung,buwi,jongmock,data)
+    videoLinkRef.current.value ='';
+  }
+  const workoutVideo = ()=>{    
+    console.log(mentoItem,mentoItem[youhyung])
   }
   // const addyouhyung = ()=>{
     
@@ -264,7 +278,7 @@ const videoLinkRef = useRef();
              <DeleteForever />  
            </IconButton>
            <input type="text" placeholder="링크" ref={videoLinkRef} style={{height:"100%",width:"100%",textAlign:"center"}}/>
-            <IconButton size="small" component="span" style={{color:"var(--Acolor)",margin:"auto"}} > 
+            <IconButton size="small" component="span" onClick={videoLink} style={{color:"var(--Acolor)",margin:"auto"}} > 
              <AddCircleOutlineIcon  />  
            </IconButton>
           </div>
@@ -275,21 +289,33 @@ const videoLinkRef = useRef();
 
         <div className="topSelect">          
         <DropdownButton as={ButtonGroup} title={youhyung} size="sm" variant={'dark'} style={{width:"100%",border:"soid 1px", background:"var(--Ccolor)"}} >
-            <Dropdown.Item as="button" onClick={()=>{ setyouhyung('맨몸운동');setColor2('danger');setplaceholder(placeholder1);setbodySelect2(placeholder1[0]);setjongmock(Object.values(placeholder1[0])[0]); maxChange(Object.values(placeholder1[0])[0]); setbuwi('가슴'); setworkWeight(0)}}   
+           {
+            Object.keys(mentoItem).map((e,i) => {  
+              return <Dropdown.Item as="button" onClick={()=>{setyouhyung(e);setbuwi(Object.keys(mentoItem[e])[0]);setjongmock( Object.keys(Object.values(mentoItem[e])[0])[0]) }} 
+              style={{textAlign:"center", fontSize:"12px",padding:"0",fontWeight:"900"}}>{e}</Dropdown.Item>
+            })
+            }
+            {/* <Dropdown.Item as="button" onClick={()=>{ setyouhyung('맨몸운동');setColor2('danger');setplaceholder(placeholder1);setbodySelect2(placeholder1[0]);setjongmock(Object.values(placeholder1[0])[0]); maxChange(Object.values(placeholder1[0])[0]); setbuwi('가슴'); setworkWeight(0)}}   
             style={{textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>맨몸운동</Dropdown.Item>
             <Dropdown.Item as="button" onClick={()=>{setyouhyung('웨이트운동');setColor2('danger');setplaceholder(placeholder2);setbodySelect2(placeholder2[0]);setjongmock(Object.values(placeholder2[0])[0]); maxChange(Object.values(placeholder2[0])[0]); setbuwi('가슴')}} 
-            style={{textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>웨이트운동</Dropdown.Item>
+            style={{textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>웨이트운동</Dropdown.Item> */}
         </DropdownButton>
 
         <DropdownButton as={ButtonGroup} variant={color2} title={buwi} size="sm" >
         <div className="cardSelect">
-            <Dropdown.Item as="button" onClick={()=>{setColor2('danger');setbodySelect2(placeholder[0]);   setjongmock(Object.values(placeholder[0])[0]); setbuwi('가슴')}} style={{color:"#d53343",textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>가슴</Dropdown.Item>
+            {
+            Object.keys(mentoItem[youhyung]).map((e,i) => {  
+              return <Dropdown.Item as="button" onClick={()=>{setbuwi(e); console.log(e,Object.keys(mentoItem[youhyung][e])[0])}} 
+              style={{textAlign:"center", fontSize:"12px",padding:"0",fontWeight:"900"}}>{e}</Dropdown.Item>
+            })
+            }
+            {/* <Dropdown.Item as="button" onClick={()=>{setColor2('danger');setbodySelect2(placeholder[0]);   setjongmock(Object.values(placeholder[0])[0]); setbuwi('가슴')}} style={{color:"#d53343",textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>가슴</Dropdown.Item>
             <Dropdown.Item as="button" onClick={()=>{setColor2('primary');setbodySelect2(placeholder[1]);  setjongmock(Object.values(placeholder[1])[0]); setbuwi('어깨')}} style={{color:"#0077f7",textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>어깨</Dropdown.Item>
             <Dropdown.Item as="button" onClick={()=>{setColor2('warning');setbodySelect2(placeholder[2]);  setjongmock(Object.values(placeholder[2])[0]); setbuwi('등')}} style={{color:"#f7bb07",textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>등</Dropdown.Item>
             <Dropdown.Item as="button" onClick={()=>{setColor2('info');setbodySelect2(placeholder[3]);     setjongmock(Object.values(placeholder[3])[0]); setbuwi('삼두')}} style={{color:"#17a2b8",textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>삼두</Dropdown.Item>
             <Dropdown.Item as="button" onClick={()=>{setColor2('secondary');setbodySelect2(placeholder[4]);setjongmock(Object.values(placeholder[4])[0]); setbuwi('이두')}} style={{color:"#697179",textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>이두</Dropdown.Item>
             <Dropdown.Item as="button" onClick={()=>{setColor2('dark');setbodySelect2(placeholder[5]);     setjongmock(Object.values(placeholder[5])[0]); setbuwi('복근')}} style={{color:"#32383e",textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>복근</Dropdown.Item>
-            <Dropdown.Item as="button" onClick={()=>{setColor2('success');setbodySelect2(placeholder[6]);  setjongmock(Object.values(placeholder[6])[0]); setbuwi('다리')}} style={{color:"#27a243",textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>다리</Dropdown.Item>
+            <Dropdown.Item as="button" onClick={()=>{setColor2('success');setbodySelect2(placeholder[6]);  setjongmock(Object.values(placeholder[6])[0]); setbuwi('다리')}} style={{color:"#27a243",textAlign:"center", fontSize:"18px",padding:"0",fontWeight:"900"}}>다리</Dropdown.Item> */}
           </div>
         </DropdownButton>
         
@@ -303,7 +329,7 @@ const videoLinkRef = useRef();
           </div>
         </DropdownButton>
           
-         <button  className="btnRoomLink" style={{fontSize:"13px"}}>
+         <button  className="btnRoomLink" style={{fontSize:"13px"}} onClick={workoutVideo}>
             동영상
         </button>
         </div>

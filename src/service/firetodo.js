@@ -54,6 +54,13 @@ class firetodo {
       data ? cf.f3(data) : cf.f4();
     })
   }  
+  mentoworkoutSync(folder, mentoKey,cf) {
+    const ref = fireInit.database().ref(`${folder}/${mentoKey}`);
+    ref.on('value', (p) => {
+      const data = p.val();
+      data ? cf.f5(data) : cf.f6();
+    })
+  }  
 
   workoutSave(folder, data) {
    fireInit.database().ref(`${folder}/${data.uid}/${data.todayId}/${data.body}/${data.gameSelect}`).set(data)
@@ -72,6 +79,10 @@ class firetodo {
  addjongmock(folder,uid,youhyung,buwi,data) {
    // eslint-disable-next-line no-useless-computed-key
    fireInit.database().ref(`${folder}/${uid}/${youhyung}/${buwi}`).update({[data]:'data'})
+ }
+ addvideoLink(folder,uid,youhyung,buwi,jongmock,data) {
+   // eslint-disable-next-line no-useless-computed-key
+   fireInit.database().ref(`${folder}/${uid}/${youhyung}/${buwi}`).update({[jongmock]:data})
  }
 
 
