@@ -38,14 +38,14 @@ const [selectStyle1, setselectStyle1] = useState('맨몸운동');
   const [youhyung, setyouhyung] = useState('');
   const [buwi, setbuwi] = useState('');
   const [jongmock, setjongmock] = useState('');  
-  const [items, setItems] = useState({});
   const [totalItems, settotalItems] = useState({});
   const [maxItem, setMaxItem] = useState('')
   const [mentoItem, setmentoItem] = useState({});
-const youhyungRef = useRef();
-const buwiRef = useRef();
-const jongmockRef = useRef();
-const videoLinkRef = useRef();
+  const youhyungRef = useRef();
+  const buwiRef = useRef();
+  const jongmockRef = useRef();
+  const videoLinkRef = useRef();
+  const [items, setItems] = useState({});
 const mentoKey = 'ffB1YI'
   setlogoName(' Workout');
 
@@ -64,13 +64,13 @@ const mentoKey = 'ffB1YI'
       f6: ()=>{setmentoItem({})},
       }
    if(user){
+    fireTodo.workoutSync0(folder,user.uid,cf) 
     fireTodo.workoutSync(folder,user.uid,todayId, cf) 
     fireTodo.totalworkoutSync(folder,user.uid, cf) 
     fireTodo.mentoworkoutSync(folder,mentoKey, cf) 
    }else{console.log('no-User')}
   }, [fireTodo,user]);
   //DB에 글 데이터 저장
-
 
 
   const maxChange = (selectGame)=>{

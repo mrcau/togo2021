@@ -40,6 +40,13 @@ class firetodo {
   //     .catch((e) => console.log(e))
   // }
   // workout 씽크
+  workoutSync0(folder, uid, cf) {
+    const ref = fireInit.database().ref(`${folder}/${uid}`);
+    ref.on('value', (p) => {
+      const data = p.val();
+      data ? cf.f01(data) : cf.f02();
+    })
+  }  
   workoutSync(folder, uid,todayId, cf) {
     const ref = fireInit.database().ref(`${folder}/${uid}/${todayId}`);
     ref.on('value', (p) => {
