@@ -9,7 +9,8 @@ function  Itemrow2 ({item,fireTodo,todayId}) {
   const folder = "workout";
 
   const itemSet0 = Object.values(item);
-  const itemSet = Object.values(...itemSet0);
+  const itemSet1 =Object.values(...itemSet0);
+  const itemSet = Object.values(itemSet1);
   const itemBody = itemSet[0];
   const now = itemBody.progress;
   let counter = itemBody.progress;
@@ -49,7 +50,7 @@ function  Itemrow2 ({item,fireTodo,todayId}) {
           <Card.Body style={{padding:"8px",overflowY:"auto",maxHeight:"240px"}}>
             <div style={{height:"100%",width:"100%",background:"white",color:"black",borderRadius:"5px"}}>
             {
-              Object.values(itemSet).map((e,i) => {
+              itemSet.map((e,i) => {
                 return <Card.Text style={{fontSize:"15px",lineHeight:"20px",padding:"0",textAlign:'left' }}> 
                 💪 {e.gameSelect} {e.workoutSet||1}세트 / 총
                 {/* {
@@ -64,6 +65,7 @@ function  Itemrow2 ({item,fireTodo,todayId}) {
                 {e.workWeight[0] !==0 && <br/>} 
                  <FitnessCenterIcon/> 
                  {/* 횟수 : {e.workRepeat.map((k)=>{return k + '회 '})}  */}
+                 
                  { console.log(e.workRepeat||'')}
                 </Card.Text>
               })

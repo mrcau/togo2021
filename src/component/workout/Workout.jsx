@@ -235,23 +235,12 @@ const mentoKey = 'ffB1YI'
       </div>
       
       <div className="workout-items">
-        {/* {
-          Object.keys(items).map((e) => {  console.log('e',e)
-            return <Itemrow key={e} item={items[e]} fireTodo={fireTodo} todayId={todayId} />
-          })
-        } */}
-            {
-          Object.values(items).map((e) => { Object.values(e).map((k) => { 
-            // return <Itemrow2 key={k} item={k} fireTodo={fireTodo} todayId={todayId} />
-          })
-        })
-        }
          {
           Object.values(items).map((e) => { 
             if(Object.keys(e)[0].length>6){return}else{
             return <Itemrow2  item={e} fireTodo={fireTodo} todayId={todayId} />}
         })}
-        {/* <Itemrow2  item={items} fireTodo={fireTodo} todayId={todayId} /> */}
+        {/* .sort((a,b)=>{return b-a}) */}
 
 
       </div>
