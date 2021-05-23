@@ -40,15 +40,16 @@ class firetodo {
   //     .catch((e) => console.log(e))
   // }
   // workout 씽크
-  workoutSync0(folder, uid, cf) {
-    const ref = fireInit.database().ref(`${folder}/${uid}`);
-    ref.on('value', (p) => {
-      const data = p.val();
-      data ? cf.f01(data) : cf.f02();
-    })
-  }  
   workoutSync(folder, uid,todayId, cf) {
     const ref = fireInit.database().ref(`${folder}/${uid}/${todayId}`);
+    ref.on('value', (p) => {
+      const data = p.val();
+      data ? cf.f1(data) : cf.f2();
+    })
+  }  
+  // workout 씽크
+  workoutSync2(folder, uid, cf) {
+    const ref = fireInit.database().ref(`${folder}/${uid}`);
     ref.on('value', (p) => {
       const data = p.val();
       data ? cf.f1(data) : cf.f2();
@@ -108,8 +109,9 @@ deljongmok(folder,uid,youhyung,buwi,jongmok) {
     // workout 업데이트
 
   workouttotal(folder, uid,todayId, gameSelect,repeat) { 
-      fireInit.database().ref(`${folder}/${uid}/totalWokout/${todayId}`)
-        .update({ [gameSelect]: repeat })
+      fireInit.database().ref(`${folder}/${uid}/totalWokout/${todayId}`).update({ [gameSelect]: repeat })      
+     .then(() => console.log('글 저장성공'))
+     .catch((e) => {console.log(e); return;})
     }
 
   //Auth 테이블 싱크 for left menu

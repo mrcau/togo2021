@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Itemrow from './Itemrow';
+import Itemrow2 from './Itemrow2';
 import './workout.css';
 import { DropdownButton,Dropdown,ButtonGroup } from 'react-bootstrap';
 import Slider from '@material-ui/core/Slider';
@@ -46,13 +47,14 @@ const [selectStyle1, setselectStyle1] = useState('맨몸운동');
   const jongmockRef = useRef();
   const videoLinkRef = useRef();
   const [items, setItems] = useState({});
+
 const mentoKey = 'ffB1YI'
   setlogoName(' Workout');
 
   // 데이터 보여주기 싱크
   useEffect(() => {    
     const cf = {
-      f1: (p)=>{setItems(p)},
+      f1: (p)=>{setItems(Object.values(p))},
       f2: ()=>{setItems({})},
       f3: (p)=>{settotalItems(p)},
       f4: ()=>{settotalItems({})},
@@ -61,11 +63,11 @@ const mentoKey = 'ffB1YI'
         setbuwi(Object.keys(Object.values(p)[0])[0]);
         setjongmock(Object.keys(Object.values(Object.values(p)[0])[0])[0])
       },
-      f6: ()=>{setmentoItem({})},
+      f6: ()=>{setmentoItem({})}
       }
    if(user){
-    fireTodo.workoutSync0(folder,user.uid,cf) 
-    fireTodo.workoutSync(folder,user.uid,todayId, cf) 
+    fireTodo.workoutSync2(folder,user.uid, cf) 
+    // fireTodo.workoutSync(folder,user.uid,todayId, cf) 
     fireTodo.totalworkoutSync(folder,user.uid, cf) 
     fireTodo.mentoworkoutSync(folder,mentoKey, cf) 
    }else{console.log('no-User')}
@@ -225,19 +227,33 @@ const mentoKey = 'ffB1YI'
               return <Dropdown.Item as="button" onClick={()=>setgameSelect(e)} style={{textAlign:"center", fontSize:"14px",padding:"0",fontWeight:"900"}}>{e}</Dropdown.Item>
             })
             }
+            
           </div>
         </DropdownButton>
           
         </div>
       </div>
-
       
       <div className="workout-items">
-        {
-          Object.keys(items).map((e) => {
+        {/* {
+          Object.keys(items).map((e) => {  console.log('e',e)
             return <Itemrow key={e} item={items[e]} fireTodo={fireTodo} todayId={todayId} />
           })
+        } */}
+            {
+          Object.values(items).map((e) => { Object.values(e).map((k) => { 
+            // return <Itemrow2 key={k} item={k} fireTodo={fireTodo} todayId={todayId} />
+          })
+        })
         }
+         {
+          Object.values(items).map((e) => { 
+            if(Object.keys(e)[0].length>6){return}else{
+            return <Itemrow2  item={e} fireTodo={fireTodo} todayId={todayId} />}
+        })}
+        {/* <Itemrow2  item={items} fireTodo={fireTodo} todayId={todayId} /> */}
+
+
       </div>
 
       <div className="workout-input">
