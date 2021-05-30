@@ -135,7 +135,7 @@ function App({ fireApp,fireLogin,fireSync, fireTodo, fireIdea, fireOpentool,fire
           </Route>
           
           <Route path='/workout'>
-            <Workout fireTodo={fireTodo} user={user} userName={userName} setlogoName={setlogoName} />
+            <Workout fireTodo={fireTodo} user={user} userName={userName}  userInfo={userInfo} setlogoName={setlogoName} />
           </Route>
           <Route path='/mytool'> 
             <Mytool fireApp={fireApp} fireSync={fireSync}  fireIdea={fireIdea}  user={user} userInfo={userInfo} setlogoName={setlogoName} />

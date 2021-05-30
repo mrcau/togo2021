@@ -11,7 +11,7 @@ import { IconButton, Tooltip } from '@material-ui/core';
 import Accordion from 'react-bootstrap/Accordion'
 import { Card,Button } from 'react-bootstrap';
 
-function Workout({ fireTodo, user, userName, setlogoName }) {
+function Workout({ fireTodo, user, userName,userInfo, setlogoName }) {
 
   const folder = "workout"
   const today = new Date().toLocaleDateString();  
@@ -38,14 +38,15 @@ const [selectStyle1, setselectStyle1] = useState('맨몸운동');
   const [youhyung, setyouhyung] = useState('');
   const [buwi, setbuwi] = useState('');
   const [jongmock, setjongmock] = useState('');  
-  const [items, setItems] = useState({});
   const [totalItems, settotalItems] = useState({});
   const [maxItem, setMaxItem] = useState('')
   const [mentoItem, setmentoItem] = useState({});
-const youhyungRef = useRef();
-const buwiRef = useRef();
-const jongmockRef = useRef();
-const videoLinkRef = useRef();
+  const youhyungRef = useRef();
+  const buwiRef = useRef();
+  const jongmockRef = useRef();
+  const videoLinkRef = useRef();
+  const [items, setItems] = useState({});
+  const [items2, setItems2] = useState({});
 const mentoKey = 'ffB1YI'
   setlogoName(' Workout');
 
@@ -62,21 +63,25 @@ const mentoKey = 'ffB1YI'
         setjongmock(Object.keys(Object.values(Object.values(p)[0])[0])[0])
       },
       f6: ()=>{setmentoItem({})},
+      f7: (p)=>{setItems2(p)},
+      f8: ()=>{setItems2({})},
       }
    if(user){
     fireTodo.workoutSync(folder,user.uid,todayId, cf) 
+    fireTodo.workoutSync2(folder,user.uid, cf) 
     fireTodo.totalworkoutSync(folder,user.uid, cf) 
     fireTodo.mentoworkoutSync(folder,mentoKey, cf) 
    }else{console.log('no-User')}
   }, [fireTodo,user]);
   //DB에 글 데이터 저장
-
-
+  
 
   const maxChange = (selectGame)=>{
-    const ttt = Object.values(totalItems)
-    const total = ttt.map((e)=>{ return e[selectGame]||0 })
-    const totalResult = Math.max(...total)
+    if(!user.uid){return}
+
+      const ttt = Object.values(totalItems)
+      const total = ttt.map((e)=>{ return e[selectGame]||0 })
+      const totalResult = Math.max(...total)
     if(totalResult){
       setMaxItem(totalResult)
       console.log('기록있음',totalItems)
@@ -125,6 +130,8 @@ const mentoKey = 'ffB1YI'
 
   const submit = (e) => {
     e.preventDefault();
+    if(!user.uid){return}
+
     if(jongmock==='종목'){return}
     let addSet = 1;
 
@@ -195,8 +202,8 @@ const mentoKey = 'ffB1YI'
   return (
     <div className="samworkout">
 
+        {userInfo&&userInfo.level>9&&
        <div className="workout-input">
-        {/* <form onSubmit={submit} className="workout-form"> */}
         <div className="topSelect"  >
         <button  className="btnRoomLink" >{today}</button>
 
@@ -226,20 +233,29 @@ const mentoKey = 'ffB1YI'
             })
             }
           </div>
-        </DropdownButton>
-          
+        </DropdownButton>          
         </div>
-      </div>
-
+       </div>
+      }
       
       <div className="workout-items">
+        
         {
+          Object.values(items2).map((e) => {
+            Object.values(e).map((k) => { 
+              console.log('k',k)
+            return <Itemrow key={k} item={k} fireTodo={fireTodo} todayId={todayId} />
+          })
+        })
+        }
+        {/* {
           Object.keys(items).map((e) => {
             return <Itemrow key={e} item={items[e]} fireTodo={fireTodo} todayId={todayId} />
           })
-        }
+        } */}
+        {/* {console.log(items2)} */}
       </div>
-
+ 
       <div className="workout-input">
         {/* <form onSubmit={submit} className="workout-form"> */}
         <Accordion>
@@ -250,6 +266,7 @@ const mentoKey = 'ffB1YI'
             </Accordion.Toggle>
           </Card.Header>         
         
+        {userInfo&&userInfo.level>9&&
         <Accordion.Collapse eventKey="0">
         {/* defaultActiveKey="0" */}
         <div className="topSelect">
@@ -294,6 +311,7 @@ const mentoKey = 'ffB1YI'
           </div>
         </div>
         </Accordion.Collapse>
+        }
         </Card>
         </Accordion>
 
@@ -387,7 +405,7 @@ const mentoKey = 'ffB1YI'
         <button className="btnWorkoutAdd" >
         최고기록 {maxItem} {youhyung==='맨몸운동'?'(회)':'(kg)'} 
         </button>
-        <button className="btnWorkoutAdd" onClick={submit}> 추가</button>
+        <button className="btnWorkoutAdd" onClick={submit}> 저장</button>
         </div>
         {/* </form> */}
       </div>

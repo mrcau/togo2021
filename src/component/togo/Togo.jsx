@@ -27,30 +27,29 @@ function Togo({ fireApp, user, userInfo, setlogoName, photo }) {
         <div className="samtooljumbo"> <div className="mainlogo"/>  </div>
         {/* <button className="samtoolstart"  onClick={() =>{history.push('/opentool');}}>SamTool Start</button> */}
         {user.uid &&  <div className="ppp" >나의 메뉴</div> }
-        {user.uid && 
         <div className="togoMain1">  
+        {user.uid && 
             <Card  className="mainCard1" onClick={() =>{history.push('/mypage');}} >          
               <Card.Img variant="top" src={myinfo}  className="cardImg1"  />
               <Card.Body>
                 <button className="btn1 card1" >MyPage</button>
               </Card.Body>
             </Card>
-            
+          }  
+        {user.uid && 
             <Card  className="mainCard1" onClick={() =>{history.push('/mytool');}} >
               <Card.Img variant="top" src={briefcase}  className="cardImg1"  />
               <Card.Body>
                 <button className="btn1 card1" >ToolBox</button>
               </Card.Body>
             </Card>
-
-            {userInfo&&userInfo.level>9&&
+          }
             <Card  className="mainCard1" onClick={() =>{history.push('/workout');}} >
               <Card.Img variant="top" src={workout}  className="cardImg1"  />
               <Card.Body>
                 <button className="btn1 card1" >Health</button>
               </Card.Body>
             </Card>
-            }
              {userInfo&&userInfo.level>9&&
             <Card  className="mainCard1" onClick={() =>{history.push('/atable');}} >
               <Card.Img variant="top" src={users}  className="cardImg1"  />

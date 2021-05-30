@@ -47,6 +47,15 @@ class firetodo {
       data ? cf.f1(data) : cf.f2();
     })
   }  
+  workoutSync2(folder, uid, cf) {
+    const ref = fireInit.database().ref(`${folder}/${uid}`);
+    ref.on('value', (p) => {
+      const data = p.val();
+      // const data2 = Object.values(data);
+      // console.log(data)
+      data ? cf.f7(data) : cf.f8();
+    })
+  }  
   totalworkoutSync(folder, uid,cf) {
     const ref = fireInit.database().ref(`${folder}/${uid}/totalWokout`);
     ref.on('value', (p) => {

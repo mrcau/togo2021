@@ -11,6 +11,7 @@ function  Itemrow ({item,fireTodo,todayId}) {
   const itemBody = itemSet[0];
   const now = itemBody.progress;
   let counter = itemBody.progress;
+  console.log('row',item,itemSet)
   const itemDel=() => {
     fireTodo.workoutDel(folder,itemBody.uid,itemBody.todayId,itemBody.body,itemBody.gameSelect)
   }
