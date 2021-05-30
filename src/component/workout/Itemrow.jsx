@@ -45,29 +45,27 @@ function  Itemrow ({item,fireTodo,todayId}) {
           <button className="btn btn2 btnRoomLink" onClick={minus} >-</button>
           </div>
         </Card.Header>      
+        {/* height:"80px", */}
         <div className="cardTitle" style={{textAlign:"center"}}>
           <Card.Body style={{padding:"8px",overflowY:"auto",maxHeight:"240px"}}>
             <div style={{height:"100%",width:"100%",background:"white",color:"black",borderRadius:"5px"}}>
             {
               Object.values(itemSet).map((e,i) => { 
                 return <Card.Text style={{fontSize:"15px",lineHeight:"20px",padding:"0",textAlign:'left' }}> 
-                💪 {e.gameSelect} {e.workoutSet||1}세트 / 총   
-                {
+                💪 {e.gameSelect} {e.workoutSet||1}세트    
+                {/* {
                  returnData( e.workRepeat.reduce(function add(sum, currValue) { return sum + currValue; }, 0),e.gameSelect)
-                }회 
+                }회  */}
                 {e.workWeight[0] !==0 && ' / 최대'  }
                 {e.workWeight[0] !==0 && 
                  returnData(  Math.max(...e.workWeight),e.gameSelect) 
                 } 
                 {e.workWeight[0] !==0 && 'kg'}
                 {<br/>}
-                {/* {e.workWeight||1}kg  */}
-                {/* {e.workRepeat||1}회 <br/> */}
                 {e.workWeight[0] !==0 && <FitnessCenterIcon/> } 
                 {e.workWeight[0] !==0 && "무게 : " } 
                 {e.workWeight[0] !==0 && e.workWeight.map((e)=>{return e + 'kg '})} 
                 {e.workWeight[0] !==0 && <br/>} 
-                 {/* <FitnessCenterIcon/> 무게 : {e.workWeight.map((e)=>{return e + 'kg '})}  */}
                  <FitnessCenterIcon/> 횟수 : {e.workRepeat.map((e)=>{return e + '회 '})} 
                 </Card.Text>
               })

@@ -40,23 +40,32 @@ class firetodo {
   //     .catch((e) => console.log(e))
   // }
   // workout 씽크
-  workoutSync(folder, uid,todayId, cf) {
-    const ref = fireInit.database().ref(`${folder}/${uid}/${todayId}`);
-    ref.on('value', (p) => {
-      const data = p.val();
-      data ? cf.f1(data) : cf.f2();
-    })
-  }  
-  // workout 씽크
-  workoutSync2(folder, uid, cf) {
+  // workoutSync0(folder, uid, cf) {
+  //   const ref = fireInit.database().ref(`${folder}/${uid}`);
+  //   ref.on('value', (p) => {
+  //     const data = p.val();
+  //     data ? cf.f01(data) : cf.f02();
+  //   })
+  // }  
+  workoutSave(folder, data) {
+    fireInit.database().ref(`${folder}/${data.uid}/${data.todayId+data.body}/${data.gameSelect}`).set(data)
+      .then(() => console.log('글 저장성공'))
+      .catch((e) => console.log(e))
+  }
+
+  workoutSync(folder, uid, cf) {
     const ref = fireInit.database().ref(`${folder}/${uid}`);
     ref.on('value', (p) => {
       const data = p.val();
       data ? cf.f1(data) : cf.f2();
     })
   }  
+  workouttotal(folder, uid,todayId, gameSelect,repeat) { 
+    fireInit.database().ref(`${folder}/${uid}/total/${todayId}`)
+      .update({ [gameSelect]: repeat })
+  }
   totalworkoutSync(folder, uid,cf) {
-    const ref = fireInit.database().ref(`${folder}/${uid}/totalWokout`);
+    const ref = fireInit.database().ref(`${folder}/${uid}/total`);
     ref.on('value', (p) => {
       const data = p.val();
       data ? cf.f3(data) : cf.f4();
@@ -70,11 +79,7 @@ class firetodo {
     })
   }  
 
-  workoutSave(folder, data) {
-   fireInit.database().ref(`${folder}/${data.uid}/${data.todayId}/${data.body}/${data.gameSelect}`).set(data)
-     .then(() => console.log('글 저장성공'))
-     .catch((e) => console.log(e))
- }
+
 
  addyouhyung(folder,uid,data) {
    fireInit.database().ref(`${folder}/${uid}/${data}`).update({['기타']:'data'})
@@ -108,11 +113,7 @@ deljongmok(folder,uid,youhyung,buwi,jongmok) {
   }
     // workout 업데이트
 
-  workouttotal(folder, uid,todayId, gameSelect,repeat) { 
-      fireInit.database().ref(`${folder}/${uid}/totalWokout/${todayId}`).update({ [gameSelect]: repeat })      
-     .then(() => console.log('글 저장성공'))
-     .catch((e) => {console.log(e); return;})
-    }
+
 
   //Auth 테이블 싱크 for left menu
   authSync(auth, uid,cf) {
@@ -139,4 +140,3 @@ toolSync(folder,uid,selectFolder, cf) {
 }
 
 export default firetodo;
-
