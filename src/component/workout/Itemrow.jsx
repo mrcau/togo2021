@@ -52,20 +52,7 @@ function  Itemrow ({item,fireTodo,todayId}) {
             {
               Object.values(itemSet).map((e,i) => { 
                 return <Card.Text style={{fontSize:"15px",lineHeight:"20px",padding:"0",textAlign:'left' }}> 
-                💪 {e.gameSelect} {e.workoutSet||1}세트    
-                {/* {
-                 returnData( e.workRepeat.reduce(function add(sum, currValue) { return sum + currValue; }, 0),e.gameSelect)
-                }회  */}
-                {e.workWeight[0] !==0 && ' / 최대'  }
-                {e.workWeight[0] !==0 && 
-                 returnData(  Math.max(...e.workWeight),e.gameSelect) 
-                } 
-                {e.workWeight[0] !==0 && 'kg'}
-                {<br/>}
-                {e.workWeight[0] !==0 && <FitnessCenterIcon/> } 
-                {e.workWeight[0] !==0 && "무게 : " } 
-                {e.workWeight[0] !==0 && e.workWeight.map((e)=>{return e + 'kg '})} 
-                {e.workWeight[0] !==0 && <br/>} 
+        ㅂ
                  <FitnessCenterIcon/> 횟수 : {e.workRepeat.map((e)=>{return e + '회 '})} 
                 </Card.Text>
               })
