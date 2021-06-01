@@ -68,7 +68,7 @@ function  Itemrow ({item,fireTodo,todayId}) {
                 {
                  returnData( e.workRepeat.reduce((first, end)=> { return first + end; }),e.gameSelect)
                 }회 
-                {e.workWeight[0] !==0 && ' / 최대'  }
+                {e.workWeight[0] !==0 && ' / 최대?'  }
                 {e.workWeight[0] !==0 && 
                  returnData(  Math.max(...e.workWeight),e.gameSelect) 
                 } 
