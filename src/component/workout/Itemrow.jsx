@@ -25,14 +25,8 @@ function  Itemrow ({item,fireTodo,todayId}) {
   // const changeColor = (p)=>{ fireTodo.itemUp(folder,item.uid,item.dataId,{color:p}) }
 
   const returnData = (e,gameSelect)=>{ 
-    // let sum = [];
-    //   if(item){
-    //     sum = [...totalsum,e]
-    //   }
-
-    // fireTodo.workouttotal(folder,itemBody.uid,todayId,gameSelect,e)
-    console.log(e,gameSelect)
-    // return e
+    fireTodo.workouttotal(folder,itemBody.uid,todayId,gameSelect,e)
+    return e
   }
 
   return (
@@ -59,15 +53,9 @@ function  Itemrow ({item,fireTodo,todayId}) {
               Object.values(itemSet).map((e,i) => { 
                 return <Card.Text style={{fontSize:"15px",lineHeight:"20px",padding:"0",textAlign:'left' }}> 
                 💪 {e.gameSelect} {e.workoutSet||1}세트    
-                {
-                  e.workRepeat.reduce((first, end)=> { return first + end; })
-                }회 
                 {/* {
                  returnData( e.workRepeat.reduce(function add(sum, currValue) { return sum + currValue; }, 0),e.gameSelect)
                 }회  */}
-                {
-                 returnData( e.workRepeat.reduce((first, end)=> { return first + end; }),e.gameSelect)
-                }회 
                 {e.workWeight[0] !==0 && ' / 최대'  }
                 {e.workWeight[0] !==0 && 
                  returnData(  Math.max(...e.workWeight),e.gameSelect) 
