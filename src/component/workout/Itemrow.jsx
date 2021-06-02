@@ -25,8 +25,14 @@ function  Itemrow ({item,fireTodo,todayId}) {
   // const changeColor = (p)=>{ fireTodo.itemUp(folder,item.uid,item.dataId,{color:p}) }
 
   const returnData = (e,gameSelect)=>{ 
-    fireTodo.workouttotal(folder,itemBody.uid,todayId,gameSelect,e)
-    return e
+    // let sum = [];
+    //   if(item){
+    //     sum = [...totalsum,e]
+    //   }
+
+    // fireTodo.workouttotal(folder,itemBody.uid,todayId,gameSelect,e)
+    // console.log(e,gameSelect)
+    // return e
   }
 
   return (
@@ -52,7 +58,24 @@ function  Itemrow ({item,fireTodo,todayId}) {
             {
               Object.values(itemSet).map((e,i) => { 
                 return <Card.Text style={{fontSize:"15px",lineHeight:"20px",padding:"0",textAlign:'left' }}> 
-        ㅂ
+                💪 {e.gameSelect} {e.workoutSet||1}세트     
+                {
+                  e.workRepeat.reduce((first, end)=> { return first + end; })
+                } 회 
+           
+                {
+                 returnData( e.workRepeat.reduce((first, end)=> { return first + end; }),e.gameSelect)
+                }
+                {e.workWeight[0] !==0 && ' / 최대?'  }
+                {e.workWeight[0] !==0 && 
+                 returnData(  Math.max(...e.workWeight),e.gameSelect) 
+                } 
+                {e.workWeight[0] !==0 && 'kg'}
+                {<br/>}
+                {e.workWeight[0] !==0 && <FitnessCenterIcon/> } 
+                {e.workWeight[0] !==0 && "무게 : " } 
+                {e.workWeight[0] !==0 && e.workWeight.map((e)=>{return e + 'kg '})} 
+                {e.workWeight[0] !==0 && <br/>} 
                  <FitnessCenterIcon/> 횟수 : {e.workRepeat.map((e)=>{return e + '회 '})} 
                 </Card.Text>
               })

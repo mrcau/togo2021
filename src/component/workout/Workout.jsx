@@ -74,10 +74,9 @@ const mentoKey = 'ffB1YI'
   }, [fireTodo,user]);
   //DB에 글 데이터 저장
 
-// console.log(items)
-// console.log(buwi,youhyung,jongmock)
-// console.log(todayBuwi)
-
+console.log(items)
+console.log(buwi,youhyung,jongmock)
+console.log(todayBuwi)
 
 
   const maxChange = (selectGame)=>{
@@ -194,7 +193,6 @@ const mentoKey = 'ffB1YI'
   };
  
   const totalGame = (e)=>{
-
   }
 
   return (
@@ -241,7 +239,8 @@ const mentoKey = 'ffB1YI'
         {
           Object.keys(items).map((e) => {
             if(e.length>6){ 
-              return <Itemrow key={e} item={items[e]} fireTodo={fireTodo} todayId={todayId} totalItems={totalItems} />
+              // console.log(e);
+              return <Itemrow key={e} item={items[e]} fireTodo={fireTodo} todayId={todayId} />
             }
           })
         }

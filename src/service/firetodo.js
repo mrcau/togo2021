@@ -64,12 +64,6 @@ class firetodo {
     fireInit.database().ref(`${folder}/${uid}/total/${todayId}`)
       .update({ [gameSelect]: repeat })
   }
-  workouttotal2(folder, uid, gameSelect,sum) { 
-    fireInit.database().ref(`${folder}/${uid}/total`)
-      .update({ [gameSelect]: sum })
-  }
-
-
   totalworkoutSync(folder, uid,cf) {
     const ref = fireInit.database().ref(`${folder}/${uid}/total`);
     ref.on('value', (p) => {
