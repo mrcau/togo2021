@@ -5,11 +5,14 @@ import {  DeleteForever, } from '@material-ui/icons';
 import { IconButton } from '@material-ui/core';
 import FitnessCenterIcon from '@material-ui/icons/FitnessCenter';
 
-function  Itemrow ({item,fireTodo,todayId}) {
+function  Itemrow ({item,fireTodo,todayId,totalItems}) {
   const folder = "workout";
   const itemSet = Object.values(item);
   const itemBody = itemSet[0];
   const now = itemBody.progress;
+
+  console.log('totalItems',totalItems)
+
   let counter = itemBody.progress;
   const itemDel=() => {
     fireTodo.workoutDel(folder,itemBody.uid,itemBody.todayId,itemBody.body,itemBody.gameSelect)
@@ -25,12 +28,15 @@ function  Itemrow ({item,fireTodo,todayId}) {
   // const changeColor = (p)=>{ fireTodo.itemUp(folder,item.uid,item.dataId,{color:p}) }
 
   const returnData = (e,gameSelect)=>{ 
+    let sum = totalItems[gameSelect]
+    // const totalsum = [...sum,e]
+    console.log('sum',sum,e)
     // let sum = [];
     //   if(item){
     //     sum = [...totalsum,e]
     //   }
 
-    // fireTodo.workouttotal(folder,itemBody.uid,todayId,gameSelect,e)
+    // fireTodo.workouttotal(folder,itemBody.uid,gameSelect,repeat)
     // console.log(e,gameSelect)
     // return e
   }
@@ -67,9 +73,9 @@ function  Itemrow ({item,fireTodo,todayId}) {
                  returnData( e.workRepeat.reduce((first, end)=> { return first + end; }),e.gameSelect)
                 }
                 {e.workWeight[0] !==0 && ' / 최대?'  }
-                {e.workWeight[0] !==0 && 
+                {/* {e.workWeight[0] !==0 && 
                  returnData(  Math.max(...e.workWeight),e.gameSelect) 
-                } 
+                }  */}
                 {e.workWeight[0] !==0 && 'kg'}
                 {<br/>}
                 {e.workWeight[0] !==0 && <FitnessCenterIcon/> } 

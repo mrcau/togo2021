@@ -74,10 +74,14 @@ const mentoKey = 'ffB1YI'
   }, [fireTodo,user]);
   //DB에 글 데이터 저장
 
-console.log(items)
-console.log(buwi,youhyung,jongmock)
-console.log(todayBuwi)
 
+const sortItems = Object.keys(items).sort(function(a, b) {
+  const upperCaseA = a.toUpperCase();
+  const upperCaseB = b.toUpperCase();
+   if(upperCaseA < upperCaseB) return 1;
+   if(upperCaseA > upperCaseB) return -1;
+   if(upperCaseA === upperCaseB) return 0; 
+ })
 
   const maxChange = (selectGame)=>{
     const ttt = Object.values(totalItems)
@@ -237,10 +241,10 @@ console.log(todayBuwi)
       
       <div className="workout-items">
         {
-          Object.keys(items).map((e) => {
+          sortItems.map((e) => {
             if(e.length>6){ 
               // console.log(e);
-              return <Itemrow key={e} item={items[e]} fireTodo={fireTodo} todayId={todayId} />
+              return <Itemrow key={e} item={items[e]} fireTodo={fireTodo} todayId={todayId} totalItems={totalItems} />
             }
           })
         }
