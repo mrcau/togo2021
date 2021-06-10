@@ -1,5 +1,5 @@
 // import './itemrow.css';
-import React, { memo } from 'react';
+import React, { memo,useState  } from 'react';
 import { Card } from 'react-bootstrap';
 import {  DeleteForever, } from '@material-ui/icons';
 import { IconButton } from '@material-ui/core';
@@ -10,8 +10,6 @@ function  Itemrow ({item,fireTodo,todayId,totalItems}) {
   const itemSet = Object.values(item);
   const itemBody = itemSet[0];
   const now = itemBody.progress;
-
-  console.log('totalItems',totalItems)
 
   let counter = itemBody.progress;
   const itemDel=() => {
@@ -29,14 +27,13 @@ function  Itemrow ({item,fireTodo,todayId,totalItems}) {
 
   const returnData = (e,gameSelect)=>{ 
     let sum = totalItems[gameSelect]
-    // const totalsum = [...sum,e]
-    console.log('sum',sum,e)
+    const totalsum = [sum,e]
     // let sum = [];
     //   if(item){
     //     sum = [...totalsum,e]
     //   }
 
-    // fireTodo.workouttotal(folder,itemBody.uid,gameSelect,repeat)
+    // fireTodo.workouttotal(folder,itemBody.uid,gameSelect,totalsum)
     // console.log(e,gameSelect)
     // return e
   }

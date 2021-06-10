@@ -137,7 +137,6 @@ const sortItems = Object.keys(items).sort(function(a, b) {
     e.preventDefault();
     if(jongmock==='종목'){return}
     let addSet = 1;
-
     if(items[buwi]){
       if(items[buwi][jongmock]){
         addSet = 1+ items[buwi][jongmock].workoutSet
@@ -160,9 +159,10 @@ const sortItems = Object.keys(items).sort(function(a, b) {
       }
     }else{ console.log('운동부위 언디파인')}
     
+    console.log(items[todayBuwi][jongmock],items,mentoItem[youhyung])
+    // setbuwi
     if(e.currentTarget == null){return;}
     if(youhyung==='웨이트운동' && workWeight === 0){return;}
-
     if (userName) {
       const dataId = Date.now();
       const data = {
@@ -182,9 +182,15 @@ const sortItems = Object.keys(items).sort(function(a, b) {
         workRepeat : addworkRepeat,
       }
       fireTodo.workoutSave(folder,data)
-      // fireTodo.workoutSave(folder,data)
+
+      if(totalItems[jongmock]===undefined){
+        fireTodo.workouttotal(folder,user.uid,jongmock,addworkRepeat.reduce((first, end)=> { return first + end; }))
+      }else if(totalItems[jongmock]<addworkRepeat.reduce((first, end)=> { return first + end; })){
+        fireTodo.workouttotal(folder,user.uid,jongmock,addworkRepeat.reduce((first, end)=> { return first + end; }))
+      }
     }
   }
+
   function valuetext(value) {
     return value;
   }
