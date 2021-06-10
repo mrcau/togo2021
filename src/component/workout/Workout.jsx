@@ -16,8 +16,11 @@ function Workout({ fireTodo, user, userName, setlogoName }) {
   const folder = "workout"
   const today = new Date().toLocaleDateString();  
   const today1 = new Date().getFullYear();
-  const today2 = new Date().getMonth()+1;
-  const today3 = new Date().getDate();
+  let today2 = new Date().getMonth()+1;
+  today2 = today2 >= 10 ? today2 : '0' + today2; 
+  let today3 = new Date().getDate();
+  today3 = today3 >= 10 ? today3 : '0' + today3;
+
   const todayId = `${today1}`+`${today2}`+`${today3}`
   // const textRef = useRef();
   const newFolder = useRef();
@@ -74,13 +77,14 @@ const mentoKey = 'ffB1YI'
   }, [fireTodo,user]);
   //DB에 글 데이터 저장
 
-  const sortItems = Object.keys(items).sort(function(a, b) {
-    const upperCaseA = a.toUpperCase();
-    const upperCaseB = b.toUpperCase();
-     if(upperCaseA < upperCaseB) return 1;
-     if(upperCaseA > upperCaseB) return -1;
-     if(upperCaseA === upperCaseB) return 0; 
-   })
+
+const sortItems = Object.keys(items).sort(function(a, b) {
+  const upperCaseA = a.toUpperCase();
+  const upperCaseB = b.toUpperCase();
+   if(upperCaseA < upperCaseB) return 1;
+   if(upperCaseA > upperCaseB) return -1;
+   if(upperCaseA === upperCaseB) return 0; 
+ })
 
   const maxChange = (selectGame)=>{
     const ttt = Object.values(totalItems)
@@ -136,7 +140,6 @@ const mentoKey = 'ffB1YI'
     e.preventDefault();
     if(jongmock==='종목'){return}
     let addSet = 1;
-
     if(items[buwi]){
       if(items[buwi][jongmock]){
         addSet = 1+ items[buwi][jongmock].workoutSet
@@ -159,9 +162,11 @@ const mentoKey = 'ffB1YI'
       }
     }else{ console.log('운동부위 언디파인')}
     
+    // console.log('1',items[todayBuwi][jongmock],'2',items,'3',mentoItem[youhyung])
+    console.log('1',items[todayBuwi])
+    // setbuwi
     if(e.currentTarget == null){return;}
     if(youhyung==='웨이트운동' && workWeight === 0){return;}
-
     if (userName) {
       const dataId = Date.now();
       const data = {
@@ -181,9 +186,15 @@ const mentoKey = 'ffB1YI'
         workRepeat : addworkRepeat,
       }
       fireTodo.workoutSave(folder,data)
-      // fireTodo.workoutSave(folder,data)
+
+      if(totalItems[jongmock]===undefined){
+        fireTodo.workouttotal(folder,user.uid,jongmock,addworkRepeat.reduce((first, end)=> { return first + end; }))
+      }else if(totalItems[jongmock]<addworkRepeat.reduce((first, end)=> { return first + end; })){
+        fireTodo.workouttotal(folder,user.uid,jongmock,addworkRepeat.reduce((first, end)=> { return first + end; }))
+      }
     }
   }
+
   function valuetext(value) {
     return value;
   }
@@ -238,10 +249,7 @@ const mentoKey = 'ffB1YI'
       </div>
 
       
-      <div className="workout-items"> { 
-      
-     
-       }
+      <div className="workout-items">
         {
           sortItems.map((e) => {
             if(e.length>6){ 
