@@ -238,7 +238,7 @@ const mentoKey = 'ffB1YI'
       </div>
 
       
-      <div className="workout-items"> { console.log(sortItems)
+      <div className="workout-items"> { 
       
      
        }
@@ -246,7 +246,7 @@ const mentoKey = 'ffB1YI'
           sortItems.map((e) => {
             if(e.length>6){ 
               // console.log(e);
-              return <Itemrow key={e} item={items[e]} fireTodo={fireTodo} todayId={todayId} />
+              return <Itemrow key={e} item={items[e]} fireTodo={fireTodo} todayId={todayId} totalItems={totalItems} />
             }
           })
         }

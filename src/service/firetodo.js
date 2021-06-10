@@ -60,10 +60,16 @@ class firetodo {
       data ? cf.f1(data) : cf.f2();
     })
   }  
-  workouttotal(folder, uid,todayId, gameSelect,repeat) { 
-    fireInit.database().ref(`${folder}/${uid}/total/${todayId}`)
+  // workouttotal(folder, uid,todayId, gameSelect,repeat) { 
+  //   fireInit.database().ref(`${folder}/${uid}/total/${todayId}`)
+  //     .update({ [gameSelect]: repeat })
+  // }
+
+  workouttotal(folder, uid, gameSelect,repeat) { 
+    fireInit.database().ref(`${folder}/${uid}/total`)
       .update({ [gameSelect]: repeat })
   }
+
   totalworkoutSync(folder, uid,cf) {
     const ref = fireInit.database().ref(`${folder}/${uid}/total`);
     ref.on('value', (p) => {
