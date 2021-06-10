@@ -163,7 +163,7 @@ const sortItems = Object.keys(items).sort(function(a, b) {
     }else{ console.log('운동부위 언디파인')}
     
     // console.log('1',items[todayBuwi][jongmock],'2',items,'3',mentoItem[youhyung])
-    console.log('1',items[todayBuwi])
+    console.log('1',items[todayBuwi],jongmock)
     // setbuwi
     if(e.currentTarget == null){return;}
     if(youhyung==='웨이트운동' && workWeight === 0){return;}
@@ -338,7 +338,7 @@ const sortItems = Object.keys(items).sort(function(a, b) {
             {  
             youhyung &&
               Object.keys(mentoItem[youhyung]).map((e,i) => {  
-                       return <Dropdown.Item as="button" onClick={()=>{setbuwi(e); setjongmock(Object.keys(mentoItem[youhyung][e])[0]) }} 
+                       return <Dropdown.Item as="button" onClick={()=>{setbuwi(e); setTodayBuwi(todayId+e); setjongmock(Object.keys(mentoItem[youhyung][e])[0]) }} 
                        style={{textAlign:"center", fontSize:"12px",padding:"0",fontWeight:"900"}}>{e}</Dropdown.Item>
               })
             }
