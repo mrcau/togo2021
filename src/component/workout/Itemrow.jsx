@@ -36,7 +36,6 @@ function  Itemrow ({item,fireTodo,todayId,totalItems}) {
     // console.log(e,gameSelect)
     // return e
   }
-
   return (
     <div className="samtoolitemrow">      
     {/* height:'120px' bg={itemSet[0].color */ }
@@ -59,19 +58,20 @@ function  Itemrow ({item,fireTodo,todayId,totalItems}) {
             <div style={{height:"100%",width:"100%",background:"white",color:"black",borderRadius:"5px"}}>
             {
               Object.values(itemSet).map((e,i) => { 
+                // console.log(itemSet,e.workWeight,e.gameSelect)
                 return <Card.Text style={{fontSize:"15px",lineHeight:"20px",padding:"0",textAlign:'left' }}> 
-                💪 {e.gameSelect} {e.workoutSet||1}세트     
+                💪 {e.gameSelect} {e.workoutSet||1}세트 / 총반복수 :     
                 {
                   e.workRepeat.reduce((first, end)=> { return first + end; })
                 } 회 
            
-                {
+                {/* {
                  returnData( e.workRepeat.reduce((first, end)=> { return first + end; }),e.gameSelect)
-                }
-                {e.workWeight[0] !==0 && ' / 최대?'  }
-                {/* {e.workWeight[0] !==0 && 
-                 returnData(  Math.max(...e.workWeight),e.gameSelect) 
-                }  */}
+                } */}
+                {e.workWeight[0] !==0 && ' / 최대무게 : '  }
+                {e.workWeight[0] !==0 && Math.max(...e.workWeight)
+                //  returnData(  Math.max(...e.workWeight),e.gameSelect) 
+                } 
                 {e.workWeight[0] !==0 && 'kg'}
                 {<br/>}
                 {e.workWeight[0] !==0 && <FitnessCenterIcon/> } 

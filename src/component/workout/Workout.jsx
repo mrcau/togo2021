@@ -28,7 +28,7 @@ function Workout({ fireTodo, user, userName, setlogoName }) {
 
 const [selectStyle1, setselectStyle1] = useState('맨몸운동');
   const [body1, setBody1] = useState('가슴');
-  const [gameSelect, setgameSelect] = useState('종목');
+  const [gameSelect, setgameSelect] = useState('디클라인푸쉬업');
   const [color1, setColor1] = useState('danger');
   const [color2, setColor2] = useState('danger');
   // const placeholder = youhyung==='맨몸운동'?placeholder1:placeholder2;
@@ -132,17 +132,15 @@ const sortItems = Object.keys(items).sort(function(a, b) {
     const uid6 = user.uid.substr(0,6);
     fireTodo.deljongmok(folder,uid6,youhyung,buwi,buwi,jongmock)
   }
-  // const addyouhyung = ()=>{
-    
-  // }
-
+  console.log('1',totalItems[jongmock])
+  
   const submit = (e) => {
     e.preventDefault();
     if(jongmock==='종목'){return}
     let addSet = 1;
-    if(items[buwi]){
-      if(items[buwi][jongmock]){
-        addSet = 1+ items[buwi][jongmock].workoutSet
+    if(items[todayBuwi]){
+      if(items[todayBuwi][jongmock]){
+        addSet = 1+ items[todayBuwi][jongmock].workoutSet
       }
     }else{ console.log('운동부위 언디파인')}
     
@@ -162,8 +160,6 @@ const sortItems = Object.keys(items).sort(function(a, b) {
       }
     }else{ console.log('운동부위 언디파인')}
     
-    // console.log('1',items[todayBuwi][jongmock],'2',items,'3',mentoItem[youhyung])
-    console.log('1',items[todayBuwi],jongmock)
     // setbuwi
     if(e.currentTarget == null){return;}
     if(youhyung==='웨이트운동' && workWeight === 0){return;}
@@ -322,7 +318,7 @@ const sortItems = Object.keys(items).sort(function(a, b) {
         <DropdownButton as={ButtonGroup} title={youhyung} size="sm" variant={'dark'} style={{width:"100%",border:"soid 1px", background:"var(--Ccolor)"}} >
            {
             Object.keys(mentoItem).map((e,i) => {  
-              return <Dropdown.Item as="button" onClick={()=>{setyouhyung(e);setbuwi(Object.keys(mentoItem[e])[0]);setjongmock( Object.keys(Object.values(mentoItem[e])[0])[0]) }} 
+              return <Dropdown.Item as="button" onClick={()=>{setyouhyung(e);setbuwi(Object.keys(mentoItem[e])[0]); setTodayBuwi(todayId+Object.keys(mentoItem[e])[0]); setjongmock( Object.keys(Object.values(mentoItem[e])[0])[0]) }} 
               style={{textAlign:"center", fontSize:"12px",padding:"0",fontWeight:"900"}}>{e}</Dropdown.Item>
             })
             }
