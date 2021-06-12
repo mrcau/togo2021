@@ -15,13 +15,13 @@ function Workout({ fireTodo, user, userName, setlogoName }) {
 
   const folder = "workout"
   const today = new Date().toLocaleDateString();  
-  const today1 = new Date().getFullYear();
-  let today2 = new Date().getMonth()+1;
-  today2 = today2 >= 10 ? today2 : '0' + today2; 
-  let today3 = new Date().getDate();
-  today3 = today3 >= 10 ? today3 : '0' + today3;
+  const YYear = new Date().getFullYear();
+  let MMonth = new Date().getMonth()+1;
+  MMonth = MMonth >= 10 ? MMonth : '0' + MMonth; 
+  let DDay = new Date().getDate();
+  DDay = DDay >= 10 ? DDay : '0' + DDay;
 
-  const todayId = `${today1}`+`${today2}`+`${today3}`
+  const todayId = `${YYear}`+`${MMonth}`+`${DDay}`
   // const textRef = useRef();
   const newFolder = useRef();
   const repeateRef = useRef();
@@ -132,7 +132,6 @@ const sortItems = Object.keys(items).sort(function(a, b) {
     const uid6 = user.uid.substr(0,6);
     fireTodo.deljongmok(folder,uid6,youhyung,buwi,buwi,jongmock)
   }
-  console.log('1',totalItems[jongmock])
   
   const submit = (e) => {
     e.preventDefault();
@@ -166,6 +165,9 @@ const sortItems = Object.keys(items).sort(function(a, b) {
     if (userName) {
       const dataId = Date.now();
       const data = {
+        year:YYear,
+        month:MMonth,
+        day:DDay,
         uid: user.uid,
         dataId: dataId,
         name: userName,
@@ -183,11 +185,17 @@ const sortItems = Object.keys(items).sort(function(a, b) {
       }
       fireTodo.workoutSave(folder,data)
 
-      if(totalItems[jongmock]===undefined){
-        fireTodo.workouttotal(folder,user.uid,jongmock,addworkRepeat.reduce((first, end)=> { return first + end; }))
-      }else if(totalItems[jongmock]<addworkRepeat.reduce((first, end)=> { return first + end; })){
-        fireTodo.workouttotal(folder,user.uid,jongmock,addworkRepeat.reduce((first, end)=> { return first + end; }))
+      if(youhyung==='맨몸운동'){
+        if(totalItems[jongmock]===undefined){fireTodo.workouttotal(folder,user.uid,jongmock,addworkRepeat.reduce((first, end)=> { return first + end; }))}
+        else if(totalItems[jongmock]<addworkRepeat.reduce((first, end)=> { return first + end; })){
+          fireTodo.workouttotal(folder,user.uid,jongmock,addworkRepeat.reduce((first, end)=> { return first + end; }))}
       }
+      else{
+        if(totalItems[jongmock]===undefined){fireTodo.workouttotal(folder,user.uid,jongmock,workWeight)}
+        else if(totalItems[jongmock]<Math.max(...items[todayBuwi][jongmock].workWeight,workWeight)){
+          fireTodo.workouttotal(folder,user.uid,jongmock,Math.max(...items[todayBuwi][jongmock].workWeight,workWeight))}
+      }
+
     }
   }
 
@@ -250,7 +258,7 @@ const sortItems = Object.keys(items).sort(function(a, b) {
           sortItems.map((e) => {
             if(e.length>6){ 
               // console.log(e);
-              return <Itemrow key={e} item={items[e]} fireTodo={fireTodo} todayId={todayId} totalItems={totalItems} />
+              return <Itemrow key={e} item={items[e]} fireTodo={fireTodo} todayBuwi={todayBuwi} todayId={todayId} totalItems={totalItems} />
             }
           })
         }
@@ -318,7 +326,7 @@ const sortItems = Object.keys(items).sort(function(a, b) {
         <DropdownButton as={ButtonGroup} title={youhyung} size="sm" variant={'dark'} style={{width:"100%",border:"soid 1px", background:"var(--Ccolor)"}} >
            {
             Object.keys(mentoItem).map((e,i) => {  
-              return <Dropdown.Item as="button" onClick={()=>{setyouhyung(e);setbuwi(Object.keys(mentoItem[e])[0]); setTodayBuwi(todayId+Object.keys(mentoItem[e])[0]); setjongmock( Object.keys(Object.values(mentoItem[e])[0])[0]) }} 
+              return <Dropdown.Item as="button" onClick={()=>{setyouhyung(e);setbuwi(Object.keys(mentoItem[e])[0]); setTodayBuwi(todayId+Object.keys(mentoItem[e])[0]);setworkWeight(0); setjongmock( Object.keys(Object.values(mentoItem[e])[0])[0]) }} 
               style={{textAlign:"center", fontSize:"12px",padding:"0",fontWeight:"900"}}>{e}</Dropdown.Item>
             })
             }
@@ -402,8 +410,9 @@ const sortItems = Object.keys(items).sort(function(a, b) {
         {/* <textarea className="samtextarea" ref={textRef} cols="30" rows="3" style={{resize: 'none'}} /> */}
         <div style={{display:"flex"}}>
         <button className="btnWorkoutAdd" >
-        최고기록 {maxItem} {youhyung==='맨몸운동'?'(회)':'(kg)'} 
+        최고기록 {totalItems[jongmock]} {youhyung==='맨몸운동'?'(회)':'(kg)'} 
         </button>
+        <button className="btnWorkoutAdd" > 메모</button>
         <button className="btnWorkoutAdd" onClick={submit}> 추가</button>
         </div>
         {/* </form> */}

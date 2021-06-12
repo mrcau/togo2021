@@ -4,7 +4,7 @@ import {  DeleteForever, } from '@material-ui/icons';
 import { IconButton } from '@material-ui/core';
 import FitnessCenterIcon from '@material-ui/icons/FitnessCenter';
 
-function  Itemrow ({item,fireTodo,todayId,totalItems}) {
+function  Itemrow ({item,fireTodo,todayBuwi,todayId,totalItems}) {
   const folder = "workout";
   const itemSet = Object.values(item);
   const itemBody = itemSet[0];
@@ -12,7 +12,7 @@ function  Itemrow ({item,fireTodo,todayId,totalItems}) {
 
   let counter = itemBody.progress;
   const itemDel=() => {
-    fireTodo.workoutDel(folder,itemBody.uid,itemBody.todayId,itemBody.body,itemBody.gameSelect)
+    fireTodo.workoutDel(folder,itemBody.uid,itemBody.todayBuwi,itemBody.body,itemBody.gameSelect)
   }
   const plus = () => {
     if(counter<60){counter = counter+5}
@@ -24,18 +24,8 @@ function  Itemrow ({item,fireTodo,todayId,totalItems}) {
   }  
   // const changeColor = (p)=>{ fireTodo.itemUp(folder,item.uid,item.dataId,{color:p}) }
 
-  const returnData = (e,gameSelect)=>{ 
-    let sum = totalItems[gameSelect]
-    const totalsum = [sum,e]
-    // let sum = [];
-    //   if(item){
-    //     sum = [...totalsum,e]
-    //   }
+ console.log(itemBody)
 
-    // fireTodo.workouttotal(folder,itemBody.uid,gameSelect,totalsum)
-    // console.log(e,gameSelect)
-    // return e
-  }
   return (
     <div className="samtoolitemrow">      
     {/* height:'120px' bg={itemSet[0].color */ }
