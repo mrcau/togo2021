@@ -53,6 +53,10 @@ class firetodo {
       .catch((e) => console.log(e))
   }
 
+  workoutMemoSave(folder, uid,body,gameSelect,memo) {
+    fireInit.database().ref(`${folder}/${uid}/${body}/${gameSelect}`).update({ memo: memo })
+  }
+
   workoutSync(folder, uid, cf) {
     const ref = fireInit.database().ref(`${folder}/${uid}`);
     ref.on('value', (p) => {
@@ -108,9 +112,13 @@ deljongmok(folder,uid,youhyung,buwi,jongmok) {
   fireInit.database().ref(`${folder}/${uid}/${youhyung}/${buwi}}`).remove({[jongmok]:'data'})
 }
 
-  // workout 삭제
-  workoutDel(folder, uid, todayId,body,dataId) { 
-    fireInit.database().ref(`${folder}/${uid}/${todayId}/${body}/${dataId}`).remove();
+  // workout 부위 삭제
+  workoutDel(folder, uid, todayBuwi) { 
+    fireInit.database().ref(`${folder}/${uid}/${todayBuwi}`).remove();
+  }
+  // workout 종목 삭제
+  workoutDel2(folder, uid, todayBuwi,gameSelect) { 
+    fireInit.database().ref(`${folder}/${uid}/${todayBuwi}/${gameSelect}`).remove();
   }
   // workout 업데이트
   workoutUp(folder, uid, todayId,body,dataId, counter) { 
