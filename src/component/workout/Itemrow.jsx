@@ -18,13 +18,13 @@ function  Itemrow ({item,fireTodo,todayId,totalItems}) {
   const itemDel2=(e) => {
     fireTodo.workoutDel2(folder,itemBody.uid,itemBody.todayBuwi,e.gameSelect)
   }
-  const plus = () => {
+  const plus = (e) => {
     if(counter<60){counter = counter+5}
-    fireTodo.workoutUp(folder,itemBody.uid,itemBody.todayId,itemBody.body,itemBody.gameSelect,counter)
+    fireTodo.workoutUp(folder,itemBody.uid,itemBody.todayBuwi,e.gameSelect,counter)
   }
-  const minus = () => {
+  const minus = (e) => {
     if(counter>0){counter = counter-5}
-    fireTodo.workoutUp(folder,itemBody.uid,itemBody.todayId,itemBody.body,itemBody.gameSelect,counter)
+    fireTodo.workoutUp(folder,itemBody.uid,itemBody.todayBuwi,e.gameSelect,counter)
   }  
   // const changeColor = (p)=>{ fireTodo.itemUp(folder,item.uid,item.dataId,{color:p}) }
   const fireInsert = async(e)=>{
@@ -42,7 +42,6 @@ function  Itemrow ({item,fireTodo,todayId,totalItems}) {
       // console.log(e.uid,e.todayId+e.body,e.gameSelect,text)
     }
   }
- console.log(itemBody.todayBuwi,itemBody.body,itemBody.gameSelect)
 
   return (
     <div className="samtoolitemrow">      
@@ -61,8 +60,8 @@ function  Itemrow ({item,fireTodo,todayId,totalItems}) {
             </div>
           <div>
           {now}분        
-          <button className="btn btn1 btnRoomLink" onClick={plus} >+</button>
-          <button className="btn btn2 btnRoomLink" onClick={minus} >-</button>
+          <button className="btn btn1 btnRoomLink" onClick={()=>{plus(itemSet[0])}} >+</button>
+          <button className="btn btn2 btnRoomLink" onClick={()=>{minus(itemSet[0])}} >-</button>
           </div>
       </Card.Header>      
         {/* height:"80px", */}

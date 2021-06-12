@@ -121,8 +121,8 @@ deljongmok(folder,uid,youhyung,buwi,jongmok) {
     fireInit.database().ref(`${folder}/${uid}/${todayBuwi}/${gameSelect}`).remove();
   }
   // workout 업데이트
-  workoutUp(folder, uid, todayId,body,dataId, counter) { 
-    fireInit.database().ref(`${folder}/${uid}/${todayId}/${body}/${dataId}`)
+  workoutUp(folder, uid, todayBuwi,gameSelect, counter) { 
+    fireInit.database().ref(`${folder}/${uid}/${todayBuwi}/${gameSelect}`)
       .update({ progress: counter })
   }
     // workout 업데이트
