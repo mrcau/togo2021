@@ -9,22 +9,22 @@ function  Itemrow ({item,fireTodo,todayBuwi,todayId,totalItems}) {
   const itemSet = Object.values(item);
   const itemBody = itemSet[0];
   const now = itemBody.progress;
-
   let counter = itemBody.progress;
   const itemDel=() => {
     fireTodo.workoutDel(folder,itemBody.uid,itemBody.todayBuwi,itemBody.body,itemBody.gameSelect)
   }
   const plus = () => {
-    if(counter<60){counter = counter+5}
-    fireTodo.workoutUp(folder,itemBody.uid,itemBody.todayId,itemBody.body,itemBody.gameSelect,counter)
+    // if(counter<60){counter = counter+5}
+    // fireTodo.workoutUp(folder,itemBody.uid,itemBody.todayId,itemBody.body,itemBody.gameSelect,counter)
   }
   const minus = () => {
-    if(counter>0){counter = counter-5}
-    fireTodo.workoutUp(folder,itemBody.uid,itemBody.todayId,itemBody.body,itemBody.gameSelect,counter)
+    // if(counter>0){counter = counter-5}
+    // fireTodo.workoutUp(folder,itemBody.uid,itemBody.todayId,itemBody.body,itemBody.gameSelect,counter)
   }  
   // const changeColor = (p)=>{ fireTodo.itemUp(folder,item.uid,item.dataId,{color:p}) }
 
- console.log(itemBody)
+//  console.log(itemBody)
+ console.log(item)
 
   return (
     <div className="samtoolitemrow">      
@@ -48,7 +48,6 @@ function  Itemrow ({item,fireTodo,todayBuwi,todayId,totalItems}) {
             <div style={{height:"100%",width:"100%",background:"white",color:"black",borderRadius:"5px"}}>
             {
               Object.values(itemSet).map((e,i) => { 
-                // console.log(itemSet,e.workWeight,e.gameSelect)
                 return <Card.Text style={{fontSize:"15px",lineHeight:"20px",padding:"0",textAlign:'left' }}> 
                 💪 {e.gameSelect} {e.workoutSet||1}세트 / 총반복수 :     
                 {
