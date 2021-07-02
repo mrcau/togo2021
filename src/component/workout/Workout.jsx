@@ -10,9 +10,10 @@ import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import { IconButton, Tooltip } from '@material-ui/core';
 import Accordion from 'react-bootstrap/Accordion'
 import { Card,Button } from 'react-bootstrap';
+import Swal from 'sweetalert2';
 
 function Workout({ fireTodo, user, userName, setlogoName }) {
-
+  // const memoRef = useRef();
   const folder = "workout"
   const today = new Date().toLocaleDateString();  
   const YYear = new Date().getFullYear();
@@ -26,7 +27,7 @@ function Workout({ fireTodo, user, userName, setlogoName }) {
   const newFolder = useRef();
   const repeateRef = useRef();
 
-const [selectStyle1, setselectStyle1] = useState('맨몸운동');
+  const [selectStyle1, setselectStyle1] = useState('맨몸운동');
   const [body1, setBody1] = useState('가슴');
   const [gameSelect, setgameSelect] = useState('디클라인푸쉬업');
   const [color1, setColor1] = useState('danger');
@@ -50,6 +51,7 @@ const [selectStyle1, setselectStyle1] = useState('맨몸운동');
   const videoLinkRef = useRef();
   const [items, setItems] = useState({});
   const [todayBuwi, setTodayBuwi] = useState(todayId+buwi)
+  const [Memo, setMemo] = useState('')
 const mentoKey = 'ffB1YI'
   setlogoName(' Workout');
 
@@ -132,7 +134,8 @@ const sortItems = Object.keys(items).sort(function(a, b) {
     const uid6 = user.uid.substr(0,6);
     fireTodo.deljongmok(folder,uid6,youhyung,buwi,buwi,jongmock)
   }
-  
+
+
   const submit = (e) => {
     e.preventDefault();
     if(jongmock==='종목'){return}
@@ -158,8 +161,8 @@ const sortItems = Object.keys(items).sort(function(a, b) {
       // addworkRepeat = workRepeat+ items[buwi][jongmock].workRepeat
       }
     }else{ console.log('운동부위 언디파인')}
-    
-    // setbuwi
+    let todayMemo = '';
+    if(Memo){todayMemo = Memo}
     if(e.currentTarget == null){return;}
     if(youhyung==='웨이트운동' && workWeight === 0){return;}
     if (userName) {
@@ -182,9 +185,10 @@ const sortItems = Object.keys(items).sort(function(a, b) {
         selectStyle:youhyung,
         workWeight : addworkWeight,
         workRepeat : addworkRepeat,
+        todayBuwi:todayBuwi,
+        memo:todayMemo!==''&&todayMemo
       }
       fireTodo.workoutSave(folder,data)
-
       if(youhyung==='맨몸운동'){
         if(totalItems[jongmock]===undefined){fireTodo.workouttotal(folder,user.uid,jongmock,addworkRepeat.reduce((first, end)=> { return first + end; }))}
         else if(totalItems[jongmock]<addworkRepeat.reduce((first, end)=> { return first + end; })){
@@ -412,7 +416,6 @@ const sortItems = Object.keys(items).sort(function(a, b) {
         <button className="btnWorkoutAdd" >
         최고기록 {totalItems[jongmock]} {youhyung==='맨몸운동'?'(회)':'(kg)'} 
         </button>
-        <button className="btnWorkoutAdd" > 메모</button>
         <button className="btnWorkoutAdd" onClick={submit}> 추가</button>
         </div>
         {/* </form> */}
